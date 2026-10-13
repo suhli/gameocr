@@ -417,6 +417,9 @@ impl Service {
                 let snapshot = Snapshot { result, preview };
                 {
                     let mut history = self.history.lock();
+                    // A forced rerun of a paused frame supersedes its previous result.
+                    // frame_id remains a unique export key, independent of inference count.
+                    history.retain(|old| old.result.frame_id != snapshot.result.frame_id);
                     history.push_front(snapshot.clone());
                     while history.len() > settings.history_limit {
                         history.pop_back();

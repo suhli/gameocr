@@ -12,6 +12,8 @@ Windows 11 x64 本地窗口 OCR 工具。Tauri 2、Svelte 5 和 Rust；使用 Wi
 
 默认捕获 10 FPS、OCR 间隔 1000 ms、变化阈值 0.03。单次识别会强制识别当前帧，连续识别会跳过没有显著变化的画面。推理时只保留一个最新待处理帧，默认保留最近 30 条结果。
 
+暂停后重复识别同一帧会替换该帧的旧结果。历史保留与结果对应的压缩预览；完整原始截图只保留最新识别帧，历史中的旧帧仍可导出 OCR JSON。
+
 Windows 11 便携版直接使用系统现有 WebView2：不执行预安装检查、下载或安装流程，也不携带浏览器。移除了 WebView2 的精简系统不受支持。运行程序不需要 Rust、Python、Visual Studio 或 CUDA Toolkit。CUDA 需要兼容的 NVIDIA 驱动；CPU 后端独立分发。当前 CUDA 编译目标为 SM 75 / 80 / 86 / 89，其他 GPU 可选择 CPU，尚未逐型号验证。
 
 设置与模型默认保存于 `%LOCALAPPDATA%\GameOCR`。模型不随发行包附带。退出时清除本次会话的临时截图，历史仅保留在内存；导出文件由用户选择保存位置。`GAMEOCR_DATA_DIR` 可将数据目录设为绝对路径，主要用于隔离测试。
@@ -50,7 +52,8 @@ cargo run -p gameocr-core --bin model-test --release -- `
   --image ./tests/fixtures/english.png --mode grounding --device cpu --repeat 2
 
 # 已构建的 CUDA CLI 不需要再次编译
-./src-tauri/resources/workers/cuda/model-test.exe `
+$env:PATH=(Resolve-Path ./src-tauri/resources/workers/cuda).Path+';'+$env:PATH
+./target/workers-cuda/release/model-test.exe `
   --model ./models/LightOnOCR-3-0.8B-Q8_0.gguf `
   --mmproj ./models/LightOnOCR-3-0.8B-mmproj-f16.gguf `
   --image ./tests/fixtures/english.png --mode grounding --device cuda --repeat 2
@@ -78,6 +81,18 @@ cargo build -p gameocr --features test-fixture --bins
 # 另一个终端运行 npm run dev
 $env:GAMEOCR_SOAK_SECONDS='1800'
 node scripts/desktop-smoke.mjs
+```
+
+验证已经构建的便携版时不需要 Vite：先构建上述测试窗口，然后指定实际 EXE。测试使用独立数据目录，不修改日常使用的设置；需要约 1 GB 空间导入验证模型。
+
+```powershell
+$env:GAMEOCR_APP=(Resolve-Path ./artifacts/GameOCR-windows-x64-portable/GameOCR.exe).Path
+$env:GAMEOCR_TEST_OUTPUT=(Join-Path $PWD 'artifacts/validation/portable-final')
+$env:GAMEOCR_SOAK_SECONDS='1800'
+node scripts/desktop-smoke.mjs
+# 前一程序完全退出后，检查自动 CPU 回退、损坏模型恢复与退出清理
+$env:GAMEOCR_MODEL_DIR=(Join-Path $env:GAMEOCR_TEST_OUTPUT 'user-data/models')
+node scripts/desktop-extra.mjs
 ```
 
 构建三个发行包：

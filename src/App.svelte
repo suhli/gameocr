@@ -35,7 +35,7 @@
   async function sourceChanged(value:'window'|'adb'){await run('source',async()=>{await api.stopCapture();liveFrame=null;snapshots=[];await changeSettings({captureSource:value});if(value==='adb')devices=await api.adbDevices();});}
   async function captureStart(){await run('capture',async()=>{view='live';liveFrame=null;snapshots=[];snapshotIndex=0;await api.startCapture();});}
   async function copyText(){if(!current)return;try{await navigator.clipboard.writeText(current.result.blocks.map(b=>b.text).filter(Boolean).join('\n\n'));copyDone=true;setTimeout(()=>copyDone=false,1800);}catch(e){fail(e);}}
-  async function exportJson(){if(!current)return;const path=await api.saveJson();if(path)await api.exportResult(current.result.frameId,path);}
+  async function exportJson(){if(!current)return;const frameId=current.result.frameId;const path=await api.saveJson();if(path)await api.exportResult(frameId,path);}
   async function saveImage(){const path=await api.savePng();if(path)await api.saveScreenshot(path,view==='result');}
   function selectBlock(id:string){selectedBlock=id;resultTab='text';requestAnimationFrame(()=>document.getElementById(`result-${id}`)?.scrollIntoView({block:'nearest',behavior:'smooth'}));}
   $effect(()=>{document.documentElement.classList.toggle('light',settings?.theme==='light');document.documentElement.classList.toggle('dark',settings?.theme!=='light');});
@@ -45,12 +45,12 @@
     async function init(){
       await Promise.all([
         events.add('capture-status',s=>{captureStatus=s;if(s==='idle'||s==='error'){liveFrame=null;snapshots=[];snapshotIndex=0;}}),events.add('capture-preview',p=>liveFrame=p),events.add('capture-error',fail),
-        events.add('ocr-status',s=>ocrStatus=s),events.add('ocr-error',fail),events.add('model-status',s=>modelStatus=s),events.add('performance-update',p=>performance=p),
+        events.add('ocr-status',s=>ocrStatus=s),events.add('ocr-error',fail),events.add('model-status',s=>{modelStatus=s;if(s.id)modelChoice=s.id;}),events.add('performance-update',p=>performance=p),
         events.add('model-download-progress',p=>{progress=p;if(p.state==='complete')void refreshModels().catch(fail);}),
-        events.add('ocr-result',s=>{snapshots=[s,...snapshots].slice(0,settings?.historyLimit??30);if(followResults){snapshotIndex=0;view='result';selectedBlock=null;}else{snapshotIndex=Math.min(snapshotIndex+1,snapshots.length-1);}}),
+        events.add('ocr-result',s=>{const viewed=current?.result.frameId;snapshots=[s,...snapshots.filter(old=>old.result.frameId!==s.result.frameId)].slice(0,settings?.historyLimit??30);if(followResults){snapshotIndex=0;view='result';selectedBlock=null;}else{snapshotIndex=Math.max(0,snapshots.findIndex(item=>item.result.frameId===viewed));}}),
       ]);
       const [s,m,status,p,history]=await Promise.all([api.settings(),api.models(),api.status(),api.performance(),api.history()]);
-      if(disposed)return;settings=s;models=m;captureStatus=status.capture;ocrStatus=status.ocr;selected=status.selected;performance=p;snapshots=history;if(status.warning)fail(status.warning);modelStatus=await api.modelStatus();await refreshWindows();
+      if(disposed)return;settings=s;models=m;captureStatus=status.capture;ocrStatus=status.ocr;selected=status.selected;performance=p;snapshots=history;if(status.warning)fail(status.warning);modelStatus=await api.modelStatus();if(modelStatus.id)modelChoice=modelStatus.id;await refreshWindows();
     }
     void init().catch(fail);return()=>{disposed=true;events.dispose();};
   });
@@ -98,7 +98,7 @@
       </div>
       <div class="sidebar-bottom">
         <div class="row spread"><span class="label">推理模型</span><button class="text-button" onclick={()=>modelOpen=true} disabled={!native}>管理 <ArrowUpRight/></button></div>
-        <select aria-label="选择模型" bind:value={modelChoice} disabled={!!busy||modelStatus.status==='loading'}>{#each models as model}<option value={model.id}>{model.quantization}{model.installed?' · 已下载':' · 未下载'}</option>{/each}{#if !models.length}<option value="Q8_0">LightOnOCR-3 · Q8_0</option>{/if}</select>
+        <select aria-label="选择模型" bind:value={modelChoice} disabled={!!busy||['loading','ready','unloading'].includes(modelStatus.status)}>{#each models as model}<option value={model.id}>{model.quantization}{model.installed?' · 已下载':' · 未下载'}</option>{/each}{#if !models.length}<option value="Q8_0">LightOnOCR-3 · Q8_0</option>{/if}</select>
         <div class="row model-summary"><span class="dot" class:on={modelStatus.status==='ready'}></span><span>{modelLabels[modelStatus.status]}</span><span class="mono">{modelStatus.device??'CPU / CUDA'}</span></div>
         {#if ['ready','error'].includes(modelStatus.status)}<Button variant="outline" size="sm" class="w-full" disabled={!!busy} onclick={()=>run('unload',api.unloadModel)}>卸载模型</Button>{:else}<Button variant="outline" size="sm" class="w-full" disabled={!native||!!busy||modelStatus.status==='loading'||!models.find(m=>m.id===modelChoice)?.installed} onclick={()=>run('load',()=>api.loadModel(modelChoice))}>{#if modelStatus.status==='loading'}<LoaderCircle class="spinner"/>{:else}<Cpu/>{/if} 加载模型</Button>{/if}
         {#if modelStatus.message}<p class="backend-message" title={modelStatus.message}>{modelStatus.message}</p>{/if}<div class="quick-settings"><div class="row spread"><span class="label">识别配置</span><button class="icon-btn" aria-label="更多识别设置" onclick={()=>settingsOpen=true} disabled={!settings}><Settings2/></button></div>

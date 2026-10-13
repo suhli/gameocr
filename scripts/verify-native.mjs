@@ -6,6 +6,7 @@ const root=path.resolve(process.argv[2]||'artifacts/GameOCR-windows-x64-portable
 function imports(file){
   const b=fs.readFileSync(file), pe=b.readUInt32LE(0x3c);
   assert.equal(b.toString('ascii',pe,pe+4),'PE\0\0');
+  assert.equal(b.readUInt16LE(pe+4),0x8664,`${file}: expected AMD64 machine`);
   const count=b.readUInt16LE(pe+6),optional=pe+24,magic=b.readUInt16LE(optional);
   assert.equal(magic,0x20b,`${file}: expected x64 PE`);
   const table=optional+b.readUInt16LE(pe+20), directories=optional+112;
@@ -29,7 +30,9 @@ for(const file of files){
   const deps=imports(file);
   if(path.basename(file).toLowerCase()==='gameocr.exe')assert(!deps.some(d=>/cuda|cublas|ggml/i.test(d)),'UI must not import CUDA');
   for(const dep of deps){
-    const available=/^(api-ms-|ext-ms-)/i.test(dep)||[path.dirname(file),root,path.join(process.env.SystemRoot,'System32')].some(d=>fs.existsSync(path.join(d,dep)));
+    // The GPU driver is supplied by NVIDIA, never redistributed as part of CUDA Toolkit.
+    const driverDependency=path.relative(root,file).split(path.sep).includes('cuda')&&dep.toLowerCase()==='nvcuda.dll';
+    const available=driverDependency||/^(api-ms-|ext-ms-)/i.test(dep)||[path.dirname(file),root,path.join(process.env.SystemRoot,'System32')].some(d=>fs.existsSync(path.join(d,dep)));
     assert(available,`${path.relative(root,file)} requires missing ${dep}`);
   }
   report.push({file:path.relative(root,file),imports:deps});

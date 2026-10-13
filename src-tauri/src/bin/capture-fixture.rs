@@ -1,4 +1,5 @@
 //! Visible, deterministic Win32 test target. Only controls its own test window.
+#![windows_subsystem = "windows"]
 use std::{path::PathBuf, sync::OnceLock};
 use windows::{
     Win32::{

@@ -31,7 +31,10 @@ foreach ($kind in $backends) {
     $destination = Join-Path $repo "src-tauri/resources/workers/$kind"
     New-Item -ItemType Directory -Force -Path $destination | Out-Null
     Copy-Item -LiteralPath "target/workers-$kind/$Profile/ocr-worker.exe" -Destination $destination
-    Copy-Item -LiteralPath "target/workers-$kind/$Profile/model-test.exe" -Destination $destination
+    # Keep the independent CLI in target/workers-*/release; do not duplicate the
+    # large CUDA kernel image in every GUI installer.
+    $oldCli = Join-Path $destination 'model-test.exe'
+    if (Test-Path -LiteralPath $oldCli) { Remove-Item -LiteralPath $oldCli -Force }
     if ($kind -eq 'cuda') {
         if (!$env:CUDA_PATH) { throw 'CUDA_PATH must point to a CUDA 12.x Toolkit.' }
         foreach ($name in @('cudart64_12.dll','cublas64_12.dll','cublasLt64_12.dll')) {
