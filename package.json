@@ -1,0 +1,38 @@
+{
+  "name": "gameocr",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 1420 --strictPort",
+    "build": "vite build",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "tauri": "tauri",
+    "desktop": "tauri dev",
+    "test": "vitest run",
+    "workers": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-workers.ps1 -Backend cpu"
+  },
+  "dependencies": {
+    "@lucide/svelte": "^0.545.0",
+    "@tauri-apps/api": "^2.10.0",
+    "@tauri-apps/plugin-dialog": "^2.6.0",
+    "bits-ui": "^2.0.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwind-variants": "^3.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "@tauri-apps/cli": "^2.10.0",
+    "@tsconfig/svelte": "^5.0.5",
+    "@types/node": "^24.0.0",
+    "svelte": "^5.39.0",
+    "svelte-check": "^4.3.2",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9",
+    "vitest": "^3.2.4"
+  }
+}

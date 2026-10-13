@@ -1,0 +1,13 @@
+/target/
+/node_modules/
+/dist/
+/.cache/
+/artifacts/
+/models/
+/src-tauri/resources/workers/
+/src-tauri/resources/runtime/
+/src-tauri/resources/licenses/
+/src-tauri/gen/
+*.log
+*.part
+.DS_Store
