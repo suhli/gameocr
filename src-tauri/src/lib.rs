@@ -39,6 +39,7 @@ pub fn run() {
             commands::list_models,
             commands::download_model,
             commands::import_model,
+            commands::import_onnx_model,
             commands::load_model,
             commands::unload_model,
             commands::delete_model,

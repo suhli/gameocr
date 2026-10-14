@@ -1,0 +1,30 @@
+{
+  "frameId": 0,
+  "timestamp": 1791945851427,
+  "sourceWidth": 800,
+  "sourceHeight": 320,
+  "blocks": [
+    {
+      "id": "block-0",
+      "text": "GAME OCR TEST\n\nHealth: 100 / 100\n\nQuest complete!",
+      "label": null,
+      "bbox": null,
+      "confidence": null,
+      "polygon": null
+    }
+  ],
+  "rawOutput": "GAME OCR TEST\n\nHealth: 100 / 100\n\nQuest complete!",
+  "metrics": {
+    "preprocessingMs": 22.7913,
+    "inferenceMs": 5172.094,
+    "parsingMs": 0.3167,
+    "totalMs": 5195.2026,
+    "detectionMs": null,
+    "recognitionMs": null
+  },
+  "device": "CPU",
+  "truncated": false,
+  "runtime": "llamacpp",
+  "modelId": null,
+  "engineId": "lightonocr"
+}

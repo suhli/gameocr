@@ -106,8 +106,12 @@ pub async fn recognize_once(state: AppState<'_>) -> Reply<()> {
     state.inner().clone().recognize(true).await.map_err(err)
 }
 #[tauri::command]
-pub fn list_models(state: AppState<'_>) -> Reply<Vec<ModelEntry>> {
-    state.list_models().map_err(err)
+pub async fn list_models(state: AppState<'_>) -> Reply<Vec<ModelEntry>> {
+    let s = state.inner().clone();
+    tokio::task::spawn_blocking(move || s.list_models())
+        .await
+        .map_err(err)?
+        .map_err(err)
 }
 #[tauri::command]
 pub async fn download_model(state: AppState<'_>, id: String) -> Reply<()> {
@@ -140,6 +144,30 @@ pub async fn import_model(state: AppState<'_>, model: String, mmproj: String) ->
     .await
     .map_err(err)?
     .map_err(err)
+}
+#[tauri::command]
+pub async fn import_onnx_model(
+    state: AppState<'_>,
+    variant: String,
+    detector: String,
+    recognizer: String,
+    dictionary: String,
+) -> Reply<ModelEntry> {
+    let _transition = state
+        .lifecycle
+        .try_lock()
+        .map_err(|_| "模型正在切换".to_string())?;
+    let dir = state.settings.read().model_dir.clone();
+    state
+        .models
+        .import_onnx(
+            dir,
+            variant,
+            [detector.into(), recognizer.into(), dictionary.into()],
+            state.app.clone(),
+        )
+        .await
+        .map_err(err)
 }
 #[tauri::command]
 pub async fn load_model(state: AppState<'_>, id: String) -> Reply<()> {

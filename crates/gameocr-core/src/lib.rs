@@ -1,6 +1,9 @@
 pub mod change;
+pub mod engine;
 pub mod grounding;
 #[cfg(feature = "inference")]
 pub mod inference;
 pub mod latest;
+pub mod manifest;
 pub mod types;
+pub mod worker;

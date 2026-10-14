@@ -28,11 +28,14 @@ walk(root);
 const report=[];
 for(const file of files){
   const deps=imports(file);
-  if(path.basename(file).toLowerCase()==='gameocr.exe')assert(!deps.some(d=>/cuda|cublas|ggml/i.test(d)),'UI must not import CUDA');
+  if(path.basename(file).toLowerCase()==='gameocr.exe')assert(!deps.some(d=>/cuda|cublas|ggml|onnxruntime/i.test(d)),'UI must not import inference runtimes');
+  const gpu=path.relative(root,file).split(path.sep).some(p=>p==='cuda'||p==='cuda-runtime');
+  if(path.relative(root,file).split(path.sep).includes('cpu'))assert(!deps.some(d=>/cuda|cublas|cudnn|cufft/i.test(d)),'CPU runtime must not import CUDA libraries');
   for(const dep of deps){
     // The GPU driver is supplied by NVIDIA, never redistributed as part of CUDA Toolkit.
-    const driverDependency=path.relative(root,file).split(path.sep).includes('cuda')&&dep.toLowerCase()==='nvcuda.dll';
-    const available=driverDependency||/^(api-ms-|ext-ms-)/i.test(dep)||[path.dirname(file),root,path.join(process.env.SystemRoot,'System32')].some(d=>fs.existsSync(path.join(d,dep)));
+    const driverDependency=gpu&&dep.toLowerCase()==='nvcuda.dll';
+    const directories=[path.dirname(file),root,path.join(process.env.SystemRoot,'System32'),...(gpu?[path.join(root,'workers','cuda-runtime')]:[])];
+    const available=driverDependency||/^(api-ms-|ext-ms-)/i.test(dep)||directories.some(d=>fs.existsSync(path.join(d,dep)));
     assert(available,`${path.relative(root,file)} requires missing ${dep}`);
   }
   report.push({file:path.relative(root,file),imports:deps});

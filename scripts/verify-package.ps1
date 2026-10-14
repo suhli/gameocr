@@ -1,9 +1,9 @@
 param([string]$Directory = 'artifacts/GameOCR-windows-x64-portable')
 $ErrorActionPreference = 'Stop'
-foreach ($file in @('GameOCR.exe','vcruntime140.dll','msvcp140.dll','workers/cpu/ocr-worker.exe','workers/cuda/ocr-worker.exe','workers/cuda/cudart64_12.dll','workers/cuda/cublas64_12.dll','workers/cuda/cublasLt64_12.dll','licenses/dependencies.txt')) {
+foreach ($file in @('GameOCR.exe','vcruntime140.dll','msvcp140.dll','workers/llamacpp/cpu/ocr-worker.exe','workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','workers/onnx/cuda/onnxruntime_providers_cuda.dll','workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll','licenses/dependencies.txt','licenses/onnxruntime-LICENSE.txt','licenses/cuDNN-LICENSE.txt')) {
     if (!(Test-Path -LiteralPath (Join-Path $Directory $file))) { throw "Missing runtime dependency: $file" }
 }
-$forbidden = Get-ChildItem -LiteralPath $Directory -Recurse -File | Where-Object { $_.Name -match '\.gguf$|WebView2.*Setup|msedgewebview2.exe|nvcc.exe' }
+$forbidden = Get-ChildItem -LiteralPath $Directory -Recurse -File | Where-Object { $_.Name -match '\.(gguf|onnx)$|WebView2.*Setup|msedgewebview2.exe|nvcc.exe' }
 if ($forbidden) { throw 'Portable unexpectedly contains a model, WebView installer/browser, or development tool.' }
 $portableRoot = (Resolve-Path -LiteralPath $Directory).Path
 $zip = [IO.Compression.ZipFile]::OpenRead((Join-Path $PWD 'artifacts/GameOCR-windows-x64-portable.zip'))

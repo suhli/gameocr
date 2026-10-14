@@ -2,9 +2,9 @@
   import { onMount } from 'svelte';
   import { X,Settings2,FolderOpen } from '@lucide/svelte';
   import { Button } from '$lib/components/ui/button';
-  import type { Settings } from '../types';
+  import type { Settings,ModelEntry } from '../types';
   import { api } from '../services/api';
-  let {settings,onClose,onSave,onError}:{settings:Settings;onClose:()=>void;onSave:(value:Settings)=>Promise<void>;onError:(e:unknown)=>void}=$props();
+  let {settings,model,onClose,onSave,onError}:{settings:Settings;model?:ModelEntry;onClose:()=>void;onSave:(value:Settings)=>Promise<void>;onError:(e:unknown)=>void}=$props();
   // A settings dialog edits a snapshot; external changes must not overwrite unsaved edits.
   // svelte-ignore state_referenced_locally
   let draft=$state<Settings>(structuredClone($state.snapshot(settings)));let saving=$state(false);let error=$state('');let dialog:HTMLDialogElement;
@@ -19,10 +19,16 @@
       <div class="fields"><label>变化检测阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.changeThreshold}/></label><label>历史记录上限<input type="number" min="1" max="100" bind:value={draft.historyLimit}/></label></div>
       <label class="check"><input type="checkbox" bind:checked={draft.changeDetection}/> 跳过没有显著变化的画面</label>
     </section>
-    <section><h3>推理参数</h3><p>更改这些参数前，请先卸载模型。单次识别始终使用独立上下文。</p>
+    <section><h3>推理参数</h3><p>更改这些参数前，请先卸载模型。设置适用于当前选择的模型。</p>
       <div class="fields"><label>推理设备<select bind:value={draft.device}><option value="auto">自动 · CUDA 优先</option><option value="cuda">NVIDIA CUDA</option><option value="cpu">CPU</option></select></label><label>CPU 线程数<input type="number" min="1" max="128" bind:value={draft.threads}/></label></div>
+      {#if model?.capabilities.generation??true}
       <div class="fields"><label>上下文大小<input type="number" min="2048" max="32768" step="1024" bind:value={draft.contextSize}/></label><label>最大输出 Token<input type="number" min="1" max="16000" bind:value={draft.maxTokens}/></label></div>
       <div class="fields"><label>采样温度<input type="number" min="0" max="2" step="0.1" bind:value={draft.temperature}/></label><label>图像最长边 (px)<input type="number" min="224" max="2048" step="32" bind:value={draft.maxImageEdge}/></label></div>
+      {:else if model?.runtime==='onnx'}
+      <div class="fields"><label>Detection Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.detectionThreshold}/></label><label>Box Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.boxThreshold}/></label></div>
+      <div class="fields"><label>Unclip Ratio<input type="number" min="0.1" max="5" step="0.1" bind:value={draft.onnx.unclipRatio}/></label><label>识别置信度阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.recognitionThreshold}/></label></div>
+      <div class="fields"><label>识别 Batch Size<input type="number" min="1" max="32" bind:value={draft.onnx.batchSize}/></label><label>检测最长边 (px)<input type="number" min="32" max="2048" step="32" bind:value={draft.onnx.detectionResize}/></label></div>
+      {/if}
     </section>
     <section><h3>存储与 ADB</h3><label>模型目录<div class="row"><input bind:value={draft.modelDir}/><button class="icon-btn" aria-label="选择模型目录" onclick={async()=>{try{const path=await api.pickDirectory();if(typeof path==='string')draft.modelDir=path;}catch(e){onError(e);}}}><FolderOpen/></button></div></label>
       <label>模型下载源<select bind:value={draft.downloadMirror}><option value="https://huggingface.co">Hugging Face</option><option value="https://hf-mirror.com">HF-Mirror 镜像（同一 SHA-256 校验）</option></select></label>

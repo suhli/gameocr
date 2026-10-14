@@ -1,0 +1,14 @@
+{
+  "executedAt": "2026-10-14T02:53:09.071Z",
+  "checks": [
+    "Multi-runtime catalog / verified files",
+    "Actual CUDA initialization failure falls back to CPU",
+    "Loaded-model parameter changes rejected",
+    "Model switch disposes old worker",
+    "ONNX capability-driven settings render",
+    "Explicit CUDA failure remains an error",
+    "Recovery after worker initialization failure",
+    "Real multi-file import, inference validation, same-size corruption and deletion",
+    "Invalid ONNX graph rolls back every copied file"
+  ]
+}

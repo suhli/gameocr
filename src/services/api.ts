@@ -16,6 +16,8 @@ export const api={
   exportResult:(frameId:number,path:string)=>call<void>('export_result',{frameId,path}),saveScreenshot:(path:string,recognized:boolean)=>call<void>('save_screenshot',{path,recognized}),
   originalScreenshot:(recognized:boolean)=>call<string>('get_original_screenshot',{recognized}),
   pickModel:(title:string)=>open({title,multiple:false,filters:[{name:'GGUF 模型',extensions:['gguf']}]}),
+  importOnnx:(variant:string,detector:string,recognizer:string,dictionary:string)=>call<ModelEntry>('import_onnx_model',{variant,detector,recognizer,dictionary}),
+  pickOnnxFile:(title:string,extension:string)=>open({title,multiple:false,filters:[{name:extension.toUpperCase(),extensions:[extension]}]}),
   pickDirectory:()=>open({title:'选择模型存储目录',directory:true,multiple:false}),
   pickAdb:()=>open({title:'选择 adb.exe',multiple:false,filters:[{name:'ADB',extensions:['exe']}]}),
   saveJson:()=>save({defaultPath:'gameocr-result.json',filters:[{name:'JSON',extensions:['json']}]}),

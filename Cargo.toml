@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/gameocr-core", "src-tauri"]
+members = ["crates/gameocr-core", "crates/gameocr-onnx", "src-tauri"]
 default-members = ["crates/gameocr-core"]
 resolver = "2"
 

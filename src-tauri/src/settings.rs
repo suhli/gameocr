@@ -17,6 +17,7 @@ pub struct Settings {
     pub max_tokens: u32,
     pub temperature: f32,
     pub max_image_edge: u32,
+    pub onnx: gameocr_core::engine::OnnxConfig,
     pub model_dir: PathBuf,
     pub adb_path: String,
     pub adb_serial: String,
@@ -40,6 +41,7 @@ impl Default for Settings {
             max_tokens: 2048,
             temperature: 0.1,
             max_image_edge: 1280,
+            onnx: Default::default(),
             model_dir: data_dir().join("models"),
             adb_path: "adb".into(),
             adb_serial: String::new(),
@@ -64,7 +66,38 @@ pub fn data_dir() -> PathBuf {
         .join("GameOCR")
 }
 impl Settings {
+    pub fn engine_config(
+        &self,
+        manifest: gameocr_core::manifest::ModelManifest,
+        device: Device,
+    ) -> Result<gameocr_core::engine::EngineConfig> {
+        use gameocr_core::engine::{EngineConfig, RuntimeConfig};
+        // Configuration strategies live at this boundary, not in Service.
+        let inference = match manifest.runtime.as_str() {
+            "llamacpp" => RuntimeConfig::Llamacpp(gameocr_core::types::InferenceConfig {
+                model: String::new(),
+                mmproj: String::new(),
+                device,
+                threads: self.threads,
+                context_size: self.context_size,
+                max_tokens: self.max_tokens,
+                temperature: self.temperature,
+                max_image_edge: self.max_image_edge,
+            }),
+            "onnx" => RuntimeConfig::Onnx(self.onnx.clone()),
+            _ => anyhow::bail!("Unregistered runtime configuration"),
+        };
+        Ok(EngineConfig {
+            manifest,
+            directory: self.model_dir.to_string_lossy().into(),
+            device,
+            threads: self.threads,
+            inference,
+        })
+    }
+
     pub fn validate(&self) -> Result<()> {
+        self.onnx.validate()?;
         ensure!(
             (1..=60).contains(&self.capture_fps),
             "捕获频率必须为 1–60 FPS"

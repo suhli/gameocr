@@ -41,6 +41,8 @@ pub fn parse(raw: &str, width: u32, height: u32) -> Vec<OcrBlock> {
                 text: text.to_owned(),
                 label,
                 bbox,
+                confidence: None,
+                polygon: None,
             });
         }
     };

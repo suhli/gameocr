@@ -29,7 +29,26 @@ pub struct Worker {
 }
 impl Worker {
     pub async fn spawn(path: &Path, closing: Arc<AtomicBool>) -> Result<Self> {
-        let mut child = Command::new(path)
+        let mut command = Command::new(path);
+        // CUDA libraries are shared on disk but visible only to GPU children.
+        // CPU children never add this directory to their loader search path.
+        if path
+            .parent()
+            .and_then(Path::file_name)
+            .is_some_and(|n| n == "cuda")
+        {
+            if let Some(root) = path.parent().and_then(Path::parent).and_then(Path::parent) {
+                let mut paths = vec![
+                    path.parent().unwrap().to_path_buf(),
+                    root.join("cuda-runtime"),
+                ];
+                paths.extend(std::env::split_paths(
+                    &std::env::var_os("PATH").unwrap_or_default(),
+                ));
+                command.env("PATH", std::env::join_paths(paths)?);
+            }
+        }
+        let mut child = command
             .current_dir(path.parent().context("工作程序路径错误")?)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
@@ -104,7 +123,12 @@ impl Worker {
         }
     }
     pub async fn shutdown(&mut self) {
-        let _ = self.child.kill().await;
+        let graceful=tokio::time::timeout(Duration::from_secs(2),async {
+            self.input.write_all(b"{\"type\":\"shutdown\"}\n").await?;
+            self.input.flush().await?;
+            self.child.wait().await
+        }).await;
+        if !matches!(graceful,Ok(Ok(_))) {let _ = self.child.kill().await;}
         let _ = self.child.wait().await;
         self.log_task.abort();
     }
@@ -115,7 +139,7 @@ impl Drop for Worker {
         self.log_task.abort();
     }
 }
-pub fn worker_path(app: &tauri::AppHandle, device: Device) -> Result<PathBuf> {
+pub fn worker_path(app: &tauri::AppHandle, runtime: &str, device: Device) -> Result<PathBuf> {
     let kind = if device == Device::Cuda {
         "cuda"
     } else {
@@ -126,10 +150,16 @@ pub fn worker_path(app: &tauri::AppHandle, device: Device) -> Result<PathBuf> {
     } else {
         app.path().resource_dir()?
     };
-    let path = root.join("workers").join(kind).join("ocr-worker.exe");
+    let registry = gameocr_core::engine::RuntimeRegistry::default();
+    let executable = registry.executable(runtime)?;
+    let path = root
+        .join("workers")
+        .join(runtime)
+        .join(kind)
+        .join(executable);
     anyhow::ensure!(
         path.is_file(),
-        "未找到 {kind} 工作程序，请运行 scripts/build-workers.ps1 或安装完整发行包"
+        "未找到 {runtime}/{kind} 工作程序，请运行 scripts/build-workers.ps1 或安装完整发行包"
     );
     Ok(path)
 }

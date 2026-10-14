@@ -1,0 +1,28 @@
+[package]
+name = "gameocr-onnx"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version = "1.88"
+
+[features]
+default = []
+cuda = ["ort/cuda"]
+
+[dependencies]
+gameocr-core = { path = "../gameocr-core", default-features = false }
+anyhow = "1"
+serde_json = "1"
+sha2 = "0.10"
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
+imageproc = { version = "=0.25.0", default-features = false }
+ort = { version = "=2.0.0-rc.12", default-features = false, features = ["std", "load-dynamic", "api-24"] }
+clap = { version = "4", features = ["derive"] }
+
+[[bin]]
+name = "onnx-worker"
+path = "src/bin/onnx-worker.rs"
+
+[[bin]]
+name = "onnx-test"
+path = "src/bin/onnx-test.rs"

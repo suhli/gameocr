@@ -6,7 +6,11 @@ use crate::{
     window::WindowInfo,
 };
 use anyhow::{Result, bail, ensure};
-use gameocr_core::{change::ChangeDetector, types::*};
+use gameocr_core::{
+    change::ChangeDetector,
+    engine::{RuntimeRegistry, device_candidates},
+    types::*,
+};
 use parking_lot::{Mutex, RwLock};
 use serde::Serialize;
 use std::{
@@ -177,7 +181,8 @@ impl Service {
                     && old.context_size == settings.context_size
                     && old.max_tokens == settings.max_tokens
                     && old.temperature == settings.temperature
-                    && old.max_image_edge == settings.max_image_edge),
+                    && old.max_image_edge == settings.max_image_edge
+                    && old.onnx == settings.onnx),
             "更改推理参数前请卸载模型"
         );
         let capture_active =
@@ -229,37 +234,33 @@ impl Service {
             old.shutdown().await;
         }
         let dir = settings.model_dir.clone();
-        let entry = ModelManager::find(&dir, id)?;
-        let check = entry.clone();
-        tokio::task::spawn_blocking(move || ModelManager::verify(&dir, &check)).await??;
-        let devices = match settings.device {
-            Device::Auto => vec![Device::Cuda, Device::Cpu],
-            d => vec![d],
-        };
+        let model_id = id.to_owned();
+        let entry = tokio::task::spawn_blocking(move || {
+            let entry = ModelManager::find(&dir, &model_id)?;
+            ModelManager::verify(&dir, &entry)?;
+            Ok::<_, anyhow::Error>(entry)
+        })
+        .await??;
+        let registry = RuntimeRegistry::default();
+        registry.validate_manifest(&entry)?;
+        ensure!(
+            entry.capabilities.supports(settings.mode),
+            "模型不支持当前识别模式"
+        );
+        let devices = device_candidates(settings.device);
         let mut errors = Vec::new();
         for device in devices {
-            let config = InferenceConfig {
-                model: settings
-                    .model_dir
-                    .join(&entry.model_file)
-                    .to_string_lossy()
-                    .into(),
-                mmproj: settings
-                    .model_dir
-                    .join(&entry.mmproj_file)
-                    .to_string_lossy()
-                    .into(),
-                device,
-                threads: settings.threads,
-                context_size: settings.context_size,
-                max_tokens: settings.max_tokens,
-                temperature: settings.temperature,
-                max_image_edge: settings.max_image_edge,
-            };
+            let config = settings.engine_config(entry.clone(), device)?;
+            registry.validate(&config)?;
             let attempt: Result<(Worker, WorkerResponse)> = async {
-                let path = worker_path(&self.app, device)?;
+                let path = worker_path(&self.app, &entry.runtime, device)?;
                 let mut w = Worker::spawn(&path, self.shutdown.clone()).await?;
-                let response = w.request(WorkerRequest::Load { config }).await?;
+                let response = w
+                    .request(WorkerRequest::LoadEngine {
+                        protocol_version: 2,
+                        config,
+                    })
+                    .await?;
                 Ok((w, response))
             }
             .await;

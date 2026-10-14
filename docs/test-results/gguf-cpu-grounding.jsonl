@@ -1,0 +1,122 @@
+{
+  "frameId": 0,
+  "timestamp": 1791945834493,
+  "sourceWidth": 800,
+  "sourceHeight": 320,
+  "blocks": [
+    {
+      "id": "block-0",
+      "text": "# GAME OCR TEST",
+      "label": "title",
+      "bbox": [
+        42.4,
+        29.44,
+        406.4,
+        79.36
+      ],
+      "confidence": null,
+      "polygon": null
+    },
+    {
+      "id": "block-1",
+      "text": "Health: 100 / 100",
+      "label": "text",
+      "bbox": [
+        44.0,
+        108.16,
+        375.2,
+        149.44
+      ],
+      "confidence": null,
+      "polygon": null
+    },
+    {
+      "id": "block-2",
+      "text": "Quest complete!",
+      "label": "text",
+      "bbox": [
+        44.0,
+        200.64,
+        363.2,
+        232.96
+      ],
+      "confidence": null,
+      "polygon": null
+    }
+  ],
+  "rawOutput": "![title](53,92,508,248) # GAME OCR TEST\n\n![text](55,338,469,467) Health: 100 / 100\n\n![text](55,627,454,728) Quest complete!",
+  "metrics": {
+    "preprocessingMs": 39.6738,
+    "inferenceMs": 7502.992,
+    "parsingMs": 0.5413,
+    "totalMs": 7543.2076,
+    "detectionMs": null,
+    "recognitionMs": null
+  },
+  "device": "CPU",
+  "truncated": false,
+  "runtime": "llamacpp",
+  "modelId": null,
+  "engineId": "lightonocr"
+}
+{
+  "frameId": 1,
+  "timestamp": 1791945842055,
+  "sourceWidth": 800,
+  "sourceHeight": 320,
+  "blocks": [
+    {
+      "id": "block-0",
+      "text": "# GAME OCR TEST",
+      "label": "title",
+      "bbox": [
+        42.4,
+        29.44,
+        406.4,
+        79.36
+      ],
+      "confidence": null,
+      "polygon": null
+    },
+    {
+      "id": "block-1",
+      "text": "Health: 100 / 100",
+      "label": "text",
+      "bbox": [
+        44.0,
+        108.16,
+        375.2,
+        149.44
+      ],
+      "confidence": null,
+      "polygon": null
+    },
+    {
+      "id": "block-2",
+      "text": "Quest complete!",
+      "label": "text",
+      "bbox": [
+        44.0,
+        200.64,
+        363.2,
+        232.96
+      ],
+      "confidence": null,
+      "polygon": null
+    }
+  ],
+  "rawOutput": "![title](53,92,508,248) # GAME OCR TEST\n\n![text](55,338,469,467) Health: 100 / 100\n\n![text](55,627,454,728) Quest complete!",
+  "metrics": {
+    "preprocessingMs": 27.3661,
+    "inferenceMs": 7454.428199999999,
+    "parsingMs": 0.0218,
+    "totalMs": 7481.8165,
+    "detectionMs": null,
+    "recognitionMs": null
+  },
+  "device": "CPU",
+  "truncated": false,
+  "runtime": "llamacpp",
+  "modelId": null,
+  "engineId": "lightonocr"
+}

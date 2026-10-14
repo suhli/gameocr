@@ -43,15 +43,26 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cargo test -p gameocr-core --no-default-features --locked
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cargo test -p gameocr-onnx --locked
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
           New-Item -ItemType Directory -Force src-tauri/resources/workers,src-tauri/resources/runtime,src-tauri/resources/licenses | Out-Null
           cargo test -p gameocr --lib --locked
       - uses: Jimver/cuda-toolkit@v0.2.36
         with:
           cuda: '12.8.1'
           method: network
-          sub-packages: '["nvcc", "cudart", "cublas", "cublas_dev", "nvrtc", "nvrtc_dev"]'
+          sub-packages: '["nvcc", "cudart", "cublas", "cublas_dev", "cufft", "nvrtc", "nvrtc_dev"]'
+      - name: Fetch pinned cuDNN redistributable
+        run: ./scripts/fetch-cudnn.ps1
       - name: Build standalone CPU and CUDA workers
         run: ./scripts/build-workers.ps1 -Backend both -Profile release
+      - name: Real PP-OCRv6 small and medium CPU inference
+        run: |
+          ./scripts/fetch-onnx-models.ps1
+          $env:ORT_DYLIB_PATH = (Resolve-Path src-tauri/resources/workers/onnx/cpu/onnxruntime.dll).Path
+          $env:GAMEOCR_ONNX_WORKER = (Resolve-Path src-tauri/resources/workers/onnx/cpu/onnx-worker.exe).Path
+          node scripts/test-onnx.mjs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Collect dependency licenses
         run: node scripts/collect-licenses.mjs
       - name: Build standard installers
@@ -80,6 +91,7 @@ jobs:
             artifacts/GameOCR-windows-x64-setup.exe
             artifacts/GameOCR-windows-x64.msi
             artifacts/SHA256SUMS.txt
+            docs/test-results/onnx-cpu-e2e.json
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: windows

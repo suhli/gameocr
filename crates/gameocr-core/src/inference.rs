@@ -178,9 +178,64 @@ impl OcrEngine {
                 inference_ms,
                 parsing_ms,
                 total_ms: total.elapsed().as_secs_f64() * 1000.,
+                ..Metrics::default()
             },
             device: self.device.clone(),
             truncated,
+            runtime: Some("llamacpp".into()),
+            model_id: None,
+            engine_id: Some("lightonocr".into()),
         })
+    }
+}
+
+/// LightOnOCR adapter owns architecture validation, prompt and grounding policy.
+/// The tested MTMD generation path above is intentionally unchanged.
+pub struct LightOnOcrAdapter {
+    engine: OcrEngine,
+    model_id: String,
+}
+impl LightOnOcrAdapter {
+    pub fn create(
+        config: crate::engine::EngineConfig,
+    ) -> Result<Box<dyn crate::engine::OcrEngine>> {
+        let model = config.file("main")?.to_string_lossy().into_owned();
+        let mmproj = config.file("mmproj")?.to_string_lossy().into_owned();
+        let crate::engine::RuntimeConfig::Llamacpp(mut inference) = config.inference else {
+            anyhow::bail!("Expected llama.cpp configuration")
+        };
+        inference.model = model;
+        inference.mmproj = mmproj;
+        inference.device = config.device;
+        inference.threads = config.threads;
+        Ok(Box::new(Self {
+            engine: OcrEngine::load(inference)?,
+            model_id: config.manifest.id,
+        }))
+    }
+}
+impl crate::engine::OcrEngine for LightOnOcrAdapter {
+    fn recognize(
+        &mut self,
+        image: &Path,
+        frame_id: u64,
+        timestamp: u64,
+        mode: OcrMode,
+    ) -> Result<OcrResult> {
+        let mut result = self.engine.recognize(image, frame_id, timestamp, mode)?;
+        result.model_id = Some(self.model_id.clone());
+        Ok(result)
+    }
+    fn capabilities(&self) -> crate::engine::OcrCapabilities {
+        crate::engine::OcrCapabilities::lighton()
+    }
+    fn identity(&self) -> (&str, &str, &str) {
+        ("llamacpp", "lightonocr", &self.model_id)
+    }
+    fn device(&self) -> &str {
+        &self.engine.device
+    }
+    fn shutdown(self: Box<Self>) {
+        drop(self);
     }
 }

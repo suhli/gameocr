@@ -1,6 +1,10 @@
 use anyhow::{Context, Result, bail, ensure};
 use futures_util::StreamExt;
-use serde::{Deserialize, Serialize};
+pub use gameocr_core::manifest::ModelManifest as ModelEntry;
+use gameocr_core::{
+    engine::{OcrCapabilities, RuntimeRegistry},
+    manifest::{ModelFile, safe_file, safe_id},
+};
 use sha2::{Digest, Sha256};
 use std::{
     io::Read,
@@ -13,21 +17,6 @@ use std::{
 use tauri::Emitter;
 use tokio::io::AsyncWriteExt;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ModelEntry {
-    pub id: String,
-    pub name: String,
-    pub quantization: String,
-    pub model_file: String,
-    pub mmproj_file: String,
-    pub model_size: u64,
-    pub mmproj_size: u64,
-    pub model_sha256: String,
-    pub mmproj_sha256: String,
-    pub installed: bool,
-    pub imported: bool,
-}
 pub fn catalog() -> Vec<ModelEntry> {
     [
         (
@@ -52,20 +41,17 @@ pub fn catalog() -> Vec<ModelEntry> {
         ),
     ]
     .into_iter()
-    .map(|(q, size, hash)| ModelEntry {
-        id: q.into(),
-        name: format!("LightOnOCR-3 · {q}"),
-        quantization: q.into(),
-        model_file: format!("LightOnOCR-3-0.8B-{q}.gguf"),
-        mmproj_file: "LightOnOCR-3-0.8B-mmproj-f16.gguf".into(),
-        model_size: size,
-        mmproj_size: 204987136,
-        model_sha256: hash.into(),
-        mmproj_sha256: "e77f2ebb738f5c7852e955f09440c407d9c54b56c6f6098900380706302e8742".into(),
-        installed: false,
-        imported: false,
+    .map(|(q, size, hash)| {
+        let main = format!("LightOnOCR-3-0.8B-{q}.gguf");
+        let mmproj = "LightOnOCR-3-0.8B-mmproj-f16.gguf".to_string();
+        let file = |role: &str, path: String, size, hash: &str| ModelFile { role:role.into(), url:Some(format!("https://huggingface.co/Prathat/LightOnOCR-3-0.8B-GGUF/resolve/main/{path}?download=true")),path,size,sha256:hash.into() };
+        ModelEntry { schema_version:2,id:q.into(),name:format!("LightOnOCR-3 · {q}"),quantization:q.into(),runtime:"llamacpp".into(),adapter:"lightonocr".into(),version:"3".into(),capabilities:OcrCapabilities::lighton(),files:vec![file("main",main,size,hash),file("mmproj",mmproj,204987136,"e77f2ebb738f5c7852e955f09440c407d9c54b56c6f6098900380706302e8742")],source:"Prathat / Hugging Face".into(),parameters:serde_json::Value::Null,installed:false,imported:false }
     })
+    .chain(onnx_catalog())
     .collect()
+}
+pub fn onnx_catalog() -> Vec<ModelEntry> {
+    serde_json::from_str(include_str!("../catalog/ppocrv6.json")).expect("checked built-in catalog")
 }
 pub struct ModelManager {
     pub busy: Arc<AtomicBool>,
@@ -101,8 +87,15 @@ impl ModelManager {
             for e in std::fs::read_dir(dir)? {
                 let path = e?.path();
                 if path.extension().is_some_and(|s| s == "json") {
-                    if let Ok(m) = serde_json::from_slice::<ModelEntry>(&std::fs::read(&path)?) {
-                        if safe_id(&m.id) && safe_file(&m.model_file) && safe_file(&m.mmproj_file) {
+                    if let Ok(m) = ModelEntry::from_slice(&std::fs::read(&path)?) {
+                        if RuntimeRegistry::default().validate_manifest(&m).is_ok() {
+                            // Publish v2 metadata atomically, retaining original file names.
+                            if !serde_json::from_slice::<serde_json::Value>(&std::fs::read(&path)?)?
+                                .get("schemaVersion")
+                                .is_some()
+                            {
+                                crate::settings::atomic_json(&path, &m)?;
+                            }
                             if let Some(old) = entries.iter_mut().find(|x| x.id == m.id) {
                                 *old = m;
                             } else if m.imported {
@@ -115,10 +108,9 @@ impl ModelManager {
         }
         for m in &mut entries {
             m.installed = dir.join(format!("{}.json", m.id)).exists()
-                && std::fs::metadata(dir.join(&m.model_file))
-                    .is_ok_and(|v| v.len() == m.model_size)
-                && std::fs::metadata(dir.join(&m.mmproj_file))
-                    .is_ok_and(|v| v.len() == m.mmproj_size);
+                && m.files
+                    .iter()
+                    .all(|f| verify_file(&dir.join(&f.path), f.size, &f.sha256).is_ok());
         }
         Ok(entries)
     }
@@ -130,8 +122,11 @@ impl ModelManager {
     }
     pub fn verify(dir: &Path, m: &ModelEntry) -> Result<()> {
         ensure!(m.installed, "模型尚未完成下载和校验");
-        verify_file(&dir.join(&m.model_file), m.model_size, &m.model_sha256)?;
-        verify_file(&dir.join(&m.mmproj_file), m.mmproj_size, &m.mmproj_sha256)
+        RuntimeRegistry::default().validate_manifest(m)?;
+        for f in &m.files {
+            verify_file(&dir.join(&f.path), f.size, &f.sha256)?;
+        }
+        Ok(())
     }
     pub async fn download(
         &self,
@@ -146,10 +141,8 @@ impl ModelManager {
             .find(|m| m.id == id)
             .context("此模型不在下载目录中")?;
         tokio::fs::create_dir_all(&dir).await?;
-        for (file, size, hash) in [
-            (&entry.model_file, entry.model_size, &entry.model_sha256),
-            (&entry.mmproj_file, entry.mmproj_size, &entry.mmproj_sha256),
-        ] {
+        for item in &entry.files {
+            let (file, size, hash) = (&item.path, item.size, &item.sha256);
             let path = dir.join(file);
             let verify_path = path.clone();
             let check_hash = hash.clone();
@@ -159,9 +152,11 @@ impl ModelManager {
             {
                 continue;
             }
-            let url = format!(
-                "{mirror}/Prathat/LightOnOCR-3-0.8B-GGUF/resolve/main/{file}?download=true"
-            );
+            let url = item
+                .url
+                .as_ref()
+                .context("No verified download URL")?
+                .replacen("https://huggingface.co", &mirror, 1);
             let mut last_error = None;
             for attempt in 1..=3 {
                 let progress = |value| {
@@ -205,7 +200,7 @@ impl ModelManager {
         id: &str,
         progress: &(dyn Fn(serde_json::Value) + Send + Sync),
     ) -> Result<()> {
-        let part = path.with_extension("gguf.part");
+        let part = part_path(&path);
         let mut offset = tokio::fs::metadata(&part).await.map_or(0, |v| v.len());
         if offset > size {
             tokio::fs::remove_file(&part).await?;
@@ -305,6 +300,7 @@ impl ModelManager {
                 files.push((name, size, source_hash));
             }
             let entry = ModelEntry {
+                schema_version: 2,
                 id: id.clone(),
                 name: model
                     .file_stem()
@@ -312,12 +308,23 @@ impl ModelManager {
                     .to_string_lossy()
                     .into(),
                 quantization: "本地导入".into(),
-                model_file: files[0].0.clone(),
-                mmproj_file: files[1].0.clone(),
-                model_size: files[0].1,
-                mmproj_size: files[1].1,
-                model_sha256: files[0].2.clone(),
-                mmproj_sha256: files[1].2.clone(),
+                runtime: "llamacpp".into(),
+                adapter: "lightonocr".into(),
+                version: "3".into(),
+                capabilities: OcrCapabilities::lighton(),
+                files: files
+                    .into_iter()
+                    .zip(["main", "mmproj"])
+                    .map(|((path, size, sha256), role)| ModelFile {
+                        role: role.into(),
+                        path,
+                        size,
+                        sha256,
+                        url: None,
+                    })
+                    .collect(),
+                source: "local".into(),
+                parameters: serde_json::Value::Null,
                 installed: true,
                 imported: true,
             };
@@ -337,13 +344,16 @@ impl ModelManager {
         ensure!(safe_id(id), "非法模型 ID");
         // Shared catalog projector remains while another installed model references it.
         let others = Self::list(dir)?;
-        for name in [&entry.model_file, &entry.mmproj_file] {
+        for file in &entry.files {
+            let name = &file.path;
             if others.iter().any(|m| {
-                m.id != id && m.installed && (&m.model_file == name || &m.mmproj_file == name)
+                m.id != id
+                    && dir.join(format!("{}.json", m.id)).exists()
+                    && m.files.iter().any(|f| &f.path == name)
             }) {
                 continue;
             }
-            for path in [dir.join(name), dir.join(name).with_extension("gguf.part")] {
+            for path in [dir.join(name), part_path(&dir.join(name))] {
                 if path.exists() {
                     std::fs::remove_file(path)?;
                 }
@@ -355,16 +365,102 @@ impl ModelManager {
         }
         Ok(())
     }
-}
-fn safe_id(s: &str) -> bool {
-    !s.is_empty()
-        && s.bytes()
-            .all(|b| b.is_ascii_alphanumeric() || b == b'-' || b == b'_')
-}
-fn safe_file(s: &str) -> bool {
-    !s.is_empty()
-        && Path::new(s).file_name().is_some_and(|n| n == s)
-        && !s.contains(['/', '\\', ':'])
+    pub async fn import_onnx(
+        &self,
+        dir: PathBuf,
+        variant: String,
+        paths: [PathBuf; 3],
+        app: tauri::AppHandle,
+    ) -> Result<ModelEntry> {
+        let _guard = self.guard()?;
+        ensure!(
+            ["small", "medium"].contains(&variant.as_str()),
+            "请选择 PP-OCRv6 small 或 medium"
+        );
+        let id = format!("import-{}", uuid::Uuid::new_v4());
+        let roles = ["detector", "recognizer", "dictionary"];
+        let mut owned = Vec::new();
+        let result: Result<ModelEntry> = async {
+            tokio::fs::create_dir_all(&dir).await?;
+            let mut files = Vec::new();
+            for (index, source) in paths.into_iter().enumerate() {
+                let ext = if index == 2 { "txt" } else { "onnx" };
+                ensure!(
+                    source
+                        .extension()
+                        .is_some_and(|s| s.eq_ignore_ascii_case(ext)),
+                    "错误的模型文件扩展名"
+                );
+                let name = format!("{id}-{}.{ext}", roles[index]);
+                let dest = dir.join(&name);
+                let part = part_path(&dest);
+                owned.extend([dest.clone(), part.clone()]);
+                let (size, sha256) = tokio::task::spawn_blocking(move || -> Result<_> {
+                    let size = std::fs::metadata(&source)?.len();
+                    ensure!(size > 0, "模型文件为空");
+                    let hash = hash_file(&source)?;
+                    std::fs::copy(source, &part)?;
+                    verify_file(&part, size, &hash)?;
+                    std::fs::rename(part, dest)?;
+                    Ok((size, hash))
+                })
+                .await??;
+                files.push(ModelFile {
+                    role: roles[index].into(),
+                    path: name,
+                    size,
+                    sha256,
+                    url: None,
+                });
+            }
+            let entry = ModelEntry {
+                schema_version: 2,
+                id: id.clone(),
+                name: format!("PP-OCRv6 {variant} · 本地导入"),
+                runtime: "onnx".into(),
+                adapter: "ppocrv6".into(),
+                version: format!("6-{variant}"),
+                quantization: "FP32".into(),
+                capabilities: OcrCapabilities::paddle(),
+                files,
+                source: "local".into(),
+                parameters: serde_json::json!({"variant":variant}),
+                installed: true,
+                imported: true,
+            };
+            let config = gameocr_core::engine::EngineConfig {
+                manifest: entry.clone(),
+                directory: dir.to_string_lossy().into(),
+                device: gameocr_core::types::Device::Cpu,
+                threads: 4,
+                inference: gameocr_core::engine::RuntimeConfig::Onnx(Default::default()),
+            };
+            RuntimeRegistry::default().validate(&config)?;
+            let path = crate::ocr::worker_path(&app, "onnx", gameocr_core::types::Device::Cpu)?;
+            let mut worker =
+                crate::ocr::Worker::spawn(&path, Arc::new(AtomicBool::new(false))).await?;
+            let response = worker
+                .request(gameocr_core::types::WorkerRequest::LoadEngine {
+                    protocol_version: 2,
+                    config,
+                })
+                .await;
+            worker.shutdown().await;
+            ensure!(
+                matches!(response?, gameocr_core::types::WorkerResponse::Ready { .. }),
+                "ONNX 验证未完成"
+            );
+            crate::settings::atomic_json(&dir.join(format!("{id}.json")), &entry)?;
+            Ok(entry)
+        }
+        .await;
+        if result.is_err() {
+            for path in owned {
+                let _ = tokio::fs::remove_file(path).await;
+            }
+        }
+        result
+    }
 }
 pub fn hash_gguf(path: &Path) -> Result<String> {
     let mut file = std::fs::File::open(path)?;
@@ -383,9 +479,25 @@ pub fn hash_gguf(path: &Path) -> Result<String> {
     }
     Ok(hex::encode(hash.finalize()))
 }
+fn part_path(path: &Path) -> PathBuf {
+    PathBuf::from(format!("{}.part", path.to_string_lossy()))
+}
+pub fn hash_file(path: &Path) -> Result<String> {
+    let mut file = std::fs::File::open(path)?;
+    let mut hash = Sha256::new();
+    let mut buffer = vec![0; 1024 * 1024];
+    loop {
+        let len = file.read(&mut buffer)?;
+        if len == 0 {
+            break;
+        }
+        hash.update(&buffer[..len]);
+    }
+    Ok(hex::encode(hash.finalize()))
+}
 fn verify_file(path: &Path, size: u64, hash: &str) -> Result<()> {
     ensure!(std::fs::metadata(path)?.len() == size, "文件大小不完整");
-    ensure!(hash_gguf(path)? == hash, "SHA-256 校验失败");
+    ensure!(hash_file(path)? == hash, "SHA-256 校验失败");
     Ok(())
 }
 fn resume_response(offset: u64, status: u16, range: Option<&str>, size: u64) -> Result<bool> {
@@ -431,6 +543,55 @@ mod tests {
         assert!(safe_file("model.gguf"));
     }
     #[test]
+    fn multi_file_integrity_and_shared_file_deletion() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut a = onnx_catalog().remove(0);
+        a.id = "import-a".into();
+        a.imported = true;
+        a.installed = true;
+        for file in &mut a.files {
+            let bytes = format!("test artifact for {}", file.role).into_bytes();
+            file.size = bytes.len() as u64;
+            file.sha256 = hex::encode(Sha256::digest(&bytes));
+            std::fs::write(dir.path().join(&file.path), bytes).unwrap();
+        }
+        let mut b = a.clone();
+        b.id = "import-b".into();
+        crate::settings::atomic_json(&dir.path().join("import-a.json"), &a).unwrap();
+        crate::settings::atomic_json(&dir.path().join("import-b.json"), &b).unwrap();
+        assert!(
+            ModelManager::find(dir.path(), "import-a")
+                .unwrap()
+                .installed
+        );
+        let manager = ModelManager::new().unwrap();
+        manager.delete(dir.path(), "import-a").unwrap();
+        assert!(b.files.iter().all(|f| dir.path().join(&f.path).exists()));
+        let file = &b.files[0];
+        std::fs::write(dir.path().join(&file.path), vec![b'x'; file.size as usize]).unwrap();
+        assert!(
+            !ModelManager::find(dir.path(), "import-b")
+                .unwrap()
+                .installed
+        );
+        manager.delete(dir.path(), "import-b").unwrap();
+        assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 0);
+    }
+    #[test]
+    fn catalog_is_valid_and_has_real_download_metadata() {
+        for model in catalog() {
+            RuntimeRegistry::default()
+                .validate_manifest(&model)
+                .unwrap();
+            assert!(
+                model
+                    .files
+                    .iter()
+                    .all(|f| f.url.as_ref().is_some_and(|s| s.starts_with("https://")))
+            );
+        }
+    }
+    #[test]
     fn import_failure_does_not_leave_copies() {
         let d = tempfile::tempdir().unwrap();
         let out = d.path().join("models");
@@ -452,7 +613,7 @@ mod tests {
         let manager = ModelManager::new().unwrap();
         let m = manager.import(&out, &a, &b).unwrap();
         ModelManager::verify(&out, &m).unwrap();
-        std::fs::write(out.join(&m.model_file), b"GGUF-other").unwrap();
+        std::fs::write(out.join(&m.file("main").unwrap().path), b"GGUF-other").unwrap();
         assert!(ModelManager::verify(&out, &m).is_err());
         manager.delete(&out, &m.id).unwrap();
         assert_eq!(std::fs::read_dir(out).unwrap().count(), 0);
@@ -498,23 +659,20 @@ mod tests {
                 .is_err()
         );
         assert!(!path.exists());
-        assert_eq!(
-            std::fs::read(path.with_extension("gguf.part")).unwrap(),
-            b"GGUF"
-        );
+        assert_eq!(std::fs::read(part_path(&path)).unwrap(), b"GGUF");
         let url = http_response(format!("HTTP/1.1 206 Partial Content\r\nContent-Length: {}\r\nContent-Range: bytes 4-{}/{size}\r\nConnection: close\r\n\r\n{}", size-4, size-1, String::from_utf8_lossy(&bytes[4..])), Some("range: bytes=4-")).await;
         manager
             .download_file(&url, &path, size, &hash, "test", &|_| {})
             .await
             .unwrap();
         assert_eq!(std::fs::read(&path).unwrap(), bytes);
-        assert!(!path.with_extension("gguf.part").exists());
+        assert!(!part_path(&path).exists());
     }
     #[tokio::test]
     async fn ignored_range_restarts_and_corruption_is_rejected() {
         let d = tempfile::tempdir().unwrap();
         let path = d.path().join("model.gguf");
-        std::fs::write(path.with_extension("gguf.part"), b"GGUF").unwrap();
+        std::fs::write(part_path(&path), b"GGUF").unwrap();
         let bytes = b"GGUF-complete";
         let size = bytes.len() as u64;
         let manager = ModelManager::new().unwrap();
@@ -543,6 +701,6 @@ mod tests {
                 .await
                 .is_err()
         );
-        assert!(!path.exists() && !path.with_extension("gguf.part").exists());
+        assert!(!path.exists() && !part_path(&path).exists());
     }
 }
