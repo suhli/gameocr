@@ -219,16 +219,23 @@ pub trait OcrEngineFactory {
 }
 #[derive(Default)]
 pub struct EngineFactory {
+    registry: RuntimeRegistry,
     constructors: BTreeMap<&'static str, EngineConstructor>,
 }
 impl EngineFactory {
+    pub fn with_registry(registry: RuntimeRegistry) -> Self {
+        Self {
+            registry,
+            constructors: BTreeMap::new(),
+        }
+    }
     pub fn register(&mut self, adapter: &'static str, constructor: EngineConstructor) {
         self.constructors.insert(adapter, constructor);
     }
 }
 impl OcrEngineFactory for EngineFactory {
     fn create(&self, config: EngineConfig) -> Result<Box<dyn OcrEngine>> {
-        RuntimeRegistry::default().validate(&config)?;
+        self.registry.validate(&config)?;
         self.constructors
             .get(config.manifest.adapter.as_str())
             .context("This worker does not implement the requested adapter")?(config)
@@ -244,6 +251,121 @@ pub fn device_candidates(device: Device) -> Vec<Device> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn config(
+        runtime: &str,
+        adapter: &str,
+        roles: &[&str],
+        capabilities: OcrCapabilities,
+        inference: RuntimeConfig,
+    ) -> EngineConfig {
+        EngineConfig {
+            manifest: ModelManifest {
+                schema_version: 2,
+                id: "factory-test".into(),
+                name: "Factory dispatch".into(),
+                runtime: runtime.into(),
+                adapter: adapter.into(),
+                version: "1".into(),
+                quantization: "F32".into(),
+                capabilities,
+                files: roles
+                    .iter()
+                    .map(|role| crate::manifest::ModelFile {
+                        role: (*role).into(),
+                        path: format!("{role}.bin"),
+                        size: 1,
+                        sha256: "a".repeat(64),
+                        url: None,
+                    })
+                    .collect(),
+                source: "unit-test".into(),
+                parameters: serde_json::Value::Null,
+                installed: false,
+                imported: false,
+            },
+            directory: ".".into(),
+            device: Device::Cpu,
+            threads: 4,
+            inference,
+        }
+    }
+    #[test]
+    fn factory_validates_then_dispatches_only_the_registered_constructor() {
+        // Sentinels test dispatch without claiming a loaded model or OCR success.
+        fn onnx(_: EngineConfig) -> Result<Box<dyn OcrEngine>> {
+            anyhow::bail!("selected ONNX")
+        }
+        fn llama(_: EngineConfig) -> Result<Box<dyn OcrEngine>> {
+            anyhow::bail!("selected llama.cpp")
+        }
+        let mut factory = EngineFactory::default();
+        factory.register("ppocrv6", onnx);
+        factory.register("lightonocr", llama);
+        let mut c = config(
+            "onnx",
+            "ppocrv6",
+            &["detector", "recognizer", "dictionary"],
+            OcrCapabilities::paddle(),
+            RuntimeConfig::Onnx(OnnxConfig::default()),
+        );
+        assert_eq!(
+            factory.create(c.clone()).err().unwrap().to_string(),
+            "selected ONNX"
+        );
+        c.manifest.capabilities.generation = true;
+        assert!(
+            factory
+                .create(c)
+                .err()
+                .unwrap()
+                .to_string()
+                .contains("capabilities")
+        );
+        let llama_config = InferenceConfig {
+            model: String::new(),
+            mmproj: String::new(),
+            device: Device::Cpu,
+            threads: 4,
+            context_size: 8192,
+            max_tokens: 2048,
+            temperature: 0.1,
+            max_image_edge: 1280,
+        };
+        let c = config(
+            "llamacpp",
+            "lightonocr",
+            &["main", "mmproj"],
+            OcrCapabilities::lighton(),
+            RuntimeConfig::Llamacpp(llama_config),
+        );
+        assert_eq!(
+            factory.create(c).err().unwrap().to_string(),
+            "selected llama.cpp"
+        );
+    }
+    #[test]
+    fn custom_adapter_registry_can_be_used_by_factory() {
+        let mut registry = RuntimeRegistry::default();
+        registry.register_adapter(AdapterRegistration {
+            id: "future-onnx",
+            runtime: "onnx",
+            roles: &["recognizer"],
+            capabilities: OcrCapabilities::paddle(),
+        });
+        let mut factory = EngineFactory::with_registry(registry);
+        factory.register("future-onnx", |_| anyhow::bail!("selected custom adapter"));
+        let c = config(
+            "onnx",
+            "future-onnx",
+            &["recognizer"],
+            OcrCapabilities::paddle(),
+            RuntimeConfig::Onnx(OnnxConfig::default()),
+        );
+        assert_eq!(
+            factory.create(c).err().unwrap().to_string(),
+            "selected custom adapter"
+        );
+    }
     #[test]
     fn explicit_cuda_never_silently_falls_back() {
         assert_eq!(device_candidates(Device::Cuda), [Device::Cuda]);

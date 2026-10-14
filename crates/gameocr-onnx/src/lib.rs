@@ -112,6 +112,10 @@ fn verify_cuda_execution(session: &mut Session) -> Result<()> {
 impl PaddleOcrAdapter {
     pub fn create(config: EngineConfig) -> Result<Box<dyn OcrEngine>> {
         gameocr_core::engine::RuntimeRegistry::default().validate(&config)?;
+        ensure!(
+            config.device != Device::Auto,
+            "Worker requires an explicit CPU/CUDA device; Auto fallback is managed by the desktop WorkerManager"
+        );
         initialize_runtime()?;
         let detector_path = config.file("detector")?;
         let recognizer_path = config.file("recognizer")?;

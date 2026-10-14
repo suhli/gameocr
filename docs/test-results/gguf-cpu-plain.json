@@ -1,6 +1,6 @@
 {
   "frameId": 0,
-  "timestamp": 1791945851427,
+  "timestamp": 1791968128721,
   "sourceWidth": 800,
   "sourceHeight": 320,
   "blocks": [
@@ -15,10 +15,10 @@
   ],
   "rawOutput": "GAME OCR TEST\n\nHealth: 100 / 100\n\nQuest complete!",
   "metrics": {
-    "preprocessingMs": 22.7913,
-    "inferenceMs": 5172.094,
-    "parsingMs": 0.3167,
-    "totalMs": 5195.2026,
+    "preprocessingMs": 24.0667,
+    "inferenceMs": 4942.5524000000005,
+    "parsingMs": 0.7263000000000001,
+    "totalMs": 4967.3457,
     "detectionMs": null,
     "recognitionMs": null
   },

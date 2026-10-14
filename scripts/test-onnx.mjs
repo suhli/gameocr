@@ -8,11 +8,12 @@ const device=process.env.GAMEOCR_TEST_DEVICE??'cpu';
 const report=[];
 function worker(){
   const child=spawn(executable,[],{windowsHide:true,stdio:['pipe','pipe','pipe']});let pending;let stderr='';
+  const exited=new Promise(resolve=>child.once('exit',resolve));
   child.stderr.on('data',d=>stderr=(stderr+d).slice(-8000));
   readline.createInterface({input:child.stdout}).on('line',line=>{if(pending){const p=pending;pending=null;clearTimeout(p.timer);try{p.resolve(JSON.parse(line));}catch(e){p.reject(e);}}});
   child.on('error',e=>pending?.reject(e));child.on('exit',code=>{if(pending){clearTimeout(pending.timer);pending.reject(Error(`Worker exited ${code}: ${stderr}`));pending=null;}});
   const request=value=>new Promise((resolve,reject)=>{assert(!pending);pending={resolve,reject,timer:setTimeout(()=>{child.kill();reject(Error(`Timeout: ${stderr}`));},180000)};child.stdin.write((typeof value==='string'?value:JSON.stringify(value))+'\n');});
-  return {child,request,close:()=>new Promise(resolve=>{child.once('exit',resolve);child.stdin.end();})};
+  return {child,request,close:()=>{child.stdin.end();return exited;}};
 }
 const parameters={detectionThreshold:0.2,boxThreshold:0.45,unclipRatio:1.4,recognitionThreshold:0.5,batchSize:6,detectionResize:960};
 const load=(manifest)=>({type:'loadEngine',protocol_version:2,config:{manifest,directory,device,threads:4,inference:{runtime:'onnx',parameters}}});

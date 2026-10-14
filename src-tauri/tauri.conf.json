@@ -20,8 +20,8 @@
     "resources": {"resources/workers/": "workers/", "resources/runtime/": "./", "resources/licenses/": "licenses/"},
     "windows": {
       "webviewInstallMode": {"type":"downloadBootstrapper"},
-      "nsis": {"installMode":"currentUser","languages":["SimpChinese","English"],"displayLanguageSelector":true},
-      "wix": {"language":"zh-CN"}
+      "nsis": {"template":"installer/nsis.nsi","installMode":"currentUser","languages":["SimpChinese","English"],"displayLanguageSelector":true},
+      "wix": {"template":"installer/main.wxs","language":"zh-CN"}
     }
   }
 }

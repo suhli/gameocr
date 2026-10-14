@@ -1,54 +1,81 @@
 # 测试记录
 
-日期：2026-10-12 / 13。以下区分真实执行、待完成和没有环境的项目；编译成功不等于 GPU / 游戏兼容性通过。
+多 Runtime 验证日期：2026-10-14。结果来自真实 ONNX / GGUF 文件和原生 Worker；单元测试中的合成概率图只验证算法，不作为真实 OCR 证据。完整文本、坐标、置信度和分阶段耗时保存在 [test-results](test-results)。
 
 ## 环境
 
-Windows 11 x64 开发机，GTX 1650 4 GB，NVIDIA 591.86 驱动，CUDA12.1，VS2022/MSVC14.41，Rust1.97.1，Node24.21，系统 WebView2。CUDA12.1 编译使用了构建脚本中显式的本机兼容开关；CI固定CUDA12.8.1，没有冒称CI GPU实测。
+Windows 11 x64 开发机，GTX1650 4 GB，NVIDIA 591.86，CUDA12.1，cuDNN9.8.0.87，ORT1.24.3，VS2022/MSVC14.41，Rust1.97.1，Node24.21.0，系统 WebView2。本机 llama.cpp CUDA 使用明确的旧工具链兼容开关及 SM75/80/86/89；CI 配置为 CUDA12.8.1、SM120，但尚未在远端执行。以下耗时有同时编译等背景负载，不是受控性能基准。
 
-## 已实际通过
+## 自动化与真实推理
 
-- `npm run check`：Svelte / TypeScript 0 errors、0 warnings；`npm test`：2项坐标/缩放测试；Vite生产构建成功。
-- `cargo test -p gameocr-core --no-default-features --locked`：6项测试，覆盖Grounding、中英日混排、非法坐标、空/截断文本、帧变化与有界最新帧槽。
-- `cargo test -p gameocr --lib --locked`：9项测试，覆盖窗口身份、配置原子持久化、导入回滚/校验/删除，以及真实loopback HTTP连接中断续传、忽略Range重下、校验失败不发布正式模型。
-- `cargo clippy --workspace --all-targets --no-default-features --locked`：无错误，4项代码风格建议（嵌套if与默认值初始化），未将它描述为零警告。
-- Q8_0 + 对应F16 mmproj真实CPU和CUDA图像推理；Grounding返回原始结构化文本与像素坐标，CLI重复识别复用模型、重建上下文。没有模拟OCR结果。
-- Release CPU普通OCR：800×320测试图连续两次识别，第二次4.57秒；Release CPU Grounding第二次7.26秒。CUDA早期CLI Grounding第二次1.68秒。不同运行时背景负载与输出模式不同，不作为严格横向基准。
-- 真实Tauri WebView挂载、模型导入与加载、Win32目标枚举与选择、WGC截图、CUDA识别、Grounding与对应预览帧、JSON及原始PNG导出。
-- 中英日混排测试窗口可读，实际生成了6个区域。模型对标题栏等内容也会产生区域；准确率不是人工修正后的结果。
-- 原始PNG查看、点击边界框联动文字块；静态画面去重；暂停/继续；WGC窗口缩放；推理中停止后旧结果不回写；最小化后停止并报错、恢复后重新捕获。
-- CPU / CUDA Release工作程序与Tauri Release主程序成功编译。NSIS和MSI都已生成过真实安装文件。
-- Release程序从独立文件夹运行，子进程PATH仅保留Windows系统目录并移除CUDA_PATH，仍能加载随包DLL并在CUDA上推理。这验证了本机对开发工具路径的独立性，**不能代替干净系统验证**。
+- Svelte / TypeScript：0 errors、0 warnings；Vitest 2 项坐标映射测试通过；Vite 生产构建成功。
+- `cargo test -p gameocr-core --no-default-features --locked`：13 项通过，覆盖 Factory 两类构造分派与扩展注册、设备候选、能力和参数验证、Manifest 迁移、旧历史 JSON、Grounding、变化检测和有界帧槽。
+- `cargo test -p gameocr-onnx --locked`：3 项通过，覆盖 CTC blank/重复/混排、DB 空结果及缩放坐标还原、透视裁剪与纵向旋转。
+- `cargo test -p gameocr --lib --locked`：12 项通过，覆盖多文件完整性/等长损坏/共享文件删除、导入回滚、真实 loopback HTTP 断点续传、原子配置、窗口身份、16 MiB 协议边界与截断响应拒绝。
+- `scripts/test-onnx.mjs`：两规格各 4 张图，CPU 8 例 + CUDA 8 例均通过；还验证错误 JSON、未加载识别、错误 Runtime 拒绝、卸载、重载与进程正常关闭。CUDA Ready 之前检测、识别网络均通过实际 CUDA kernel 执行验证。
+- `scripts/test-runtime-switch.mjs`：真实 CPU ONNX small → GGUF Q8_0 → ONNX medium，检查身份、坐标、GGUF 无伪造置信度和每个旧 Worker 退出，三次均通过。
+- `scripts/desktop-runtimes.mjs`：真实 Tauri/WebView2 的 11 项检查通过，覆盖真实 CUDA 初始化失败后的 CPU 回退、显式 CUDA 错误、错误后恢复、加载状态参数锁、模型切换、能力驱动设置、两规格 WGC OCR 与匹配预览/JSON、ONNX 三文件导入、等长字典损坏和删除入口、错误网络回滚全部副本。
 
-## 长时间运行
+证据：[CPU 8 例](test-results/onnx-cpu-e2e.json)、[CUDA 8 例](test-results/onnx-cuda-e2e.json)、[跨 Runtime 切换](test-results/runtime-switch.json)、[桌面 11 项](test-results/desktop-runtimes.json)。桌面截图及 WGC 导出保存在本机 `artifacts/validation/multi-runtime/`。
 
-第一轮开发版长测持续约700秒后，WebView连接关闭，按未完成记录；这次的主进程私有内存采样约66–70MiB，历史保持5条，但不据此声称30分钟通过。没有在对应时间段查到GameOCR崩溃或系统休眠事件，具体关闭原因未确定。
+测试输入为本地生成的字体图片：英文 800×320；中日英混排含简体、繁体、日文；约 12° 旋转文字与 16px 小字；空白图。断言真实输出含 GAME OCR TEST、Health、Quest complete、游戏、繁體中文、こんにちは、ROTATED TEXT、Small game text 等关键词，同时检查 bbox、polygon 和置信度，未硬编码替换实际识别结果。
 
-正式候选版正在执行新的1800秒测试，关闭变化检测以持续施加推理负载，历史上限5条，每10秒记录性能与历史数量，每分钟采样主进程、worker和WebView进程内存。完成结果在交付前更新。
+2026-10-14 16:52–16:53 一轮的 totalMs（不含模型加载）：
 
-证据位置（本地构建产物，未提交大型二进制/截图）：
+- small CPU：英文 164ms、混排 307ms、旋转/小字 166ms、空白 127ms。
+- medium CPU：英文 590ms、混排 942ms、旋转/小字 637ms、空白 477ms。
+- small CUDA：英文 507ms、混排 479ms、旋转/小字 432ms、空白 224ms。
+- medium CUDA：英文 1247ms、混排 1591ms、旋转/小字 1442ms、空白 861ms。
 
-- `artifacts/validation/cpu-grounding.*`、`cuda-grounding.*`：第一轮真实CLI输出。
-- `artifacts/validation/cpu-plain.*`、`cpu-release-grounding.*`：Release CPU复验。
-- `artifacts/validation/desktop-initial-interrupted.log`：第一轮中断日志。
-- `artifacts/validation/desktop-release/`：Release端到端报告、截图、导出JSON和soak-progress.json。
-- `.cache/final-*.log`：最终检查与打包日志。
+GTX1650 上这批小图 CPU 更快。为解决该卡动态识别宽度的 cuDNN 不支持错误，目前使用默认 fallback 卷积算法；没有以理论 GPU 能力替代实测速度。small 与 medium 的混排均产生 4 个真实文字块；空白均返回 0 块。两种模型的完整字典有 18,708 项，不是测试字符子集。
 
-## 待完成的最终检查
+GGUF CPU Plain 和 Grounding 已重新执行；v2 Worker 切换测试保留原始输出/解析行为，已有量化目录和本地导入流程继续可用。[CPU Plain](test-results/gguf-cpu-plain.json)、[CPU Grounding 多对象输出](test-results/gguf-cpu-grounding.jsonl)。后者是 CLI `--repeat` 的多段 pretty JSON，扩展名历史沿用，不是每行一对象的严格 JSONL。
 
-- 最终Portable内容、PE导入依赖和SHA-256清单。
-- 1800秒连续运行结束后的卸载、窗口销毁与正常退出。
-- 禁用GPU可见性后的自动CPU回退、错误模型加载恢复。
-- 可用MuMu主窗口的真实WGC与CPU OCR。
+## 复现
 
-## 未测试 / 当前限制
+先按 README 构建四套 Worker 并用 `fetch-onnx-models.ps1` 获取固定权重。CPU 不需要 CUDA DLL，也不需要 Python：
 
-- 干净Windows11虚拟机启动、安装版系统安装/卸载、无NVIDIA驱动的物理机器。没有可用的干净VM；本机PATH隔离测试和CUDA_VISIBLE_DEVICES测试不可冒充这些项目。
-- DirectX / OpenGL / Vulkan游戏实际渲染窗口、反作弊或受保护画面；不绕过系统保护。
-- Android游戏渲染窗口及ADB PNG捕获/断开重连。找到MuMu自带ADB并实际执行devices，但当时设备列表为空。
-- 其他GPU型号、多显示器不同DPI、HDR；坐标映射有自动化测试，本机窗口缩放已测试。
-- Q4_K_M、Q5_K_M、F16模型量化的真实推理与质量对比：目录大小/哈希已核对，实际推理验证采用Q8_0。
-- GitHub Actions workflow尚未在远端执行；已在本机执行其主要构建与打包流程。
-- 安装文件未进行代码签名。
+```powershell
+$env:ORT_DYLIB_PATH=(Resolve-Path src-tauri/resources/workers/onnx/cpu/onnxruntime.dll).Path
+$env:GAMEOCR_ONNX_WORKER=(Resolve-Path src-tauri/resources/workers/onnx/cpu/onnx-worker.exe).Path
+$env:GAMEOCR_TEST_DEVICE='cpu'
+node scripts/test-onnx.mjs
+node scripts/test-runtime-switch.mjs  # 另需 models/ 下的已核对 Q8_0 + mmproj
 
-停止OCR立即取消结果发布，已经进入原生推理的一次调用会在后台完成，超时上限180秒；应用退出会主动终止worker。显存占用遥测显示不可用。UI的OCR耗时来自引擎内测量，不含WGC截图、发送前PNG编码和结果JPEG显示的额外时间。
+$env:ORT_DYLIB_PATH=(Resolve-Path src-tauri/resources/workers/onnx/cuda/onnxruntime.dll).Path
+$env:GAMEOCR_ONNX_WORKER=(Resolve-Path src-tauri/resources/workers/onnx/cuda/onnx-worker.exe).Path
+$env:GAMEOCR_TEST_DEVICE='cuda'
+$env:PATH=(Resolve-Path src-tauri/resources/workers/cuda-runtime).Path+';'+$env:PATH
+node scripts/test-onnx.mjs
+# UI 始终按自己的 Worker 目录选择 DLL；不要把 CLI override 留给 UI
+Remove-Item Env:ORT_DYLIB_PATH
+cargo build -p gameocr --features test-fixture --bins
+node scripts/desktop-runtimes.mjs
+```
+
+桌面脚本自行启动 Vite（先等待可访问）和专用数据目录的测试应用，创建自有 Win32 文本窗口，不操作现有游戏或日常模型目录。Vite 排除 `.cache`、模型及构建/导出目录，避免监视正在复制的 ONNX 临时文件触发 EBUSY。指定 `GAMEOCR_APP` 为便携 EXE 时不启动 Vite。需要可交互桌面，headless CI 不伪造此测试。
+
+## 分发验收
+
+四套 Release Worker 已实际编译，ORT CPU/GPU 和 cuDNN 归档 SHA-256 已核对。原生依赖检查使用 PE 普通及延迟导入表，只在包内目录和 Windows System32 解析；检查 UI 不链接推理库、CPU 不依赖 CUDA。
+
+最终 NSIS/MSI/ZIP 的构建、哈希与便携运行结果见交付时追加的记录。仅生成安装文件不代表已经在干净 Windows 上安装/卸载。
+
+## 原 GGUF 基线记录（2026-10-12 / 13）
+
+旧版已真实执行 WGC、CUDA Grounding、预览/坐标联动、JSON/PNG 导出、变化去重、暂停/恢复、窗口缩放、最小化报错、推理中停止丢弃旧结果、窗口销毁、卸载和正常退出。2026-10-13 的 Release 长测实际完成约 1809 秒 / 176 次采样，历史上限 5；主进程私有内存约 66–70 MiB，worker 约 2439–2991 MiB。证据为本机 `artifacts/validation/desktop-release/{report,summary,soak-progress}.json`。
+
+这些是重构前 GGUF 基线，不能当作新版 ONNX 30 分钟内存测试。更早约 700 秒中断的一轮仍按中断处理，不用它替代完整长测。原 README 中待完成的旧记录已根据现存报告纠正。
+
+## 未验证和已知限制
+
+- RTX5060Ti / SM120、其他显卡，以及 CUDA12.8.1 配置的远端 GitHub Actions；目前硬件验证仅 GTX1650。
+- 干净 Windows11、完全无 NVIDIA 驱动机器、安装版系统安装/卸载、签名。PATH 隔离和 CUDA_VISIBLE_DEVICES=-1 只能验证本机子进程路径及故障回退，不能冒称干净机器通过。
+- 本轮未重新验证真实 Android / 模拟器 ADB 捕获与断开重连；原测试中只枚举过 ADB，当时设备为空。WGC/ADB 实现未在此重构中替换。
+- DirectX/OpenGL/Vulkan 游戏、受保护或反作弊画面、HDR、多显示器不同 DPI；程序不绕过保护。
+- Q4_K_M、Q5_K_M、F16 的完整质量/性能对比；目录元数据保留，真实 GGUF 回归采用 Q8_0。
+- ONNX 长时压力和广泛准确率评估、任意角度/弯曲文本、竖排中日文、其他 ONNX/GGUF 架构。现 Adapter 只验证指定官方网络和完整字典。
+- 模型列表每次扫描文件 SHA-256，大型 GGUF 或慢盘有等待时间；后台线程不会阻塞 UI 事件循环。
+- 大型 cuDNN/CUDA 运行库仍占较多发行空间，已跨 Runtime 共享一份；CPU Runtime 可独立构建/拷贝，正式三种组合包均含 CPU/CUDA。
+
+停止 OCR 立即取消结果发布，进入原生库的调用会完成或在 180 秒超时后终止。UI 显存遥测不可用；引擎 totalMs 不含捕获、传输前 PNG 编码、结果 JPEG 和 UI 绘制。

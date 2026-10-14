@@ -51,7 +51,7 @@ jobs:
         with:
           cuda: '12.8.1'
           method: network
-          sub-packages: '["nvcc", "cudart", "cublas", "cublas_dev", "cufft", "nvrtc", "nvrtc_dev"]'
+          sub-packages: '["nvcc", "cudart", "cublas", "cublas_dev", "cufft", "nvrtc", "nvrtc_dev", "nvjitlink"]'
       - name: Fetch pinned cuDNN redistributable
         run: ./scripts/fetch-cudnn.ps1
       - name: Build standalone CPU and CUDA workers

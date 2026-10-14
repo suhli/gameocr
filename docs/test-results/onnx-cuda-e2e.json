@@ -1,13 +1,13 @@
 {
-  "executedAt": "2026-10-14T02:46:33.806Z",
+  "executedAt": "2026-10-14T08:53:16.192Z",
   "device": "cuda",
   "report": [
     {
       "variant": "small",
       "fixture": "english",
-      "loadMs": 1168.3984999999998,
+      "loadMs": 1262.9892,
       "frameId": 0,
-      "timestamp": 1791945984920,
+      "timestamp": 1791967985726,
       "sourceWidth": 800,
       "sourceHeight": 320,
       "blocks": [
@@ -104,12 +104,12 @@
       ],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 3.9249,
-        "inferenceMs": 488.1459,
-        "parsingMs": 6.2447,
-        "totalMs": 498.3306,
-        "detectionMs": 292.8623,
-        "recognitionMs": 195.2836
+        "preprocessingMs": 6.286,
+        "inferenceMs": 494.28870000000006,
+        "parsingMs": 6.351999999999999,
+        "totalMs": 506.9508,
+        "detectionMs": 270.60650000000004,
+        "recognitionMs": 223.6822
       },
       "device": "CUDA",
       "truncated": false,
@@ -120,9 +120,9 @@
     {
       "variant": "small",
       "fixture": "mixed-cjk",
-      "loadMs": 1168.3984999999998,
+      "loadMs": 1262.9892,
       "frameId": 1,
-      "timestamp": 1791945985419,
+      "timestamp": 1791967986233,
       "sourceWidth": 1000,
       "sourceHeight": 420,
       "blocks": [
@@ -249,12 +249,12 @@
       ],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 13.226,
-        "inferenceMs": 434.92560000000003,
-        "parsingMs": 12.7164,
-        "totalMs": 460.8856,
-        "detectionMs": 220.8913,
-        "recognitionMs": 214.0343
+        "preprocessingMs": 16.103099999999998,
+        "inferenceMs": 449.9721,
+        "parsingMs": 12.781600000000001,
+        "totalMs": 478.87809999999996,
+        "detectionMs": 230.9532,
+        "recognitionMs": 219.0189
       },
       "device": "CUDA",
       "truncated": false,
@@ -265,9 +265,9 @@
     {
       "variant": "small",
       "fixture": "rotated-small",
-      "loadMs": 1168.3984999999998,
+      "loadMs": 1262.9892,
       "frameId": 2,
-      "timestamp": 1791945985880,
+      "timestamp": 1791967986713,
       "sourceWidth": 1000,
       "sourceHeight": 420,
       "blocks": [
@@ -334,12 +334,12 @@
       ],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 11.131,
-        "inferenceMs": 375.6335,
-        "parsingMs": 4.9475,
-        "totalMs": 391.7206,
-        "detectionMs": 192.3581,
-        "recognitionMs": 183.27540000000002
+        "preprocessingMs": 12.213,
+        "inferenceMs": 414.82180000000005,
+        "parsingMs": 5.285,
+        "totalMs": 432.3415,
+        "detectionMs": 206.3512,
+        "recognitionMs": 208.47060000000002
       },
       "device": "CUDA",
       "truncated": false,
@@ -350,19 +350,19 @@
     {
       "variant": "small",
       "fixture": "blank",
-      "loadMs": 1168.3984999999998,
+      "loadMs": 1262.9892,
       "frameId": 3,
-      "timestamp": 1791945986273,
+      "timestamp": 1791967987146,
       "sourceWidth": 1000,
       "sourceHeight": 420,
       "blocks": [],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 10.17,
-        "inferenceMs": 192.6562,
-        "parsingMs": 1.6279000000000001,
-        "totalMs": 204.4555,
-        "detectionMs": 192.6562,
+        "preprocessingMs": 11.1576,
+        "inferenceMs": 210.7839,
+        "parsingMs": 1.6993,
+        "totalMs": 223.6418,
+        "detectionMs": 210.7839,
         "recognitionMs": 0
       },
       "device": "CUDA",
@@ -374,9 +374,9 @@
     {
       "variant": "medium",
       "fixture": "english",
-      "loadMs": 1329.3456999999999,
+      "loadMs": 1526.8690000000001,
       "frameId": 4,
-      "timestamp": 1791945988618,
+      "timestamp": 1791967989851,
       "sourceWidth": 800,
       "sourceHeight": 320,
       "blocks": [
@@ -473,12 +473,12 @@
       ],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 3.8164000000000002,
-        "inferenceMs": 1039.0445,
-        "parsingMs": 7.1913,
-        "totalMs": 1050.0731,
-        "detectionMs": 574.8466,
-        "recognitionMs": 464.1979
+        "preprocessingMs": 4.1602,
+        "inferenceMs": 1235.2565,
+        "parsingMs": 7.0945,
+        "totalMs": 1246.5492,
+        "detectionMs": 752.0807000000001,
+        "recognitionMs": 483.1758
       },
       "device": "CUDA",
       "truncated": false,
@@ -489,9 +489,9 @@
     {
       "variant": "medium",
       "fixture": "mixed-cjk",
-      "loadMs": 1329.3456999999999,
+      "loadMs": 1526.8690000000001,
       "frameId": 5,
-      "timestamp": 1791945989668,
+      "timestamp": 1791967991098,
       "sourceWidth": 1000,
       "sourceHeight": 420,
       "blocks": [
@@ -618,12 +618,12 @@
       ],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 12.6296,
-        "inferenceMs": 1170.6109999999999,
-        "parsingMs": 11.2842,
-        "totalMs": 1194.5467,
-        "detectionMs": 698.309,
-        "recognitionMs": 472.302
+        "preprocessingMs": 12.5879,
+        "inferenceMs": 1566.4270000000001,
+        "parsingMs": 11.6507,
+        "totalMs": 1590.6938,
+        "detectionMs": 926.5297,
+        "recognitionMs": 639.8973
       },
       "device": "CUDA",
       "truncated": false,
@@ -634,9 +634,9 @@
     {
       "variant": "medium",
       "fixture": "rotated-small",
-      "loadMs": 1329.3456999999999,
+      "loadMs": 1526.8690000000001,
       "frameId": 6,
-      "timestamp": 1791945990864,
+      "timestamp": 1791967992690,
       "sourceWidth": 1000,
       "sourceHeight": 420,
       "blocks": [
@@ -703,12 +703,12 @@
       ],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 17.0854,
-        "inferenceMs": 1149.6321,
-        "parsingMs": 5.0245,
-        "totalMs": 1171.7504999999999,
-        "detectionMs": 729.2368,
-        "recognitionMs": 420.3953
+        "preprocessingMs": 13.2052,
+        "inferenceMs": 1422.8235,
+        "parsingMs": 5.9,
+        "totalMs": 1441.9413,
+        "detectionMs": 859.3741,
+        "recognitionMs": 563.4494
       },
       "device": "CUDA",
       "truncated": false,
@@ -719,19 +719,19 @@
     {
       "variant": "medium",
       "fixture": "blank",
-      "loadMs": 1329.3456999999999,
+      "loadMs": 1526.8690000000001,
       "frameId": 7,
-      "timestamp": 1791945992036,
+      "timestamp": 1791967994132,
       "sourceWidth": 1000,
       "sourceHeight": 420,
       "blocks": [],
       "rawOutput": "",
       "metrics": {
-        "preprocessingMs": 9.9651,
-        "inferenceMs": 719.3797,
-        "parsingMs": 1.9716999999999998,
-        "totalMs": 731.3181,
-        "detectionMs": 719.3797,
+        "preprocessingMs": 12.4296,
+        "inferenceMs": 846.7805000000001,
+        "parsingMs": 1.6895,
+        "totalMs": 860.9006999999999,
+        "detectionMs": 846.7805000000001,
         "recognitionMs": 0
       },
       "device": "CUDA",

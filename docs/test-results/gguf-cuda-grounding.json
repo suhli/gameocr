@@ -1,0 +1,61 @@
+{
+  "frameId": 0,
+  "timestamp": 1791968125134,
+  "sourceWidth": 800,
+  "sourceHeight": 320,
+  "blocks": [
+    {
+      "id": "block-0",
+      "text": "# GAME OCR TEST",
+      "label": "title",
+      "bbox": [
+        42.4,
+        29.44,
+        406.4,
+        80.0
+      ],
+      "confidence": null,
+      "polygon": null
+    },
+    {
+      "id": "block-1",
+      "text": "Health: 100 / 100",
+      "label": "text",
+      "bbox": [
+        44.0,
+        108.16,
+        376.0,
+        149.44
+      ],
+      "confidence": null,
+      "polygon": null
+    },
+    {
+      "id": "block-2",
+      "text": "Quest complete!",
+      "label": "text",
+      "bbox": [
+        44.0,
+        200.0,
+        363.2,
+        232.64
+      ],
+      "confidence": null,
+      "polygon": null
+    }
+  ],
+  "rawOutput": "![title](53,92,508,250) # GAME OCR TEST\n\n![text](55,338,470,467) Health: 100 / 100\n\n![text](55,625,454,727) Quest complete!",
+  "metrics": {
+    "preprocessingMs": 19.8311,
+    "inferenceMs": 1809.1515,
+    "parsingMs": 0.6073,
+    "totalMs": 1829.5905,
+    "detectionMs": null,
+    "recognitionMs": null
+  },
+  "device": "CUDA",
+  "truncated": false,
+  "runtime": "llamacpp",
+  "modelId": null,
+  "engineId": "lightonocr"
+}

@@ -125,7 +125,7 @@
           {#if !snapshots.length}<div class="empty"><History/><strong>暂无识别历史</strong><p>识别结果会保留最近 {settings?.historyLimit??30} 次。</p></div>{/if}
         {:else if !current}
           <div class="empty results-empty"><div class="result-empty-icon"><FileText/></div><strong>文字将在这里出现</strong><p>加载模型并开始捕获后，点击单次识别或开启连续 OCR。</p><button class="text-button" onclick={()=>modelOpen=true} disabled={!native}>打开模型管理 <ChevronRight/></button></div>
-        {:else if resultTab==='raw'}<pre class="raw-output">{current.result.rawOutput||'（空输出）'}</pre>
+        {:else if resultTab==='raw'}<pre class="raw-output">{current.result.rawOutput||(current.result.runtime==='onnx'?'ONNX 直接输出文字、坐标和置信度，没有生成式原始文本。':'（空输出）')}</pre>
         {:else}
           <div class="result-info row spread"><span class="mono">FRAME {current.result.frameId}</span><span>{ms(current.result.metrics.totalMs)} · {current.result.device}</span></div>
           {#if current.result.truncated}<div class="truncated">输出已达到 Token / 上下文上限，可在设置中调整。</div>{/if}
@@ -134,7 +134,7 @@
           {#if !current.result.blocks.length}<div class="empty"><strong>未识别到文字</strong><p>可查看原始输出，或更换窗口后重试。</p></div>{/if}
         {/if}
       </div>
-      <div class="result-footer"><div class="row"><span class="dot" class:on={ocrStatus==='processing'||ocrStatus==='waiting'}></span><span>{ocrLabels[ocrStatus]}</span>{#if ocrStatus==='processing'}<LoaderCircle class="spinner"/>{/if}</div><span>LightOnOCR-3</span></div>
+      <div class="result-footer"><div class="row"><span class="dot" class:on={ocrStatus==='processing'||ocrStatus==='waiting'}></span><span>{ocrLabels[ocrStatus]}</span>{#if ocrStatus==='processing'}<LoaderCircle class="spinner"/>{/if}</div><span>{models.find(m=>m.id===current?.result.modelId)?.name??current?.result.modelId??selectedModel?.name??'本地 OCR'}</span></div>
     </aside>
   </main>
   <footer class="statusbar"><div class="row"><span class="dot" class:on={native}></span><span>{native?'本地引擎':'界面预览'}</span><span class="status-divider">/</span><span>{modelStatus.device??'未选择后端'}</span></div><div class="row"><span>跳过 <b>{performance?.skippedFrames??'—'}</b></span><span>丢弃 <b>{performance?.droppedFrames??'—'}</b></span><span>队列 <b>{performance?.queue??'空闲'}</b></span><span class="status-divider">|</span><span>WINDOWS 11 · X64</span></div></footer>

@@ -13,11 +13,11 @@ use std::{
 };
 use tauri::Manager;
 use tokio::{
-    io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
+    io::{AsyncBufRead, AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
     process::{Child, ChildStdin, ChildStdout, Command},
 };
 
-/// Each worker owns all llama/mtmd objects on its main inference thread.
+/// Each worker owns its native models and sessions on its inference thread.
 /// The desktop process has no CUDA-linked imports and can always start on CPU-only PCs.
 pub struct Worker {
     child: Child,
@@ -68,11 +68,16 @@ impl Worker {
         let log = Arc::new(Mutex::new(VecDeque::new()));
         let log_copy = log.clone();
         let log_task = tokio::spawn(async move {
-            let mut lines = BufReader::new(stderr).lines();
-            while let Ok(Some(mut line)) = lines.next_line().await {
-                if line.len() > 4096 {
-                    line.truncate(line.floor_char_boundary(4096));
+            let mut reader = BufReader::new(stderr);
+            loop {
+                // Bound allocation before reading; a worker may log a long line
+                // without ever sending a newline. Retain only 128 small chunks.
+                let mut bytes = Vec::new();
+                match (&mut reader).take(4096).read_until(b'\n', &mut bytes).await {
+                    Ok(0) | Err(_) => break,
+                    _ => {}
                 }
+                let line = String::from_utf8_lossy(&bytes).into_owned();
                 let mut log = log_copy.lock();
                 if log.len() >= 128 {
                     log.pop_front();
@@ -92,10 +97,8 @@ impl Worker {
     pub async fn request(&mut self, request: WorkerRequest) -> Result<WorkerResponse> {
         let response=tokio::time::timeout(Duration::from_secs(180),async {
             self.input.write_all(&serde_json::to_vec(&request)?).await?;self.input.write_all(b"\n").await?;self.input.flush().await?;
-            let mut line=String::new();
-            let read=self.output.read_line(&mut line);tokio::pin!(read);
-            let len=loop{tokio::select!{len=&mut read=>break len?,_=tokio::time::sleep(Duration::from_millis(50))=>{if self.closing.load(Ordering::Acquire){bail!("应用正在退出");}}}};
-            if len==0 {bail!("推理工作程序退出（可能是 GPU/内存/运行库问题）");}
+            let read=read_response(&mut self.output);tokio::pin!(read);
+            let line=loop{tokio::select!{line=&mut read=>break line?,_=tokio::time::sleep(Duration::from_millis(50))=>{if self.closing.load(Ordering::Acquire){bail!("应用正在退出");}}}};
             let response:WorkerResponse=serde_json::from_str(&line).context("工作程序协议错误")?;
             match response {WorkerResponse::Error {message}=>bail!("{message}"),other=>Ok(other)}
         }).await;
@@ -123,15 +126,33 @@ impl Worker {
         }
     }
     pub async fn shutdown(&mut self) {
-        let graceful=tokio::time::timeout(Duration::from_secs(2),async {
+        let graceful = tokio::time::timeout(Duration::from_secs(2), async {
             self.input.write_all(b"{\"type\":\"shutdown\"}\n").await?;
             self.input.flush().await?;
             self.child.wait().await
-        }).await;
-        if !matches!(graceful,Ok(Ok(_))) {let _ = self.child.kill().await;}
+        })
+        .await;
+        if !matches!(graceful, Ok(Ok(_))) {
+            let _ = self.child.kill().await;
+        }
         let _ = self.child.wait().await;
         self.log_task.abort();
     }
+}
+async fn read_response(reader: &mut (impl AsyncBufRead + Unpin)) -> Result<String> {
+    const LIMIT: u64 = 16 * 1024 * 1024;
+    let mut bytes = Vec::new();
+    reader.take(LIMIT + 1).read_until(b'\n', &mut bytes).await?;
+    anyhow::ensure!(
+        !bytes.is_empty(),
+        "推理工作程序退出（可能是 GPU/内存/运行库问题）"
+    );
+    anyhow::ensure!(
+        bytes.len() <= LIMIT as usize,
+        "工作程序响应超过 16 MiB 限制"
+    );
+    anyhow::ensure!(bytes.last() == Some(&b'\n'), "工作程序返回了不完整的响应");
+    String::from_utf8(bytes).context("工作程序响应不是 UTF-8")
 }
 impl Drop for Worker {
     fn drop(&mut self) {
@@ -162,4 +183,22 @@ pub fn worker_path(app: &tauri::AppHandle, runtime: &str, device: Device) -> Res
         "未找到 {runtime}/{kind} 工作程序，请运行 scripts/build-workers.ps1 或安装完整发行包"
     );
     Ok(path)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn responses_are_bounded_and_cannot_be_partial() {
+        let mut input = &b"{\"type\":\"unloaded\"}\nnext\n"[..];
+        assert_eq!(
+            read_response(&mut input).await.unwrap(),
+            "{\"type\":\"unloaded\"}\n"
+        );
+        assert_eq!(input, b"next\n");
+        assert!(read_response(&mut &b"partial"[..]).await.is_err());
+        let oversized = vec![b'x'; 16 * 1024 * 1024 + 2];
+        assert!(read_response(&mut oversized.as_slice()).await.is_err());
+    }
 }

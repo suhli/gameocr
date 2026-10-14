@@ -3,7 +3,7 @@ use futures_util::StreamExt;
 pub use gameocr_core::manifest::ModelManifest as ModelEntry;
 use gameocr_core::{
     engine::{OcrCapabilities, RuntimeRegistry},
-    manifest::{ModelFile, safe_file, safe_id},
+    manifest::{ModelFile, safe_id},
 };
 use sha2::{Digest, Sha256};
 use std::{
@@ -518,6 +518,7 @@ fn resume_response(offset: u64, status: u16, range: Option<&str>, size: u64) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use gameocr_core::manifest::safe_file;
     #[test]
     fn resume_safety() {
         assert!(!resume_response(100, 200, None, 500).unwrap());
