@@ -81,6 +81,12 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           ./scripts/package-portable.ps1
       - run: ./scripts/verify-package.ps1
+      - name: Independent CPU portable distribution
+        run: |
+          ./scripts/package-portable.ps1 -Backend cpu
+          ./scripts/verify-package.ps1 -Backend cpu
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          Copy-Item docs/test-results/onnx-cpu-e2e.json artifacts/onnx-cpu-e2e.json
       - uses: actions/upload-artifact@v4
         with:
           name: GameOCR-windows-x64
@@ -91,7 +97,9 @@ jobs:
             artifacts/GameOCR-windows-x64-setup.exe
             artifacts/GameOCR-windows-x64.msi
             artifacts/SHA256SUMS.txt
-            docs/test-results/onnx-cpu-e2e.json
+            artifacts/GameOCR-windows-x64-cpu-portable.zip
+            artifacts/SHA256SUMS-cpu.txt
+            artifacts/onnx-cpu-e2e.json
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: windows

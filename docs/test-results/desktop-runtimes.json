@@ -1,5 +1,7 @@
 {
-  "executedAt": "2026-10-14T08:58:27.220Z",
+  "executedAt": "2026-10-15T02:34:25.084Z",
+  "app": "artifacts\\GameOCR-windows-x64-portable\\GameOCR.exe",
+  "appSha256": "46c17ae200e925b6088c40ec0968cebe80847ca3fbf9d334108977f6b166383c",
   "checks": [
     "Multi-runtime catalog / verified files",
     "Actual CUDA initialization failure falls back to CPU",
@@ -8,6 +10,7 @@
     "ONNX capability-driven settings render",
     "Explicit CUDA failure remains an error",
     "Recovery after worker initialization failure",
+    "Abrupt worker exit stays isolated; reload performs real OCR again",
     "Both ONNX models: real WGC frame, OCR, matching preview, model label and JSON export",
     "Corrupted imported model retains a visible delete action",
     "Real multi-file import, inference validation, same-size corruption and deletion",

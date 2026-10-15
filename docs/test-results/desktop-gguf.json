@@ -1,0 +1,109 @@
+{
+  "checks": [
+    {
+      "name": "Tauri startup + frontend mount",
+      "status": "passed"
+    },
+    {
+      "name": "Import + SHA-256 verified model pair",
+      "status": "passed",
+      "id": "import-9790cfcb-bcc3-4bcf-8f15-51bfc9009568"
+    },
+    {
+      "name": "Model load",
+      "status": "passed",
+      "device": "CUDA",
+      "loadMs": 2984.1012
+    },
+    {
+      "name": "Model selector matches resident model",
+      "status": "passed"
+    },
+    {
+      "name": "WGC capture of Win32 window",
+      "status": "passed",
+      "width": 826,
+      "height": 393
+    },
+    {
+      "name": "WGC → model → Grounding → matching preview",
+      "status": "passed",
+      "device": "CUDA",
+      "ms": 3675.182,
+      "blocks": 6
+    },
+    {
+      "name": "Original PNG viewer",
+      "status": "passed"
+    },
+    {
+      "name": "Bounding-box / text selection",
+      "status": "passed"
+    },
+    {
+      "name": "Export real OCR JSON",
+      "status": "passed"
+    },
+    {
+      "name": "Export full-resolution PNG",
+      "status": "passed"
+    },
+    {
+      "name": "Unchanged frame does not repeat inference",
+      "status": "passed"
+    },
+    {
+      "name": "Forced rerun of paused frame keeps unique export key",
+      "status": "passed"
+    },
+    {
+      "name": "Paused rerun exports the exact latest result",
+      "status": "passed"
+    },
+    {
+      "name": "Pause / resume",
+      "status": "passed"
+    },
+    {
+      "name": "WGC resize",
+      "status": "passed"
+    },
+    {
+      "name": "Stop during inference discards stale result",
+      "status": "passed"
+    },
+    {
+      "name": "Minimized target stops capture with real error",
+      "status": "passed"
+    },
+    {
+      "name": "Continuous capture + OCR soak",
+      "status": "passed",
+      "seconds": 60,
+      "samples": 6
+    },
+    {
+      "name": "Destroyed target stops capture",
+      "status": "passed"
+    },
+    {
+      "name": "Unload releases worker",
+      "status": "passed"
+    },
+    {
+      "name": "Light theme",
+      "status": "passed"
+    },
+    {
+      "name": "No JavaScript runtime errors",
+      "status": "passed"
+    },
+    {
+      "name": "Graceful application exit",
+      "status": "passed"
+    }
+  ],
+  "executedAt": "2026-10-15T02:17:13.4601977Z",
+  "app": "target/release/gameocr.exe",
+  "appSha256": "0b2d6e8fa773cc98cec63ec2893b961126ef7a876eb5a2ac8068a923958b199b"
+}

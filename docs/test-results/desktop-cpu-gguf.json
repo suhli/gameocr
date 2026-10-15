@@ -1,0 +1,108 @@
+{
+  "executedAt": "2026-10-15T02:31:38.0976868Z",
+  "app": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+  "appSha256": "46c17ae200e925b6088c40ec0968cebe80847ca3fbf9d334108977f6b166383c",
+  "checks": [
+    {
+      "name": "Tauri startup + frontend mount",
+      "status": "passed"
+    },
+    {
+      "name": "Import + SHA-256 verified model pair",
+      "status": "passed",
+      "id": "import-07e22a79-a9d4-4027-b20c-6799d756213a"
+    },
+    {
+      "name": "Model load",
+      "status": "passed",
+      "device": "CPU",
+      "loadMs": 1341.3101
+    },
+    {
+      "name": "Model selector matches resident model",
+      "status": "passed"
+    },
+    {
+      "name": "Automatic CUDA → CPU fallback",
+      "status": "passed",
+      "message": "CUDA 不可用，已回退 CPU：未找到 llamacpp/cuda 工作程序，请运行 scripts/build-workers.ps1 或安装完整发行包"
+    },
+    {
+      "name": "WGC capture of Win32 window",
+      "status": "passed",
+      "width": 826,
+      "height": 393
+    },
+    {
+      "name": "WGC → model → Grounding → matching preview",
+      "status": "passed",
+      "device": "CPU",
+      "ms": 11986.777999999998,
+      "blocks": 6
+    },
+    {
+      "name": "Original PNG viewer",
+      "status": "passed"
+    },
+    {
+      "name": "Bounding-box / text selection",
+      "status": "passed"
+    },
+    {
+      "name": "Export real OCR JSON",
+      "status": "passed"
+    },
+    {
+      "name": "Export full-resolution PNG",
+      "status": "passed"
+    },
+    {
+      "name": "Unchanged frame does not repeat inference",
+      "status": "passed"
+    },
+    {
+      "name": "Forced rerun of paused frame keeps unique export key",
+      "status": "passed"
+    },
+    {
+      "name": "Paused rerun exports the exact latest result",
+      "status": "passed"
+    },
+    {
+      "name": "Pause / resume",
+      "status": "passed"
+    },
+    {
+      "name": "WGC resize",
+      "status": "passed"
+    },
+    {
+      "name": "Stop during inference discards stale result",
+      "status": "passed"
+    },
+    {
+      "name": "Minimized target stops capture with real error",
+      "status": "passed"
+    },
+    {
+      "name": "Destroyed target stops capture",
+      "status": "passed"
+    },
+    {
+      "name": "Unload releases worker",
+      "status": "passed"
+    },
+    {
+      "name": "Light theme",
+      "status": "passed"
+    },
+    {
+      "name": "No JavaScript runtime errors",
+      "status": "passed"
+    },
+    {
+      "name": "Graceful application exit",
+      "status": "passed"
+    }
+  ]
+}

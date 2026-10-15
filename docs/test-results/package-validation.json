@@ -1,0 +1,94 @@
+{
+  "executedAt": "2026-10-15T06:27:22.8349416Z",
+  "environment": "Windows 11 x64, GTX 1650, CUDA 12.1, cuDNN 9.8.0.87, ONNX Runtime 1.24.3",
+  "artifacts": [
+    {
+      "file": "artifacts/GameOCR-windows-x64-portable.zip",
+      "bytes": 1717779934,
+      "sha256": "84fe7658d7bb035fd2aa7ca3deeec16b4790b49b90099d0d88f2e1018ede505c"
+    },
+    {
+      "file": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 16584041,
+      "sha256": "f0fdc93c1367bf9ff3098beced863f7c4a2362ba2bb105672f9de0d28de8ce5e"
+    },
+    {
+      "file": "artifacts/GameOCR-windows-x64-setup.exe",
+      "bytes": 933200492,
+      "sha256": "37b875c093e2320bf3c936fda36168d2a23a292ab010f5ffd2de930e10541d4b"
+    },
+    {
+      "file": "artifacts/GameOCR-windows-x64.msi",
+      "bytes": 1693249536,
+      "sha256": "c726043e8c66740b860adf822181569b9f4fd5e427e83289d25905a85c4648c6"
+    }
+  ],
+  "portableValidation": [
+    {
+      "backend": "cpu+cuda",
+      "zipFiles": 86,
+      "nativeX64Binaries": 75,
+      "byteForByteSha256": "passed",
+      "imports": "passed"
+    },
+    {
+      "backend": "cpu",
+      "zipFiles": 45,
+      "nativeX64Binaries": 35,
+      "byteForByteSha256": "passed",
+      "imports": "passed",
+      "gpuBinariesPresent": false
+    }
+  ],
+  "archiveValidation": {
+    "tool": "7-Zip 23.01 x64",
+    "nsis": "passed",
+    "msiCompoundFile": "passed",
+    "embeddedCabs": [
+      "cab1.cab",
+      "cab2.cab",
+      "cab3.cab",
+      "cab4.cab"
+    ],
+    "embeddedCabIntegrity": "passed",
+    "systemInstallUninstallTested": false
+  },
+  "desktopValidation": [
+    {
+      "report": "docs/test-results/desktop-runtimes.json",
+      "app": "artifacts\\GameOCR-windows-x64-portable\\GameOCR.exe",
+      "appSha256": "46c17ae200e925b6088c40ec0968cebe80847ca3fbf9d334108977f6b166383c",
+      "executedAt": "2026-10-15T02:34:25.084Z",
+      "checks": 12
+    },
+    {
+      "report": "docs/test-results/desktop-cpu-only.json",
+      "app": "artifacts\\GameOCR-windows-x64-cpu-portable\\GameOCR.exe",
+      "appSha256": "46c17ae200e925b6088c40ec0968cebe80847ca3fbf9d334108977f6b166383c",
+      "executedAt": "2026-10-15T02:29:38.896Z",
+      "checks": 12
+    },
+    {
+      "report": "docs/test-results/desktop-cpu-gguf.json",
+      "app": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+      "appSha256": "46c17ae200e925b6088c40ec0968cebe80847ca3fbf9d334108977f6b166383c",
+      "executedAt": "2026-10-15T02:31:38.0976868Z",
+      "checks": 23
+    }
+  ],
+  "limitations": [
+    "Local CUDA workers target SM75/80/86/89 with CUDA12.1; CUDA12.8.1/SM120 CI is configured but not remotely executed.",
+    "RTX5060Ti, clean Windows installation, a machine without NVIDIA drivers, installer installation/uninstallation and signing are unverified.",
+    "Physical Android/ADB capture and long-duration ONNX stress were not revalidated in this run."
+  ],
+  "logs": [
+    ".cache/full-package-verification.log",
+    ".cache/cpu-package-verification.log",
+    ".cache/nsis-integrity.log",
+    ".cache/msi-integrity.log",
+    ".cache/cab1-integrity.log",
+    ".cache/cab2-integrity.log",
+    ".cache/cab3-integrity.log",
+    ".cache/cab4-integrity.log"
+  ]
+}

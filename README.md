@@ -4,7 +4,7 @@ Windows 11 x64 本地窗口 OCR 工具，保留 Tauri 2、Svelte 5 和 Rust。Wi
 
 ## 使用
 
-1. 解压 `GameOCR-windows-x64-portable.zip`，运行 `GameOCR.exe`；也可使用 NSIS / MSI 安装版。
+1. 解压 `GameOCR-windows-x64-portable.zip`，运行 `GameOCR.exe`；也可使用 NSIS / MSI 安装版。仅使用 CPU 时可选体积更小的 `GameOCR-windows-x64-cpu-portable.zip`，同时支持 GGUF 和 ONNX，不附带 NVIDIA 运行库。
 2. 在「模型管理」下载 PP-OCRv6 small / medium，或 LightOnOCR Q8_0。也可导入 GGUF + mmproj，或一组 ONNX 检测模型、识别模型与完整字典。国内下载受限时可在设置里选择 HF-Mirror；完整性仍由固定 SHA-256 校验。
 3. 在左侧选择具体窗口，点击「开始捕获」，加载模型，然后点击「单次识别」或「连续」。自动设备选择优先 CUDA，失败时给出原因并尝试 CPU。
 4. 「实时」显示当前画面；「识别帧」始终显示与 OCR 结果对应的截图。点击文字块或边界框可相互定位；可查看原图、复制文字、导出 JSON 或 PNG。
@@ -130,9 +130,14 @@ Copy-Item target/release/bundle/msi/*.msi artifacts/GameOCR-windows-x64.msi
 npm run tauri -- build --no-bundle --config src-tauri/tauri.portable.conf.json
 ./scripts/package-portable.ps1
 ./scripts/verify-package.ps1
+# 可选：单独分发两个 Runtime 的 CPU Worker
+./scripts/package-portable.ps1 -Backend cpu
+./scripts/verify-package.ps1 -Backend cpu
 ```
 
-GitHub Actions 自动完成同样步骤并生成 `GameOCR-windows-x64-portable.zip`、`GameOCR-windows-x64-setup.exe`、`GameOCR-windows-x64.msi` 与 SHA256SUMS。推送 `v*` 标签时创建待审阅的 Draft Release。GPU 推理和交互桌面测试不在普通 hosted runner 中伪装执行。
+GitHub Actions 自动完成同样步骤并生成完整便携 ZIP、独立 CPU ZIP、NSIS、MSI 与各自的 SHA256SUMS。推送 `v*` 标签时创建待审阅的 Draft Release。GPU 推理和交互桌面测试不在普通 hosted runner 中伪装执行。
+
+多 Runtime 的原生库超过单个压缩块容量，因此安装模板使用 NSIS 逐文件 LZMA、MSI 多个嵌入式 CAB；模板基于 lockfile 中的 Tauri CLI 2.12.2。升级 CLI 时按 [安装模板说明](src-tauri/installer/README.md) 同步检查模板。
 
 当前实测、未测试项和已知限制见 [测试报告](docs/testing.md)。普通游戏、模拟器及受保护画面的捕获兼容性取决于目标应用与系统，程序不绕过保护或反作弊。便携包的干净 Windows 11 验证必须与开发机实测分别记录。发行包当前未签名。
 
