@@ -30,6 +30,8 @@ pub struct Metrics {
     pub detection_ms: Option<f64>,
     #[serde(default)]
     pub recognition_ms: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub execution: Option<crate::parallel::ExecutionMetrics>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -107,6 +109,14 @@ impl InferenceConfig {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 pub enum WorkerRequest {
+    RecognizeTile {
+        image: String,
+        frame_id: u64,
+        timestamp: u64,
+        mode: OcrMode,
+        task: crate::parallel::TaskIdentity,
+        detection_resize: u32,
+    },
     LoadEngine {
         protocol_version: u32,
         config: crate::engine::EngineConfig,
@@ -127,10 +137,21 @@ pub enum WorkerRequest {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 pub enum WorkerResponse {
-    Ready { device: String, load_ms: f64 },
-    Result { result: OcrResult },
+    TileResult {
+        task: crate::parallel::TaskIdentity,
+        result: OcrResult,
+    },
+    Ready {
+        device: String,
+        load_ms: f64,
+    },
+    Result {
+        result: OcrResult,
+    },
     Unloaded,
-    Error { message: String },
+    Error {
+        message: String,
+    },
 }
 
 pub fn now_ms() -> u64 {

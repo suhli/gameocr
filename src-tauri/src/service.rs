@@ -1,16 +1,13 @@
 use crate::{
     capture::{CaptureManager, CaptureShared, Frame, Preview, preview},
+    executor::{Cancellation, Executor, ExecutorStatus, SharedStatus},
     model::{ModelEntry, ModelManager},
-    ocr::{Worker, worker_path},
+    ocr::resource_root,
     settings::{Settings, data_dir},
     window::WindowInfo,
 };
-use anyhow::{Result, bail, ensure};
-use gameocr_core::{
-    change::ChangeDetector,
-    engine::{RuntimeRegistry, device_candidates},
-    types::*,
-};
+use anyhow::{Result, ensure};
+use gameocr_core::{change::ChangeDetector, engine::RuntimeRegistry, types::*};
 use parking_lot::{Mutex, RwLock};
 use serde::Serialize;
 use std::{
@@ -54,6 +51,7 @@ pub struct Performance {
     pub model_load_ms: Option<f64>,
     pub device: Option<String>,
     pub vram_mb: Option<f64>,
+    pub execution: Option<ExecutorStatus>,
 }
 pub struct Service {
     pub app: tauri::AppHandle,
@@ -64,7 +62,8 @@ pub struct Service {
     pub selected: Mutex<Option<WindowInfo>>,
     pub models: Arc<ModelManager>,
     pub model_status: Mutex<ModelStatus>,
-    worker: tokio::sync::Mutex<Option<Worker>>,
+    executor: tokio::sync::Mutex<Option<Executor>>,
+    executor_status: RwLock<Option<SharedStatus>>,
     pub lifecycle: tokio::sync::Mutex<()>,
     pub continuous: AtomicBool,
     pub processing: AtomicBool,
@@ -112,7 +111,8 @@ impl Service {
                 load_ms: None,
                 message: None,
             }),
-            worker: tokio::sync::Mutex::new(None),
+            executor: tokio::sync::Mutex::new(None),
+            executor_status: RwLock::new(None),
             lifecycle: tokio::sync::Mutex::new(()),
             continuous: AtomicBool::new(false),
             processing: AtomicBool::new(false),
@@ -182,7 +182,8 @@ impl Service {
                     && old.max_tokens == settings.max_tokens
                     && old.temperature == settings.temperature
                     && old.max_image_edge == settings.max_image_edge
-                    && old.onnx == settings.onnx),
+                    && old.onnx == settings.onnx
+                    && old.parallel == settings.parallel),
             "更改推理参数前请卸载模型"
         );
         let capture_active =
@@ -229,10 +230,11 @@ impl Service {
         result
     }
     async fn load_inner(&self, id: &str, settings: &Settings) -> Result<()> {
-        let mut worker = self.worker.lock().await;
-        if let Some(mut old) = worker.take() {
+        let mut executor = self.executor.lock().await;
+        if let Some(mut old) = executor.take() {
             old.shutdown().await;
         }
+        *self.executor_status.write() = None;
         let dir = settings.model_dir.clone();
         let model_id = id.to_owned();
         let entry = tokio::task::spawn_blocking(move || {
@@ -247,43 +249,24 @@ impl Service {
             entry.capabilities.supports(settings.mode),
             "模型不支持当前识别模式"
         );
-        let devices = device_candidates(settings.device);
-        let mut errors = Vec::new();
-        for device in devices {
-            let config = settings.engine_config(entry.clone(), device)?;
-            registry.validate(&config)?;
-            let attempt: Result<(Worker, WorkerResponse)> = async {
-                let path = worker_path(&self.app, &entry.runtime, device)?;
-                let mut w = Worker::spawn(&path, self.shutdown.clone()).await?;
-                let response = w
-                    .request(WorkerRequest::LoadEngine {
-                        protocol_version: 2,
-                        config,
-                    })
-                    .await?;
-                Ok((w, response))
-            }
-            .await;
-            match attempt {
-                Ok((w, WorkerResponse::Ready { device, load_ms })) => {
-                    *worker = Some(w);
-                    let mut status = self.model_status.lock();
-                    *status = ModelStatus {
-                        status: "ready".into(),
-                        id: Some(id.into()),
-                        device: Some(device),
-                        load_ms: Some(load_ms),
-                        message: (!errors.is_empty())
-                            .then(|| format!("CUDA 不可用，已回退 CPU：{}", errors.join("; "))),
-                    };
-                    self.detector.lock().reset();
-                    return Ok(());
-                }
-                Ok(_) => errors.push("工作程序返回了意外状态".into()),
-                Err(e) => errors.push(format!("{e:#}")),
-            }
-        }
-        bail!("{}", errors.join("\n"))
+        let loaded = Executor::load(
+            &resource_root(&self.app)?,
+            settings.engine_config(entry, settings.device)?,
+            &settings.parallel,
+            self.shutdown.clone(),
+        )
+        .await?;
+        *self.model_status.lock() = ModelStatus {
+            status: "ready".into(),
+            id: Some(id.into()),
+            device: Some(loaded.device.clone()),
+            load_ms: Some(loaded.load_ms),
+            message: loaded.message.clone(),
+        };
+        *self.executor_status.write() = Some(loaded.status.clone());
+        *executor = Some(loaded);
+        self.detector.lock().reset();
+        Ok(())
     }
     pub async fn unload_model(&self) -> Result<()> {
         let _transition = self
@@ -293,9 +276,10 @@ impl Service {
         self.stop_ocr();
         self.model_status.lock().status = "unloading".into();
         self.emit_model();
-        if let Some(mut worker) = self.worker.lock().await.take() {
+        if let Some(mut worker) = self.executor.lock().await.take() {
             worker.shutdown().await;
         }
+        *self.executor_status.write() = None;
         *self.model_status.lock() = ModelStatus {
             status: "unloaded".into(),
             id: None,
@@ -358,38 +342,38 @@ impl Service {
         let epoch = self.ocr_epoch.load(Ordering::Acquire);
         let generation = frame.generation;
         self.set_ocr_status("processing");
-        let path = self.cache_dir.join("inference.png");
-        let write_path = path.clone();
-        let f = frame.clone();
-        let outcome: Result<WorkerResponse> = async {
-            tokio::task::spawn_blocking(move || f.image.save(write_path)).await??;
-            let mut worker = self.worker.lock().await;
-            if epoch != self.ocr_epoch.load(Ordering::Acquire) {
-                bail!("任务已取消");
-            }
-            let result = worker
+        let end_to_end = Instant::now();
+        let service = self.clone();
+        let cancel = Cancellation::new(epoch, move || {
+            !service.shutdown.load(Ordering::Acquire)
+                && epoch == service.ocr_epoch.load(Ordering::Acquire)
+                && generation == service.shared.generation.load(Ordering::Acquire)
+        });
+        let outcome: Result<OcrResult> = async {
+            let mut executor = self.executor.lock().await;
+            let result = executor
                 .as_mut()
                 .ok_or_else(|| anyhow::anyhow!("模型工作程序不可用"))?
-                .request(WorkerRequest::Recognize {
-                    image: path.to_string_lossy().into(),
-                    frame_id: frame.id,
-                    timestamp: frame.timestamp,
-                    mode: settings.mode,
-                })
+                .recognize(frame.clone(), settings.mode, &self.cache_dir, cancel)
                 .await;
-            if result.is_err() {
-                *worker = None;
+            if executor.as_ref().is_some_and(|e| !e.available()) {
+                *executor = None;
             }
             result
         }
         .await;
-        let _ = tokio::fs::remove_file(&path).await;
         let current = epoch == self.ocr_epoch.load(Ordering::Acquire)
             && generation == self.shared.generation.load(Ordering::Acquire);
         match outcome {
-            Ok(WorkerResponse::Result { result }) if current => {
+            Ok(mut result) if current => {
                 let f = frame.clone();
                 let preview = tokio::task::spawn_blocking(move || preview(&f)).await??;
+                if let Some(metrics) = &mut result.metrics.execution {
+                    metrics.end_to_end_ms = end_to_end.elapsed().as_secs_f64() * 1000.;
+                    if let Some(status) = self.executor_status.read().as_ref() {
+                        status.lock().last = Some(metrics.clone());
+                    }
+                }
                 // Cancellation may happen while JPEG encoding is off-thread. Serialize the final
                 // commit against stop/target changes, then check BOTH generations again.
                 let _gate = self.shared.transition.lock();
@@ -430,7 +414,8 @@ impl Service {
             }
             Err(e) => {
                 // A failed worker is never still advertised as ready, even when its request became stale.
-                if self.worker.lock().await.is_none() && self.model_status.lock().status == "ready"
+                if self.executor.lock().await.is_none()
+                    && self.model_status.lock().status == "ready"
                 {
                     self.model_status.lock().status = "error".into();
                     self.emit_model();
@@ -512,6 +497,11 @@ impl Service {
                     .into();
                     perf.model_load_ms = status.load_ms;
                     perf.device = status.device;
+                    perf.execution = service
+                        .executor_status
+                        .read()
+                        .as_ref()
+                        .map(|s| s.lock().clone());
                     let _ = service.app.emit("performance-update", perf.clone());
                     last_count = count;
                     sample = Instant::now();
@@ -524,7 +514,7 @@ impl Service {
         self.shutdown.store(true, Ordering::Release);
         self.stop_ocr();
         self.capture.lock().stop();
-        if let Some(mut worker) = self.worker.lock().await.take() {
+        if let Some(mut worker) = self.executor.lock().await.take() {
             worker.shutdown().await;
         }
         // Only this process's application-owned session directory is removed.

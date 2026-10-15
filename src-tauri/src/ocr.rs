@@ -28,6 +28,9 @@ pub struct Worker {
     closing: Arc<AtomicBool>,
 }
 impl Worker {
+    pub fn pid(&self) -> Option<u32> {
+        self.child.id()
+    }
     pub async fn spawn(path: &Path, closing: Arc<AtomicBool>) -> Result<Self> {
         let mut command = Command::new(path);
         // CUDA libraries are shared on disk but visible only to GPU children.
@@ -166,11 +169,7 @@ pub fn worker_path(app: &tauri::AppHandle, runtime: &str, device: Device) -> Res
     } else {
         "cpu"
     };
-    let root = if cfg!(debug_assertions) {
-        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources")
-    } else {
-        app.path().resource_dir()?
-    };
+    let root = resource_root(app)?;
     let registry = gameocr_core::engine::RuntimeRegistry::default();
     let executable = registry.executable(runtime)?;
     let path = root
@@ -183,6 +182,13 @@ pub fn worker_path(app: &tauri::AppHandle, runtime: &str, device: Device) -> Res
         "未找到 {runtime}/{kind} 工作程序，请运行 scripts/build-workers.ps1 或安装完整发行包"
     );
     Ok(path)
+}
+pub fn resource_root(app: &tauri::AppHandle) -> Result<PathBuf> {
+    Ok(if cfg!(debug_assertions) {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources")
+    } else {
+        app.path().resource_dir()?
+    })
 }
 
 #[cfg(test)]

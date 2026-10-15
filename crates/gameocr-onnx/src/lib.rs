@@ -187,10 +187,11 @@ impl PaddleOcrAdapter {
         frame_id: u64,
         timestamp: u64,
         total: Instant,
+        detection_resize: u32,
     ) -> Result<OcrResult> {
         let source = image.dimensions();
         ensure!(source.0 > 0 && source.1 > 0, "Empty image");
-        let ratio = (self.config.detection_resize as f64 / source.0.max(source.1) as f64).min(1.);
+        let ratio = (detection_resize as f64 / source.0.max(source.1) as f64).min(1.);
         let w = ((source.0 as f64 * ratio / 32.).round() as u32 * 32).max(32);
         let h = ((source.1 as f64 * ratio / 32.).round() as u32 * 32).max(32);
         let resized = image::imageops::resize(&image, w, h, image::imageops::FilterType::Triangle);
@@ -321,6 +322,7 @@ impl PaddleOcrAdapter {
                 total_ms: ms(total),
                 detection_ms: Some(detection_ms),
                 recognition_ms: Some(recognition_ms),
+                execution: None,
             },
             device: self.device.clone(),
             truncated: false,
@@ -345,7 +347,40 @@ impl OcrEngine for PaddleOcrAdapter {
         limits.max_image_height = Some(16384);
         limits.max_alloc = Some(256 * 1024 * 1024);
         reader.limits(limits);
-        self.run(reader.decode()?.to_rgb8(), frame_id, timestamp, total)
+        self.run(
+            reader.decode()?.to_rgb8(),
+            frame_id,
+            timestamp,
+            total,
+            self.config.detection_resize,
+        )
+    }
+    fn recognize_tile(
+        &mut self,
+        path: &Path,
+        frame_id: u64,
+        timestamp: u64,
+        _mode: OcrMode,
+        detection_resize: u32,
+    ) -> Result<OcrResult> {
+        ensure!(
+            (32..=self.config.detection_resize).contains(&detection_resize),
+            "Tile detector resolution exceeds configured budget"
+        );
+        let total = Instant::now();
+        let mut reader = image::ImageReader::open(path)?.with_guessed_format()?;
+        let mut limits = image::Limits::default();
+        limits.max_image_width = Some(16384);
+        limits.max_image_height = Some(16384);
+        limits.max_alloc = Some(256 * 1024 * 1024);
+        reader.limits(limits);
+        self.run(
+            reader.decode()?.to_rgb8(),
+            frame_id,
+            timestamp,
+            total,
+            detection_resize,
+        )
     }
     fn capabilities(&self) -> OcrCapabilities {
         OcrCapabilities::paddle()

@@ -5,5 +5,6 @@ pub mod grounding;
 pub mod inference;
 pub mod latest;
 pub mod manifest;
+pub mod parallel;
 pub mod types;
 pub mod worker;

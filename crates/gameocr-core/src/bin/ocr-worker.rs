@@ -32,6 +32,9 @@ fn main() -> anyhow::Result<()> {
         };
         let shutdown = matches!(&request, WorkerRequest::Shutdown);
         let response: anyhow::Result<WorkerResponse> = (|| match request {
+            WorkerRequest::RecognizeTile { .. } => {
+                anyhow::bail!("GGUF uses sequential full-frame inference")
+            }
             WorkerRequest::LoadEngine {
                 protocol_version,
                 config,

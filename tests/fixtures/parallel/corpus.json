@@ -1,0 +1,429 @@
+{
+  "scenarios": [
+    {
+      "image": "hud-1080.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [
+        {
+          "text": "Health: 100 / 100",
+          "bbox": [
+            70.0,
+            70.0,
+            404.4791259765625,
+            124.9033203125
+          ]
+        },
+        {
+          "text": "Quest complete!",
+          "bbox": [
+            1250.0,
+            80.0,
+            1572.9937744140625,
+            134.9033203125
+          ]
+        },
+        {
+          "text": "Inventory 12 / 40",
+          "bbox": [
+            80.0,
+            840.0,
+            413.5513916015625,
+            894.9033203125
+          ]
+        },
+        {
+          "text": "Press ENTER to continue",
+          "bbox": [
+            1180.0,
+            870.0,
+            1651.1158447265625,
+            924.9033203125
+          ]
+        }
+      ],
+      "name": "hud-1080"
+    },
+    {
+      "image": "hud-1440.png",
+      "height": 1440,
+      "width": 2560,
+      "groundTruth": [
+        {
+          "text": "Health: 100 / 100",
+          "bbox": [
+            90.0,
+            90.0,
+            512.5,
+            159.3515625
+          ]
+        },
+        {
+          "text": "Quest complete!",
+          "bbox": [
+            1700.0,
+            90.0,
+            2107.9921875,
+            159.3515625
+          ]
+        },
+        {
+          "text": "Inventory 12 / 40",
+          "bbox": [
+            90.0,
+            1170.0,
+            511.328125,
+            1239.3515625
+          ]
+        },
+        {
+          "text": "Press ENTER to continue",
+          "bbox": [
+            1650.0,
+            1200.0,
+            2245.09375,
+            1269.3515625
+          ]
+        }
+      ],
+      "name": "hud-1440"
+    },
+    {
+      "image": "dialogue.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [
+        {
+          "text": "We finally reached the ancient city.",
+          "bbox": [
+            280.0,
+            840.0,
+            1016.12109375,
+            900.6826171875
+          ]
+        },
+        {
+          "text": "Press ENTER to continue",
+          "bbox": [
+            280.0,
+            920.0,
+            726.3203125,
+            972.013671875
+          ]
+        }
+      ],
+      "name": "dialogue"
+    },
+    {
+      "image": "dense-menu.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [
+        {
+          "text": "Menu option 1 - Settings",
+          "bbox": [
+            80.0,
+            50.0,
+            512.2161254882812,
+            99.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 2 - Settings",
+          "bbox": [
+            80.0,
+            145.0,
+            512.2161254882812,
+            194.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 3 - Settings",
+          "bbox": [
+            80.0,
+            240.0,
+            512.2161254882812,
+            289.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 4 - Settings",
+          "bbox": [
+            80.0,
+            335.0,
+            512.2161254882812,
+            384.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 5 - Settings",
+          "bbox": [
+            80.0,
+            430.0,
+            512.2161254882812,
+            479.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 6 - Settings",
+          "bbox": [
+            80.0,
+            525.0,
+            512.2161254882812,
+            574.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 7 - Settings",
+          "bbox": [
+            80.0,
+            620.0,
+            512.2161254882812,
+            669.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 8 - Settings",
+          "bbox": [
+            80.0,
+            715.0,
+            512.2161254882812,
+            764.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 9 - Settings",
+          "bbox": [
+            80.0,
+            810.0,
+            512.2161254882812,
+            859.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 10 - Settings",
+          "bbox": [
+            80.0,
+            905.0,
+            532.7522583007812,
+            954.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 1 - Settings",
+          "bbox": [
+            1100.0,
+            50.0,
+            1532.216064453125,
+            99.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 2 - Settings",
+          "bbox": [
+            1100.0,
+            145.0,
+            1532.216064453125,
+            194.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 3 - Settings",
+          "bbox": [
+            1100.0,
+            240.0,
+            1532.216064453125,
+            289.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 4 - Settings",
+          "bbox": [
+            1100.0,
+            335.0,
+            1532.216064453125,
+            384.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 5 - Settings",
+          "bbox": [
+            1100.0,
+            430.0,
+            1532.216064453125,
+            479.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 6 - Settings",
+          "bbox": [
+            1100.0,
+            525.0,
+            1532.216064453125,
+            574.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 7 - Settings",
+          "bbox": [
+            1100.0,
+            620.0,
+            1532.216064453125,
+            669.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 8 - Settings",
+          "bbox": [
+            1100.0,
+            715.0,
+            1532.216064453125,
+            764.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 9 - Settings",
+          "bbox": [
+            1100.0,
+            810.0,
+            1532.216064453125,
+            859.1240234375
+          ]
+        },
+        {
+          "text": "Menu option 10 - Settings",
+          "bbox": [
+            1100.0,
+            905.0,
+            1552.752197265625,
+            954.1240234375
+          ]
+        }
+      ],
+      "name": "dense-menu"
+    },
+    {
+      "image": "mixed-cjk.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [
+        {
+          "text": "游戏任务完成 GAME OCR 100",
+          "bbox": [
+            70.0,
+            110.0,
+            621.07421875,
+            164.9033203125
+          ]
+        },
+        {
+          "text": "繁體中文 測試成功",
+          "bbox": [
+            1130.0,
+            110.0,
+            1467.287109375,
+            164.9033203125
+          ]
+        },
+        {
+          "text": "日本語 こんにちは 世界",
+          "bbox": [
+            70.0,
+            810.0,
+            497.12890625,
+            864.9033203125
+          ]
+        },
+        {
+          "text": "Health: 100 / 100",
+          "bbox": [
+            1130.0,
+            810.0,
+            1464.4791259765625,
+            864.9033203125
+          ]
+        }
+      ],
+      "name": "mixed-cjk"
+    },
+    {
+      "image": "rotated.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [
+        {
+          "text": "ROTATED TEXT 123",
+          "bbox": [
+            87.38336944580078,
+            100.0,
+            508.1272888183594,
+            246.10667419433594
+          ]
+        },
+        {
+          "text": "VERTICAL TEXT",
+          "bbox": [
+            1539.3173828125,
+            600.0,
+            1600.0,
+            928.4667358398438
+          ]
+        },
+        {
+          "text": "Quest complete!",
+          "bbox": [
+            80.0,
+            850.0,
+            402.9937744140625,
+            904.9033203125
+          ]
+        }
+      ],
+      "name": "rotated"
+    },
+    {
+      "image": "blank.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [],
+      "name": "blank"
+    },
+    {
+      "image": "cross-boundary.png",
+      "height": 1080,
+      "width": 1920,
+      "groundTruth": [
+        {
+          "text": "CROSS BOUNDARY: the complete sentence must survive",
+          "bbox": [
+            350.0,
+            495.0,
+            1422.43603515625,
+            549.9033203125
+          ]
+        },
+        {
+          "text": "Top left marker",
+          "bbox": [
+            80.0,
+            100.0,
+            380.5982666015625,
+            154.9033203125
+          ]
+        },
+        {
+          "text": "Bottom right marker",
+          "bbox": [
+            1250.0,
+            850.0,
+            1646.7672119140625,
+            904.9033203125
+          ]
+        }
+      ],
+      "name": "cross-boundary"
+    }
+  ],
+  "source": "synthetic System.Drawing layouts, not real game screenshots",
+  "coordinateGroundTruth": "Font layout rectangles, not pixel-tight glyph segmentation"
+}

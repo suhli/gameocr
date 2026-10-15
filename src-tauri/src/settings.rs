@@ -18,6 +18,8 @@ pub struct Settings {
     pub temperature: f32,
     pub max_image_edge: u32,
     pub onnx: gameocr_core::engine::OnnxConfig,
+    #[serde(flatten)]
+    pub parallel: gameocr_core::parallel::ParallelConfig,
     pub model_dir: PathBuf,
     pub adb_path: String,
     pub adb_serial: String,
@@ -42,6 +44,7 @@ impl Default for Settings {
             temperature: 0.1,
             max_image_edge: 1280,
             onnx: Default::default(),
+            parallel: Default::default(),
             model_dir: data_dir().join("models"),
             adb_path: "adb".into(),
             adb_serial: String::new(),
@@ -98,6 +101,10 @@ impl Settings {
 
     pub fn validate(&self) -> Result<()> {
         self.onnx.validate()?;
+        self.parallel.validate(
+            self.device,
+            std::thread::available_parallelism().map_or(1, |n| n.get()),
+        )?;
         ensure!(
             (1..=60).contains(&self.capture_fps),
             "捕获频率必须为 1–60 FPS"
@@ -186,5 +193,22 @@ mod tests {
         assert_eq!(Settings::read(&path).unwrap().capture_fps, 25);
         std::fs::write(&path, "broken").unwrap();
         assert!(Settings::read(&path).is_err());
+    }
+    #[test]
+    fn old_settings_default_to_sequential_and_parallel_fields_persist() {
+        let old: Settings = serde_json::from_str(r#"{"captureFps":12,"device":"cpu"}"#).unwrap();
+        assert!(!old.parallel.enable_parallel_inference);
+        assert!(!old.parallel.enable_cpu_workers);
+        let mut next = old;
+        next.parallel.enable_parallel_inference = true;
+        let value = serde_json::to_value(&next).unwrap();
+        assert_eq!(value["enableParallelInference"], true);
+        assert_eq!(value["cpuWorkerCount"], 1);
+        assert!(
+            serde_json::from_value::<Settings>(value)
+                .unwrap()
+                .parallel
+                .enable_parallel_inference
+        );
     }
 }

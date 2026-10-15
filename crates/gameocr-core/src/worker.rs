@@ -16,6 +16,29 @@ pub fn serve(factory: EngineFactory) -> Result<()> {
         let request = serde_json::from_str::<WorkerRequest>(&line?);
         let shutdown = matches!(&request, Ok(WorkerRequest::Shutdown));
         let response: Result<WorkerResponse> = (|| match request? {
+            WorkerRequest::RecognizeTile {
+                image,
+                frame_id,
+                timestamp,
+                mode,
+                task,
+                detection_resize,
+            } => {
+                let loaded = engine
+                    .as_mut()
+                    .ok_or_else(|| anyhow::anyhow!("Model not loaded"))?;
+                ensure!(loaded.capabilities().supports(mode), "Unsupported OCR mode");
+                Ok(WorkerResponse::TileResult {
+                    task,
+                    result: loaded.recognize_tile(
+                        Path::new(&image),
+                        frame_id,
+                        timestamp,
+                        mode,
+                        detection_resize,
+                    )?,
+                })
+            }
             WorkerRequest::LoadEngine {
                 protocol_version,
                 config,

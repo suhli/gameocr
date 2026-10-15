@@ -15,13 +15,7 @@ use std::{
 };
 use tauri::Emitter;
 
-#[derive(Clone)]
-pub struct Frame {
-    pub id: u64,
-    pub timestamp: u64,
-    pub generation: u64,
-    pub image: image::RgbImage,
-}
+pub use gameocr_core::parallel::FrameInput as Frame;
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Preview {

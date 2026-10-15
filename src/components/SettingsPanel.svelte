@@ -28,6 +28,16 @@
       <div class="fields"><label>Detection Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.detectionThreshold}/></label><label>Box Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.boxThreshold}/></label></div>
       <div class="fields"><label>Unclip Ratio<input type="number" min="0.1" max="5" step="0.1" bind:value={draft.onnx.unclipRatio}/></label><label>识别置信度阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.recognitionThreshold}/></label></div>
       <div class="fields"><label>识别 Batch Size<input type="number" min="1" max="32" bind:value={draft.onnx.batchSize}/></label><label>检测最长边 (px)<input type="number" min="32" max="2048" step="32" bind:value={draft.onnx.detectionResize}/></label></div>
+      <label class="check"><input type="checkbox" bind:checked={draft.enableParallelInference}/> 启用多任务并行</label>
+      <p>关闭时恢复原来的单 Worker 推理。并行按截图内容自适应切片；速度取决于实际设备和文字布局。</p>
+      {#if draft.enableParallelInference}
+        {#if draft.device==='auto'}<label class="check"><input type="checkbox" bind:checked={draft.enableCpuWorkers}/> CPU 参与混合并行</label>{/if}
+        <div class="fields">
+          <label>GPU Worker 数量<input type="number" min={draft.device==='cuda'?1:0} max="2" step="1" disabled={draft.device==='cpu'} bind:value={draft.gpuWorkerCount}/></label>
+          <label>CPU Worker 数量<input type="number" min={draft.device==='cpu'?1:0} max="4" step="1" disabled={draft.device==='cuda'||(draft.device==='auto'&&!draft.enableCpuWorkers)} bind:value={draft.cpuWorkerCount}/></label>
+        </div>
+        <p>{draft.device==='cpu'?'CPU 模式只启动 CPU Worker，无需启用混合开关。':draft.device==='cuda'?'CUDA 模式只启动 GPU Worker，加载失败会报错。':'Auto 按以上配置混合调度；GPU 不可用时仍保留 CPU 回退。'} GPU 最多 2 个实例；CPU 最多为逻辑核心数与 4 中的较小值。CPU 线程预算会在多个实例之间分摊；更多 Worker 不保证更快。</p>
+      {/if}
       {/if}
     </section>
     <section><h3>存储与 ADB</h3><label>模型目录<div class="row"><input bind:value={draft.modelDir}/><button class="icon-btn" aria-label="选择模型目录" onclick={async()=>{try{const path=await api.pickDirectory();if(typeof path==='string')draft.modelDir=path;}catch(e){onError(e);}}}><FolderOpen/></button></div></label>

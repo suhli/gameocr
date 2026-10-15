@@ -9,6 +9,11 @@ default-run = "gameocr"
 test-fixture = []
 
 [[bin]]
+name = "executor-bench"
+path = "src/bin/executor-bench.rs"
+required-features = ["test-fixture"]
+
+[[bin]]
 name = "capture-fixture"
 path = "src/bin/capture-fixture.rs"
 required-features = ["test-fixture"]

@@ -118,6 +118,16 @@ pub trait OcrEngine {
         timestamp: u64,
         mode: OcrMode,
     ) -> Result<OcrResult>;
+    fn recognize_tile(
+        &mut self,
+        _image: &Path,
+        _frame_id: u64,
+        _timestamp: u64,
+        _mode: OcrMode,
+        _detection_resize: u32,
+    ) -> Result<OcrResult> {
+        anyhow::bail!("This adapter does not support independent tile inference")
+    }
     fn capabilities(&self) -> OcrCapabilities;
     fn identity(&self) -> (&str, &str, &str);
     fn device(&self) -> &str;

@@ -1,5 +1,6 @@
 mod capture;
 mod commands;
+pub mod executor;
 mod model;
 mod ocr;
 mod service;
