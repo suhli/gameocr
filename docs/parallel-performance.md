@@ -55,7 +55,9 @@ CPU×1 是这些场景中较快的单 Worker 基线。CPU×2 在 HUD 1080p、144
 
 - [六种模式及传输对照](test-results/parallel-benchmark.json)：完整逐帧延迟、坐标、文字、准确率、任务分配、冷启动与资源采样。
 - [集成与持续运行](test-results/parallel-integration.json)：真实 Worker 取消、故障、CPU 回退、GGUF 及进程清理。
+- [最终集成回归](test-results/parallel-integration-final.json)：显存准入修正后 12 项通过，CPU×2 运行 181.966 秒 / 200 帧，预热后主进程与 Worker 私有内存合计变化 +0.61 MiB。此前独立一轮为 182.63 秒 / 216 帧、-0.63 MiB；不能将两轮合称一次连续长测。
 - [桌面并行回归](test-results/desktop-parallel.json)：真实 WGC、UI 持久化、历史、JSON/PNG、目标切换与退出。
+- [最终便携包校验](test-results/parallel-package-validation.json)：CPU / 完整包各通过 5 组实际桌面检查，无 Vite 启动内嵌前端，CPU×2 识别及退出清理通过；同时记录 ZIP、EXE 哈希和原生依赖检查。安装器仍是上一轮版本。
 
 ```powershell
 # 先按 README 构建 ONNX CPU/CUDA Worker 并取得真实模型

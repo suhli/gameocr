@@ -147,6 +147,8 @@ npm run tauri -- build --no-bundle --config src-tauri/tauri.portable.conf.json
 ./scripts/verify-package.ps1 -Backend cpu
 ```
 
+只更新便携版时，使用上面的 Tauri `build --no-bundle --config src-tauri/tauri.portable.conf.json`，然后打包并运行 `./scripts/verify-package.ps1 -PortableOnly`。发布主程序必须由 Tauri CLI 构建，它会启用加载内嵌前端所需的 `custom-protocol`；之后不要用普通 `cargo build --release --bins` 覆盖 `target/release/gameocr.exe`。单独构建基准工具请指定 `--bin executor-bench`。验证便携包时设置 `GAMEOCR_APP`，运行 `node scripts/desktop-parallel.mjs`，确认没有 Vite 也能打开应用并完成实际识别。
+
 GitHub Actions 自动完成同样步骤并生成完整便携 ZIP、独立 CPU ZIP、NSIS、MSI 与各自的 SHA256SUMS。推送 `v*` 标签时创建待审阅的 Draft Release。GPU 推理和交互桌面测试不在普通 hosted runner 中伪装执行。
 
 多 Runtime 的原生库超过单个压缩块容量，因此安装模板使用 NSIS 逐文件 LZMA、MSI 多个嵌入式 CAB；模板基于 lockfile 中的 Tauri CLI 2.12.2。升级 CLI 时按 [安装模板说明](src-tauri/installer/README.md) 同步检查模板。

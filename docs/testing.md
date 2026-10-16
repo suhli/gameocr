@@ -70,7 +70,7 @@ node scripts/desktop-runtimes.mjs
 - 独立 CPU ZIP：16,584,041 字节，约 16.6 MB；45 个文件逐一比对通过，35 个 x64 PE 文件导入检查通过，未包含 GPU Worker 或 NVIDIA DLL。
 - NSIS：933,200,492 字节，约 933 MB；MSI：1,693,249,536 字节，约 1.69 GB。安装器归档检查结果、四个文件的 SHA-256 和对应桌面报告见 [分发校验记录](test-results/package-validation.json)。
 
-完整与 CPU 便携版均已从最终打包目录启动并完成上述真实桌面验证。`SHA256SUMS.txt` 对应三个完整发行包，`SHA256SUMS-cpu.txt` 对应独立 CPU 包。GitHub Actions 将发行包和 CPU 端到端报告放在同一个上传根目录，标签发布可直接使用下载后的文件列表。
+本节记录的完整与 CPU 便携版均已从当时的打包目录启动并完成上述真实桌面验证。2026-10-16 的便携包已由下方并行增量版本替换；本节大小及旧 `SHA256SUMS.txt` 仅对应历史发行版。GitHub Actions 将发行包和 CPU 端到端报告放在同一个上传根目录，标签发布可直接使用下载后的文件列表。
 
 安装文件生成及归档校验不代表已经在干净 Windows 上安装/卸载；本机 CUDA 包使用 CUDA12.1 / SM75/80/86/89，RTX5060Ti 应另行使用 CI 中配置的 CUDA12.8.1 / SM120 构建并实测。
 
@@ -88,8 +88,11 @@ node scripts/desktop-runtimes.mjs
 - 真实 Small/Medium CPU 8 + GTX1650 CUDA 8 例通过；原多 Runtime 桌面 12 项通过。本轮 GGUF Q8_0 在打开 ONNX 并行设置时仍走单 Worker，真实文字/坐标及空置信度回归通过。
 - [Executor 集成](test-results/parallel-integration.json) 12 项通过：两 CPU 常驻与分摊线程、空白/边界处理、取消后可复用、推理中终止本测试的 Worker 后由另一实例重试完整帧、CPU-only 目录 Auto 回退、显式 CUDA 错误、零 Worker 拒绝、四 CPU 线程预算、卸载清理。
 - CPU×2 持续运行实际 182.63 秒 / 216 帧。10 帧预热后，主进程与两个 Worker 私有内存合计约 117.2 MiB → 116.6 MiB（变化 -0.63 MiB）；每帧任务目录为空、完成后队列清空，所有测试拥有的 Worker 退出。此结果不是数小时压力测试。
+- 导入模型显存准入修正后的 [最终 Executor 回归](test-results/parallel-integration-final.json) 再次通过全部 12 项；CPU×2 持续 181.966 秒 / 200 帧，预热后私有内存合计变化 +0.61 MiB，任务目录和自有进程清理通过。这是两次独立的约三分钟检查，不是六分钟连续长测。
 - [并行桌面](test-results/desktop-parallel.json) 5 组通过：设置 UI/持久化、实际 1866×1013 WGC 四片合并、对应预览与 JSON/PNG、暂停/停止/目标重选时拒绝迟到结果、卸载及切换回单 Worker、推理中正常关闭应用后子进程和本会话目录清空。
 - Release 应用构建通过。新加 `scripts/benchmark-parallel.mjs`、`scripts/test-parallel.mjs`、`scripts/desktop-parallel.mjs` 与开发专用 `executor-bench`；CI 接入 CPU 并行回归，但本轮没有远端 CI 执行记录。
+- 最终 [CPU 便携包](test-results/desktop-parallel-cpu-portable.json) 与 [完整便携包](test-results/desktop-parallel-portable.json) 各通过 5 组真实桌面检查，均在不启动 Vite 的情况下加载内嵌前端，以 CPU×2 完成 WGC 识别、停止/切换和推理中正常退出清理。两包主程序 SHA-256 一致，匹配正式 Tauri 发布构建；包内 CUDA 推理的证据来自前述独立 Worker 回归与六模式基准。
+- [本轮分发校验](test-results/parallel-package-validation.json)：CPU ZIP 为 16,721,331 字节，45 个文件逐一比对、35 个 x64 PE 依赖检查通过；完整 ZIP 为 1,717,959,910 字节，86 个文件逐一比对、75 个 PE 依赖检查通过。当前校验和分别为 `artifacts/SHA256SUMS-cpu.txt` 与 `artifacts/SHA256SUMS-portable.txt`。NSIS/MSI 未重新构建，仍为上一轮版本，不包含本次并行升级。
 
 自动化脚本操作隔离的测试窗口与本测试拥有的进程。桌面测试每次使用独立数据目录，以避免旧的强制结束测试留下的会话影响正常退出校验。构建日志、截图与测试可执行文件保留于本机 `.cache`、`artifacts/validation/parallel-desktop`、`target`。
 

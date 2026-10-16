@@ -1,0 +1,56 @@
+{
+  "executedAt": "2026-10-16T07:08:27.7247809Z",
+  "sourceCommit": "2f8a3697fd1fcc4b1f4d9aaa3ba6f4360bc4e779",
+  "environment": "Windows 11 x64 development machine, system WebView2",
+  "productionBuild": "npm run tauri -- build --no-bundle --config src-tauri/tauri.portable.conf.json",
+  "productionBuildResult": "passed",
+  "artifacts": [
+    {
+      "backend": "cpu",
+      "file": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 16721331,
+      "sha256": "8153aa444dcca1855e1689ec1920f8ec738383a15517908b18cf517af7033bf5",
+      "checksumFile": "artifacts/SHA256SUMS-cpu.txt",
+      "app": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+      "appSha256": "0a6915ad6fd13023a1fdb0e045b7378cd61b5eb8ead1e547e34337400f71d750",
+      "zipFiles": 45,
+      "nativeX64Binaries": 35,
+      "byteForByteSha256": "passed",
+      "imports": "passed",
+      "desktopReport": "docs/test-results/desktop-parallel-cpu-portable.json",
+      "desktopExecutedAt": "2026-10-16T07:05:34.675Z",
+      "desktopChecks": 5,
+      "desktopDevice": "cpu",
+      "desktopWorkerCount": 2,
+      "frontendWithoutVite": "passed"
+    },
+    {
+      "backend": "cpu+cuda",
+      "file": "artifacts/GameOCR-windows-x64-portable.zip",
+      "bytes": 1717959910,
+      "sha256": "07ed6318141f9b2b4f9de127d9adc8857117cda8f33272af4c310d5bf327a971",
+      "checksumFile": "artifacts/SHA256SUMS-portable.txt",
+      "app": "artifacts/GameOCR-windows-x64-portable/GameOCR.exe",
+      "appSha256": "0a6915ad6fd13023a1fdb0e045b7378cd61b5eb8ead1e547e34337400f71d750",
+      "zipFiles": 86,
+      "nativeX64Binaries": 75,
+      "byteForByteSha256": "passed",
+      "imports": "passed",
+      "desktopReport": "docs/test-results/desktop-parallel-portable.json",
+      "desktopExecutedAt": "2026-10-16T07:07:51.02Z",
+      "desktopChecks": 5,
+      "desktopDevice": "cpu",
+      "desktopWorkerCount": 2,
+      "frontendWithoutVite": "passed"
+    }
+  ],
+  "installerRebuilt": false,
+  "historicalInstallerReport": "docs/test-results/package-validation.json",
+  "cleanWindowsTested": false,
+  "notes": [
+    "These two portable archives supersede the portable artifacts recorded on 2026-10-15. Use their listed checksum files; the old aggregate SHA256SUMS.txt describes the historical release.",
+    "Both desktop tests ran actual WGC OCR with two CPU Workers, configuration persistence, merged preview/exports, cancellation, model switching and normal application exit cleanup.",
+    "CUDA inference is covered by the separate native regression and parallel benchmark reports; these final packaged desktop runs selected CPU.",
+    "NSIS and MSI remain the previous build and do not include this parallel increment. No clean-machine installation or uninstallation was performed."
+  ]
+}

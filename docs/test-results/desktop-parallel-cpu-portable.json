@@ -1,0 +1,12 @@
+{
+  "executedAt": "2026-10-16T07:05:34.675Z",
+  "app": "artifacts\\GameOCR-windows-x64-cpu-portable\\GameOCR.exe",
+  "appSha256": "0a6915ad6fd13023a1fdb0e045b7378cd61b5eb8ead1e547e34337400f71d750",
+  "checks": [
+    "Parallel settings hidden by default, editable through UI and persisted across reload",
+    "Large real WGC frame: four tiles, one merged history entry, coordinates and JSON export, live worker statistics",
+    "Pause, stop and capture-generation invalidation discard in-flight batch without publishing late results",
+    "Unload removes every old process; disabling parallel restores one Worker on model switch",
+    "Normal application exit during parallel inference removes owned workers and session files"
+  ]
+}
