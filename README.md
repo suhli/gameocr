@@ -24,6 +24,18 @@ Windows 11 便携版直接使用系统现有 WebView2：不执行预安装检查
 
 本地导入时先选择规格，再依次选择 detector ONNX、recognizer ONNX、`ppocrv6_dict.txt`。导入会复制到当前模型目录、校验所有文件，并通过 CPU Worker 实际运行两个网络后才发布 Manifest。任一步失败会回滚本次副本。目录可在设置里修改；已有 GGUF Manifest 自动原地迁移到 v2，不重命名或重新下载权重。支持 ONNX 文件格式不代表支持任意 ONNX 网络，其他模型仍需专用 Adapter。
 
+### PP-OCRv6 可选并行
+
+先卸载模型，在 ONNX 设置中开启「启用多任务并行」，配置设备与实例数，再重新加载。关闭开关即可恢复原单 Worker 路径；GGUF 始终使用原路径。旧设置文件自动补充 `enableParallelInference=false`、`enableCpuWorkers=false`、`gpuWorkerCount=1`、`cpuWorkerCount=1`。
+
+- CPU：只使用 CPU 数量，例如 2；不需要打开「CPU 参与混合并行」。
+- CUDA：只使用 GPU 数量，例如 2；初始化失败直接报错。
+- Auto：GPU=1、勾选 CPU 参与、CPU=1 可混合运行；GPU=2 / CPU=2 可启动四实例，实际数量受资源检查影响。CUDA 全部不可用时保留 CPU 回退，并说明原因。
+
+GPU 最多 2 个实例，共用同一张显卡；CPU 最多 4 个且不超过逻辑核心数与配置的线程预算。多个 CPU Worker 分摊线程，模型常驻；调整数量前需卸载模型。GPU 加载前会检查可用显存，实际 OOM 仍会报告失败。切片按图像大小和内容选择，跨边界文字不确定时整图复验，可能比单 Worker 更慢。更多实例或混合 CPU/GPU 不保证加速。
+
+性能面板下方可展开端到端、传输、切片、排队、执行、合并、失败/重试和每个 Worker 状态。实测方法、六模式数据、准确率及限制见 [并行测试报告](docs/parallel-performance.md)；截图语料采用明确标注的合成画面。
+
 ### Android / 模拟器
 
 切换到 Android，设置已有的 `adb.exe` 路径，刷新设备并选择序列号。可输入模拟器提供的 `host:port` 地址连接；没有硬编码端口。设备断开会停止捕获并显示错误，恢复连接后刷新设备并重新开始。ADB 不随发行包携带。WGC 与 ADB 最终都产生同一种 RGB 帧。

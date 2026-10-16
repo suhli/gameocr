@@ -1,0 +1,10 @@
+{
+  "executedAt": "2026-10-16T01:49:35.336Z",
+  "checks": [
+    "Parallel settings hidden by default, editable through UI and persisted across reload",
+    "Large real WGC frame: four tiles, one merged history entry, coordinates and JSON export, live worker statistics",
+    "Pause, stop and capture-generation invalidation discard in-flight batch without publishing late results",
+    "Unload removes every old process; disabling parallel restores one Worker on model switch",
+    "Normal application exit during parallel inference removes owned workers and session files"
+  ]
+}

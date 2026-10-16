@@ -44,12 +44,16 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                     let text: Vec<u16> = line.encode_utf16().collect();
                     let _ = TextOutW(dc, 32, y, &text);
                 }
-                let mut rect=RECT::default();
-                let _=GetClientRect(hwnd,&mut rect);
-                if rect.right>=1280 {
-                    for (x,y,line) in [(rect.right-600,70,"Inventory: 12 / 40"),(60,rect.bottom-140,"Press ENTER to continue"),(rect.right-600,rect.bottom-140,"Score: 12345")] {
-                        let text:Vec<u16>=line.encode_utf16().collect();
-                        let _=TextOutW(dc,x,y,&text);
+                let mut rect = RECT::default();
+                let _ = GetClientRect(hwnd, &mut rect);
+                if rect.right >= 1280 {
+                    for (x, y, line) in [
+                        (rect.right - 600, 70, "Inventory: 12 / 40"),
+                        (60, rect.bottom - 140, "Press ENTER to continue"),
+                        (rect.right - 600, rect.bottom - 140, "Score: 12345"),
+                    ] {
+                        let text: Vec<u16> = line.encode_utf16().collect();
+                        let _ = TextOutW(dc, x, y, &text);
                     }
                 }
                 SelectObject(dc, old);
@@ -64,7 +68,15 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                         let _ = std::fs::remove_file(path);
                         match action.trim() {
                             "large" => {
-                                let _=SetWindowPos(hwnd,None,0,0,1880,1020,SWP_NOMOVE|SWP_NOZORDER);
+                                let _ = SetWindowPos(
+                                    hwnd,
+                                    None,
+                                    0,
+                                    0,
+                                    1880,
+                                    1020,
+                                    SWP_NOMOVE | SWP_NOZORDER,
+                                );
                             }
                             "resize" => {
                                 let _ = SetWindowPos(

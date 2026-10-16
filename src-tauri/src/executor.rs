@@ -119,6 +119,16 @@ pub struct Executor {
 fn elapsed(start: Instant) -> f64 {
     start.elapsed().as_secs_f64() * 1000.
 }
+fn vram_reserve(manifest: &gameocr_core::manifest::ModelManifest) -> u64 {
+    // Imported manifests have UUID IDs. Estimate from verified graph sizes,
+    // so an imported Medium model receives the same guard as the built-in one.
+    let bytes = manifest
+        .files
+        .iter()
+        .filter(|f| matches!(f.role.as_str(), "detector" | "recognizer"))
+        .fold(0u64, |total, file| total.saturating_add(file.size));
+    if bytes > 64 * 1024 * 1024 { 1024 } else { 512 }
+}
 fn explicit_config(mut config: EngineConfig, device: Device, threads: u32) -> EngineConfig {
     config.device = device;
     config.threads = threads;
@@ -244,11 +254,7 @@ impl Executor {
             for _ in 0..gpu {
                 let attempt = async {
                     if let Some(free) = free_vram().await {
-                        let reserve = if config.manifest.id.contains("medium") {
-                            1024
-                        } else {
-                            512
-                        };
+                        let reserve = vram_reserve(&config.manifest);
                         ensure!(
                             free >= reserve,
                             "可用显存 {free} MiB，低于新 GPU Worker 的 {reserve} MiB 安全余量"
@@ -598,6 +604,21 @@ impl Executor {
         result.metrics.execution = Some(metrics.clone());
         self.status.lock().last = Some(metrics);
         Ok(result)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn imported_models_keep_their_memory_guard() {
+        let mut models: Vec<gameocr_core::manifest::ModelManifest> =
+            serde_json::from_str(include_str!("../catalog/ppocrv6.json")).unwrap();
+        for (model, expected) in models.iter_mut().zip([512, 1024]) {
+            assert_eq!(vram_reserve(model), expected);
+            model.id = "import-opaque-id".into();
+            assert_eq!(vram_reserve(model), expected);
+        }
     }
 }
 

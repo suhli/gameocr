@@ -1,7 +1,7 @@
 {
-  "executedAt": "2026-10-15T02:34:25.084Z",
-  "app": "artifacts\\GameOCR-windows-x64-portable\\GameOCR.exe",
-  "appSha256": "46c17ae200e925b6088c40ec0968cebe80847ca3fbf9d334108977f6b166383c",
+  "executedAt": "2026-10-16T01:45:54.543Z",
+  "app": "target\\debug\\gameocr.exe",
+  "appSha256": "98fc69c02d0135a747ab4786718dff13b2571a7a141bd6ea94a35c6745fc0a2e",
   "checks": [
     "Multi-runtime catalog / verified files",
     "Actual CUDA initialization failure falls back to CPU",

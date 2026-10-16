@@ -45,6 +45,24 @@ Auto 顺序是 CUDA → CPU。CUDA 必须成功创建两个 Session、各执行�
 
 每次只执行一个请求。切换模型先关闭旧 Worker；卸载发 shutdown，等待最多 2 秒，必要时 kill 并 wait。单请求 180 秒超时后终止进程；退出标记每 50 ms 检查。异常进程、错误响应、EOF 不会把原生运行库异常传播为主 UI 进程崩溃。stdout 单响应上限 16 MiB；stderr 读取即分成最多 4096 字节的片段，只保留 128 片，避免没有换行的诊断导致无界分配。
 
+## 可选并行执行器
+
+`Service` 持有 `Executor`；内部 `Strategy::Sequential` 复用原 Worker/recognize 路径，`Strategy::Parallel` 持有 `WorkerPool`。只对 ONNX/ppocrv6 开启并行。具体检测、批量识别和 CUDA 配置仍在 Adapter，主进程不链接推理库。
+
+`ParallelConfig` 作为 settings.json 顶层字段持久化。默认关闭，CPU 与 CUDA 模式分别只启用对应类型；Auto 可显式混合或在 CUDA 不可用时回退。CPU 总线程预算按实例分摊，GPU Worker 的 CPU 侧线程设为 1；GPU 上限 2、CPU 上限 min(4, 逻辑核数, 线程预算)。启动 GPU 前检查 GPU0 可用显存，Small/Medium 最少分别需要 512/1024 MiB 余量；这是保守准入检查，不是精确峰值预测。显式 CUDA 任一实例加载失败便失败；Auto 可保留成功的实例并报告实际数量。卸载等待所有进程退出，之后才允许换配置。
+
+`gameocr-core/src/parallel.rs` 的 `FrameSplitter` 在至少 1280×720、至少两个 Worker、多个区域有足够对比度时生成 2×2 网格。接缝在中间 45–55% 区间寻找较低梯度位置，两侧各扩展 64 px。每块检测尺寸按原图比例向上取整到 32 的倍数，避免四次完整检测预算。小图、空白和局部稀疏图保留整图。此对比度检查不是额外文字检测，也不生成 OCR 文本。
+
+`WorkerPool` 的有界动态队列最多 4 个任务，每个 Worker 最多一个在途请求。每个实例先获得真实任务以估计毫秒/百万像素，之后用 EMA 更新速度；快实例完成后领取下一任务，已测出的慢实例在预计拖慢队列时等待。不同画面的文字量仍会影响预测，调度不保证单调加速。每帧源 RGB 通过 Arc 共享；每批 UUID 临时目录中按源行直接写独立 PPM 文件，不复制整块 RGB，不压缩 PNG；正常、失败和取消均由 RAII 清理。没有引入共享内存、额外预处理线程或不可靠 ROI 缓存。
+
+新增 `recognizeTile` / `tileResult` 消息携带 batchId、taskId、epoch、generation，外层保留 frame_id / timestamp。接收时校验全部身份与局部尺寸，模型身份也必须一致。旧 recognize 消息保持不变；并行需要新版 ONNX Worker。失效实例关闭，失败切片最多在另一个实例重试一次；最终成功任务数必须等于计划数，不能发布半帧。
+
+`ResultMerger` 恢复 bbox/polygon 到原图坐标，按位置交叠和文本相似性去重，优先完整长文本及其原始置信度，按文本行顺序输出。检测框触及内部边缘，或分片只有不足两个块时，受控重跑整图以保护跨界句子。整图复验也会计入端到端耗时与任务数。只生成一条最终 OcrResult/history，继续复用现有预览、Grounding 和导出。
+
+捕获仍采用一个最新待处理帧槽。新截图覆盖尚未受理的旧截图，不为每张新截图建立切片队列；已受理批次在同一 epoch/generation 内完成，避免高 FPS 下每批都被取消而永远无结果。暂停、停止、窗口切换、卸载会使批次失效：立即停止领取剩余任务，排空正在运行的原生请求，最终发布前再次检查 epoch/generation。退出标记会使请求终止子进程。此策略保留原先 latest-frame-wins 的受理语义。
+
+`Metrics.execution` 与 `Performance.execution` 增加传输、切片、最长排队、Worker 墙钟、合并、完整帧耗时、任务计数和每实例状态。并行原生阶段耗时是工作量之和，不能相加当成延迟。benchmark 的 wallMs 包括临时目录清理；UI 的 execution.endToEndMs 还包含生成对应结果 JPEG，均不含截图采集前的时间和浏览器绘制。原单 Worker totalMs 保持引擎时间；并行 totalMs 使用 Executor 墙钟。speedup 仅在独立 benchmark 找到相同图像/参数真实基线后计算，实时 UI 不编造基线。
+
 ## 捕获、取消和内存
 
 WGC 控制线程持有 free-threaded capture session；回调检查 generation、暂停和 FPS 限流后将 RGBA 转 RGB。ADB 使用可取消的 screencap，两者共用 Frame。HWND、PID、创建时间、窗口类和销毁代数用于目标身份检查，不能把重建窗口当作旧窗口。
@@ -89,7 +107,7 @@ Manifest v2 声明 ID、名称、runtime、adapter、版本、精度、能力、
 - `gameocr-core/{engine,manifest,worker,types}.rs`：契约、迁移、工厂、协议；`inference.rs`：原 GGUF 行为和 Adapter。
 - `gameocr-onnx/{lib,pipeline}.rs`：ORT 加载、EP 检查、图像处理、DB、透视、批量识别、CTC；`bin/`：Worker / CLI。
 - `src-tauri/src/{model,ocr,service,settings,commands}.rs`：模型存储、进程策略、调度接线与 IPC；`catalog/ppocrv6.json`：固定官方下载元数据。
-- `src/{App,components/ModelManager,components/SettingsPanel}.svelte` 与 `types.ts`：能力驱动 UI、导入、实际设备、置信度。
+- `src/{App,components/ModelManager,components/SettingsPanel,components/ExecutionStats}.svelte` 与 `src/types/index.ts`：能力驱动 UI、导入、实际设备、置信度与执行统计。
 - `scripts/`、CI：原生依赖收集、固定版本下载、真实模型/桌面测试、发行包检查。
 
-Metrics 的 preprocessingMs 包括图像解码、缩放、裁剪、识别张量准备；detectionMs / recognitionMs 是实际网络运行；parsingMs 包括 DB 与 CTC；inferenceMs 为两个网络耗时之和。totalMs 含引擎调用内全部耗时，不包括 WGC、发送前 PNG 编码和 UI JPEG。显存遥测仍显示不可用，不虚构占用值。
+Metrics 的 preprocessingMs 包括图像解码、缩放、裁剪、识别张量准备；detectionMs / recognitionMs 是实际网络运行；parsingMs 包括 DB 与 CTC；inferenceMs 为两个网络耗时之和。单 Worker 的 totalMs 含引擎调用内全部耗时，不包括 WGC、发送前 PNG 编码和 UI JPEG；并行与完整端到端口径见上文。实时 UI 显存遥测仍显示不可用；独立 benchmark 可采集 nvidia-smi 整卡采样，明确包含其他应用占用。

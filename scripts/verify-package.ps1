@@ -1,4 +1,4 @@
-param([string]$Directory = '', [ValidateSet('both','cpu')][string]$Backend = 'both')
+param([string]$Directory = '', [ValidateSet('both','cpu')][string]$Backend = 'both', [switch]$PortableOnly)
 $ErrorActionPreference = 'Stop'
 if (!$Directory) { $Directory = if ($Backend -eq 'cpu') { 'artifacts/GameOCR-windows-x64-cpu-portable' } else { 'artifacts/GameOCR-windows-x64-portable' } }
 $requiredFiles = @('GameOCR.exe','vcruntime140.dll','msvcp140.dll','workers/llamacpp/cpu/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','licenses/dependencies.txt','licenses/onnxruntime-LICENSE.txt')
@@ -31,12 +31,12 @@ try {
     if ($seen.Count -ne @(Get-ChildItem -LiteralPath $portableRoot -Recurse -File).Count) { throw 'ZIP file count differs from portable directory' }
     Write-Output "Verified $($seen.Count) ZIP entries byte-for-byte against the portable directory."
 } finally { $zip.Dispose() }
-$artifacts = if ($Backend -eq 'cpu') { @('GameOCR-windows-x64-cpu-portable.zip') } else { @('GameOCR-windows-x64-portable.zip','GameOCR-windows-x64-setup.exe','GameOCR-windows-x64.msi') }
+$artifacts = if ($Backend -eq 'cpu') { @('GameOCR-windows-x64-cpu-portable.zip') } elseif ($PortableOnly) { @('GameOCR-windows-x64-portable.zip') } else { @('GameOCR-windows-x64-portable.zip','GameOCR-windows-x64-setup.exe','GameOCR-windows-x64.msi') }
 $hashes = foreach ($name in $artifacts) {
     $hash = Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path 'artifacts' $name)
     "$($hash.Hash.ToLowerInvariant())  $name"
 }
-$hashFile = if ($Backend -eq 'cpu') { 'artifacts/SHA256SUMS-cpu.txt' } else { 'artifacts/SHA256SUMS.txt' }
+$hashFile = if ($Backend -eq 'cpu') { 'artifacts/SHA256SUMS-cpu.txt' } elseif ($PortableOnly) { 'artifacts/SHA256SUMS-portable.txt' } else { 'artifacts/SHA256SUMS.txt' }
 $hashes | Set-Content $hashFile -Encoding utf8
 Write-Output 'Runtime layout and release artifact hashes verified; this is not a clean-VM execution test.'
 node scripts/verify-native.mjs $Directory

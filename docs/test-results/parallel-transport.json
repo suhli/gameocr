@@ -1,0 +1,2910 @@
+{
+  "executedAt": "2026-10-16T02:01:17.045Z",
+  "source": "synthetic seeded low-contrast noise transport stress case, not a game screenshot",
+  "coordinateGroundTruth": "Font layout rectangles, not pixel-tight glyph segmentation",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "cpu": "AMD Ryzen 5 5600G with Radeon Graphics         ",
+    "logicalCores": 12,
+    "node": "v24.21.0"
+  },
+  "rounds": 5,
+  "warmups": 2,
+  "notes": [
+    "Corpus image decoding is excluded; frame transfer, splitting, queue, execution and merge are included.",
+    "GPU snapshots cover the entire device including unrelated applications.",
+    "Ground-truth boxes are font layout rectangles; coordinate IoU is approximate."
+  ],
+  "runs": [
+    {
+      "name": "cpu-1",
+      "batchSize": 6,
+      "detectionResize": 960,
+      "status": "passed",
+      "scenes": [
+        {
+          "name": "textured-hud",
+          "width": 1920,
+          "height": 1080,
+          "medianMs": 313.771,
+          "p95Ms": 326.44079999999997,
+          "framesPerSecond": 3.240784101231725,
+          "samples": [
+            {
+              "wallMs": 291.6432,
+              "execution": {
+                "batchId": 3,
+                "cpuTasks": 1,
+                "endToEndMs": 288.73720000000003,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0,
+                "queueWaitMs": 0,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0,
+                "tileCount": 1,
+                "transferMs": 19.4786,
+                "wholeFrameFallback": false,
+                "workerWallMs": 268.0517
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 333.4321,
+                  "completedTasks": 3,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52592,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 316.84839999999997,
+              "execution": {
+                "batchId": 4,
+                "cpuTasks": 1,
+                "endToEndMs": 314.2462,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0,
+                "queueWaitMs": 0,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0,
+                "tileCount": 1,
+                "transferMs": 18.1311,
+                "wholeFrameFallback": false,
+                "workerWallMs": 295.2344
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 323.882675,
+                  "completedTasks": 4,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52592,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 313.771,
+              "execution": {
+                "batchId": 5,
+                "cpuTasks": 1,
+                "endToEndMs": 311.1798,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0,
+                "queueWaitMs": 0,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0,
+                "tileCount": 1,
+                "transferMs": 23.4819,
+                "wholeFrameFallback": false,
+                "workerWallMs": 286.88039999999995
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 316.48222,
+                  "completedTasks": 5,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52592,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 294.13309999999996,
+              "execution": {
+                "batchId": 6,
+                "cpuTasks": 1,
+                "endToEndMs": 291.7783,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0,
+                "queueWaitMs": 0,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0,
+                "tileCount": 1,
+                "transferMs": 15.756499999999999,
+                "wholeFrameFallback": false,
+                "workerWallMs": 275.2208
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 309.6053166666667,
+                  "completedTasks": 6,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52592,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 326.44079999999997,
+              "execution": {
+                "batchId": 7,
+                "cpuTasks": 1,
+                "endToEndMs": 324.1597,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0,
+                "queueWaitMs": 0,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0,
+                "tileCount": 1,
+                "transferMs": 17.3174,
+                "wholeFrameFallback": false,
+                "workerWallMs": 305.95270000000005
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 309.08351428571433,
+                  "completedTasks": 7,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52592,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            }
+          ],
+          "comparableBaseline": {
+            "mode": "cpu-1",
+            "medianMs": 313.771,
+            "accuracy": {
+              "exactLineRecall": 1,
+              "locatedLineRecall": 1,
+              "characterErrorRate": 0,
+              "meanBoxIoU": 0.8196486741218537,
+              "meanCenterErrorPx": 7.118240361339899,
+              "unexpectedBlocks": 0
+            },
+            "speedup": 1
+          }
+        }
+      ],
+      "load": {
+        "coldStartMs": 325.18190000000004,
+        "device": "CPU",
+        "executor": {
+          "frameId": null,
+          "last": null,
+          "parallel": false,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 52592,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "message": null,
+        "type": "ready"
+      },
+      "resourcesBefore": {
+        "at": "2026-10-16T02:01:17.966Z",
+        "processes": [
+          {
+            "Id": 25252,
+            "ProcessName": "executor-bench",
+            "CPU": 0.046875,
+            "WorkingSet64": 6668288,
+            "PrivateMemorySize64": 1695744,
+            "PeakWorkingSet64": 6668288
+          },
+          {
+            "Id": 52592,
+            "ProcessName": "onnx-worker",
+            "CPU": 0.671875,
+            "WorkingSet64": 72646656,
+            "PrivateMemorySize64": 55975936,
+            "PeakWorkingSet64": 86347776
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 30, 2031, 4096"
+      },
+      "resourcesAfter": {
+        "at": "2026-10-16T02:01:21.060Z",
+        "processes": [
+          {
+            "Id": 25252,
+            "ProcessName": "executor-bench",
+            "CPU": 0.484375,
+            "WorkingSet64": 7299072,
+            "PrivateMemorySize64": 2174976,
+            "PeakWorkingSet64": 22163456
+          },
+          {
+            "Id": 52592,
+            "ProcessName": "onnx-worker",
+            "CPU": 8.375,
+            "WorkingSet64": 74137600,
+            "PrivateMemorySize64": 57421824,
+            "PeakWorkingSet64": 180596736
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 15, 2024, 4096"
+      },
+      "processCpuPercentOfMachine": 21.92583764274941,
+      "gpuDeviceWideSamples": [
+        "2026/10/16 10:01:18.065, 30, 2031",
+        "2026/10/16 10:01:19.073, 19, 2032",
+        "2026/10/16 10:01:20.086, 26, 2032"
+      ]
+    },
+    {
+      "name": "cpu-2",
+      "batchSize": 6,
+      "detectionResize": 960,
+      "status": "passed",
+      "scenes": [
+        {
+          "name": "textured-hud",
+          "width": 1920,
+          "height": 1080,
+          "medianMs": 210.696,
+          "p95Ms": 265.8064,
+          "framesPerSecond": 4.502102977321736,
+          "samples": [
+            {
+              "wallMs": 210.696,
+              "execution": {
+                "batchId": 3,
+                "cpuTasks": 4,
+                "endToEndMs": 206.50209999999998,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0133,
+                "queueWaitMs": 79.5076,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.3639,
+                "tileCount": 4,
+                "transferMs": 5.3834,
+                "wholeFrameFallback": false,
+                "workerWallMs": 199.8735
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8866460481913169,
+                "meanCenterErrorPx": 6.88738253502161,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    71,
+                    70,
+                    389,
+                    119
+                  ],
+                  "confidence": 0.9254185557365417,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 71,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 119
+                    },
+                    {
+                      "x": 71,
+                      "y": 119
+                    }
+                  ],
+                  "text": "Health: 100 /100"
+                },
+                {
+                  "bbox": [
+                    1250,
+                    81,
+                    1562,
+                    133
+                  ],
+                  "confidence": 0.9999542236328125,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1250,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 133
+                    },
+                    {
+                      "x": 1250,
+                      "y": 133
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    400,
+                    893
+                  ],
+                  "confidence": 0.9604945182800293,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 893
+                    },
+                    {
+                      "x": 82,
+                      "y": 893
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1177,
+                    870,
+                    1638,
+                    920
+                  ],
+                  "confidence": 0.9999191164970398,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1182,
+                      "y": 870
+                    },
+                    {
+                      "x": 1638,
+                      "y": 874
+                    },
+                    {
+                      "x": 1634,
+                      "y": 920
+                    },
+                    {
+                      "x": 1177,
+                      "y": 918
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 95.43353333333333,
+                  "completedTasks": 6,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52276,
+                  "state": "idle",
+                  "threads": 2
+                },
+                {
+                  "averageMs": 104.79548333333332,
+                  "completedTasks": 6,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 1,
+                  "pid": 52388,
+                  "state": "idle",
+                  "threads": 2
+                }
+              ]
+            },
+            {
+              "wallMs": 249.548,
+              "execution": {
+                "batchId": 4,
+                "cpuTasks": 4,
+                "endToEndMs": 246.4267,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0092,
+                "queueWaitMs": 120.949,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.2961,
+                "tileCount": 4,
+                "transferMs": 7.196,
+                "wholeFrameFallback": false,
+                "workerWallMs": 238.185
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8866460481913169,
+                "meanCenterErrorPx": 6.88738253502161,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    71,
+                    70,
+                    389,
+                    119
+                  ],
+                  "confidence": 0.9254185557365417,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 71,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 119
+                    },
+                    {
+                      "x": 71,
+                      "y": 119
+                    }
+                  ],
+                  "text": "Health: 100 /100"
+                },
+                {
+                  "bbox": [
+                    1250,
+                    81,
+                    1562,
+                    133
+                  ],
+                  "confidence": 0.9999542236328125,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1250,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 133
+                    },
+                    {
+                      "x": 1250,
+                      "y": 133
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    400,
+                    893
+                  ],
+                  "confidence": 0.9604945182800293,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 893
+                    },
+                    {
+                      "x": 82,
+                      "y": 893
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1177,
+                    870,
+                    1638,
+                    920
+                  ],
+                  "confidence": 0.9999191164970398,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1182,
+                      "y": 870
+                    },
+                    {
+                      "x": 1638,
+                      "y": 874
+                    },
+                    {
+                      "x": 1634,
+                      "y": 920
+                    },
+                    {
+                      "x": 1177,
+                      "y": 918
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 101.343825,
+                  "completedTasks": 8,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52276,
+                  "state": "idle",
+                  "threads": 2
+                },
+                {
+                  "averageMs": 103.96267499999999,
+                  "completedTasks": 8,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 1,
+                  "pid": 52388,
+                  "state": "idle",
+                  "threads": 2
+                }
+              ]
+            },
+            {
+              "wallMs": 181.6603,
+              "execution": {
+                "batchId": 5,
+                "cpuTasks": 4,
+                "endToEndMs": 177.5983,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0178,
+                "queueWaitMs": 83.1288,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.2809,
+                "tileCount": 4,
+                "transferMs": 5.6331999999999995,
+                "wholeFrameFallback": false,
+                "workerWallMs": 170.815
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8866460481913169,
+                "meanCenterErrorPx": 6.88738253502161,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    71,
+                    70,
+                    389,
+                    119
+                  ],
+                  "confidence": 0.9254185557365417,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 71,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 119
+                    },
+                    {
+                      "x": 71,
+                      "y": 119
+                    }
+                  ],
+                  "text": "Health: 100 /100"
+                },
+                {
+                  "bbox": [
+                    1250,
+                    81,
+                    1562,
+                    133
+                  ],
+                  "confidence": 0.9999542236328125,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1250,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 133
+                    },
+                    {
+                      "x": 1250,
+                      "y": 133
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    400,
+                    893
+                  ],
+                  "confidence": 0.9604945182800293,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 893
+                    },
+                    {
+                      "x": 82,
+                      "y": 893
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1177,
+                    870,
+                    1638,
+                    920
+                  ],
+                  "confidence": 0.9999191164970398,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1182,
+                      "y": 870
+                    },
+                    {
+                      "x": 1638,
+                      "y": 874
+                    },
+                    {
+                      "x": 1634,
+                      "y": 920
+                    },
+                    {
+                      "x": 1177,
+                      "y": 918
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 98.15224,
+                  "completedTasks": 10,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52276,
+                  "state": "idle",
+                  "threads": 2
+                },
+                {
+                  "averageMs": 97.65033,
+                  "completedTasks": 10,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 1,
+                  "pid": 52388,
+                  "state": "idle",
+                  "threads": 2
+                }
+              ]
+            },
+            {
+              "wallMs": 265.8064,
+              "execution": {
+                "batchId": 6,
+                "cpuTasks": 4,
+                "endToEndMs": 258.5965,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0174,
+                "queueWaitMs": 89.6261,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.41590000000000005,
+                "tileCount": 4,
+                "transferMs": 5.9419,
+                "wholeFrameFallback": false,
+                "workerWallMs": 251.32379999999998
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8866460481913169,
+                "meanCenterErrorPx": 6.88738253502161,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    71,
+                    70,
+                    389,
+                    119
+                  ],
+                  "confidence": 0.9254185557365417,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 71,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 119
+                    },
+                    {
+                      "x": 71,
+                      "y": 119
+                    }
+                  ],
+                  "text": "Health: 100 /100"
+                },
+                {
+                  "bbox": [
+                    1250,
+                    81,
+                    1562,
+                    133
+                  ],
+                  "confidence": 0.9999542236328125,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1250,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 133
+                    },
+                    {
+                      "x": 1250,
+                      "y": 133
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    400,
+                    893
+                  ],
+                  "confidence": 0.9604945182800293,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 893
+                    },
+                    {
+                      "x": 82,
+                      "y": 893
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1177,
+                    870,
+                    1638,
+                    920
+                  ],
+                  "confidence": 0.9999191164970398,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1182,
+                      "y": 870
+                    },
+                    {
+                      "x": 1638,
+                      "y": 874
+                    },
+                    {
+                      "x": 1634,
+                      "y": 920
+                    },
+                    {
+                      "x": 1177,
+                      "y": 918
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 101.31615000000001,
+                  "completedTasks": 12,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52276,
+                  "state": "idle",
+                  "threads": 2
+                },
+                {
+                  "averageMs": 102.31707499999999,
+                  "completedTasks": 12,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 1,
+                  "pid": 52388,
+                  "state": "idle",
+                  "threads": 2
+                }
+              ]
+            },
+            {
+              "wallMs": 202.88139999999999,
+              "execution": {
+                "batchId": 7,
+                "cpuTasks": 4,
+                "endToEndMs": 199.4646,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0162,
+                "queueWaitMs": 90.6979,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.3147,
+                "tileCount": 4,
+                "transferMs": 6.099600000000001,
+                "wholeFrameFallback": false,
+                "workerWallMs": 192.25519999999997
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8866460481913169,
+                "meanCenterErrorPx": 6.88738253502161,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    71,
+                    70,
+                    389,
+                    119
+                  ],
+                  "confidence": 0.9254185557365417,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 71,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 70
+                    },
+                    {
+                      "x": 389,
+                      "y": 119
+                    },
+                    {
+                      "x": 71,
+                      "y": 119
+                    }
+                  ],
+                  "text": "Health: 100 /100"
+                },
+                {
+                  "bbox": [
+                    1250,
+                    81,
+                    1562,
+                    133
+                  ],
+                  "confidence": 0.9999542236328125,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1250,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 133
+                    },
+                    {
+                      "x": 1250,
+                      "y": 133
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    400,
+                    893
+                  ],
+                  "confidence": 0.9604945182800293,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 841
+                    },
+                    {
+                      "x": 400,
+                      "y": 893
+                    },
+                    {
+                      "x": 82,
+                      "y": 893
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1177,
+                    870,
+                    1638,
+                    920
+                  ],
+                  "confidence": 0.9999191164970398,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1182,
+                      "y": 870
+                    },
+                    {
+                      "x": 1638,
+                      "y": 874
+                    },
+                    {
+                      "x": 1634,
+                      "y": 920
+                    },
+                    {
+                      "x": 1177,
+                      "y": 918
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 100.57167142857143,
+                  "completedTasks": 14,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 52276,
+                  "state": "idle",
+                  "threads": 2
+                },
+                {
+                  "averageMs": 99.11266428571427,
+                  "completedTasks": 14,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 1,
+                  "pid": 52388,
+                  "state": "idle",
+                  "threads": 2
+                }
+              ]
+            }
+          ],
+          "comparableBaseline": {
+            "mode": "cpu-1",
+            "medianMs": 313.771,
+            "accuracy": {
+              "exactLineRecall": 1,
+              "locatedLineRecall": 1,
+              "characterErrorRate": 0,
+              "meanBoxIoU": 0.8196486741218537,
+              "meanCenterErrorPx": 7.118240361339899,
+              "unexpectedBlocks": 0
+            },
+            "speedup": 1.4892119451721912
+          }
+        }
+      ],
+      "load": {
+        "coldStartMs": 541.5437,
+        "device": "CPU",
+        "executor": {
+          "frameId": null,
+          "last": null,
+          "parallel": true,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 52276,
+              "state": "idle",
+              "threads": 2
+            },
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 1,
+              "pid": 52388,
+              "state": "idle",
+              "threads": 2
+            }
+          ]
+        },
+        "message": "并行已启用：CUDA × 0 / CPU × 2；根据实测耗时动态分配",
+        "type": "ready"
+      },
+      "resourcesBefore": {
+        "at": "2026-10-16T02:01:22.166Z",
+        "processes": [
+          {
+            "Id": 10712,
+            "ProcessName": "executor-bench",
+            "CPU": 0.078125,
+            "WorkingSet64": 6823936,
+            "PrivateMemorySize64": 1916928,
+            "PeakWorkingSet64": 6823936
+          },
+          {
+            "Id": 52276,
+            "ProcessName": "onnx-worker",
+            "CPU": 0.375,
+            "WorkingSet64": 72417280,
+            "PrivateMemorySize64": 55468032,
+            "PeakWorkingSet64": 86188032
+          },
+          {
+            "Id": 52388,
+            "ProcessName": "onnx-worker",
+            "CPU": 0.359375,
+            "WorkingSet64": 71983104,
+            "PrivateMemorySize64": 55087104,
+            "PeakWorkingSet64": 85979136
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 18, 2024, 4096"
+      },
+      "resourcesAfter": {
+        "at": "2026-10-16T02:01:24.501Z",
+        "processes": [
+          {
+            "Id": 10712,
+            "ProcessName": "executor-bench",
+            "CPU": 0.34375,
+            "WorkingSet64": 7700480,
+            "PrivateMemorySize64": 2519040,
+            "PeakWorkingSet64": 22228992
+          },
+          {
+            "Id": 52276,
+            "ProcessName": "onnx-worker",
+            "CPU": 3.46875,
+            "WorkingSet64": 75276288,
+            "PrivateMemorySize64": 57962496,
+            "PeakWorkingSet64": 112017408
+          },
+          {
+            "Id": 52388,
+            "ProcessName": "onnx-worker",
+            "CPU": 3.390625,
+            "WorkingSet64": 73867264,
+            "PrivateMemorySize64": 56578048,
+            "PeakWorkingSet64": 111013888
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 24, 2031, 4096"
+      },
+      "processCpuPercentOfMachine": 22.807369735902927,
+      "gpuDeviceWideSamples": [
+        "2026/10/16 10:01:22.263, 18, 2031",
+        "2026/10/16 10:01:23.274, 29, 2032",
+        "2026/10/16 10:01:24.287, 24, 2031"
+      ]
+    },
+    {
+      "name": "cpu-1-raw",
+      "batchSize": 6,
+      "detectionResize": 960,
+      "status": "passed",
+      "scenes": [
+        {
+          "name": "textured-hud",
+          "width": 1920,
+          "height": 1080,
+          "medianMs": 261.94509999999997,
+          "p95Ms": 315.1934,
+          "framesPerSecond": 3.628147662997618,
+          "samples": [
+            {
+              "wallMs": 260.5379,
+              "execution": {
+                "batchId": 3,
+                "cpuTasks": 1,
+                "endToEndMs": 257.8796,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0103,
+                "queueWaitMs": 0.0048,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.035800000000000005,
+                "tileCount": 1,
+                "transferMs": 3.3903000000000003,
+                "wholeFrameFallback": false,
+                "workerWallMs": 253.3841
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 279.8224333333333,
+                  "completedTasks": 3,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 28608,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 259.7788,
+              "execution": {
+                "batchId": 4,
+                "cpuTasks": 1,
+                "endToEndMs": 257.02209999999997,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.008,
+                "queueWaitMs": 0.0054,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.0334,
+                "tileCount": 1,
+                "transferMs": 3.2992,
+                "wholeFrameFallback": false,
+                "workerWallMs": 252.72689999999997
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 273.046175,
+                  "completedTasks": 4,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 28608,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 280.6585,
+              "execution": {
+                "batchId": 5,
+                "cpuTasks": 1,
+                "endToEndMs": 277.89730000000003,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0085,
+                "queueWaitMs": 0.0043,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.0245,
+                "tileCount": 1,
+                "transferMs": 3.3230999999999997,
+                "wholeFrameFallback": false,
+                "workerWallMs": 273.7683
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 273.18708,
+                  "completedTasks": 5,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 28608,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 261.94509999999997,
+              "execution": {
+                "batchId": 6,
+                "cpuTasks": 1,
+                "endToEndMs": 259.28970000000004,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0126,
+                "queueWaitMs": 0.0047,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.034,
+                "tileCount": 1,
+                "transferMs": 3.6364,
+                "wholeFrameFallback": false,
+                "workerWallMs": 254.70920000000004
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 270.1039,
+                  "completedTasks": 6,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 28608,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            },
+            {
+              "wallMs": 315.1934,
+              "execution": {
+                "batchId": 7,
+                "cpuTasks": 1,
+                "endToEndMs": 311.6656,
+                "failedTasks": 0,
+                "gpuTasks": 0,
+                "mergeMs": 0.0104,
+                "queueWaitMs": 0.0088,
+                "retriedTasks": 0,
+                "speedup": null,
+                "splitMs": 0.055099999999999996,
+                "tileCount": 1,
+                "transferMs": 9.585099999999999,
+                "wholeFrameFallback": false,
+                "workerWallMs": 299.351
+              },
+              "accuracy": {
+                "exactLineRecall": 1,
+                "locatedLineRecall": 1,
+                "characterErrorRate": 0,
+                "meanBoxIoU": 0.8196486741218537,
+                "meanCenterErrorPx": 7.118240361339899,
+                "unexpectedBlocks": 0
+              },
+              "device": "CPU",
+              "blocks": [
+                {
+                  "bbox": [
+                    69,
+                    72,
+                    389,
+                    118
+                  ],
+                  "confidence": 0.936715841293335,
+                  "id": "block-0",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 69,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 72
+                    },
+                    {
+                      "x": 389,
+                      "y": 118
+                    },
+                    {
+                      "x": 69,
+                      "y": 118
+                    }
+                  ],
+                  "text": "Health: 100 ／100"
+                },
+                {
+                  "bbox": [
+                    1252,
+                    81,
+                    1562,
+                    131
+                  ],
+                  "confidence": 0.9999687671661377,
+                  "id": "block-1",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1252,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 81
+                    },
+                    {
+                      "x": 1562,
+                      "y": 131
+                    },
+                    {
+                      "x": 1252,
+                      "y": 131
+                    }
+                  ],
+                  "text": "Quest complete!"
+                },
+                {
+                  "bbox": [
+                    82,
+                    841,
+                    398,
+                    892
+                  ],
+                  "confidence": 0.9737139344215393,
+                  "id": "block-2",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 82,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 841
+                    },
+                    {
+                      "x": 398,
+                      "y": 892
+                    },
+                    {
+                      "x": 82,
+                      "y": 892
+                    }
+                  ],
+                  "text": "Inventory 12 / 40"
+                },
+                {
+                  "bbox": [
+                    1184,
+                    873,
+                    1632,
+                    915
+                  ],
+                  "confidence": 0.9987744688987732,
+                  "id": "block-3",
+                  "label": "text",
+                  "polygon": [
+                    {
+                      "x": 1184,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 873
+                    },
+                    {
+                      "x": 1632,
+                      "y": 915
+                    },
+                    {
+                      "x": 1184,
+                      "y": 915
+                    }
+                  ],
+                  "text": "Press ENTER to continue"
+                }
+              ],
+              "workers": [
+                {
+                  "averageMs": 274.27774285714287,
+                  "completedTasks": 7,
+                  "device": "CPU",
+                  "failedTasks": 0,
+                  "id": 0,
+                  "pid": 28608,
+                  "state": "idle",
+                  "threads": 4
+                }
+              ]
+            }
+          ],
+          "comparableBaseline": {
+            "mode": "cpu-1",
+            "medianMs": 313.771,
+            "accuracy": {
+              "exactLineRecall": 1,
+              "locatedLineRecall": 1,
+              "characterErrorRate": 0,
+              "meanBoxIoU": 0.8196486741218537,
+              "meanCenterErrorPx": 7.118240361339899,
+              "unexpectedBlocks": 0
+            },
+            "speedup": 1.1978502365572024
+          }
+        }
+      ],
+      "load": {
+        "coldStartMs": 321.75100000000003,
+        "device": "CPU",
+        "executor": {
+          "frameId": null,
+          "last": null,
+          "parallel": true,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 28608,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "message": "并行已启用：CUDA × 0 / CPU × 1；根据实测耗时动态分配",
+        "type": "ready"
+      },
+      "resourcesBefore": {
+        "at": "2026-10-16T02:01:25.500Z",
+        "processes": [
+          {
+            "Id": 25256,
+            "ProcessName": "executor-bench",
+            "CPU": 0.03125,
+            "WorkingSet64": 6696960,
+            "PrivateMemorySize64": 1683456,
+            "PeakWorkingSet64": 6696960
+          },
+          {
+            "Id": 28608,
+            "ProcessName": "onnx-worker",
+            "CPU": 0.625,
+            "WorkingSet64": 72609792,
+            "PrivateMemorySize64": 55951360,
+            "PeakWorkingSet64": 86188032
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 23, 2024, 4096"
+      },
+      "resourcesAfter": {
+        "at": "2026-10-16T02:01:28.248Z",
+        "processes": [
+          {
+            "Id": 25256,
+            "ProcessName": "executor-bench",
+            "CPU": 0.328125,
+            "WorkingSet64": 7262208,
+            "PrivateMemorySize64": 1925120,
+            "PeakWorkingSet64": 22126592
+          },
+          {
+            "Id": 28608,
+            "ProcessName": "onnx-worker",
+            "CPU": 8.15625,
+            "WorkingSet64": 73871360,
+            "PrivateMemorySize64": 57462784,
+            "PeakWorkingSet64": 180330496
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 21, 2028, 4096"
+      },
+      "processCpuPercentOfMachine": 23.738855531295485,
+      "gpuDeviceWideSamples": [
+        "2026/10/16 10:01:25.600, 23, 2024",
+        "2026/10/16 10:01:26.614, 28, 2031",
+        "2026/10/16 10:01:27.626, 21, 2031"
+      ]
+    }
+  ],
+  "engine": {
+    "manifest": {
+      "schemaVersion": 2,
+      "id": "ppocrv6-small",
+      "name": "PP-OCRv6 small",
+      "runtime": "onnx",
+      "adapter": "ppocrv6",
+      "version": "6-small",
+      "quantization": "FP32",
+      "capabilities": {
+        "plain": true,
+        "grounding": true,
+        "nativeCoordinates": true,
+        "confidence": true,
+        "generation": false
+      },
+      "files": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        }
+      ],
+      "source": "PaddlePaddle / Apache-2.0",
+      "parameters": {
+        "variant": "small",
+        "recognitionHeight": 48,
+        "dictionaryCharacters": 18708
+      },
+      "installed": true,
+      "imported": false
+    },
+    "directory": "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\test-models",
+    "device": "cpu",
+    "threads": 4,
+    "inference": {
+      "runtime": "onnx",
+      "parameters": {
+        "detectionThreshold": 0.2,
+        "boxThreshold": 0.45,
+        "unclipRatio": 1.4,
+        "recognitionThreshold": 0.5,
+        "batchSize": 6,
+        "detectionResize": 960
+      }
+    }
+  },
+  "binarySha256": {
+    "target/release/executor-bench.exe": "1432a04d73f12a267e47f85fb25fb8270a6ddae300b6b7a41a126f0414c0b4ab",
+    "src-tauri/resources/workers/onnx/cpu/onnx-worker.exe": "fc3f0e0c26ec7574172c99986db5ee3e0e370ab1bcb49d62449a6c770221f0d0",
+    "src-tauri/resources/workers/onnx/cuda/onnx-worker.exe": "6c14d90b5c7c5bae1264b79c3d4857ebf78277c7f019146c225df694c926cb84"
+  }
+}

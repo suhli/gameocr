@@ -13,19 +13,24 @@ export async function startExecutor(name,engine,parallel,resources=path.resolve(
   const executable=path.resolve(process.env.GAMEOCR_EXECUTOR_BENCH??'target/release/executor-bench.exe');
   const child=spawn(executable,[config],{windowsHide:true,stdio:['pipe','pipe','pipe']});
   let waiting,stderr='',ended=false;const buffered=[];
-  const exit=new Promise(resolve=>child.once('exit',code=>{ended=true;if(waiting){clearTimeout(waiting.timer);waiting.reject(Error('Executor exited '+code+': '+stderr));waiting=null;}resolve(code);}));
+  const exit=new Promise(resolve=>child.once('close',code=>{ended=true;if(waiting){clearTimeout(waiting.timer);waiting.reject(Error('Executor exited '+code+': '+stderr));waiting=null;}resolve(code);}));
   child.stderr.on('data',d=>stderr=(stderr+d).slice(-12000));
   child.on('error',e=>{if(waiting){clearTimeout(waiting.timer);waiting.reject(e);waiting=null;}});
+  child.stdin.on('error',e=>{if(waiting){clearTimeout(waiting.timer);waiting.reject(e);waiting=null;}});
   readline.createInterface({input:child.stdout}).on('line',line=>{let value;try{value=JSON.parse(line);}catch(e){value={type:'error',message:String(e)+': '+line.slice(0,500)};}if(waiting){clearTimeout(waiting.timer);waiting.resolve(value);waiting=null;}else buffered.push(value);});
   function next(){if(buffered.length)return Promise.resolve(buffered.shift());if(ended)return Promise.reject(Error('Executor has exited: '+stderr));if(waiting)throw Error('Only one host request may be in flight');return new Promise((resolve,reject)=>{waiting={resolve,reject,timer:setTimeout(()=>{waiting=null;reject(Error('Executor timeout: '+stderr));},420000)};});}
   const request=value=>{const response=next();child.stdin.write(JSON.stringify(value)+'\n');return response;};
   async function close(){
-    if(!ended){try{await request({type:'shutdown'});}catch{}child.stdin.end();}
-    const code=await Promise.race([exit,new Promise(r=>setTimeout(()=>r(null),5000))]);
+    if(!ended&&ready.type==='ready'){try{await request({type:'shutdown'});}catch{}child.stdin.end();}
+    let timer;
+    const code=await Promise.race([exit,new Promise(r=>{timer=setTimeout(()=>r(null),5000);})]);
+    clearTimeout(timer);
     if(code===null&&!ended){execFileSync('taskkill.exe',['/PID',String(child.pid),'/T','/F'],{windowsHide:true,stdio:'ignore'});await exit;}
     if(fs.existsSync(cache)&&fs.readdirSync(cache).length)throw Error('Executor left frame temporary files: '+cache);
   }
-  const ready=await next();return {child,ready,request,close,cache};
+  let ready;
+  try{ready=await next();}catch(error){if(child.pid&&!ended){try{execFileSync('taskkill.exe',['/PID',String(child.pid),'/T','/F'],{windowsHide:true,stdio:'ignore'});}catch{}}throw error;}
+  return {child,ready,request,close,cache};
 }
 export function resources(pids){
   let processes=null,gpu=null;

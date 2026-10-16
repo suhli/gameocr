@@ -80,6 +80,19 @@ node scripts/desktop-runtimes.mjs
 
 这些是重构前 GGUF 基线，不能当作新版 ONNX 30 分钟内存测试。更早约 700 秒中断的一轮仍按中断处理，不用它替代完整长测。原 README 中待完成的旧记录已根据现存报告纠正。
 
+## 可选并行增量验证（2026-10-16）
+
+本轮基于 `feature/multi-ocr-runtime` 的并行实现，未修改已有 CUDA 算法兼容设置。使用合成截图替代真实游戏画面，来源、完整六模式数据及优化取舍见 [并行报告](parallel-performance.md)。
+
+- Rust：core 16、desktop lib 14、ONNX pipeline 3 项通过；包含旧 settings/history 兼容、切片覆盖/检测预算、坐标/去重、Worker 协议边界与导入模型显存门槛。前端 svelte-check 0 错误/警告、Vitest 2 项与 Vite production build 通过。
+- 真实 Small/Medium CPU 8 + GTX1650 CUDA 8 例通过；原多 Runtime 桌面 12 项通过。本轮 GGUF Q8_0 在打开 ONNX 并行设置时仍走单 Worker，真实文字/坐标及空置信度回归通过。
+- [Executor 集成](test-results/parallel-integration.json) 12 项通过：两 CPU 常驻与分摊线程、空白/边界处理、取消后可复用、推理中终止本测试的 Worker 后由另一实例重试完整帧、CPU-only 目录 Auto 回退、显式 CUDA 错误、零 Worker 拒绝、四 CPU 线程预算、卸载清理。
+- CPU×2 持续运行实际 182.63 秒 / 216 帧。10 帧预热后，主进程与两个 Worker 私有内存合计约 117.2 MiB → 116.6 MiB（变化 -0.63 MiB）；每帧任务目录为空、完成后队列清空，所有测试拥有的 Worker 退出。此结果不是数小时压力测试。
+- [并行桌面](test-results/desktop-parallel.json) 5 组通过：设置 UI/持久化、实际 1866×1013 WGC 四片合并、对应预览与 JSON/PNG、暂停/停止/目标重选时拒绝迟到结果、卸载及切换回单 Worker、推理中正常关闭应用后子进程和本会话目录清空。
+- Release 应用构建通过。新加 `scripts/benchmark-parallel.mjs`、`scripts/test-parallel.mjs`、`scripts/desktop-parallel.mjs` 与开发专用 `executor-bench`；CI 接入 CPU 并行回归，但本轮没有远端 CI 执行记录。
+
+自动化脚本操作隔离的测试窗口与本测试拥有的进程。桌面测试每次使用独立数据目录，以避免旧的强制结束测试留下的会话影响正常退出校验。构建日志、截图与测试可执行文件保留于本机 `.cache`、`artifacts/validation/parallel-desktop`、`target`。
+
 ## 未验证和已知限制
 
 - RTX5060Ti / SM120、其他显卡，以及 CUDA12.8.1 配置的远端 GitHub Actions；目前硬件验证仅 GTX1650。
@@ -87,8 +100,8 @@ node scripts/desktop-runtimes.mjs
 - 本轮未重新验证真实 Android / 模拟器 ADB 捕获与断开重连；原测试中只枚举过 ADB，当时设备为空。WGC/ADB 实现未在此重构中替换。
 - DirectX/OpenGL/Vulkan 游戏、受保护或反作弊画面、HDR、多显示器不同 DPI；程序不绕过保护。
 - Q4_K_M、Q5_K_M、F16 的完整质量/性能对比；目录元数据保留，真实 GGUF 回归采用 Q8_0。
-- ONNX 长时压力和广泛准确率评估、任意角度/弯曲文本、竖排中日文、其他 ONNX/GGUF 架构。现 Adapter 只验证指定官方网络和完整字典。
+- ONNX 数小时压力和广泛真实游戏准确率评估、任意角度/弯曲文本、竖排中日文、其他 ONNX/GGUF 架构。三分钟合成语料检查不替代这些验证。现 Adapter 只验证指定官方网络和完整字典。
 - 模型列表每次扫描文件 SHA-256，大型 GGUF 或慢盘有等待时间；后台线程不会阻塞 UI 事件循环。
 - 大型 cuDNN/CUDA 运行库仍占较多发行空间，已跨 Runtime 共享一份；完整 ZIP、NSIS、MSI 均含 CPU/CUDA，另提供不含 NVIDIA 运行库的独立 CPU ZIP。CPU 包的 Auto 模式显示回退原因后使用 CPU，显式 CUDA 报告缺少 Worker。
 
-停止 OCR 立即取消结果发布，进入原生库的调用会完成或在 180 秒超时后终止。UI 显存遥测不可用；引擎 totalMs 不含捕获、传输前 PNG 编码、结果 JPEG 和 UI 绘制。
+停止 OCR 立即取消结果发布，进入原生库的调用会完成或在 180 秒超时后终止。UI 显存遥测不可用；单 Worker 引擎 totalMs 不含捕获、传输前 PNG 编码、结果 JPEG 和 UI 绘制。新增 execution.endToEndMs 包含帧传输、任务调度与合并，桌面值另含结果 JPEG；并行 totalMs 使用 Executor 墙钟，不能用各 Worker 阶段之和代替。
