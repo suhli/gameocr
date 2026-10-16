@@ -2,13 +2,15 @@
   import { onMount } from 'svelte';
   import { X,Settings2,FolderOpen } from '@lucide/svelte';
   import { Button } from '$lib/components/ui/button';
-  import type { Settings,ModelEntry } from '../types';
+  import type { Settings,ModelEntry,LearningSummary } from '../types';
   import { api } from '../services/api';
   let {settings,model,onClose,onSave,onError}:{settings:Settings;model?:ModelEntry;onClose:()=>void;onSave:(value:Settings)=>Promise<void>;onError:(e:unknown)=>void}=$props();
   // A settings dialog edits a snapshot; external changes must not overwrite unsaved edits.
   // svelte-ignore state_referenced_locally
   let draft=$state<Settings>(structuredClone($state.snapshot(settings)));let saving=$state(false);let error=$state('');let dialog:HTMLDialogElement;
   onMount(()=>dialog.showModal());
+  let learningStats=$state<LearningSummary|null>(null);let learningBusy=$state(false);
+  async function refreshLearning(clear=false){learningBusy=true;try{if(clear)await api.clearAdaptiveProfiles();learningStats=await api.adaptiveStatistics();}catch(e){error=String(e);onError(e);}finally{learningBusy=false;}}
   async function save(){saving=true;error='';try{await onSave(draft);onClose();}catch(e){error=String(e);onError(e);}finally{saving=false;}}
 </script>
 <dialog bind:this={dialog} oncancel={onClose}>
@@ -28,15 +30,28 @@
       <div class="fields"><label>Detection Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.detectionThreshold}/></label><label>Box Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.boxThreshold}/></label></div>
       <div class="fields"><label>Unclip Ratio<input type="number" min="0.1" max="5" step="0.1" bind:value={draft.onnx.unclipRatio}/></label><label>识别置信度阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.recognitionThreshold}/></label></div>
       <div class="fields"><label>识别 Batch Size<input type="number" min="1" max="32" bind:value={draft.onnx.batchSize}/></label><label>检测最长边 (px)<input type="number" min="32" max="2048" step="32" bind:value={draft.onnx.detectionResize}/></label></div>
-      <label class="check"><input type="checkbox" bind:checked={draft.enableParallelInference}/> 启用多任务并行</label>
-      <p>关闭时恢复原来的单 Worker 推理。并行按截图内容自适应切片；速度取决于实际设备和文字布局。</p>
-      {#if draft.enableParallelInference}
+      <label>OCR 执行策略<select bind:value={draft.executionMode}><option value="single">单 Worker</option><option value="manual">手动并行</option><option value="adaptive">自适应优化</option></select></label>
+      <p>单 Worker 保持原有设备选择和完整识别；手动并行使用指定实例。自适应根据传统视觉特征与本机历史选择 CPU 策略，速度以实际端到端耗时为准。</p>
+      {#if draft.executionMode==='manual'}
         {#if draft.device==='auto'}<label class="check"><input type="checkbox" bind:checked={draft.enableCpuWorkers}/> CPU 参与混合并行</label>{/if}
         <div class="fields">
           <label>GPU Worker 数量<input type="number" min={draft.device==='cuda'?1:0} max="2" step="1" disabled={draft.device==='cpu'} bind:value={draft.gpuWorkerCount}/></label>
           <label>CPU Worker 数量<input type="number" min={draft.device==='cpu'?1:0} max="4" step="1" disabled={draft.device==='cuda'||(draft.device==='auto'&&!draft.enableCpuWorkers)} bind:value={draft.cpuWorkerCount}/></label>
         </div>
         <p>{draft.device==='cpu'?'CPU 模式只启动 CPU Worker，无需启用混合开关。':draft.device==='cuda'?'CUDA 模式只启动 GPU Worker，加载失败会报错。':'Auto 按以上配置混合调度；GPU 不可用时仍保留 CPU 回退。'} GPU 最多 2 个实例；CPU 最多为逻辑核心数与 4 中的较小值。CPU 线程预算会在多个实例之间分摊；更多 Worker 不保证更快。</p>
+      {:else if draft.executionMode==='adaptive'}
+        <label class="check"><input type="checkbox" bind:checked={draft.adaptive.learning}/> 启用在线学习</label>
+        <label class="check"><input type="checkbox" disabled={!draft.adaptive.learning} bind:checked={draft.adaptive.exploration}/> 允许低频策略探索</label>
+        <div class="fields"><label>最大 CPU Worker 数<input type="number" min="1" max="2" step="1" bind:value={draft.adaptive.maxCpuWorkers}/></label><label>最大 GPU Worker 数<input type="number" min="0" max="0" disabled bind:value={draft.adaptive.maxGpuWorkers}/></label></div>
+        <p>初期仅选择 CPU×1 或 CPU×2，保留设置的总线程预算。Auto 在自适应模式下仅使用 CPU；显式 CUDA 需要切换为其他策略。GPU 自适应尚未开放。探索最多每 20 次合适机会一次，并有冷却与负载限制；切换模型实例会增加本帧延迟。关闭学习后只读取历史。</p>
+        <div class="row"><Button disabled={learningBusy} onclick={()=>refreshLearning()}>查看学习统计</Button><Button disabled={learningBusy} onclick={()=>refreshLearning(true)}>清除已学习的性能记录</Button></div>
+        {#if learningStats}<div class="learning-stats" aria-label="自适应学习统计">
+          <p>工作负载类别 {learningStats.classes} · CPU×1 {learningStats.selections['cpu-single']??0} 次 · CPU×2 {learningStats.selections['cpu-parallel-2']??0} 次</p>
+          <p>成功探索 {learningStats.successfulExplorations} / {learningStats.explorations} · 切换 {learningStats.switches} · 整图复验 {learningStats.fallbacks} · 失败 {learningStats.failedFrames}</p>
+          <p>最近端到端均值 {learningStats.recentLatencyMs==null?'—':`${learningStats.recentLatencyMs.toFixed(0)} ms`}。仅保存有上限的特征摘要和性能统计，不保存截图或识别文字。</p>
+          {#if learningStats.recovered}<p>历史文件无效，已恢复安全默认值。</p>{/if}
+          {#if learningStats.persistenceError}<p role="alert">{learningStats.persistenceError}</p>{/if}
+        </div>{/if}
       {/if}
       {/if}
     </section>

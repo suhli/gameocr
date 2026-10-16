@@ -1,6 +1,7 @@
 use crate::{
+    adaptive::{manager::ExecutionStrategyManager, persistence::ProfileRepository},
     capture::{CaptureManager, CaptureShared, Frame, Preview, preview},
-    executor::{Cancellation, Executor, ExecutorStatus, SharedStatus},
+    executor::{Cancellation, ExecutorStatus, SharedStatus},
     model::{ModelEntry, ModelManager},
     ocr::resource_root,
     settings::{Settings, data_dir},
@@ -62,7 +63,8 @@ pub struct Service {
     pub selected: Mutex<Option<WindowInfo>>,
     pub models: Arc<ModelManager>,
     pub model_status: Mutex<ModelStatus>,
-    executor: tokio::sync::Mutex<Option<Executor>>,
+    executor: tokio::sync::Mutex<Option<ExecutionStrategyManager>>,
+    pub adaptive_profiles: Arc<ProfileRepository>,
     executor_status: RwLock<Option<SharedStatus>>,
     pub lifecycle: tokio::sync::Mutex<()>,
     pub continuous: AtomicBool,
@@ -112,6 +114,7 @@ impl Service {
                 message: None,
             }),
             executor: tokio::sync::Mutex::new(None),
+            adaptive_profiles: ProfileRepository::open(&data_dir().join("adaptive-profiles.json")),
             executor_status: RwLock::new(None),
             lifecycle: tokio::sync::Mutex::new(()),
             continuous: AtomicBool::new(false),
@@ -158,7 +161,8 @@ impl Service {
         }
         Ok(())
     }
-    pub fn update_settings(&self, settings: Settings) -> Result<()> {
+    pub fn update_settings(&self, mut settings: Settings) -> Result<()> {
+        settings.normalize();
         let _transition = self
             .lifecycle
             .try_lock()
@@ -183,7 +187,9 @@ impl Service {
                     && old.temperature == settings.temperature
                     && old.max_image_edge == settings.max_image_edge
                     && old.onnx == settings.onnx
-                    && old.parallel == settings.parallel),
+                    && old.parallel == settings.parallel
+                    && old.selected_mode() == settings.selected_mode()
+                    && old.adaptive == settings.adaptive),
             "更改推理参数前请卸载模型"
         );
         let capture_active =
@@ -249,10 +255,13 @@ impl Service {
             entry.capabilities.supports(settings.mode),
             "模型不支持当前识别模式"
         );
-        let loaded = Executor::load(
+        let loaded = ExecutionStrategyManager::load(
             &resource_root(&self.app)?,
             settings.engine_config(entry, settings.device)?,
             &settings.parallel,
+            settings.selected_mode(),
+            settings.adaptive.clone(),
+            self.adaptive_profiles.clone(),
             self.shutdown.clone(),
         )
         .await?;
@@ -349,6 +358,7 @@ impl Service {
                 && epoch == service.ocr_epoch.load(Ordering::Acquire)
                 && generation == service.shared.generation.load(Ordering::Acquire)
         });
+        let mut learning = None;
         let outcome: Result<OcrResult> = async {
             let mut executor = self.executor.lock().await;
             let result = executor
@@ -356,6 +366,7 @@ impl Service {
                 .ok_or_else(|| anyhow::anyhow!("模型工作程序不可用"))?
                 .recognize(frame.clone(), settings.mode, &self.cache_dir, cancel)
                 .await;
+            learning = executor.as_mut().and_then(|e| e.take_learning());
             if executor.as_ref().is_some_and(|e| !e.available()) {
                 *executor = None;
             }
@@ -381,6 +392,9 @@ impl Service {
                     || generation != self.shared.generation.load(Ordering::Acquire)
                 {
                     return Ok(());
+                }
+                if let Some(event) = learning.take() {
+                    self.adaptive_profiles.commit(event);
                 }
                 self.detector.lock().commit(&frame.image);
                 *self.recognized_frame.lock() = Some(frame);
@@ -422,6 +436,16 @@ impl Service {
                     self.continuous.store(false, Ordering::Release);
                 }
                 if current {
+                    {
+                        let _gate = self.shared.transition.lock();
+                        if epoch == self.ocr_epoch.load(Ordering::Acquire)
+                            && generation == self.shared.generation.load(Ordering::Acquire)
+                        {
+                            if let Some(event) = learning.take() {
+                                self.adaptive_profiles.commit(event);
+                            }
+                        }
+                    }
                     let _ = self.app.emit("ocr-error", format!("{e:#}"));
                     self.set_ocr_status("error");
                     return Err(e);
@@ -518,6 +542,8 @@ impl Service {
             worker.shutdown().await;
         }
         // Only this process's application-owned session directory is removed.
+        let profiles = self.adaptive_profiles.clone();
+        let _ = tokio::task::spawn_blocking(move || profiles.flush()).await;
         let _ = std::fs::remove_dir_all(&self.cache_dir);
     }
     pub fn list_models(&self) -> Result<Vec<ModelEntry>> {

@@ -6,10 +6,10 @@ export function engineConfig(device='cpu',batchSize=6,detectionResize=960,model=
   const directory=path.resolve('.cache/test-models');
   return {manifest:JSON.parse(fs.readFileSync(path.join(directory,model+'.json'),'utf8')),directory,device,threads:4,inference:{runtime:'onnx',parameters:{detectionThreshold:0.2,boxThreshold:0.45,unclipRatio:1.4,recognitionThreshold:0.5,batchSize,detectionResize}}};
 }
-export async function startExecutor(name,engine,parallel,resources=path.resolve('src-tauri/resources')){
+export async function startExecutor(name,engine,parallel,resources=path.resolve('src-tauri/resources'),options={}){
   const root=path.resolve('.cache/executor-runs',name);fs.mkdirSync(root,{recursive:true});
   const config=path.join(root,'config.json');const cache=path.join(root,'frames');
-  fs.writeFileSync(config,JSON.stringify({resources,engine,parallel,cache}));
+  fs.writeFileSync(config,JSON.stringify({resources,engine,parallel,cache,...options}));
   const executable=path.resolve(process.env.GAMEOCR_EXECUTOR_BENCH??'target/release/executor-bench.exe');
   const child=spawn(executable,[config],{windowsHide:true,stdio:['pipe','pipe','pipe']});
   let waiting,stderr='',ended=false;const buffered=[];

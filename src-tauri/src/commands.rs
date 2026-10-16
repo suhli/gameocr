@@ -11,6 +11,23 @@ use tauri::Emitter;
 use tauri::State;
 type AppState<'a> = State<'a, Arc<Service>>;
 type Reply<T> = Result<T, String>;
+#[tauri::command]
+pub fn get_adaptive_statistics(
+    state: AppState<'_>,
+) -> gameocr_core::adaptive::profiles::LearningSummary {
+    state.adaptive_profiles.summary()
+}
+#[tauri::command]
+pub async fn clear_adaptive_profiles(state: AppState<'_>) -> Reply<()> {
+    let profiles = state.adaptive_profiles.clone();
+    tokio::task::spawn_blocking(move || {
+        profiles.clear();
+        profiles.flush()
+    })
+    .await
+    .map_err(err)?
+    .map_err(err)
+}
 fn err(e: impl std::fmt::Display) -> String {
     e.to_string()
 }

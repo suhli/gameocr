@@ -1,7 +1,16 @@
 //! Developer-only NDJSON driver for the exact executor used by the desktop.
 use anyhow::{Context, Result};
-use gameocr_app::executor::{Cancellation, Executor};
+use gameocr_app::{
+    adaptive::{
+        manager::ExecutionStrategyManager,
+        persistence::{LearningEvent, ProfileRepository},
+    },
+    executor::Cancellation,
+};
 use gameocr_core::{
+    adaptive::{
+        AdaptiveConfig, ExecutionMode, StrategyId, features::FrameAnalyzer, profiles::Observation,
+    },
     engine::EngineConfig,
     parallel::{FrameInput, ParallelConfig},
     types::{OcrMode, now_ms},
@@ -26,6 +35,11 @@ struct Config {
     #[serde(default)]
     parallel: ParallelConfig,
     cache: PathBuf,
+    #[serde(default)]
+    execution_mode: Option<ExecutionMode>,
+    #[serde(default)]
+    adaptive: AdaptiveConfig,
+    profiles: Option<PathBuf>,
 }
 #[derive(Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
@@ -41,6 +55,23 @@ enum Request {
         delay_ms: u64,
     },
     Status,
+    Analyze {
+        image: PathBuf,
+    },
+    Observe {
+        image: PathBuf,
+        strategy: StrategyId,
+        #[serde(rename = "latencyMs")]
+        latency_ms: f64,
+        blocks: usize,
+        fallback: bool,
+        retries: u32,
+        #[serde(rename = "qualityRisk")]
+        quality_risk: bool,
+    },
+    Statistics,
+    ClearProfiles,
+    FlushProfiles,
     Shutdown,
 }
 async fn emit(value: serde_json::Value) -> Result<()> {
@@ -59,10 +90,26 @@ async fn main() -> Result<()> {
     let config: Config = serde_json::from_slice(&std::fs::read(path)?)?;
     let closing = Arc::new(AtomicBool::new(false));
     let start = Instant::now();
-    let mut executor = match Executor::load(
+    let profile_path = config
+        .profiles
+        .clone()
+        .unwrap_or_else(|| config.cache.with_file_name("adaptive-profiles.json"));
+    let profiles = ProfileRepository::open(&profile_path);
+    let execution_mode =
+        config
+            .execution_mode
+            .unwrap_or(if config.parallel.enable_parallel_inference {
+                ExecutionMode::Manual
+            } else {
+                ExecutionMode::Single
+            });
+    let mut executor = match ExecutionStrategyManager::load(
         &config.resources,
         config.engine,
         &config.parallel,
+        execution_mode,
+        config.adaptive,
+        profiles.clone(),
         closing.clone(),
     )
     .await
@@ -83,6 +130,62 @@ async fn main() -> Result<()> {
         if matches!(request, Request::Status) {
             emit(json!({"type":"status","executor":executor.status.lock().clone()})).await?;
             continue;
+        }
+        match &request {
+            Request::Analyze { image } => {
+                let image = image::open(image)?.to_rgb8();
+                let start = Instant::now();
+                let features = FrameAnalyzer::default().analyze(&image);
+                emit(json!({"type":"features","features":features,"analysisMs":start.elapsed().as_secs_f64()*1000.})).await?;
+                continue;
+            }
+            Request::Observe {
+                image,
+                strategy,
+                latency_ms,
+                blocks,
+                fallback,
+                retries,
+                quality_risk,
+            } => {
+                let features = FrameAnalyzer::default().analyze(&image::open(image)?.to_rgb8());
+                profiles.commit(LearningEvent {
+                    generation: profiles.generation(),
+                    key: executor.fingerprint.clone(),
+                    features,
+                    strategy: *strategy,
+                    observation: Observation {
+                        latency_ms: *latency_ms,
+                        success: true,
+                        fallback: *fallback,
+                        retries: *retries,
+                        blocks: *blocks,
+                        quality_risk: *quality_risk,
+                    },
+                    now: now_ms(),
+                    exploring: false,
+                    switched: false,
+                    total_ms: *latency_ms,
+                });
+                emit(json!({"type":"observed","summary":profiles.summary()})).await?;
+                continue;
+            }
+            Request::Statistics => {
+                emit(json!({"type":"statistics","summary":profiles.summary(),"fingerprint":executor.fingerprint})).await?;
+                continue;
+            }
+            Request::ClearProfiles => {
+                profiles.clear();
+                profiles.flush()?;
+                emit(json!({"type":"cleared"})).await?;
+                continue;
+            }
+            Request::FlushProfiles => {
+                profiles.flush()?;
+                emit(json!({"type":"flushed"})).await?;
+                continue;
+            }
+            _ => {}
         }
         let (path, frame_id, cancel_delay) = match request {
             Request::Recognize { image, frame_id } => (image, frame_id, None),
@@ -115,10 +218,15 @@ async fn main() -> Result<()> {
             timer.abort();
         }
         let wall = start.elapsed().as_secs_f64() * 1000.;
+        if let Some(event) = executor.take_learning() {
+            profiles.commit(event);
+        }
+        executor.status.lock().learning = Some(profiles.summary());
         let status = executor.status.lock().clone();
         match result {Ok(result)=>emit(json!({"type":"result","result":result,"wallMs":wall,"executor":status})).await?,Err(error)=>emit(json!({"type":"error","phase":"recognize","message":format!("{error:#}"),"wallMs":wall,"executor":status})).await?}
     }
     executor.shutdown().await;
+    profiles.flush()?;
     closing.store(true, Ordering::Release);
     emit(json!({"type":"closed","executor":executor.status.lock().clone()})).await?;
     Ok(())

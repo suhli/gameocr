@@ -1,10 +1,11 @@
 import { invoke,isTauri } from '@tauri-apps/api/core';
 import { listen,type UnlistenFn } from '@tauri-apps/api/event';
 import { open,save,confirm } from '@tauri-apps/plugin-dialog';
-import type { WindowInfo,Preview,ModelEntry,ModelStatus,Settings,Performance,Snapshot,CaptureStatus,OcrStatus,AdbDevice,DownloadProgress } from '../types';
+import type { WindowInfo,Preview,ModelEntry,ModelStatus,Settings,Performance,Snapshot,CaptureStatus,OcrStatus,AdbDevice,DownloadProgress,LearningSummary } from '../types';
 export const native=isTauri();
 function call<T>(command:string,args?:Record<string,unknown>):Promise<T>{if(!native)return Promise.reject(new Error('请通过 GameOCR 桌面应用运行，浏览器预览无法访问本机捕获和模型。'));return invoke<T>(command,args);}
 export const api={
+  adaptiveStatistics:()=>call<LearningSummary>('get_adaptive_statistics'),clearAdaptiveProfiles:()=>call<void>('clear_adaptive_profiles'),
   windows:(showAll=false)=>call<WindowInfo[]>('list_windows',{showAll}),selectWindow:(id:string)=>call<WindowInfo>('select_window',{id}),
   adbDevices:()=>call<AdbDevice[]>('list_adb_devices'),connectAdb:(address:string)=>call<string>('connect_adb',{address}),
   startCapture:()=>call<void>('start_capture'),pauseCapture:()=>call<void>('pause_capture'),resumeCapture:()=>call<void>('resume_capture'),stopCapture:()=>call<void>('stop_capture'),preview:()=>call<Preview|null>('get_capture_preview'),

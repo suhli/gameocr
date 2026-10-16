@@ -80,6 +80,7 @@ pub struct ExecutionMetrics {
     pub whole_frame_fallback: bool,
     // Filled only by the benchmark when an identical-input baseline exists.
     pub speedup: Option<f64>,
+    pub adaptive: Option<crate::adaptive::AdaptiveMetrics>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -173,7 +174,7 @@ impl FrameSplitter {
     }
 }
 
-fn quiet_seam(image: &RgbImage, vertical: bool) -> u32 {
+pub fn quiet_seam(image: &RgbImage, vertical: bool) -> u32 {
     let (length, cross) = if vertical {
         image.dimensions()
     } else {

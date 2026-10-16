@@ -20,6 +20,9 @@ pub struct Settings {
     pub onnx: gameocr_core::engine::OnnxConfig,
     #[serde(flatten)]
     pub parallel: gameocr_core::parallel::ParallelConfig,
+    #[serde(default)]
+    pub execution_mode: Option<gameocr_core::adaptive::ExecutionMode>,
+    pub adaptive: gameocr_core::adaptive::AdaptiveConfig,
     pub model_dir: PathBuf,
     pub adb_path: String,
     pub adb_serial: String,
@@ -45,6 +48,8 @@ impl Default for Settings {
             max_image_edge: 1280,
             onnx: Default::default(),
             parallel: Default::default(),
+            execution_mode: Some(Default::default()),
+            adaptive: Default::default(),
             model_dir: data_dir().join("models"),
             adb_path: "adb".into(),
             adb_serial: String::new(),
@@ -69,6 +74,21 @@ pub fn data_dir() -> PathBuf {
         .join("GameOCR")
 }
 impl Settings {
+    pub fn selected_mode(&self) -> gameocr_core::adaptive::ExecutionMode {
+        use gameocr_core::adaptive::ExecutionMode;
+        self.execution_mode
+            .unwrap_or(if self.parallel.enable_parallel_inference {
+                ExecutionMode::Manual
+            } else {
+                ExecutionMode::Single
+            })
+    }
+    pub fn normalize(&mut self) {
+        let mode = self.selected_mode();
+        self.execution_mode = Some(mode);
+        self.parallel.enable_parallel_inference =
+            mode == gameocr_core::adaptive::ExecutionMode::Manual;
+    }
     pub fn engine_config(
         &self,
         manifest: gameocr_core::manifest::ModelManifest,
@@ -101,10 +121,18 @@ impl Settings {
 
     pub fn validate(&self) -> Result<()> {
         self.onnx.validate()?;
-        self.parallel.validate(
+        let mut parallel = self.parallel.clone();
+        parallel.enable_parallel_inference =
+            self.selected_mode() == gameocr_core::adaptive::ExecutionMode::Manual;
+        parallel.validate(
             self.device,
             std::thread::available_parallelism().map_or(1, |n| n.get()),
         )?;
+        // Resource settings are global; enforce CPU/Auto only when loading ONNX
+        // Adaptive so a previous ONNX choice never changes GGUF's CUDA behavior.
+        if self.selected_mode() == gameocr_core::adaptive::ExecutionMode::Adaptive {
+            self.adaptive.validate(Device::Cpu)?;
+        }
         ensure!(
             (1..=60).contains(&self.capture_fps),
             "捕获频率必须为 1–60 FPS"
@@ -148,8 +176,9 @@ impl Settings {
         if !path.exists() {
             return Ok(Self::default());
         }
-        let value: Self = serde_json::from_slice(&std::fs::read(path)?)
+        let mut value: Self = serde_json::from_slice(&std::fs::read(path)?)
             .context("设置文件损坏，请恢复或重命名 settings.json")?;
+        value.normalize();
         value.validate()?;
         Ok(value)
     }
@@ -180,6 +209,29 @@ pub fn atomic_json(path: &Path, value: &impl Serialize) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn execution_mode_migration_is_opt_in() {
+        use gameocr_core::adaptive::ExecutionMode;
+        for (json, expected) in [
+            (r#"{}"#, ExecutionMode::Single),
+            (r#"{"enableParallelInference":true}"#, ExecutionMode::Manual),
+            (
+                r#"{"enableParallelInference":true,"executionMode":"single"}"#,
+                ExecutionMode::Single,
+            ),
+        ] {
+            let mut s: Settings = serde_json::from_str(json).unwrap();
+            s.normalize();
+            assert_eq!(s.selected_mode(), expected);
+            assert_eq!(
+                s.parallel.enable_parallel_inference,
+                expected == ExecutionMode::Manual
+            );
+            let saved = serde_json::to_value(&s).unwrap();
+            assert_eq!(saved["adaptive"]["maxCpuWorkers"], 2);
+            assert_eq!(saved["adaptive"]["maxGpuWorkers"], 0);
+        }
+    }
     #[test]
     fn persist_and_validate() {
         let dir = tempfile::tempdir().unwrap();

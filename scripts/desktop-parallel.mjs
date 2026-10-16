@@ -17,12 +17,12 @@ try{
   const page=await until(()=>browser.contexts()[0]?.pages().find(p=>/1420|tauri.localhost|tauri:\/\//.test(p.url())));
   await page.getByRole('heading',{name:/窗口列表/}).waitFor();
   invoke=(command,args={})=>page.evaluate(({command,args})=>window.__TAURI_INTERNALS__.invoke(command,args),{command,args});
-  await invoke('unload_model');let settings={...await invoke('get_settings'),modelDir:path.resolve('.cache/test-models'),device:'cpu',threads:4,changeDetection:false,ocrIntervalMs:100,captureFps:20,enableParallelInference:false,cpuWorkerCount:1};await invoke('update_settings',{settings});
+  await invoke('unload_model');let settings={...await invoke('get_settings'),modelDir:path.resolve('.cache/test-models'),device:'cpu',threads:4,changeDetection:false,ocrIntervalMs:100,captureFps:20,executionMode:'single',enableParallelInference:false,cpuWorkerCount:1};await invoke('update_settings',{settings});
   await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();
   await page.locator('select').filter({has:page.getByRole('option',{name:'PP-OCRv6 small · 已下载',exact:true})}).selectOption('ppocrv6-small');
   await page.getByRole('button',{name:'打开设置'}).click();
   assert.equal(await page.getByLabel('CPU Worker 数量').count(),0);
-  await page.getByLabel('启用多任务并行',{exact:true}).check();await page.getByLabel('CPU Worker 数量').fill('2');
+  await page.getByLabel('OCR 执行策略',{exact:true}).selectOption('manual');await page.getByLabel('CPU Worker 数量').fill('2');
   await page.getByRole('button',{name:'保存设置',exact:true}).click();
   await until(async()=>!(await page.locator('dialog').count()));
   settings=await invoke('get_settings');assert.equal(settings.enableParallelInference,true);assert.equal(settings.cpuWorkerCount,2);
@@ -49,8 +49,8 @@ try{
   checks.push('Pause, stop and capture-generation invalidation discard in-flight batch without publishing late results');
   const children=()=>JSON.parse(execFileSync('powershell.exe',['-NoProfile','-Command',`ConvertTo-Json -Compress -InputObject @((Get-CimInstance Win32_Process -Filter "ParentProcessId=${app.pid} AND Name='onnx-worker.exe'").ProcessId | Where-Object { $_ })`],{windowsHide:true,encoding:'utf8'}).trim()||'[]');
   assert.equal(children().length,2);await invoke('unload_model');assert.equal(children().length,0);
-  settings={...settings,enableParallelInference:false};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-medium'});assert.equal(children().length,1);await invoke('unload_model');assert.equal(children().length,0);checks.push('Unload removes every old process; disabling parallel restores one Worker on model switch');
-  await invoke('update_settings',{settings:{...settings,enableParallelInference:true}});await invoke('load_model',{id:'ppocrv6-small'});const owned=children();assert.equal(owned.length,2);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
+  settings={...settings,executionMode:'single',enableParallelInference:false};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-medium'});assert.equal(children().length,1);await invoke('unload_model');assert.equal(children().length,0);checks.push('Unload removes every old process; disabling parallel restores one Worker on model switch');
+  await invoke('update_settings',{settings:{...settings,executionMode:'manual',enableParallelInference:true}});await invoke('load_model',{id:'ppocrv6-small'});const owned=children();assert.equal(owned.length,2);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
   const pendingExit=invoke('recognize_once').catch(()=>{});await delay(30);await invoke('plugin:window|close',{label:'main'}).catch(()=>{});await until(()=>app.exitCode!==null);await pendingExit;assert.equal(app.exitCode,0);invoke=null;
   const remaining=execFileSync('powershell.exe',['-NoProfile','-Command',`Get-Process -Id @(${owned.join(',')}) -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id; exit 0`],{windowsHide:true,encoding:'utf8'}).trim();assert.equal(remaining,'');assert.deepEqual(fs.readdirSync(path.join(dataDir,'sessions')),[]);checks.push('Normal application exit during parallel inference removes owned workers and session files');
   fs.writeFileSync(process.env.GAMEOCR_PARALLEL_DESKTOP_REPORT??'docs/test-results/desktop-parallel.json',JSON.stringify({executedAt:new Date().toISOString(),app:path.relative(process.cwd(),binary),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks},null,2)+'\n');console.log('Passed '+checks.length+' real Tauri parallel checks.');

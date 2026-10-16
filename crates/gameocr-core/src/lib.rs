@@ -1,3 +1,4 @@
+pub mod adaptive;
 pub mod change;
 pub mod engine;
 pub mod grounding;

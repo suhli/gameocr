@@ -32,6 +32,9 @@ pub struct WorkerStatus {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExecutorStatus {
+    #[serde(default)]
+    pub execution_mode: gameocr_core::adaptive::ExecutionMode,
+    pub learning: Option<gameocr_core::adaptive::profiles::LearningSummary>,
     pub parallel: bool,
     pub queued_tasks: usize,
     pub frame_id: Option<u64>,
@@ -55,7 +58,7 @@ impl Cancellation {
     pub fn never() -> Self {
         Self::new(0, || true)
     }
-    fn cancelled(&self) -> bool {
+    pub fn cancelled(&self) -> bool {
         !(self.valid)()
     }
 }

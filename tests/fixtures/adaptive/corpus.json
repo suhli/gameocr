@@ -1,0 +1,411 @@
+{
+  "scenarios": [
+    {
+      "name": "heldout-hud",
+      "height": 1080,
+      "group": "known-layout-new-text",
+      "width": 1920,
+      "groundTruth": [
+        {
+          "bbox": [
+            74,
+            74,
+            385.5269775390625,
+            128.9033203125
+          ],
+          "text": "Health: 88 / 100"
+        },
+        {
+          "bbox": [
+            1254,
+            84,
+            1558.9957275390625,
+            138.9033203125
+          ],
+          "text": "Quest updated!"
+        },
+        {
+          "bbox": [
+            84,
+            844,
+            417.5513916015625,
+            898.9033203125
+          ],
+          "text": "Inventory 18 / 40"
+        },
+        {
+          "bbox": [
+            1184,
+            874,
+            1654.0396728515625,
+            928.9033203125
+          ],
+          "text": "Press SPACE to continue"
+        }
+      ],
+      "image": "heldout-hud.png"
+    },
+    {
+      "name": "heldout-dialogue",
+      "height": 1080,
+      "group": "known-layout-new-text",
+      "width": 1920,
+      "groundTruth": [
+        {
+          "bbox": [
+            284,
+            844,
+            1049.3447265625,
+            904.6826171875
+          ],
+          "text": "The journey begins in a distant land."
+        },
+        {
+          "bbox": [
+            284,
+            924,
+            729.30078125,
+            976.013671875
+          ],
+          "text": "Press SPACE to continue"
+        }
+      ],
+      "image": "heldout-dialogue.png"
+    },
+    {
+      "name": "heldout-menu",
+      "height": 1080,
+      "group": "known-layout-new-text",
+      "width": 1920,
+      "groundTruth": [
+        {
+          "bbox": [
+            84,
+            54,
+            522.0100708007812,
+            103.1240234375
+          ],
+          "text": "Menu option 1 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            149,
+            522.0100708007812,
+            198.1240234375
+          ],
+          "text": "Menu option 2 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            244,
+            522.0100708007812,
+            293.1240234375
+          ],
+          "text": "Menu option 3 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            339,
+            522.0100708007812,
+            388.1240234375
+          ],
+          "text": "Menu option 4 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            434,
+            522.0100708007812,
+            483.1240234375
+          ],
+          "text": "Menu option 5 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            529,
+            522.0100708007812,
+            578.1240234375
+          ],
+          "text": "Menu option 6 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            624,
+            522.0100708007812,
+            673.1240234375
+          ],
+          "text": "Menu option 7 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            719,
+            522.0100708007812,
+            768.1240234375
+          ],
+          "text": "Menu option 8 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            814,
+            522.0100708007812,
+            863.1240234375
+          ],
+          "text": "Menu option 9 - Controls"
+        },
+        {
+          "bbox": [
+            84,
+            909,
+            542.5462036132812,
+            958.1240234375
+          ],
+          "text": "Menu option 10 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            54,
+            1542.0100708007812,
+            103.1240234375
+          ],
+          "text": "Menu option 1 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            149,
+            1542.0100708007812,
+            198.1240234375
+          ],
+          "text": "Menu option 2 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            244,
+            1542.0100708007812,
+            293.1240234375
+          ],
+          "text": "Menu option 3 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            339,
+            1542.0100708007812,
+            388.1240234375
+          ],
+          "text": "Menu option 4 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            434,
+            1542.0100708007812,
+            483.1240234375
+          ],
+          "text": "Menu option 5 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            529,
+            1542.0100708007812,
+            578.1240234375
+          ],
+          "text": "Menu option 6 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            624,
+            1542.0100708007812,
+            673.1240234375
+          ],
+          "text": "Menu option 7 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            719,
+            1542.0100708007812,
+            768.1240234375
+          ],
+          "text": "Menu option 8 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            814,
+            1542.0100708007812,
+            863.1240234375
+          ],
+          "text": "Menu option 9 - Controls"
+        },
+        {
+          "bbox": [
+            1104,
+            909,
+            1562.5462036132812,
+            958.1240234375
+          ],
+          "text": "Menu option 10 - Controls"
+        }
+      ],
+      "image": "heldout-menu.png"
+    },
+    {
+      "name": "style-transfer",
+      "height": 1080,
+      "group": "different-style-similar-workload",
+      "width": 1920,
+      "groundTruth": [
+        {
+          "bbox": [
+            70,
+            110,
+            621.07421875,
+            164.9033203125
+          ],
+          "text": "游戏任务开始 GAME OCR 200"
+        },
+        {
+          "bbox": [
+            1130,
+            110,
+            1467.287109375,
+            164.9033203125
+          ],
+          "text": "繁體中文 遊戲世界"
+        },
+        {
+          "bbox": [
+            70,
+            810,
+            497.12890625,
+            864.9033203125
+          ],
+          "text": "日本語 こんにちは 世界"
+        },
+        {
+          "bbox": [
+            1130,
+            810,
+            1441.5269775390625,
+            864.9033203125
+          ],
+          "text": "Health: 80 / 100"
+        }
+      ],
+      "image": "style-transfer.png"
+    },
+    {
+      "name": "novel-center",
+      "height": 1080,
+      "group": "unseen-layout",
+      "width": 1920,
+      "groundTruth": [
+        {
+          "bbox": [
+            730,
+            210,
+            1139.1197509765625,
+            273.572265625
+          ],
+          "text": "NEW ADVENTURE"
+        },
+        {
+          "bbox": [
+            650,
+            360,
+            1096.162109375,
+            412.013671875
+          ],
+          "text": "Choose your destination"
+        },
+        {
+          "bbox": [
+            710,
+            490,
+            1019.791015625,
+            542.013671875
+          ],
+          "text": "Mountain village"
+        },
+        {
+          "bbox": [
+            690,
+            620,
+            1051.48828125,
+            672.013671875
+          ],
+          "text": "Return to the forest"
+        },
+        {
+          "bbox": [
+            840,
+            780,
+            1013.6484375,
+            832.013671875
+          ],
+          "text": "Continue"
+        }
+      ],
+      "image": "novel-center.png"
+    },
+    {
+      "name": "heldout-boundary",
+      "height": 1080,
+      "group": "known-layout-new-text",
+      "width": 1920,
+      "groundTruth": [
+        {
+          "bbox": [
+            300,
+            495,
+            1450.55126953125,
+            549.9033203125
+          ],
+          "text": "CROSS BOUNDARY: every character should remain complete"
+        },
+        {
+          "bbox": [
+            80,
+            100,
+            454.7613525390625,
+            154.9033203125
+          ],
+          "text": "Top left checkpoint"
+        },
+        {
+          "bbox": [
+            1250,
+            850,
+            1720.9302978515625,
+            904.9033203125
+          ],
+          "text": "Bottom right checkpoint"
+        }
+      ],
+      "image": "heldout-boundary.png"
+    },
+    {
+      "name": "heldout-blank",
+      "height": 1080,
+      "group": "unseen-background",
+      "width": 1920,
+      "groundTruth": [],
+      "image": "heldout-blank.png"
+    }
+  ],
+  "source": "Held-out synthetic System.Drawing layouts with new text, positions and polarity; not real games",
+  "coordinateGroundTruth": "Font layout rectangles; approximate, not glyph-tight",
+  "learningCorpus": "../parallel/corpus.json"
+}

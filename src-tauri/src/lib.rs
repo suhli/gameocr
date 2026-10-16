@@ -1,3 +1,4 @@
+pub mod adaptive;
 mod capture;
 mod commands;
 pub mod executor;
@@ -45,6 +46,8 @@ pub fn run() {
             commands::unload_model,
             commands::delete_model,
             commands::get_settings,
+            commands::get_adaptive_statistics,
+            commands::clear_adaptive_profiles,
             commands::update_settings,
             commands::get_performance,
             commands::get_model_status,
