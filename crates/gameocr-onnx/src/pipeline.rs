@@ -134,6 +134,10 @@ pub fn detect_boxes(
             boxes.push(q);
         }
     }
+    reading_order(&mut boxes);
+    Ok(boxes)
+}
+pub fn reading_order(boxes: &mut [Quad]) {
     // Paddle reading order: y first, then left to right within a 10px line.
     boxes.sort_by(|a, b| a[0].y.total_cmp(&b[0].y).then(a[0].x.total_cmp(&b[0].x)));
     for i in 1..boxes.len() {
@@ -146,7 +150,6 @@ pub fn detect_boxes(
             j -= 1;
         }
     }
-    Ok(boxes)
 }
 pub fn crop(image: &RgbImage, q: &Quad) -> Result<RgbImage> {
     let w = distance(q[0], q[1])

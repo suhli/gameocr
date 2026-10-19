@@ -120,12 +120,19 @@ impl ExecutionStrategyManager {
         let executor = Executor::load(root, config.clone(), &plan, closing.clone()).await?;
         let status = executor.status.clone();
         status.lock().execution_mode = mode;
-        let message = if mode == ExecutionMode::Adaptive {
+        let message = if mode == ExecutionMode::Adaptive
+            && matches!(&config.inference, gameocr_core::engine::RuntimeConfig::Onnx(p) if p.requires_whole_frame())
+        {
+            Some("自适应优化：局部／小字检测仅使用 CPU×1，保留完整线程预算".into())
+        } else if mode == ExecutionMode::Adaptive {
             Some("自适应优化：CPU 候选，按需切换；GPU 探索未启用".into())
         } else {
             executor.message.clone()
         };
-        let can_parallel = options.max_cpu_workers >= 2 && config.threads >= 2 && logical >= 2;
+        let can_parallel = options.max_cpu_workers >= 2
+            && config.threads >= 2
+            && logical >= 2
+            && !matches!(&config.inference, gameocr_core::engine::RuntimeConfig::Onnx(p) if p.requires_whole_frame());
         Ok(Self {
             device: executor.device.clone(),
             switch_estimate: executor.load_ms.max(100.),

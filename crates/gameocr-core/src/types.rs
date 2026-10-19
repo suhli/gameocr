@@ -31,6 +31,8 @@ pub struct Metrics {
     #[serde(default)]
     pub recognition_ms: Option<f64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub detection_regions: Option<usize>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub execution: Option<crate::parallel::ExecutionMetrics>,
 }
 

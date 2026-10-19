@@ -1,4 +1,5 @@
 pub mod pipeline;
+pub mod regions;
 use anyhow::{Context, Result, ensure};
 use gameocr_core::{
     engine::{EngineConfig, OcrCapabilities, OcrEngine, OnnxConfig, RuntimeConfig},
@@ -191,35 +192,64 @@ impl PaddleOcrAdapter {
     ) -> Result<OcrResult> {
         let source = image.dimensions();
         ensure!(source.0 > 0 && source.1 > 0, "Empty image");
-        let ratio = (detection_resize as f64 / source.0.max(source.1) as f64).min(1.);
-        let w = ((source.0 as f64 * ratio / 32.).round() as u32 * 32).max(32);
-        let h = ((source.1 as f64 * ratio / 32.).round() as u32 * 32).max(32);
-        let resized = image::imageops::resize(&image, w, h, image::imageops::FilterType::Triangle);
-        let plane = (w * h) as usize;
-        let mut input = vec![0.; plane * 3];
-        for (i, pixel) in resized.pixels().enumerate() {
-            for c in 0..3 {
-                input[c * plane + i] = (pixel[2 - c] as f32 / 255. - [0.485, 0.456, 0.406][c])
-                    / [0.229, 0.224, 0.225][c];
-            }
-        }
+        let regions = regions::plan(source, &self.config, detection_resize)?;
+        let scope = regions[0];
         let mut preprocessing_ms = ms(total);
-        let det_start = Instant::now();
-        let outputs = self.detector.run(ort::inputs![Tensor::from_array((
-            [1usize, 3, h as usize, w as usize],
-            input
-        ))?])?;
-        let detection_ms = ms(det_start);
+        let mut detection_ms = 0.;
+        let mut parsing_ms = 0.;
+        let mut candidates = Vec::new();
+        for (index, region) in regions.iter().copied().enumerate() {
+            let prep = Instant::now();
+            let ratio = (detection_resize as f64 / region.w.max(region.h) as f64).min(1.);
+            let w = ((region.w as f64 * ratio / 32.).round() as u32 * 32).max(32);
+            let h = ((region.h as f64 * ratio / 32.).round() as u32 * 32).max(32);
+            let view = image::imageops::crop_imm(&image, region.x, region.y, region.w, region.h);
+            let resized =
+                image::imageops::resize(&*view, w, h, image::imageops::FilterType::Triangle);
+            let plane = (w * h) as usize;
+            let mut input = vec![0.; plane * 3];
+            for (i, pixel) in resized.pixels().enumerate() {
+                for c in 0..3 {
+                    input[c * plane + i] = (pixel[2 - c] as f32 / 255. - [0.485, 0.456, 0.406][c])
+                        / [0.229, 0.224, 0.225][c];
+                }
+            }
+            preprocessing_ms += ms(prep);
+            let det_start = Instant::now();
+            let outputs = self.detector.run(ort::inputs![Tensor::from_array((
+                [1usize, 3, h as usize, w as usize],
+                input
+            ))?])?;
+            detection_ms += ms(det_start);
+            let post = Instant::now();
+            let (shape, prob) = outputs[0].try_extract_tensor::<f32>()?;
+            ensure!(
+                shape.len() == 4 && shape[0] == 1 && shape[1] == 1 && shape[2] > 0 && shape[3] > 0,
+                "Invalid DB detector output"
+            );
+            for q in pipeline::detect_boxes(
+                prob,
+                shape[3] as u32,
+                shape[2] as u32,
+                (region.w, region.h),
+                &self.config,
+            )? {
+                let quad = region.restore(q);
+                candidates.push(regions::Candidate {
+                    quad,
+                    clipped: region.clipped(&quad, scope),
+                    region: index,
+                });
+            }
+            parsing_ms += ms(post);
+        }
         let post = Instant::now();
-        let (shape, prob) = outputs[0].try_extract_tensor::<f32>()?;
-        ensure!(
-            shape.len() == 4 && shape[0] == 1 && shape[1] == 1 && shape[2] > 0 && shape[3] > 0,
-            "Invalid DB detector output"
-        );
-        let boxes =
-            pipeline::detect_boxes(prob, shape[3] as u32, shape[2] as u32, source, &self.config)?;
-        drop(outputs);
-        let mut parsing_ms = ms(post);
+        let boxes = if regions.len() > 1 {
+            regions::merge(candidates)
+        } else {
+            candidates.into_iter().map(|c| c.quad).collect()
+        };
+        parsing_ms += ms(post);
         let mut recognition_ms = 0.;
         let mut blocks = Vec::new();
         // Sort crop indices by aspect ratio for bounded, efficient batches. Keep
@@ -322,6 +352,7 @@ impl PaddleOcrAdapter {
                 total_ms: ms(total),
                 detection_ms: Some(detection_ms),
                 recognition_ms: Some(recognition_ms),
+                detection_regions: Some(regions.len()),
                 execution: None,
             },
             device: self.device.clone(),

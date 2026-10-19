@@ -8,7 +8,7 @@ export interface Snapshot{result:OcrResult;preview:Preview;}
 export interface OcrCapabilities{plain:boolean;grounding:boolean;nativeCoordinates:boolean;confidence:boolean;generation:boolean;}
 export interface ModelFile{role:string;path:string;size:number;sha256:string;url?:string|null;}
 export interface ModelEntry{id:string;name:string;schemaVersion:number;runtime:string;adapter:string;version:string;quantization:string;capabilities:OcrCapabilities;files:ModelFile[];source:string;parameters:Record<string,unknown>|null;installed:boolean;imported:boolean;}
-export interface OnnxConfig{detectionThreshold:number;boxThreshold:number;unclipRatio:number;recognitionThreshold:number;batchSize:number;detectionResize:number;}
+export interface OnnxConfig{detectionThreshold:number;boxThreshold:number;unclipRatio:number;recognitionThreshold:number;batchSize:number;detectionResize:number;preserveSmallText:boolean;detectionRegion:[number,number,number,number]|null;}
 export interface ModelStatus{status:'unloaded'|'loading'|'ready'|'unloading'|'error';id:string|null;device:string|null;loadMs:number|null;message:string|null;}
 export interface ParallelConfig{enableParallelInference:boolean;enableCpuWorkers:boolean;gpuWorkerCount:number;cpuWorkerCount:number;}
 export type ExecutionMode='single'|'manual'|'adaptive';

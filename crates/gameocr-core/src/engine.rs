@@ -50,6 +50,10 @@ pub struct OnnxConfig {
     pub recognition_threshold: f32,
     pub batch_size: usize,
     pub detection_resize: u32,
+    /// Detect overlapping regions at source resolution, then recognize once.
+    pub preserve_small_text: bool,
+    /// Normalized [left, top, width, height] in the original captured frame.
+    pub detection_region: Option<[f64; 4]>,
 }
 impl Default for OnnxConfig {
     fn default() -> Self {
@@ -60,10 +64,15 @@ impl Default for OnnxConfig {
             recognition_threshold: 0.5,
             batch_size: 6,
             detection_resize: 960,
+            preserve_small_text: false,
+            detection_region: None,
         }
     }
 }
 impl OnnxConfig {
+    pub fn requires_whole_frame(&self) -> bool {
+        self.preserve_small_text || self.detection_region.is_some()
+    }
     pub fn validate(&self) -> Result<()> {
         for value in [
             self.detection_threshold,
@@ -87,6 +96,22 @@ impl OnnxConfig {
             (32..=2048).contains(&self.detection_resize),
             "Detection resize must be in 32..2048"
         );
+        ensure!(
+            !self.preserve_small_text || self.detection_resize >= 256,
+            "Small-text detection requires a detection edge of at least 256 px"
+        );
+        if let Some([x, y, w, h]) = self.detection_region {
+            ensure!(
+                [x, y, w, h].iter().all(|v| v.is_finite())
+                    && x >= 0.
+                    && y >= 0.
+                    && w > 0.
+                    && h > 0.
+                    && x + w <= 1.00000001
+                    && y + h <= 1.00000001,
+                "Detection region must be [left, top, width, height] inside 0..1"
+            );
+        }
         Ok(())
     }
 }
@@ -394,6 +419,26 @@ mod tests {
         assert!(c.validate().is_err());
         c.detection_threshold = 0.3;
         c.batch_size = usize::MAX;
+        assert!(c.validate().is_err());
+    }
+    #[test]
+    fn roi_validation_and_legacy_defaults() {
+        let mut c: OnnxConfig = serde_json::from_str("{}").unwrap();
+        assert!(!c.requires_whole_frame());
+        for roi in [
+            [0.9, 0., 0.2, 1.],
+            [-0.1, 0., 1., 1.],
+            [0., 0., 0., 1.],
+            [0., f64::NAN, 1., 1.],
+        ] {
+            c.detection_region = Some(roi);
+            assert!(c.validate().is_err());
+        }
+        c.detection_region = Some([0.5, 0.7, 0.5, 0.3]);
+        assert!(c.validate().is_ok());
+        assert!(c.requires_whole_frame());
+        c.preserve_small_text = true;
+        c.detection_resize = 32;
         assert!(c.validate().is_err());
     }
 }
