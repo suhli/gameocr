@@ -1,0 +1,40 @@
+{
+  "executedAt": "2026-10-19T08:29:58.4163997Z",
+  "status": "passed",
+  "appSha256": "b42a55008efae8481aa2b9882750d0919e7448bf47824db3c777150b1380df36",
+  "packages": [
+    {
+      "backend": "cpu",
+      "archive": "artifacts\\GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 16864172,
+      "sha256": "dfa2b493f15b9c7c64819683c885956c68f01b26409457402dd3e502054b9a50",
+      "verifiedFileCount": 45,
+      "verifiedNativeImports": 35,
+      "appSha256": "b42a55008efae8481aa2b9882750d0919e7448bf47824db3c777150b1380df36"
+    },
+    {
+      "backend": "both",
+      "archive": "artifacts\\GameOCR-windows-x64-portable.zip",
+      "bytes": 1718102751,
+      "sha256": "9d59e93cee5e79acdff25baadedbfe43c60ffd37309312185108f5c8c072077f",
+      "verifiedFileCount": 86,
+      "verifiedNativeImports": 75,
+      "appSha256": "b42a55008efae8481aa2b9882750d0919e7448bf47824db3c777150b1380df36"
+    }
+  ],
+  "desktopReports": [
+    "docs/test-results/desktop-adaptive-cpu-portable.json",
+    "docs/test-results/desktop-adaptive-portable.json",
+    "docs/test-results/adaptive-desktop-runtimes.json"
+  ],
+  "checks": [
+    "Both ZIPs checked byte-for-byte against packaged directories",
+    "Native x64 imports resolve using package paths and system32",
+    "Both packages passed eight real adaptive/parallel WGC desktop checks",
+    "CPU-only package passed twelve real model/runtime desktop checks"
+  ],
+  "limitations": [
+    "NSIS/MSI were not rebuilt; existing installers predate Adaptive",
+    "Not a clean Windows VM or RTX5060Ti validation"
+  ]
+}

@@ -80,7 +80,7 @@ try {
   report.cancelSwitch={status:'passed',switchedDuringCancellation:after.workers[0]?.pid!==cancelDriver.ready.executor.workers[0]?.pid,cancelled,subsequentFrame:recovered.result.metrics.execution};
 }finally{await cancelDriver?.close();save();}
 const driftProfile=path.join(root,'load-change.json');fs.copyFileSync(seed,driftProfile);
-report.loadChange={notes:['Finite CPU contention followed by recovery; reported separately from throughput comparisons. Recalibration is reported only when actually observed.'],samples:[]};
+report.loadChange={notes:['Finite CPU contention followed by recovery; reported separately from throughput comparisons. Recalibration is reported only when actually observed.'],initialRecalibrations:read(seed).profiles.reduce((n,p)=>n+Object.values(p.strategies).reduce((m,s)=>m+s.recalibrations,0),0),samples:[]};
 let driftDriver;const burners=[];
 try {
   driftDriver=await load('load-change','adaptive',driftProfile,{learning:true,exploration:true,maxCpuWorkers:2,maxGpuWorkers:0});

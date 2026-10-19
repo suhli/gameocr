@@ -1,0 +1,505 @@
+{
+  "executedAt": "2026-10-19T08:27:50.630Z",
+  "binarySha256": "c7e90d817d58c11a5d5ea8c051661e354b7e5bec51e94caa82a790a31759f1cf",
+  "runs": [
+    {
+      "mode": "single",
+      "ready": {
+        "coldStartMs": 1284.7801,
+        "device": "CUDA",
+        "executor": {
+          "executionMode": "single",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": false,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 38500,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "message": null,
+        "type": "ready"
+      },
+      "result": {
+        "executor": {
+          "executionMode": "single",
+          "frameId": 1,
+          "last": {
+            "adaptive": null,
+            "batchId": 1,
+            "cpuTasks": 0,
+            "endToEndMs": 592.7501,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "mergeMs": 0,
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "tileCount": 1,
+            "transferMs": 51.0463,
+            "wholeFrameFallback": false,
+            "workerWallMs": 540.0373000000001
+          },
+          "learning": {
+            "classes": 0,
+            "explorations": 0,
+            "failedFrames": 0,
+            "fallbacks": 0,
+            "persistenceError": null,
+            "recentLatencyMs": null,
+            "recovered": false,
+            "selections": {},
+            "successfulExplorations": 0,
+            "switches": 0
+          },
+          "parallel": false,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 540.0373000000001,
+              "completedTasks": 1,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 38500,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "result": {
+          "blocks": [
+            {
+              "bbox": [
+                72,
+                74,
+                388,
+                115
+              ],
+              "confidence": 0.9495766758918762,
+              "id": "block-0",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 72,
+                  "y": 74
+                },
+                {
+                  "x": 388,
+                  "y": 74
+                },
+                {
+                  "x": 388,
+                  "y": 115
+                },
+                {
+                  "x": 72,
+                  "y": 115
+                }
+              ],
+              "text": "Health: 100 / 100"
+            },
+            {
+              "bbox": [
+                1251,
+                82,
+                1559,
+                128
+              ],
+              "confidence": 0.9984778761863708,
+              "id": "block-1",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 1251,
+                  "y": 82
+                },
+                {
+                  "x": 1559,
+                  "y": 82
+                },
+                {
+                  "x": 1559,
+                  "y": 128
+                },
+                {
+                  "x": 1251,
+                  "y": 128
+                }
+              ],
+              "text": "Quest complete!"
+            },
+            {
+              "bbox": [
+                81,
+                843,
+                397,
+                889
+              ],
+              "confidence": 0.9684159755706787,
+              "id": "block-2",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 81,
+                  "y": 843
+                },
+                {
+                  "x": 397,
+                  "y": 843
+                },
+                {
+                  "x": 397,
+                  "y": 889
+                },
+                {
+                  "x": 81,
+                  "y": 889
+                }
+              ],
+              "text": "Inventory 12 / 40"
+            },
+            {
+              "bbox": [
+                1180,
+                871,
+                1636,
+                917
+              ],
+              "confidence": 0.9957234859466553,
+              "id": "block-3",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 1185,
+                  "y": 871
+                },
+                {
+                  "x": 1636,
+                  "y": 876
+                },
+                {
+                  "x": 1631,
+                  "y": 917
+                },
+                {
+                  "x": 1180,
+                  "y": 913
+                }
+              ],
+              "text": "Press ENTER to continue"
+            }
+          ],
+          "device": "CUDA",
+          "engineId": "ppocrv6",
+          "frameId": 1,
+          "metrics": {
+            "detectionMs": 256.63710000000003,
+            "execution": {
+              "adaptive": null,
+              "batchId": 1,
+              "cpuTasks": 0,
+              "endToEndMs": 592.7483,
+              "failedTasks": 0,
+              "gpuTasks": 1,
+              "mergeMs": 0,
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 51.0463,
+              "wholeFrameFallback": false,
+              "workerWallMs": 540.0373000000001
+            },
+            "inferenceMs": 491.7652000000001,
+            "parsingMs": 12.7412,
+            "preprocessingMs": 34.084,
+            "recognitionMs": 235.1281,
+            "totalMs": 538.6189
+          },
+          "modelId": "ppocrv6-small",
+          "rawOutput": "",
+          "runtime": "onnx",
+          "sourceHeight": 1080,
+          "sourceWidth": 1920,
+          "timestamp": 1792398472008,
+          "truncated": false
+        },
+        "type": "result",
+        "wallMs": 604.9103
+      }
+    },
+    {
+      "mode": "manual",
+      "ready": {
+        "coldStartMs": 2436.5930000000003,
+        "device": "CUDA",
+        "executor": {
+          "executionMode": "manual",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": true,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 46628,
+              "state": "idle",
+              "threads": 1
+            },
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 1,
+              "pid": 43432,
+              "state": "idle",
+              "threads": 1
+            }
+          ]
+        },
+        "message": "并行已启用：CUDA × 2 / CPU × 0；根据实测耗时动态分配",
+        "type": "ready"
+      },
+      "result": {
+        "executor": {
+          "executionMode": "manual",
+          "frameId": 1,
+          "last": {
+            "adaptive": null,
+            "batchId": 1,
+            "cpuTasks": 0,
+            "endToEndMs": 1684.0442,
+            "failedTasks": 0,
+            "gpuTasks": 4,
+            "mergeMs": 0.017900000000000003,
+            "queueWaitMs": 897.4136000000001,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0.3443,
+            "tileCount": 4,
+            "transferMs": 5.6815,
+            "wholeFrameFallback": false,
+            "workerWallMs": 1676.8619
+          },
+          "learning": {
+            "classes": 0,
+            "explorations": 0,
+            "failedFrames": 0,
+            "fallbacks": 0,
+            "persistenceError": null,
+            "recentLatencyMs": null,
+            "recovered": false,
+            "selections": {},
+            "successfulExplorations": 0,
+            "switches": 0
+          },
+          "parallel": true,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 838.4133999999999,
+              "completedTasks": 2,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 46628,
+              "state": "idle",
+              "threads": 1
+            },
+            {
+              "averageMs": 806.338,
+              "completedTasks": 2,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 1,
+              "pid": 43432,
+              "state": "idle",
+              "threads": 1
+            }
+          ]
+        },
+        "result": {
+          "blocks": [
+            {
+              "bbox": [
+                72,
+                71,
+                388,
+                115
+              ],
+              "confidence": 0.9729543328285217,
+              "id": "block-0",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 72,
+                  "y": 71
+                },
+                {
+                  "x": 388,
+                  "y": 71
+                },
+                {
+                  "x": 388,
+                  "y": 115
+                },
+                {
+                  "x": 72,
+                  "y": 115
+                }
+              ],
+              "text": "Health: 100 / 100"
+            },
+            {
+              "bbox": [
+                1251,
+                80,
+                1561,
+                129
+              ],
+              "confidence": 0.9976409673690796,
+              "id": "block-1",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 1251,
+                  "y": 80
+                },
+                {
+                  "x": 1561,
+                  "y": 80
+                },
+                {
+                  "x": 1561,
+                  "y": 129
+                },
+                {
+                  "x": 1251,
+                  "y": 129
+                }
+              ],
+              "text": "Quest complete!"
+            },
+            {
+              "bbox": [
+                81,
+                841,
+                397,
+                890
+              ],
+              "confidence": 0.9832466244697571,
+              "id": "block-2",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 81,
+                  "y": 841
+                },
+                {
+                  "x": 397,
+                  "y": 841
+                },
+                {
+                  "x": 397,
+                  "y": 890
+                },
+                {
+                  "x": 81,
+                  "y": 890
+                }
+              ],
+              "text": "Inventory 12 / 40"
+            },
+            {
+              "bbox": [
+                1183,
+                875,
+                1631,
+                915
+              ],
+              "confidence": 0.9985591769218445,
+              "id": "block-3",
+              "label": "text",
+              "polygon": [
+                {
+                  "x": 1183,
+                  "y": 875
+                },
+                {
+                  "x": 1631,
+                  "y": 875
+                },
+                {
+                  "x": 1631,
+                  "y": 915
+                },
+                {
+                  "x": 1183,
+                  "y": 915
+                }
+              ],
+              "text": "Press ENTER to continue"
+            }
+          ],
+          "device": "CUDA",
+          "engineId": "ppocrv6",
+          "frameId": 1,
+          "metrics": {
+            "detectionMs": 1728.746,
+            "execution": {
+              "adaptive": null,
+              "batchId": 1,
+              "cpuTasks": 0,
+              "endToEndMs": 1684.0419,
+              "failedTasks": 0,
+              "gpuTasks": 4,
+              "mergeMs": 0.017900000000000003,
+              "queueWaitMs": 897.4136000000001,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.3443,
+              "tileCount": 4,
+              "transferMs": 5.6815,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1676.8619
+            },
+            "inferenceMs": 3229.3526,
+            "parsingMs": 11.8857,
+            "preprocessingMs": 45.2364,
+            "recognitionMs": 1500.6065999999998,
+            "totalMs": 1684.0419
+          },
+          "modelId": "ppocrv6-small",
+          "rawOutput": "",
+          "runtime": "onnx",
+          "sourceHeight": 1080,
+          "sourceWidth": 1920,
+          "timestamp": 1792398475361,
+          "truncated": false
+        },
+        "type": "result",
+        "wallMs": 1688.8962
+      }
+    }
+  ],
+  "status": "passed"
+}

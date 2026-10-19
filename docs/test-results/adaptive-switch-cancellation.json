@@ -1,0 +1,315 @@
+{
+  "executedAt": "2026-10-19T08:23:47.523Z",
+  "seedSha256": "b4a19262e589d2335394151f8b5a3f3c067a7d607005694a5efd83f205d721f0",
+  "binarySha256": "c7e90d817d58c11a5d5ea8c051661e354b7e5bec51e94caa82a790a31759f1cf",
+  "cancelled": {
+    "executor": {
+      "executionMode": "adaptive",
+      "frameId": null,
+      "last": null,
+      "learning": {
+        "classes": 7,
+        "explorations": 0,
+        "failedFrames": 0,
+        "fallbacks": 14,
+        "persistenceError": null,
+        "recentLatencyMs": 532.8274729740554,
+        "recovered": false,
+        "selections": {
+          "cpu-parallel-2": 56,
+          "cpu-single": 56
+        },
+        "successfulExplorations": 0,
+        "switches": 0
+      },
+      "parallel": true,
+      "queuedTasks": 0,
+      "workers": [
+        {
+          "averageMs": 0,
+          "completedTasks": 0,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 27880,
+          "state": "idle",
+          "threads": 2
+        },
+        {
+          "averageMs": 0,
+          "completedTasks": 0,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 1,
+          "pid": 43412,
+          "state": "idle",
+          "threads": 2
+        }
+      ]
+    },
+    "message": "任务已取消",
+    "phase": "recognize",
+    "type": "error",
+    "wallMs": 725.5101999999999
+  },
+  "recovered": {
+    "executor": {
+      "executionMode": "adaptive",
+      "frameId": 1,
+      "last": {
+        "adaptive": {
+          "analysisMs": 2.2783,
+          "availableMemoryMb": 34173,
+          "cpuLoad": 0.47395833333333337,
+          "decisionMs": 0.1288,
+          "exploring": false,
+          "fallbackRisk": 0.017412898443291327,
+          "matchKind": "image",
+          "ocrMs": 268.1819,
+          "parallelMedianMs": 180.26081950121696,
+          "predictedMs": 187.8317739202681,
+          "qualityRisk": false,
+          "reason": "相似历史中并行稳定快于单实例，已通过样本数与风险门槛",
+          "reliable": true,
+          "similarSamples": 14,
+          "singleMedianMs": 239.9271507561198,
+          "strategy": "cpu-parallel-2",
+          "switchMs": 0
+        },
+        "batchId": 1,
+        "cpuTasks": 4,
+        "endToEndMs": 270.6053,
+        "failedTasks": 0,
+        "gpuTasks": 0,
+        "mergeMs": 0.0171,
+        "queueWaitMs": 149.6575,
+        "retriedTasks": 0,
+        "speedup": null,
+        "splitMs": 0.6065,
+        "tileCount": 4,
+        "transferMs": 10.263,
+        "wholeFrameFallback": false,
+        "workerWallMs": 250.26090000000002
+      },
+      "learning": {
+        "classes": 7,
+        "explorations": 0,
+        "failedFrames": 0,
+        "fallbacks": 14,
+        "persistenceError": null,
+        "recentLatencyMs": 506.6051956766498,
+        "recovered": false,
+        "selections": {
+          "cpu-parallel-2": 57,
+          "cpu-single": 56
+        },
+        "successfulExplorations": 0,
+        "switches": 0
+      },
+      "parallel": true,
+      "queuedTasks": 0,
+      "workers": [
+        {
+          "averageMs": 125.1177,
+          "completedTasks": 2,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 27880,
+          "state": "idle",
+          "threads": 2
+        },
+        {
+          "averageMs": 117.7679,
+          "completedTasks": 2,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 1,
+          "pid": 43412,
+          "state": "idle",
+          "threads": 2
+        }
+      ]
+    },
+    "result": {
+      "blocks": [
+        {
+          "bbox": [
+            95,
+            93,
+            496,
+            150
+          ],
+          "confidence": 0.9409462213516235,
+          "id": "block-0",
+          "label": "text",
+          "polygon": [
+            {
+              "x": 95,
+              "y": 93
+            },
+            {
+              "x": 496,
+              "y": 93
+            },
+            {
+              "x": 496,
+              "y": 150
+            },
+            {
+              "x": 95,
+              "y": 150
+            }
+          ],
+          "text": "Health: 100 / 100"
+        },
+        {
+          "bbox": [
+            1703,
+            91,
+            2091,
+            154
+          ],
+          "confidence": 0.9999679327011108,
+          "id": "block-1",
+          "label": "text",
+          "polygon": [
+            {
+              "x": 1703,
+              "y": 91
+            },
+            {
+              "x": 2091,
+              "y": 91
+            },
+            {
+              "x": 2091,
+              "y": 154
+            },
+            {
+              "x": 1703,
+              "y": 154
+            }
+          ],
+          "text": "Quest complete!"
+        },
+        {
+          "bbox": [
+            93,
+            1172,
+            495,
+            1235
+          ],
+          "confidence": 0.9802135229110718,
+          "id": "block-2",
+          "label": "text",
+          "polygon": [
+            {
+              "x": 93,
+              "y": 1172
+            },
+            {
+              "x": 495,
+              "y": 1172
+            },
+            {
+              "x": 495,
+              "y": 1235
+            },
+            {
+              "x": 93,
+              "y": 1235
+            }
+          ],
+          "text": "Inventory 12 / 40"
+        },
+        {
+          "bbox": [
+            1646,
+            1198,
+            2228,
+            1265
+          ],
+          "confidence": 0.9998722076416016,
+          "id": "block-3",
+          "label": "text",
+          "polygon": [
+            {
+              "x": 1652,
+              "y": 1198
+            },
+            {
+              "x": 2228,
+              "y": 1204
+            },
+            {
+              "x": 2221,
+              "y": 1265
+            },
+            {
+              "x": 1646,
+              "y": 1262
+            }
+          ],
+          "text": "Press ENTER to continue"
+        }
+      ],
+      "device": "CPU",
+      "engineId": "ppocrv6",
+      "frameId": 1,
+      "metrics": {
+        "detectionMs": 296.9814,
+        "execution": {
+          "adaptive": {
+            "analysisMs": 2.2783,
+            "availableMemoryMb": 34173,
+            "cpuLoad": 0.47395833333333337,
+            "decisionMs": 0.1288,
+            "exploring": false,
+            "fallbackRisk": 0.017412898443291327,
+            "matchKind": "image",
+            "ocrMs": 268.1819,
+            "parallelMedianMs": 180.26081950121696,
+            "predictedMs": 187.8317739202681,
+            "qualityRisk": false,
+            "reason": "相似历史中并行稳定快于单实例，已通过样本数与风险门槛",
+            "reliable": true,
+            "similarSamples": 14,
+            "singleMedianMs": 239.9271507561198,
+            "strategy": "cpu-parallel-2",
+            "switchMs": 0
+          },
+          "batchId": 1,
+          "cpuTasks": 4,
+          "endToEndMs": 270.6053,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0.0171,
+          "queueWaitMs": 149.6575,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0.6065,
+          "tileCount": 4,
+          "transferMs": 10.263,
+          "wholeFrameFallback": false,
+          "workerWallMs": 250.26090000000002
+        },
+        "inferenceMs": 415.2581,
+        "parsingMs": 12.9162,
+        "preprocessingMs": 53.688900000000004,
+        "recognitionMs": 118.2767,
+        "totalMs": 270.6053
+      },
+      "modelId": "ppocrv6-small",
+      "rawOutput": "",
+      "runtime": "onnx",
+      "sourceHeight": 1440,
+      "sourceWidth": 2560,
+      "timestamp": 1792398228694,
+      "truncated": false
+    },
+    "type": "result",
+    "wallMs": 270.6098
+  },
+  "status": "passed"
+}

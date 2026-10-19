@@ -96,6 +96,23 @@ node scripts/desktop-runtimes.mjs
 
 自动化脚本操作隔离的测试窗口与本测试拥有的进程。桌面测试每次使用独立数据目录，以避免旧的强制结束测试留下的会话影响正常退出校验。构建日志、截图与测试可执行文件保留于本机 `.cache`、`artifacts/validation/parallel-desktop`、`target`。
 
+## 自适应调度增量验证（2026-10-19）
+
+实现、测量口径和完整六模式结果见 [自适应调度报告](adaptive-scheduling.md)。默认保持 Single，历史设置自动迁移，未证明跨场景总体稳定加速。
+
+- Rust core 22、desktop lib 16、ONNX pipeline 3 项通过；svelte-check 0 错误/警告、Vitest 2 项与生产前端构建通过。新增集中布局在切换冷却中及时返回单实例的回归。
+- [发布版 Adaptive 集成](test-results/adaptive-integration.json) 9 项通过：真实特征、总线程预算、24 帧中实际 1 次探索、取消后不学习、重启只读历史、Batch 指纹隔离、清空/损坏恢复、CPU 上限、终止本测试 Worker 后只记录失败、显式 CUDA 拒绝。
+- [六模式基准](test-results/adaptive-benchmark.json) 完整完成。8 张学习图与 7 张评估图文件哈希不重合；每模式 59 帧，合计 354 帧均 CER=0、精确行召回=100%，但仅代表该合成语料。1080p HUD 特征中位 1.81 ms、P95 2.10 ms。
+- 自适应在本轮评估避免全部整图复验；固定 CPU×2 为 35/59 帧。已有历史的三组均选择过 CPU×1/CPU×2，新风格画面通过 workload 匹配复用经验，未知中心布局保守选择单实例。整体收益不稳定，尤其交替布局仍受重载成本影响，不声称普遍加速。
+- 独立 CPU 争用实验实际触发 2 次历史重新校准，测试负载停止后延迟恢复，争用期没有探索。[严格重建途中取消测试](test-results/adaptive-switch-cancellation.json) 验证新池 PID 确实更换、两实例仍可用、取消不更新统计、后续 OCR 成功。
+- 原生 Small/Medium [CPU 8 例](test-results/adaptive-onnx-cpu.json)和 [GTX1650 CUDA 8 例](test-results/adaptive-onnx-cuda.json)通过，包含 IPC 错误、卸载/重载和 Worker 替换；并发构建期间的这些用例用于正确性回归，不用于性能对比。
+- [原 Executor / GGUF 兼容回归](test-results/adaptive-compatibility.json) 13 项通过。GGUF 在 Manual 和 Adaptive 设置下均保持单实例和空置信度；CPU×2 连续 181.475 秒 / 202 帧，私有内存变化 +880,640 字节（约 0.84 MiB），临时文件、队列与自有子进程清理通过。持续检查期间允许生产构建并行，因此不将其吞吐当作纯 OCR 基准。
+- [开发桌面测试](test-results/desktop-adaptive.json) 8 组通过，覆盖手动设置、真实 WGC 四片结果与导出、停止/目标变化、模型卸载、自适应默认值与居中设置框、暂停不学习、分析/推理中清空历史和正常退出清理。该报告记录此前开发构建的哈希。
+- 正式 Tauri 构建后的 [CPU-only 便携包](test-results/desktop-adaptive-cpu-portable.json)和[完整便携包](test-results/desktop-adaptive-portable.json)各通过上述 8 组，使用内嵌前端、没有 Vite。[CPU 包多 Runtime 桌面 12 项](test-results/adaptive-desktop-runtimes.json)也通过，覆盖两规格真实 WGC、导入/损坏/删除、Auto 回退、显式 CUDA 错误、Worker 崩溃隔离及恢复。
+- [原 CUDA Executor 回归](test-results/adaptive-cuda-executor.json)通过：新版 Manager 的 Single 使用一个真实 CUDA Worker，Manual 使用 GPU×2，均识别完整 HUD；这是 GTX1650 正确性回归，不是 Adaptive GPU 探索。可在具备 NVIDIA 环境时运行 `node scripts/test-cuda-executor.mjs`。
+- [本轮发行校验](test-results/adaptive-package-validation.json)：CPU ZIP 16,864,172 字节，45 个文件/35 个 x64 二进制依赖校验通过；完整 ZIP 1,718,102,751 字节，86 个文件/75 个依赖校验通过。两包主程序 SHA-256 均为 `b42a55008efae8481aa2b9882750d0919e7448bf47824db3c777150b1380df36`，与桌面报告一致。NSIS/MSI 未重新构建，现存安装版不包含 Adaptive。
+- CI 加入真实 Adaptive CPU 回归及报告上传。本轮未运行远端 GitHub Actions。
+
 ## 未验证和已知限制
 
 - RTX5060Ti / SM120、其他显卡，以及 CUDA12.8.1 配置的远端 GitHub Actions；目前硬件验证仅 GTX1650。
