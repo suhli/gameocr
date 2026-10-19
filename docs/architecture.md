@@ -47,7 +47,7 @@ Auto 顺序是 CUDA → CPU。CUDA 必须成功创建两个 Session、各执行�
 
 ## 可选并行执行器
 
-`Service` 持有 `Executor`；内部 `Strategy::Sequential` 复用原 Worker/recognize 路径，`Strategy::Parallel` 持有 `WorkerPool`。只对 ONNX/ppocrv6 开启并行。具体检测、批量识别和 CUDA 配置仍在 Adapter，主进程不链接推理库。
+`Service` 持有 `ExecutionStrategyManager`，后者在 Single / Manual 模式直接委托原 `Executor`；内部 `Strategy::Sequential` 复用原 Worker/recognize 路径，`Strategy::Parallel` 持有 `WorkerPool`。只对 ONNX/ppocrv6 开启并行。具体检测、批量识别和 CUDA 配置仍在 Adapter，主进程不链接推理库。
 
 `ParallelConfig` 作为 settings.json 顶层字段持久化。默认关闭，CPU 与 CUDA 模式分别只启用对应类型；Auto 可显式混合或在 CUDA 不可用时回退。CPU 总线程预算按实例分摊，GPU Worker 的 CPU 侧线程设为 1；GPU 上限 2、CPU 上限 min(4, 逻辑核数, 线程预算)。启动 GPU 前检查 GPU0 可用显存，Small/Medium 最少分别需要 512/1024 MiB 余量；这是保守准入检查，不是精确峰值预测。显式 CUDA 任一实例加载失败便失败；Auto 可保留成功的实例并报告实际数量。卸载等待所有进程退出，之后才允许换配置。
 
@@ -64,6 +64,16 @@ Auto 顺序是 CUDA → CPU。CUDA 必须成功创建两个 Session、各执行�
 捕获仍采用一个最新待处理帧槽。新截图覆盖尚未受理的旧截图，不为每张新截图建立切片队列；已受理批次在同一 epoch/generation 内完成，避免高 FPS 下每批都被取消而永远无结果。暂停、停止、窗口切换、卸载会使批次失效：立即停止领取剩余任务，排空正在运行的原生请求，最终发布前再次检查 epoch/generation。退出标记会使请求终止子进程。此策略保留原先 latest-frame-wins 的受理语义。
 
 `Metrics.execution` 与 `Performance.execution` 增加传输、切片、最长排队、Worker 墙钟、合并、完整帧耗时、任务计数和每实例状态。并行原生阶段耗时是工作量之和，不能相加当成延迟。benchmark 的 wallMs 包括临时目录清理；UI 的 execution.endToEndMs 还包含生成对应结果 JPEG，均不含截图采集前的时间和浏览器绘制。原单 Worker totalMs 保持引擎时间；并行 totalMs 使用 Executor 墙钟。speedup 仅在独立 benchmark 找到相同图像/参数真实基线后计算，实时 UI 不编造基线。
+
+## 自适应调度
+
+`gameocr-core/src/adaptive` 定义版本化视觉特征、两级匹配、有界聚合档案、风险估计与调度规则；`src-tauri/src/adaptive` 负责真实 Worker 生命周期、系统资源采样和后台原子持久化。Single/Manual 不经过特征分析，GGUF 忽略 ONNX 自适应设置。
+
+Adaptive 只驻留一套策略池：CPU×1 使用完整线程预算，CPU×2 平分预算。切换时停止旧池，再加载并真实预热新池；分别记录分析、决策、切换、OCR 和完整帧耗时。多套池同时驻留会增加 Session 内存与线程自旋竞争；固定两实例只分派一个任务又不是原四线程基准，故采用按需重建。代价是切换延迟，调度器通过冷却和成本摊销限制切换；低频探索仅试用一帧，然后恢复原策略。
+
+历史提交晚于 OCR：Manager 生成待提交记录，Service 在最终发布临界区重新验证 epoch/generation 后才提交。清空历史另递增档案代数，分析开始前已在途的帧不能重新填回历史。取消切换时完成替代池初始化以保留可复用模型，但不发布结果、不学习；应用关闭标记仍能中断加载。持久化线程合并更新并调用既有原子 JSON 写入，OCR 线程不写盘。
+
+算法参数、指纹、持久化格式、可复现实验与边界见 [自适应调度](adaptive-scheduling.md)。
 
 ## 捕获、取消和内存
 

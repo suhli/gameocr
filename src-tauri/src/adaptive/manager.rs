@@ -108,7 +108,9 @@ impl ExecutionStrategyManager {
         if mode == ExecutionMode::Adaptive {
             plan = parameters(StrategyId::CpuSingle);
         }
-        let fingerprint = if config.manifest.runtime == "onnx" {
+        let fingerprint = if config.manifest.runtime == "onnx"
+            && (mode == ExecutionMode::Adaptive || config.device == Device::Cpu)
+        {
             let r = root.to_owned();
             let c = config.clone();
             tokio::task::spawn_blocking(move || fingerprint(&r, &c)).await??
@@ -166,7 +168,8 @@ impl ExecutionStrategyManager {
         ensure!(!cancel.cancelled(), "任务已取消");
         let start = Instant::now();
         self.executor.shutdown().await;
-        ensure!(!cancel.cancelled(), "任务已取消");
+        // Once the old pool is gone, finish initializing its replacement even if
+        // capture is paused. Keep a reusable loaded model, but reject this frame.
         let mut executor = Executor::load(
             &self.root,
             self.config.clone(),
@@ -174,10 +177,6 @@ impl ExecutionStrategyManager {
             self.closing.clone(),
         )
         .await?;
-        if cancel.cancelled() {
-            executor.shutdown().await;
-            anyhow::bail!("任务已取消");
-        }
         let new_status = executor.status.lock().clone();
         *self.status.lock() = new_status;
         executor.status = self.status.clone();
@@ -187,6 +186,7 @@ impl ExecutionStrategyManager {
         let time = ms(start);
         self.switch_estimate = self.switch_estimate * 0.7 + time * 0.3;
         self.scheduler.switched(now_ms());
+        ensure!(!cancel.cancelled(), "任务已取消");
         Ok(time)
     }
     pub async fn recognize(
@@ -201,6 +201,8 @@ impl ExecutionStrategyManager {
             return self.executor.recognize(frame, mode, cache, cancel).await;
         }
         let start = Instant::now();
+        // Clearing history invalidates the entire in-flight frame, including analysis.
+        let revision = self.profiles.generation();
         ensure!(!cancel.cancelled(), "任务已取消");
         if self.generation != Some(frame.generation) {
             self.analyzer.reset();
@@ -217,7 +219,6 @@ impl ExecutionStrategyManager {
         self.analyzer = analyzer;
         let analysis_ms = ms(analysis_start);
         ensure!(!cancel.cancelled(), "任务已取消");
-        let revision = self.profiles.generation();
         let decision_start = Instant::now();
         let model_bytes = self
             .config

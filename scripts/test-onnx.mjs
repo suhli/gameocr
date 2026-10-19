@@ -37,5 +37,5 @@ for(const variant of ['small','medium']){
     assert.equal((await w.request({type:'shutdown'})).type,'unloaded');await w.close();
   }finally{w.child.kill();}
 }
-fs.mkdirSync('docs/test-results',{recursive:true});fs.writeFileSync(`docs/test-results/onnx-${device}-e2e.json`,JSON.stringify({executedAt:new Date().toISOString(),device,report},null,2)+'\n');
+fs.mkdirSync('docs/test-results',{recursive:true});fs.writeFileSync(process.env.GAMEOCR_ONNX_REPORT??`docs/test-results/onnx-${device}-e2e.json`,JSON.stringify({executedAt:new Date().toISOString(),device,report},null,2)+'\n');
 console.log(`Passed ${report.length} real ${device.toUpperCase()} OCR cases, malformed IPC, unload/reload and worker replacement.`);

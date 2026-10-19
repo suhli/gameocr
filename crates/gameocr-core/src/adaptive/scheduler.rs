@@ -84,6 +84,9 @@ impl AdaptiveScheduler {
             reason = "文字集中或接缝风险较高，保留完整单 Worker".into();
         }
         let mut exploring = false;
+        if config.learning && config.exploration && resource.constrained() {
+            reason.push_str("；当前负载、内存余量或上一帧延迟不适合探索");
+        }
         // Deterministic epsilon schedule: no more than one in twenty eligible opportunities.
         // Fixed cadence is reproducible, with per-class and global wall-clock cooldowns.
         if config.learning
@@ -283,6 +286,47 @@ mod tests {
                 .summary
                 .recovered
         );
+    }
+    #[test]
+    fn concentrated_layout_returns_to_single_during_switch_cooldown() {
+        let mut features = f();
+        features.dispersion = 0.2;
+        let key = "a".repeat(64);
+        let mut store = AdaptiveProfileStore::default();
+        for _ in 0..8 {
+            store.record(
+                &key,
+                features.clone(),
+                StrategyId::CpuSingle,
+                &observation(200.),
+                100,
+            );
+            store.record(
+                &key,
+                features.clone(),
+                StrategyId::CpuParallel2,
+                &observation(300.),
+                100,
+            );
+        }
+        let mut scheduler = AdaptiveScheduler::default();
+        scheduler.switched(50_000);
+        let picked = scheduler.select(
+            &store,
+            &key,
+            &features,
+            &AdaptiveConfig {
+                exploration: false,
+                ..Default::default()
+            },
+            StrategyId::CpuParallel2,
+            true,
+            500.,
+            ResourceState::default(),
+            50_001,
+        );
+        assert_eq!(picked.strategy, Some(StrategyId::CpuSingle));
+        assert!(picked.fallback_risk >= 0.85);
     }
     #[test]
     fn exploration_rate_resource_and_cooldown_guards() {

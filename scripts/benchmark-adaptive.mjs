@@ -1,5 +1,7 @@
 // Independent same-input calibration followed by held-out evaluation. No labels enter OCR.
 import fs from 'node:fs';import path from 'node:path';import os from 'node:os';import {createHash} from 'node:crypto';
+import {Worker} from 'node:worker_threads';
+import assert from 'node:assert/strict';
 import {engineConfig,startExecutor,resources} from './executor-driver.mjs';
 import {accuracy,compareOutputs,quantile} from './ocr-quality.mjs';
 const root=path.resolve('.cache/adaptive-benchmark',String(Date.now()));fs.mkdirSync(root,{recursive:true});
@@ -13,7 +15,10 @@ const hash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 report.binarySha256=Object.fromEntries([process.env.GAMEOCR_EXECUTOR_BENCH??'target/release/executor-bench.exe','src-tauri/resources/workers/onnx/cpu/onnx-worker.exe','src-tauri/resources/workers/onnx/cpu/onnxruntime.dll'].map(p=>[p,hash(p)]));
 report.datasets={training:training.scenarios.map(s=>({name:s.name,sha256:hash(path.join('tests/fixtures/parallel',s.image))})),evaluation:evaluation.scenarios.map(s=>({name:s.name,group:s.group,sha256:hash(path.join('tests/fixtures/adaptive',s.image))}))};
 if(report.datasets.training.some(a=>report.datasets.evaluation.some(b=>a.sha256===b.sha256)))throw Error('Training/evaluation leakage');
-const save=()=>fs.writeFileSync(output,JSON.stringify(report,null,2)+'\n');
+const save=()=>{
+  const temporary=output+'.tmp';fs.writeFileSync(temporary,JSON.stringify(report,null,2)+'\n');
+  for(let attempt=0;;attempt++)try{fs.renameSync(temporary,output);return;}catch(error){if(attempt===20)throw error;Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,50);}
+};
 let frame=0;const samplesByScene=new Map(),seed=path.join(root,'learned.json');
 const load=(name,mode,profiles,adaptive={learning:true,exploration:false,maxCpuWorkers:2,maxGpuWorkers:0})=>startExecutor('adaptive-bench-'+path.basename(root)+'-'+name,engineConfig(),{enableParallelInference:mode==='manual',enableCpuWorkers:false,gpuWorkerCount:0,cpuWorkerCount:2},undefined,{executionMode:mode,adaptive,profiles});
 const recognize=async(d,image)=>{const r=await d.request({type:'recognize',image:path.resolve(image),frameId:++frame});if(r.type!=='result')throw Error(JSON.stringify(r));return r;};
@@ -59,4 +64,36 @@ for(const [name,mode,history,learning,exploration] of modes){
   }catch(e){run.status='failed';run.error=String(e);throw e;}finally{await d?.close();save();}
 }
 for(const run of report.runs)for(const scene of run.scenes){const base=report.runs.find(r=>r.name==='cpu-1').scenes.find(s=>s.name===scene.name);scene.sameInputCpuBaseline={medianMs:base.medianMs,speedup:base.medianMs/scene.medianMs};}
+// A separate controlled contention experiment, excluded from all six timing comparisons.
+// Only these owned threads are terminated; the user's applications are untouched.
+let cancelDriver;
+try {
+  const cancelProfile=path.join(root,'cancel-switch.json');fs.copyFileSync(seed,cancelProfile);
+  cancelDriver=await load('cancel-switch','adaptive',cancelProfile);
+  assert.equal(cancelDriver.ready.type,'ready');
+  const before=(await cancelDriver.request({type:'statistics'})).summary;
+  const cancelled=await cancelDriver.request({type:'cancel',image:path.resolve('tests/fixtures/adaptive/heldout-hud.png'),delayMs:30});
+  assert.equal(cancelled.type,'error');assert.match(cancelled.message,/取消/);
+  assert.deepEqual((await cancelDriver.request({type:'statistics'})).summary,before);
+  const after=(await cancelDriver.request({type:'status'})).executor;
+  const recovered=await recognize(cancelDriver,'tests/fixtures/adaptive/heldout-hud.png');
+  report.cancelSwitch={status:'passed',switchedDuringCancellation:after.workers[0]?.pid!==cancelDriver.ready.executor.workers[0]?.pid,cancelled,subsequentFrame:recovered.result.metrics.execution};
+}finally{await cancelDriver?.close();save();}
+const driftProfile=path.join(root,'load-change.json');fs.copyFileSync(seed,driftProfile);
+report.loadChange={notes:['Finite CPU contention followed by recovery; reported separately from throughput comparisons. Recalibration is reported only when actually observed.'],samples:[]};
+let driftDriver;const burners=[];
+try {
+  driftDriver=await load('load-change','adaptive',driftProfile,{learning:true,exploration:true,maxCpuWorkers:2,maxGpuWorkers:0});
+  if(driftDriver.ready.type!=='ready')throw Error(JSON.stringify(driftDriver.ready));
+  for(const phase of ['before','contended','recovery']) {
+    if(phase==='contended')for(let i=0;i<Math.min(8,os.availableParallelism());i++)burners.push(new Worker('const end=Date.now()+30000;let x=1;while(Date.now()<end){for(let i=0;i<100000;i++)x=Math.sqrt(x+1.01);}',{eval:true}));
+    if(phase==='recovery')await Promise.all(burners.map(w=>w.terminate()));
+    for(let i=0;i<8;i++) {const r=await recognize(driftDriver,path.join('tests/fixtures/adaptive','heldout-hud.png'));report.loadChange.samples.push({phase,wallMs:r.wallMs,execution:r.result.metrics.execution,blocks:r.result.blocks});}
+    console.log('Load change: '+phase);save();
+  }
+  await driftDriver.request({type:'flushProfiles'});
+  report.loadChange.statistics=(await driftDriver.request({type:'statistics'})).summary;
+  report.loadChange.recalibrations=read(driftProfile).profiles.reduce((n,p)=>n+Object.values(p.strategies).reduce((m,s)=>m+s.recalibrations,0),0);
+  report.loadChange.status='passed';
+}finally{await Promise.all(burners.map(w=>w.terminate()));await driftDriver?.close();save();}
 report.completedAt=new Date().toISOString();save();console.log('Saved '+output);

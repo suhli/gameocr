@@ -384,7 +384,11 @@ impl FallbackRiskEstimator {
                 + f.imbalance * 0.15)
                 .clamp(0., 1.)
         };
-        historical.map_or(visual, |h| (visual * 0.4 + h * 0.6).clamp(0., 1.))
+        // A similar older frame may never have been split. Its zero fallback
+        // count cannot erase the current frame's concentrated/seam risk.
+        historical.map_or(visual, |h| {
+            visual.max((visual * 0.4 + h * 0.6).clamp(0., 1.))
+        })
     }
 }
 

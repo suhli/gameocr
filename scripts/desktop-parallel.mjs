@@ -2,6 +2,8 @@ import {chromium} from '@playwright/test';
 import {spawn,execFileSync} from 'node:child_process';
 import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {createServer} from 'node:net';
+const port=await new Promise((resolve,reject)=>{const server=createServer();server.once('error',reject);server.listen(0,'127.0.0.1',()=>{const port=server.address().port;server.close(()=>resolve(port));});});
 const out=path.resolve('artifacts/validation/parallel-desktop');fs.mkdirSync(out,{recursive:true});
 const dataDir=path.join(out,'data-'+Date.now());
 const log=fs.openSync(path.join(out,'desktop.log'),'w');
@@ -10,13 +12,15 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));
 async function until(fn){for(let i=0;i<300;i++){try{const result=await fn();if(result)return result;}catch{}await delay(100);}throw Error('Condition timed out');}
 if(vite)await until(async()=>(await fetch('http://127.0.0.1:1420')).ok);
 const binary=path.resolve(process.env.GAMEOCR_APP??'target/debug/gameocr.exe');
-const app=spawn(binary,[],{windowsHide:true,stdio:['ignore',log,log],env:{...process.env,GAMEOCR_DATA_DIR:dataDir,WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port=9227'}});
-let browser,fixture,invoke;const checks=[];
+const app=spawn(binary,[],{windowsHide:true,stdio:['ignore',log,log],env:{...process.env,GAMEOCR_DATA_DIR:dataDir,WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port='+port}});
+let browser,fixture,invoke,page,controlled=false;const checks=[];
 try{
-  browser=await until(()=>chromium.connectOverCDP('http://127.0.0.1:9227'));
-  const page=await until(()=>browser.contexts()[0]?.pages().find(p=>/1420|tauri.localhost|tauri:\/\//.test(p.url())));
+  browser=await until(()=>chromium.connectOverCDP('http://127.0.0.1:'+port));
+  page=await until(()=>browser.contexts()[0]?.pages().find(p=>/1420|tauri.localhost|tauri:\/\//.test(p.url())));
   await page.getByRole('heading',{name:/窗口列表/}).waitFor();
   invoke=(command,args={})=>page.evaluate(({command,args})=>window.__TAURI_INTERNALS__.invoke(command,args),{command,args});
+  assert.equal(path.resolve((await invoke('get_settings')).modelDir),path.join(dataDir,'models'),'Test must control its isolated application instance');
+  controlled=true;
   await invoke('unload_model');let settings={...await invoke('get_settings'),modelDir:path.resolve('.cache/test-models'),device:'cpu',threads:4,changeDetection:false,ocrIntervalMs:100,captureFps:20,executionMode:'single',enableParallelInference:false,cpuWorkerCount:1};await invoke('update_settings',{settings});
   await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();
   await page.locator('select').filter({has:page.getByRole('option',{name:'PP-OCRv6 small · 已下载',exact:true})}).selectOption('ppocrv6-small');
@@ -50,8 +54,24 @@ try{
   const children=()=>JSON.parse(execFileSync('powershell.exe',['-NoProfile','-Command',`ConvertTo-Json -Compress -InputObject @((Get-CimInstance Win32_Process -Filter "ParentProcessId=${app.pid} AND Name='onnx-worker.exe'").ProcessId | Where-Object { $_ })`],{windowsHide:true,encoding:'utf8'}).trim()||'[]');
   assert.equal(children().length,2);await invoke('unload_model');assert.equal(children().length,0);
   settings={...settings,executionMode:'single',enableParallelInference:false};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-medium'});assert.equal(children().length,1);await invoke('unload_model');assert.equal(children().length,0);checks.push('Unload removes every old process; disabling parallel restores one Worker on model switch');
+  if(process.env.GAMEOCR_TEST_ADAPTIVE==='1'){
+    await page.getByRole('button',{name:'打开设置'}).click();await page.getByLabel('OCR 执行策略',{exact:true}).selectOption('adaptive');
+    assert.equal(await page.getByLabel('启用在线学习',{exact:true}).isChecked(),true);assert.equal(await page.getByLabel('允许低频策略探索',{exact:true}).isChecked(),true);
+    assert.equal(await page.getByLabel('最大 CPU Worker 数',{exact:true}).inputValue(),'2');assert.equal(await page.getByLabel('最大 GPU Worker 数',{exact:true}).inputValue(),'0');
+    await page.getByLabel('允许低频策略探索',{exact:true}).uncheck();await page.getByRole('button',{name:'查看学习统计',exact:true}).click();await page.getByLabel('自适应学习统计').waitFor();
+    const bounds=await page.locator('dialog').boundingBox(),viewport=await page.evaluate(()=>({width:innerWidth,height:innerHeight}));assert(Math.abs(bounds.x+bounds.width/2-viewport.width/2)<3);assert(Math.abs(bounds.y+bounds.height/2-viewport.height/2)<3);
+    await page.screenshot({path:path.join(out,'adaptive-settings.png')});await page.getByRole('button',{name:'保存设置',exact:true}).click();await until(async()=>!(await page.locator('dialog').count()));
+    settings=await invoke('get_settings');assert.equal(settings.executionMode,'adaptive');await invoke('clear_adaptive_profiles');await invoke('load_model',{id:'ppocrv6-small'});assert.equal(children().length,1);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
+    await invoke('recognize_once');const learned=(await invoke('get_history'))[0];assert.equal(learned.result.metrics.execution.adaptive.strategy,'cpu-single');assert(learned.result.metrics.execution.adaptive.analysisMs>0);assert((await invoke('get_adaptive_statistics')).classes>0);
+    await until(async()=>/自适应优化/.test(await page.locator('.execution-stats summary').innerText()));await page.screenshot({path:path.join(out,'adaptive-wgc.png')});checks.push('Adaptive UI defaults and centered statistics modal, persisted selection, actual WGC OCR with measured feature/decision timings');
+    const stats=await invoke('get_adaptive_statistics');const pending=invoke('recognize_once');await delay(25);await invoke('pause_capture');await pending;assert.deepEqual(await invoke('get_adaptive_statistics'),stats);await invoke('resume_capture');
+    checks.push('Pause during adaptive OCR commits no learning observation');
+    const clearing=invoke('recognize_once');await until(async()=>(await invoke('get_status')).ocr==='processing');await invoke('clear_adaptive_profiles');await clearing;assert.equal((await invoke('get_adaptive_statistics')).classes,0);checks.push('Clearing history during analysis/inference invalidates the in-flight learning event');
+    await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
+  }
   await invoke('update_settings',{settings:{...settings,executionMode:'manual',enableParallelInference:true}});await invoke('load_model',{id:'ppocrv6-small'});const owned=children();assert.equal(owned.length,2);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
   const pendingExit=invoke('recognize_once').catch(()=>{});await delay(30);await invoke('plugin:window|close',{label:'main'}).catch(()=>{});await until(()=>app.exitCode!==null);await pendingExit;assert.equal(app.exitCode,0);invoke=null;
   const remaining=execFileSync('powershell.exe',['-NoProfile','-Command',`Get-Process -Id @(${owned.join(',')}) -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id; exit 0`],{windowsHide:true,encoding:'utf8'}).trim();assert.equal(remaining,'');assert.deepEqual(fs.readdirSync(path.join(dataDir,'sessions')),[]);checks.push('Normal application exit during parallel inference removes owned workers and session files');
   fs.writeFileSync(process.env.GAMEOCR_PARALLEL_DESKTOP_REPORT??'docs/test-results/desktop-parallel.json',JSON.stringify({executedAt:new Date().toISOString(),app:path.relative(process.cwd(),binary),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks},null,2)+'\n');console.log('Passed '+checks.length+' real Tauri parallel checks.');
-}finally{await invoke?.('stop_capture').catch(()=>{});await invoke?.('unload_model').catch(()=>{});await browser?.close();fixture?.kill();app.kill();vite?.kill();fs.closeSync(log);}
+}catch(error){await page?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw error;}
+finally{if(controlled){await invoke?.('stop_capture').catch(()=>{});await invoke?.('unload_model').catch(()=>{});}await browser?.close();fixture?.kill();app.kill();vite?.kill();fs.closeSync(log);}

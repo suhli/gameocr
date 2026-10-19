@@ -1,0 +1,15 @@
+{
+  "executedAt": "2026-10-19T03:17:10.439Z",
+  "app": "target\\debug\\gameocr.exe",
+  "appSha256": "80e15b09eae5bd02025c427b02010fb57e0cad5d75681ce0913429bc264daa9b",
+  "checks": [
+    "Parallel settings hidden by default, editable through UI and persisted across reload",
+    "Large real WGC frame: four tiles, one merged history entry, coordinates and JSON export, live worker statistics",
+    "Pause, stop and capture-generation invalidation discard in-flight batch without publishing late results",
+    "Unload removes every old process; disabling parallel restores one Worker on model switch",
+    "Adaptive UI defaults and centered statistics modal, persisted selection, actual WGC OCR with measured feature/decision timings",
+    "Pause during adaptive OCR commits no learning observation",
+    "Clearing history during analysis/inference invalidates the in-flight learning event",
+    "Normal application exit during parallel inference removes owned workers and session files"
+  ]
+}

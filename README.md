@@ -24,9 +24,17 @@ Windows 11 便携版直接使用系统现有 WebView2：不执行预安装检查
 
 本地导入时先选择规格，再依次选择 detector ONNX、recognizer ONNX、`ppocrv6_dict.txt`。导入会复制到当前模型目录、校验所有文件，并通过 CPU Worker 实际运行两个网络后才发布 Manifest。任一步失败会回滚本次副本。目录可在设置里修改；已有 GGUF Manifest 自动原地迁移到 v2，不重命名或重新下载权重。支持 ONNX 文件格式不代表支持任意 ONNX 网络，其他模型仍需专用 Adapter。
 
-### PP-OCRv6 可选并行
+### PP-OCRv6 执行策略
 
-先卸载模型，在 ONNX 设置中开启「启用多任务并行」，配置设备与实例数，再重新加载。关闭开关即可恢复原单 Worker 路径；GGUF 始终使用原路径。旧设置文件自动补充 `enableParallelInference=false`、`enableCpuWorkers=false`、`gpuWorkerCount=1`、`cpuWorkerCount=1`。
+先卸载模型，在 ONNX 设置的「OCR 执行策略」中选择模式，再重新加载：
+
+- **单 Worker**（默认）：沿用 CPU / CUDA / Auto 的原执行路径。
+- **手动并行**：配置 CPU / GPU 实例数，使用原切片与合并流程。
+- **自适应优化**：用传统图像特征匹配本机历史，在 CPU×1 与 CPU×2 之间选择；证据不足时从完整单 Worker 开始。CPU / Auto 可用，显式 CUDA 需改为 CPU 或选择其他模式。GPU 候选暂未启用。
+
+旧配置开启并行时迁移为 Manual，否则为 Single，升级不会自动开启 Adaptive。GGUF 始终使用原执行路径。自适应默认允许在线学习与低频探索，CPU 上限 2、GPU 上限 0；可关闭探索、关闭学习（只读历史），或查看统计、清空历史。学习档案位于数据目录的 `adaptive-profiles.json`，只保存特征与聚合统计，不保存截图或 OCR 文字。实际开销、收益及限制见 [自适应调度报告](docs/adaptive-scheduling.md)。
+
+手动并行设备设置：
 
 - CPU：只使用 CPU 数量，例如 2；不需要打开「CPU 参与混合并行」。
 - CUDA：只使用 GPU 数量，例如 2；初始化失败直接报错。

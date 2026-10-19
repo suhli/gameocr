@@ -1,5 +1,7 @@
 import {chromium} from '@playwright/test';
 import {spawn,execFileSync} from 'node:child_process';import {createHash} from 'node:crypto';import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
+import {createServer} from 'node:net';
+const port=await new Promise((resolve,reject)=>{const server=createServer();server.once('error',reject);server.listen(0,'127.0.0.1',()=>{const port=server.address().port;server.close(()=>resolve(port));});});
 const root=process.cwd(),out=path.resolve(process.env.GAMEOCR_TEST_OUTPUT??'artifacts/validation/multi-runtime');fs.mkdirSync(out,{recursive:true});
 const log=fs.openSync(path.join(out,'desktop.log'),'w');
 const vite=process.env.GAMEOCR_APP?null:spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','1420','--strictPort'],{windowsHide:true,stdio:['ignore',log,log]});
@@ -11,7 +13,8 @@ if(vite){
 const appPath=path.resolve(process.env.GAMEOCR_APP??'target/debug/gameocr.exe');
 const reportPath=path.resolve(process.env.GAMEOCR_TEST_REPORT??'docs/test-results/desktop-runtimes.json');
 const hasCudaWorker=fs.existsSync(path.join(path.dirname(appPath),'workers/onnx/cuda/onnx-worker.exe'))||!process.env.GAMEOCR_APP;
-const appEnv={...process.env,GAMEOCR_DATA_DIR:path.join(out,'data'),CUDA_VISIBLE_DEVICES:'-1',WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port=9226'};
+const dataDir=path.join(out,'data-'+Date.now());
+const appEnv={...process.env,GAMEOCR_DATA_DIR:dataDir,CUDA_VISIBLE_DEVICES:'-1',WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port='+port};
 for(const key of Object.keys(appEnv))if(key.toLowerCase()==='path'||key.startsWith('CUDA_PATH')||key==='ORT_DYLIB_PATH')delete appEnv[key];
 appEnv.Path=`${process.env.SystemRoot}\\System32;${process.env.SystemRoot}`;
 const app=spawn(appPath,[],{windowsHide:true,stdio:['ignore',log,log],env:appEnv});
@@ -20,11 +23,12 @@ const delay=ms=>new Promise(r=>setTimeout(r,ms));let browser;
 async function until(fn){for(let i=0;i<100;i++){try{const result=await fn();if(result)return result;}catch{}await delay(200);}throw Error('WebView initialization timed out');}
 const checks=[];
 try{
-  browser=await until(()=>chromium.connectOverCDP('http://127.0.0.1:9226'));
+  browser=await until(()=>chromium.connectOverCDP('http://127.0.0.1:'+port));
   const page=await until(()=>browser.contexts()[0]?.pages().find(p=>/1420|tauri.localhost|tauri:\/\//.test(p.url())));
   await page.getByRole('heading',{name:/窗口列表/}).waitFor();
   await page.waitForFunction(()=>!!window.__TAURI_INTERNALS__,{timeout:30000});
   invoke=(command,args={})=>page.evaluate(({command,args})=>window.__TAURI_INTERNALS__.invoke(command,args),{command,args});
+  assert.equal(path.resolve((await invoke('get_settings')).modelDir),path.join(dataDir,'models'),'Test must control its isolated application instance');
   await invoke('unload_model');let settings=await invoke('get_settings');
   settings={...settings,modelDir:path.resolve('.cache/test-models'),device:'auto'};await invoke('update_settings',{settings});
   await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();

@@ -6,7 +6,7 @@ use crate::types::Device;
 use anyhow::{Result, ensure};
 use serde::{Deserialize, Serialize};
 pub const FEATURE_VERSION: u32 = 1;
-pub const ALGORITHM_VERSION: u32 = 1;
+pub const ALGORITHM_VERSION: u32 = 2;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]

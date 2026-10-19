@@ -30,7 +30,7 @@
       <div class="fields"><label>Detection Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.detectionThreshold}/></label><label>Box Threshold<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.boxThreshold}/></label></div>
       <div class="fields"><label>Unclip Ratio<input type="number" min="0.1" max="5" step="0.1" bind:value={draft.onnx.unclipRatio}/></label><label>识别置信度阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.onnx.recognitionThreshold}/></label></div>
       <div class="fields"><label>识别 Batch Size<input type="number" min="1" max="32" bind:value={draft.onnx.batchSize}/></label><label>检测最长边 (px)<input type="number" min="32" max="2048" step="32" bind:value={draft.onnx.detectionResize}/></label></div>
-      <label>OCR 执行策略<select bind:value={draft.executionMode}><option value="single">单 Worker</option><option value="manual">手动并行</option><option value="adaptive">自适应优化</option></select></label>
+      <label>OCR 执行策略<select aria-label="OCR 执行策略" bind:value={draft.executionMode}><option value="single">单 Worker</option><option value="manual">手动并行</option><option value="adaptive">自适应优化</option></select></label>
       <p>单 Worker 保持原有设备选择和完整识别；手动并行使用指定实例。自适应根据传统视觉特征与本机历史选择 CPU 策略，速度以实际端到端耗时为准。</p>
       {#if draft.executionMode==='manual'}
         {#if draft.device==='auto'}<label class="check"><input type="checkbox" bind:checked={draft.enableCpuWorkers}/> CPU 参与混合并行</label>{/if}

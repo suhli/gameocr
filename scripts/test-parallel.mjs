@@ -28,8 +28,8 @@ function gone(pids){
   const command=`@(Get-Process -Id @(${pids.join(',')}) -ErrorAction SilentlyContinue).Count`;
   assert.equal(Number(execFileSync('powershell.exe',['-NoProfile','-Command',command],{windowsHide:true,encoding:'utf8'}).trim()),0,'Owned worker process leaked');
 }
-async function withDriver(name,engine,settings,run,root){
-  const driver=await startExecutor(name,engine,settings,root);
+async function withDriver(name,engine,settings,run,root,options){
+  const driver=await startExecutor(name,engine,settings,root,options);
   const pids=driver.ready.executor?.workers.map(w=>w.pid).filter(Number.isInteger)??[];
   try{await run(driver);}finally{await driver.close();await delay(100);gone(pids);}
 }
@@ -48,7 +48,7 @@ await withDriver('cpu-pool',engineConfig(),parallel,async d=>{
   const cancelled=await d.request({type:'cancel',image:image('dense-menu'),delayMs:30});assert.equal(cancelled.type,'error');assert.match(cancelled.message,/取消/);assert.equal(cancelled.executor.queuedTasks,0);assert(cancelled.executor.workers.every(w=>w.state==='idle'));valid(await request(d));checks.push('Cancellation drains active native calls, discards pending tiles, publishes no partial result, reuses workers');
   const victim=d.ready.executor.workers[0].pid;
   const parent=Number(execFileSync('powershell.exe',['-NoProfile','-Command',`(Get-CimInstance Win32_Process -Filter "ProcessId=${victim}").ParentProcessId`],{windowsHide:true,encoding:'utf8'}).trim());assert.equal(parent,d.child.pid);
-  const pending=request(d,'dense-menu');await delay(15);execFileSync('taskkill.exe',['/PID',String(victim),'/F'],{windowsHide:true,stdio:'pipe'});
+  const pending=request(d,'dense-menu');await delay(15);process.kill(victim);
   const recovered=await pending;assert.equal(recovered.type,'result',JSON.stringify(recovered));assert.equal(recovered.result.metrics.execution.failedTasks,1);assert.equal(recovered.result.metrics.execution.retriedTasks,1);assert.equal(recovered.executor.workers.filter(w=>w.state==='failed').length,1);assert(recovered.result.blocks.length>=18);valid(await request(d));checks.push('Owned worker killed during inference: exactly one retry on survivor, complete frame, next frame succeeds');
 });
 
@@ -63,10 +63,11 @@ await withDriver('no-workers',engineConfig('cpu'),{...parallel,cpuWorkerCount:0}
 await withDriver('thread-budget',engineConfig('cpu'),{...parallel,cpuWorkerCount:cpuBudget},async d=>{assert.equal(d.ready.type,'ready');assert(d.ready.executor.workers.every(w=>w.threads===1));checks.push(`CPU thread budget is divided across ${cpuBudget} session/worker pairs`);});
 
 const gguf={schemaVersion:2,id:'Q8_0',name:'LightOnOCR-3 Q8_0',runtime:'llamacpp',adapter:'lightonocr',version:'3',quantization:'Q8_0',capabilities:{plain:true,grounding:true,nativeCoordinates:false,confidence:false,generation:true},files:[{role:'main',path:'LightOnOCR-3-0.8B-Q8_0.gguf',size:811843648,sha256:'b5c262bc905015e78002ea0e360bcbc7e6b3edd71d29a80857f677392f48eb15'},{role:'mmproj',path:'LightOnOCR-3-0.8B-mmproj-f16.gguf',size:204987136,sha256:'e77f2ebb738f5c7852e955f09440c407d9c54b56c6f6098900380706302e8742'}],source:'test',parameters:null,installed:true,imported:false};
-if(process.env.GAMEOCR_SKIP_GGUF!=='1')await withDriver('gguf', {manifest:gguf,directory:path.resolve('models'),device:'cpu',threads:4,inference:{runtime:'llamacpp',parameters:{model:'',mmproj:'',device:'cpu',threads:4,contextSize:8192,maxTokens:2048,temperature:0.1,maxImageEdge:1280}}},parallel,async d=>{
+if(process.env.GAMEOCR_SKIP_GGUF!=='1')for(const executionMode of ['manual','adaptive'])await withDriver('gguf-'+executionMode, {manifest:gguf,directory:path.resolve('models'),device:'cpu',threads:4,inference:{runtime:'llamacpp',parameters:{model:'',mmproj:'',device:'cpu',threads:4,contextSize:8192,maxTokens:2048,temperature:0.1,maxImageEdge:1280}}},parallel,async d=>{
   assert.equal(d.ready.type,'ready');assert.equal(d.ready.executor.parallel,false);assert.equal(d.ready.executor.workers.length,1);
-  const r=await d.request({type:'recognize',image:path.resolve('tests/fixtures/english.png'),frameId:++frame});assert.equal(r.type,'result');assert.equal(r.result.runtime,'llamacpp');assert(r.result.blocks.some(b=>b.text.includes('Health')));assert(r.result.blocks.every(b=>b.confidence===null));checks.push('GGUF ignores enabled ONNX parallel settings and preserves single-worker inference/confidence');
-});
+  assert.equal(d.ready.executor.executionMode,'single');
+  const r=await d.request({type:'recognize',image:path.resolve('tests/fixtures/english.png'),frameId:++frame});assert.equal(r.type,'result');assert.equal(r.result.runtime,'llamacpp');assert(r.result.blocks.some(b=>b.text.includes('Health')));assert(r.result.blocks.every(b=>b.confidence===null));checks.push('GGUF ignores ONNX '+executionMode+' settings and preserves single-worker inference/confidence');
+},undefined,{executionMode});
 else report.gguf='Explicitly skipped; requires separately downloaded Q8_0 + mmproj';
 
 await withDriver('sustained',engineConfig(),parallel,async d=>{

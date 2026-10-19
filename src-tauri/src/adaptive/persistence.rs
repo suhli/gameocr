@@ -193,9 +193,13 @@ mod tests {
             now: 100,
             exploring: false,
             switched: false,
-            total_ms: 100.,
+            total_ms: 200.,
         };
         repo.commit(event());
+        let mut switched = event();
+        switched.total_ms = 1200.;
+        repo.commit(switched);
+        assert_eq!(repo.summary().recent_latency_ms, Some(300.));
         repo.flush().unwrap();
         drop(repo);
         let repo = ProfileRepository::open(&path);

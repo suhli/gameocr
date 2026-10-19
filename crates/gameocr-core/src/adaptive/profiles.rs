@@ -122,7 +122,11 @@ impl StrategyStats {
         self.bins[bin.min(BINS - 1)] += 1.;
         self.effective_samples = self.effective_samples * 0.98 + 1.;
         let alpha = if self.successes == 0 { 1. } else { 0.2 };
-        let difference = (o.latency_ms - self.mean_ms).abs();
+        let difference = if self.successes == 0 {
+            0.
+        } else {
+            (o.latency_ms - self.mean_ms).abs()
+        };
         self.mean_ms = self.mean_ms * (1. - alpha) + o.latency_ms * alpha;
         self.deviation_ms = self.deviation_ms * (1. - alpha) + difference * alpha;
         self.block_mean = self.block_mean * (1. - alpha) + o.blocks as f64 * alpha;
@@ -133,7 +137,12 @@ impl StrategyStats {
     }
     fn valid(&self) -> bool {
         self.bins.len() == BINS
-            && self.bins.iter().all(|v| v.is_finite() && *v >= 0.)
+            && self
+                .bins
+                .iter()
+                .all(|v| v.is_finite() && (0.0..=1_000_000.0).contains(v))
+            && self.attempts < 1_000_000_000
+            && self.successes.saturating_add(self.failures) <= self.attempts
             && [
                 self.block_mean,
                 self.mean_ms,
@@ -210,8 +219,11 @@ impl AdaptiveProfileStore {
                 && s.feature_version == FEATURE_VERSION
                 && s.algorithm_version == ALGORITHM_VERSION
                 && s.profiles.len() <= MAX_PROFILES
+                && s.next_id < u64::MAX - 1024
                 && s.profiles.iter().all(|p| {
                     p.fingerprint.len() == 64
+                        && p.id < s.next_id
+                        && p.decisions < 1_000_000_000
                         && p.features.valid()
                         && p.strategies.len() <= 2
                         && p.strategies.values().all(StrategyStats::valid)
@@ -353,13 +365,8 @@ impl AdaptiveProfileStore {
         *self.summary.selections.entry(id).or_default() += 1;
         self.summary.failed_frames += u64::from(!o.success);
         self.summary.fallbacks += u64::from(o.fallback);
-        if o.success {
-            self.summary.recent_latency_ms = Some(
-                self.summary
-                    .recent_latency_ms
-                    .map_or(o.latency_ms, |x| x * 0.9 + o.latency_ms * 0.1),
-            );
-        }
+        // The repository records end-to-end latency once, including switching.
+        // Candidate histograms above intentionally contain steady execution cost.
         let profile_id = p.id;
         self.summary.classes = self.profiles.len();
         profile_id
