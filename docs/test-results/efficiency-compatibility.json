@@ -1,0 +1,121 @@
+{
+  "executedAt": "2026-10-20T07:31:29.011Z",
+  "checks": [
+    "Default single Worker: unchanged OCR output and model identity",
+    "CPU-only selection ignores mixed flag; two resident workers share bounded tiles and restore coordinates",
+    "Blank stays whole; crossing sentence is complete without duplicates after boundary repair",
+    "Cancellation drains active native calls, discards pending tiles, publishes no partial result, reuses workers",
+    "Owned worker killed during inference: exactly one retry on survivor, complete frame, next frame succeeds",
+    "CPU-only resources: Auto missing-CUDA fallback performs actual OCR",
+    "Explicit CUDA never silently falls back",
+    "Zero effective workers rejected",
+    "CPU thread budget is divided across 4 session/worker pairs",
+    "GGUF ignores ONNX manual settings and preserves single-worker inference/confidence",
+    "GGUF ignores ONNX adaptive settings and preserves single-worker inference/confidence",
+    "Sustained CPU2: bounded batch/queue, stable memory after warmup, temporary files cleaned per frame",
+    "All tested pools shut down their owned worker processes"
+  ],
+  "longRun": {
+    "durationMs": 31574,
+    "frames": 34,
+    "privateMemoryGrowthBytes": 528384,
+    "samples": [
+      {
+        "elapsedMs": 205,
+        "frames": 1,
+        "at": "2026-10-20T07:32:09.344Z",
+        "processes": [
+          {
+            "Id": 51432,
+            "ProcessName": "executor-bench",
+            "CPU": 0.390625,
+            "WorkingSet64": 7757824,
+            "PrivateMemorySize64": 2985984,
+            "PeakWorkingSet64": 22073344
+          },
+          {
+            "Id": 26204,
+            "ProcessName": "onnx-worker",
+            "CPU": 16.265625,
+            "WorkingSet64": 82083840,
+            "PrivateMemorySize64": 68526080,
+            "PeakWorkingSet64": 182239232
+          },
+          {
+            "Id": 48224,
+            "ProcessName": "onnx-worker",
+            "CPU": 11.5,
+            "WorkingSet64": 83300352,
+            "PrivateMemorySize64": 69222400,
+            "PeakWorkingSet64": 173178880
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 2, 2723, 4096"
+      },
+      {
+        "elapsedMs": 30565,
+        "frames": 34,
+        "at": "2026-10-20T07:32:39.607Z",
+        "processes": [
+          {
+            "Id": 51432,
+            "ProcessName": "executor-bench",
+            "CPU": 1.453125,
+            "WorkingSet64": 7737344,
+            "PrivateMemorySize64": 3289088,
+            "PeakWorkingSet64": 22523904
+          },
+          {
+            "Id": 26204,
+            "ProcessName": "onnx-worker",
+            "CPU": 55.984375,
+            "WorkingSet64": 82145280,
+            "PrivateMemorySize64": 68595712,
+            "PeakWorkingSet64": 182333440
+          },
+          {
+            "Id": 48224,
+            "ProcessName": "onnx-worker",
+            "CPU": 55.8125,
+            "WorkingSet64": 83623936,
+            "PrivateMemorySize64": 69378048,
+            "PeakWorkingSet64": 183812096
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 11, 2553, 4096"
+      },
+      {
+        "elapsedMs": 31073,
+        "frames": 34,
+        "at": "2026-10-20T07:32:40.108Z",
+        "processes": [
+          {
+            "Id": 51432,
+            "ProcessName": "executor-bench",
+            "CPU": 1.453125,
+            "WorkingSet64": 7737344,
+            "PrivateMemorySize64": 3289088,
+            "PeakWorkingSet64": 22523904
+          },
+          {
+            "Id": 26204,
+            "ProcessName": "onnx-worker",
+            "CPU": 55.984375,
+            "WorkingSet64": 82145280,
+            "PrivateMemorySize64": 68595712,
+            "PeakWorkingSet64": 182333440
+          },
+          {
+            "Id": 48224,
+            "ProcessName": "onnx-worker",
+            "CPU": 55.8125,
+            "WorkingSet64": 83623936,
+            "PrivateMemorySize64": 69378048,
+            "PeakWorkingSet64": 183812096
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 11, 2553, 4096"
+      }
+    ]
+  }
+}

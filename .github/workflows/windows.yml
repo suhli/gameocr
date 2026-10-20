@@ -75,6 +75,12 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           node scripts/test-adaptive.mjs
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $env:GAMEOCR_SMALL_TEXT_RUNS = '1'
+          node scripts/test-small-text.mjs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $env:GAMEOCR_WIDTH_BUCKETS = '1'
+          node scripts/test-incremental.mjs
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Collect dependency licenses
         run: node scripts/collect-licenses.mjs
       - name: Build standard installers
@@ -101,6 +107,8 @@ jobs:
           Copy-Item docs/test-results/onnx-cpu-e2e.json artifacts/onnx-cpu-e2e.json
           Copy-Item docs/test-results/parallel-integration.json artifacts/parallel-integration.json
           Copy-Item docs/test-results/adaptive-integration.json artifacts/adaptive-integration.json
+          Copy-Item docs/test-results/small-text.json artifacts/small-text.json
+          Copy-Item docs/test-results/incremental.json artifacts/incremental.json
       - uses: actions/upload-artifact@v4
         with:
           name: GameOCR-windows-x64
@@ -116,6 +124,8 @@ jobs:
             artifacts/onnx-cpu-e2e.json
             artifacts/parallel-integration.json
             artifacts/adaptive-integration.json
+            artifacts/small-text.json
+            artifacts/incremental.json
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: windows

@@ -42,8 +42,8 @@
         <p>以完整截图为基准，输入 0–1 的比例。区域以外不识别，结果坐标仍对应完整截图。</p>
         <div class="fields"><label>左边比例<input type="number" min="0" max="0.99" step="0.01" bind:value={draft.onnx.detectionRegion[0]}/></label><label>顶部比例<input type="number" min="0" max="0.99" step="0.01" bind:value={draft.onnx.detectionRegion[1]}/></label><label>宽度比例<input type="number" min="0.01" max="1" step="0.01" bind:value={draft.onnx.detectionRegion[2]}/></label><label>高度比例<input type="number" min="0.01" max="1" step="0.01" bind:value={draft.onnx.detectionRegion[3]}/></label></div>
       {/if}
-      {#if draft.onnx.preserveSmallText || draft.onnx.detectionRegion || draft.onnx.incremental}
-        <p>局部／小字检测使用单 Worker，先合并检测框，再从原图识别。小字模式优先减少漏字，会增加检测次数；限定区域可减少处理量。检测最长边至少 256 px，最多 64 个局部分块。</p>
+      {#if draft.onnx.preserveSmallText || draft.onnx.detectionRegion || draft.onnx.incremental || draft.onnx.selectiveDetection}
+        <p>启用局部、小字、补检或增量识别时使用单 Worker，保留完整线程预算。检测框合并后从原图识别；限定区域可减少处理量。小字／补检模式要求检测最长边至少 256 px；完整小字模式最多 64 个局部分块。</p>
       {/if}
       <label>OCR 执行策略<select aria-label="OCR 执行策略" bind:value={draft.executionMode}><option value="single">单 Worker</option><option value="manual">手动并行</option><option value="adaptive">自适应优化</option></select></label>
       <p>单 Worker 保持原有设备选择和完整识别；手动并行使用指定实例。自适应根据传统视觉特征与本机历史选择 CPU 策略，速度以实际端到端耗时为准。</p>

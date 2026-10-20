@@ -1,0 +1,986 @@
+{
+  "executedAt": "2026-10-20T07:31:16.184Z",
+  "checks": [
+    "Deterministic real-frame features, bounded thumbnail, true single-worker thread baseline",
+    "Online real OCR: at most one exploration in 24 frames; at most two workers and bounded total thread budget",
+    "Cancellation during real inference records neither success nor failure and pool remains reusable",
+    "Atomic archive contains bounded aggregate features/statistics, no OCR text",
+    "Restart reuses compatible history; disabling learning is read-only and disables exploration",
+    "Changed Batch Size isolates the configuration fingerprint",
+    "Clear is persisted; corrupt archive recovers; CPU worker cap one is respected",
+    "Owned worker crash records a failed attempt and never a successful latency sample",
+    "Adaptive rejects explicit CUDA rather than silently using CPU"
+  ],
+  "samples": [
+    {
+      "name": "features",
+      "analysisMs": 2.1196,
+      "features": {
+        "activeCells": 6,
+        "changeRatio": null,
+        "components": 4,
+        "contrast": 0.006147455552865823,
+        "contrastGrid": [
+          0.11888888888888889,
+          0,
+          0.07194444444444445,
+          0.051944444444444446,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.11555555555555555,
+          0,
+          0.10611111111111111,
+          0.07611111111111112
+        ],
+        "crossingRegions": 0,
+        "dispersion": 0.9913365081227052,
+        "edgeDensity": 0.022135416666666075,
+        "edgeGrid": [
+          0.07861111111111112,
+          0,
+          0.04694444444444444,
+          0.03166666666666667,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.0825,
+          0,
+          0.06694444444444445,
+          0.0475
+        ],
+        "gradient": 0.004412122140522885,
+        "grayGrid": [
+          0.13804793028322712,
+          0.12156862745098325,
+          0.1310773420479331,
+          0.1283518518518547,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.12156862745098325,
+          0.13661873638344502,
+          0.12156862745098325,
+          0.13499128540305289,
+          0.13129302832244288
+        ],
+        "hash": "0000000000008000",
+        "height": 1080,
+        "histogram": [
+          0,
+          0.9882291666652542,
+          0.0006423611111111111,
+          0.0006423611111111111,
+          0.0004513888888888889,
+          0.0018055555555555507,
+          0.0006944444444444445,
+          0.00046875000000000004,
+          0.003958333333333341,
+          0.0007291666666666667,
+          0.0007638888888888889,
+          0.0006423611111111111,
+          0.0006423611111111111,
+          0.0003125,
+          0.00001736111111111111,
+          0
+        ],
+        "horizontalProjection": 0.11666666666666667,
+        "imbalance": 0.09613506348541925,
+        "schema": 1,
+        "seamEnergy": 0,
+        "seamText": 0,
+        "textDensity": 0.025572916666666667,
+        "textGrid": [
+          0.09805555555555556,
+          0,
+          0.05388888888888889,
+          0.036944444444444446,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.09055555555555556,
+          0,
+          0.075,
+          0.05472222222222222
+        ],
+        "variance": 0.008094661919785848,
+        "verticalProjection": 0.390625,
+        "width": 1920
+      }
+    },
+    {
+      "name": "online",
+      "wallMs": 311.25190000000003,
+      "adaptive": {
+        "analysisMs": 2.0673000000000004,
+        "availableMemoryMb": 30218,
+        "cpuLoad": null,
+        "decisionMs": 0.07490000000000001,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "unknown",
+        "ocrMs": 309.0792,
+        "parallelMedianMs": null,
+        "predictedMs": null,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 0,
+        "singleMedianMs": null,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 301.71759999999995,
+          "completedTasks": 1,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 241.5931,
+      "adaptive": {
+        "analysisMs": 1.8453,
+        "availableMemoryMb": 30207,
+        "cpuLoad": 0.7857142857142857,
+        "decisionMs": 0.0667,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 239.6562,
+        "parallelMedianMs": null,
+        "predictedMs": 319.34303765639555,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 1,
+        "singleMedianMs": 319.34303765639555,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 267.35384999999997,
+          "completedTasks": 2,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 290.8836,
+      "adaptive": {
+        "analysisMs": 2.5782000000000003,
+        "availableMemoryMb": 30201,
+        "cpuLoad": 0.8229166666666666,
+        "decisionMs": 0.17229999999999998,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 288.1089,
+        "parallelMedianMs": null,
+        "predictedMs": 255.81032813617497,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 2,
+        "singleMedianMs": 239.9271507561198,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 271.7374,
+          "completedTasks": 3,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 269.3586,
+      "adaptive": {
+        "analysisMs": 2.8415,
+        "availableMemoryMb": 30190,
+        "cpuLoad": 0.8421052631578947,
+        "decisionMs": 0.101,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 266.37699999999995,
+        "parallelMedianMs": null,
+        "predictedMs": 296.11808946320315,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 3,
+        "singleMedianMs": 290.31185241490505,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 268.38655,
+          "completedTasks": 4,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 248.16920000000002,
+      "adaptive": {
+        "analysisMs": 1.9424,
+        "availableMemoryMb": 30213,
+        "cpuLoad": 0.6898148148148149,
+        "decisionMs": 0.4737,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 245.7136,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 4,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 262.48254,
+          "completedTasks": 5,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 281.0664,
+      "adaptive": {
+        "analysisMs": 1.9811999999999999,
+        "availableMemoryMb": 30196,
+        "cpuLoad": 0.592964824120603,
+        "decisionMs": 0.0592,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 278.98650000000004,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 5,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.96556666666663,
+          "completedTasks": 6,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 265.7549,
+      "adaptive": {
+        "analysisMs": 1.9184,
+        "availableMemoryMb": 30210,
+        "cpuLoad": 0.6968325791855203,
+        "decisionMs": 0.0736,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 263.7401,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 6,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 262.97912857142853,
+          "completedTasks": 7,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 275.835,
+      "adaptive": {
+        "analysisMs": 3.0319000000000003,
+        "availableMemoryMb": 30204,
+        "cpuLoad": 0.6759259259259259,
+        "decisionMs": 0.2222,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 272.5551,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 7,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.1333625,
+          "completedTasks": 8,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 248.76999999999998,
+      "adaptive": {
+        "analysisMs": 1.8699000000000001,
+        "availableMemoryMb": 30205,
+        "cpuLoad": 0.7083333333333333,
+        "decisionMs": 0.045899999999999996,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 246.82889999999998,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 8,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 260.58639999999997,
+          "completedTasks": 9,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 264.2944,
+      "adaptive": {
+        "analysisMs": 1.9276,
+        "availableMemoryMb": 30204,
+        "cpuLoad": 0.5833333333333333,
+        "decisionMs": 0.045399999999999996,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 262.2907,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 9,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 260.01054999999997,
+          "completedTasks": 10,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 308.70009999999996,
+      "adaptive": {
+        "analysisMs": 2.7584,
+        "availableMemoryMb": 30205,
+        "cpuLoad": 0.5925925925925926,
+        "decisionMs": 0.0855,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 305.8324,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 10,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.4478,
+          "completedTasks": 11,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 279.3254,
+      "adaptive": {
+        "analysisMs": 2.7555,
+        "availableMemoryMb": 30183,
+        "cpuLoad": 0.7916666666666666,
+        "decisionMs": 0.35619999999999996,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 276.1909,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 11,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.78072499999996,
+          "completedTasks": 12,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 264.2722,
+      "adaptive": {
+        "analysisMs": 1.8492,
+        "availableMemoryMb": 30214,
+        "cpuLoad": 0.5855855855855856,
+        "decisionMs": 0.07200000000000001,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 262.32480000000004,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 12,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.0914384615384,
+          "completedTasks": 13,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 285.3275,
+      "adaptive": {
+        "analysisMs": 2.4975,
+        "availableMemoryMb": 30212,
+        "cpuLoad": 0.5,
+        "decisionMs": 0.0466,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 282.7495,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 13,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.7278071428571,
+          "completedTasks": 14,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 267.93129999999996,
+      "adaptive": {
+        "analysisMs": 2.7388999999999997,
+        "availableMemoryMb": 30217,
+        "cpuLoad": 0.5526315789473684,
+        "decisionMs": 0.10450000000000001,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 265.0616,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 14,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.30019999999996,
+          "completedTasks": 15,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 282.4698,
+      "adaptive": {
+        "analysisMs": 2.7642,
+        "availableMemoryMb": 30213,
+        "cpuLoad": 0.5462962962962963,
+        "decisionMs": 0.0614,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 279.6133,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 15,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.77968124999995,
+          "completedTasks": 16,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 281.9103,
+      "adaptive": {
+        "analysisMs": 2.0418,
+        "availableMemoryMb": 30216,
+        "cpuLoad": 0.5570175438596492,
+        "decisionMs": 0.1172,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 279.7153,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 16,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 264.1972176470588,
+          "completedTasks": 17,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 264.0847,
+      "adaptive": {
+        "analysisMs": 2.8087,
+        "availableMemoryMb": 30218,
+        "cpuLoad": 0.6531531531531531,
+        "decisionMs": 0.0608,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 261.18649999999997,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 17,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 263.5588111111111,
+          "completedTasks": 18,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 335.7124,
+      "adaptive": {
+        "analysisMs": 2.0143,
+        "availableMemoryMb": 30219,
+        "cpuLoad": 0.5619047619047619,
+        "decisionMs": 0.083,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 333.5843,
+        "parallelMedianMs": null,
+        "predictedMs": 275.0045001966646,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 18,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 266.7406052631579,
+          "completedTasks": 19,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 36192,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 751.3723,
+      "adaptive": {
+        "analysisMs": 2.2333000000000003,
+        "availableMemoryMb": 30217,
+        "cpuLoad": 0.7916666666666666,
+        "decisionMs": 0.0821,
+        "exploring": true,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 195.1449,
+        "parallelMedianMs": null,
+        "predictedMs": null,
+        "qualityRisk": false,
+        "reason": "低频探索：在新的相似帧上试用另一策略；不视为严格同帧 A/B",
+        "reliable": false,
+        "similarSamples": 19,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-parallel-2",
+        "switchMs": 553.8783999999999
+      },
+      "workers": [
+        {
+          "averageMs": 89.97285,
+          "completedTasks": 2,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 50412,
+          "state": "idle",
+          "threads": 2
+        },
+        {
+          "averageMs": 76.96085000000001,
+          "completedTasks": 2,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 1,
+          "pid": 37388,
+          "state": "idle",
+          "threads": 2
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 627.9382999999999,
+      "adaptive": {
+        "analysisMs": 3.0159000000000002,
+        "availableMemoryMb": 30166,
+        "cpuLoad": 0.33333333333333337,
+        "decisionMs": 0.0916,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 319.8102,
+        "parallelMedianMs": 198.28690145133865,
+        "predictedMs": 198.28690145133865,
+        "qualityRisk": false,
+        "reason": "探索预算结束，恢复原策略；切换成本计入端到端",
+        "reliable": false,
+        "similarSamples": 20,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 304.9958
+      },
+      "workers": [
+        {
+          "averageMs": 311.17080000000004,
+          "completedTasks": 1,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 37092,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 236.31820000000002,
+      "adaptive": {
+        "analysisMs": 3.1586000000000003,
+        "availableMemoryMb": 30210,
+        "cpuLoad": 0.4796747967479674,
+        "decisionMs": 0.0698,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 233.0582,
+        "parallelMedianMs": 198.28690145133865,
+        "predictedMs": 302.50495021633105,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 21,
+        "singleMedianMs": 290.31185241490505,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 267.99830000000003,
+          "completedTasks": 2,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 37092,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 222.6508,
+      "adaptive": {
+        "analysisMs": 1.9501,
+        "availableMemoryMb": 30210,
+        "cpuLoad": 0.49189189189189186,
+        "decisionMs": 0.0519,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 220.6146,
+        "parallelMedianMs": 198.28690145133865,
+        "predictedMs": 281.3913609497925,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 22,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 249.0278,
+          "completedTasks": 3,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 37092,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    },
+    {
+      "name": "online",
+      "wallMs": 313.2971,
+      "adaptive": {
+        "analysisMs": 2.7307,
+        "availableMemoryMb": 30210,
+        "cpuLoad": 0.5240641711229946,
+        "decisionMs": 0.0467,
+        "exploring": false,
+        "fallbackRisk": 0.014420259522812888,
+        "matchKind": "image",
+        "ocrMs": 310.4881,
+        "parallelMedianMs": 198.28690145133865,
+        "predictedMs": 281.3913609497925,
+        "qualityRisk": false,
+        "reason": "历史证据不足，使用完整单 Worker 基线",
+        "reliable": false,
+        "similarSamples": 23,
+        "singleMedianMs": 263.91986583173184,
+        "strategy": "cpu-single",
+        "switchMs": 0
+      },
+      "workers": [
+        {
+          "averageMs": 262.14145,
+          "completedTasks": 4,
+          "device": "CPU",
+          "failedTasks": 0,
+          "id": 0,
+          "pid": 37092,
+          "state": "idle",
+          "threads": 4
+        }
+      ]
+    }
+  ],
+  "profiles": "isolated test archive",
+  "hardware": "AMD Ryzen 5 5600G with Radeon Graphics         ",
+  "binarySha256": "331b801c563902ef17be842357fbcdccbada6e5e80b80f17b8bd1ec3a42f41ed",
+  "status": "passed",
+  "explorationsObserved": 1
+}

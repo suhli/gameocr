@@ -69,6 +69,48 @@ try{
     const clearing=invoke('recognize_once');await until(async()=>(await invoke('get_status')).ocr==='processing');await invoke('clear_adaptive_profiles');await clearing;assert.equal((await invoke('get_adaptive_statistics')).classes,0);checks.push('Clearing history during analysis/inference invalidates the in-flight learning event');
     await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
   }
+  if(process.env.GAMEOCR_TEST_EFFICIENCY==='1'){
+    const originalOnnx=structuredClone(settings.onnx);
+    await page.getByRole('button',{name:'打开设置'}).click();
+    for(const label of ['保留高分辨率小字（重叠分块检测）','对疑似漏字区域补做高分辨率检测','增量识别：复用像素完全未变的区域与文字','按文字宽度分批，限制每批像素量','只识别指定区域']){
+      assert.equal(await page.getByLabel(label,{exact:true}).isChecked(),false);
+    }
+    await page.getByLabel('保留高分辨率小字（重叠分块检测）',{exact:true}).check();
+    assert(await page.getByLabel('对疑似漏字区域补做高分辨率检测',{exact:true}).isDisabled());
+    await page.getByLabel('保留高分辨率小字（重叠分块检测）',{exact:true}).uncheck();
+    await page.getByLabel('对疑似漏字区域补做高分辨率检测',{exact:true}).check();
+    await page.getByLabel('每帧最多补检区域',{exact:true}).fill('8');
+    await page.getByLabel('增量识别：复用像素完全未变的区域与文字',{exact:true}).check();
+    await page.getByLabel('按文字宽度分批，限制每批像素量',{exact:true}).check();
+    await page.getByLabel('每批像素预算（不含颜色通道）',{exact:true}).fill('196608');
+    await page.getByLabel('只识别指定区域',{exact:true}).check();
+    for(const [label,value] of [['左边比例','0'],['顶部比例','0'],['宽度比例','1'],['高度比例','1']]){
+      await page.getByLabel(label,{exact:true}).fill(value);
+    }
+    await page.getByLabel('跳过没有显著变化的画面',{exact:true}).check();
+    await page.getByLabel('变化检测阈值',{exact:true}).fill('1');
+    const bounds=await page.locator('dialog').boundingBox(),viewport=await page.evaluate(()=>({width:innerWidth,height:innerHeight}));
+    assert(Math.abs(bounds.x+bounds.width/2-viewport.width/2)<3);assert(Math.abs(bounds.y+bounds.height/2-viewport.height/2)<3);
+    await page.screenshot({path:path.join(out,'efficiency-settings.png')});
+    await page.getByRole('button',{name:'保存设置',exact:true}).click();await until(async()=>!(await page.locator('dialog').count()));
+    settings=await invoke('get_settings');assert(settings.onnx.incremental&&settings.onnx.widthBuckets&&settings.onnx.selectiveDetection);assert.equal(settings.onnx.refinementRegions,8);assert.deepEqual(settings.onnx.detectionRegion,[0,0,1,1]);
+    await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();assert.deepEqual((await invoke('get_settings')).onnx,settings.onnx);
+    checks.push('Efficiency settings default off, full tiling disables selective control, ROI/budget/cache values persist, dialog centered');
+    await invoke('load_model',{id:'ppocrv6-small'});assert.equal(children().length,1);
+    await assert.rejects(invoke('update_settings',{settings:{...settings,onnx:{...settings.onnx,incremental:false}}}));
+    await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
+    await invoke('recognize_once');const first=(await invoke('get_history'))[0];assert(first.result.blocks.some(b=>b.text.replace(/\s/g,'').includes('Health:100/100')));assert(first.result.metrics.detectionRegions<=9);
+    await delay(200);await invoke('recognize_once');const reused=(await invoke('get_history'))[0];
+    assert(reused.result.frameId>first.result.frameId);assert(reused.result.metrics.cache.reusedLines>0);assert.equal(reused.result.metrics.inferenceMs,0);
+    assert.deepEqual(reused.result.blocks,first.result.blocks);
+    checks.push('Real WGC optimized PPM path: one Worker, bounded refinement, new frame identity, identical repeated-frame output with inference skipped');
+    await invoke('start_ocr');fs.writeFileSync(control,'number');
+    const changed=await until(async()=>{const entry=(await invoke('get_history'))[0];return entry?.result.blocks.some(b=>b.text.replace(/\s/g,'').includes('Health:101/100'))&&entry;});
+    assert(changed.result.frameId>reused.result.frameId);
+    await invoke('stop_ocr');await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
+    checks.push('Automatic OCR sees a single-number update despite maximum thumbnail change threshold; no stale text and workers cleaned on unload');
+    settings={...settings,onnx:originalOnnx,changeDetection:false};
+  }
   await invoke('update_settings',{settings:{...settings,executionMode:'manual',enableParallelInference:true}});await invoke('load_model',{id:'ppocrv6-small'});const owned=children();assert.equal(owned.length,2);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
   const pendingExit=invoke('recognize_once').catch(()=>{});await delay(30);await invoke('plugin:window|close',{label:'main'}).catch(()=>{});await until(()=>app.exitCode!==null);await pendingExit;assert.equal(app.exitCode,0);invoke=null;
   const remaining=execFileSync('powershell.exe',['-NoProfile','-Command',`Get-Process -Id @(${owned.join(',')}) -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id; exit 0`],{windowsHide:true,encoding:'utf8'}).trim();assert.equal(remaining,'');assert.deepEqual(fs.readdirSync(path.join(dataDir,'sessions')),[]);checks.push('Normal application exit during parallel inference removes owned workers and session files');

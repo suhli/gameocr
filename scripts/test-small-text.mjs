@@ -5,7 +5,7 @@ const corpus=JSON.parse(fs.readFileSync('tests/fixtures/small-text/corpus.json',
 const report=[];let id=0;
 for(const [name,parameters] of Object.entries({whole:{},tiles:{preserveSmallText:true},roi:{detectionRegion:[.5,.7,.5,.3]},roiTiles:{detectionRegion:[.5,.7,.5,.3],preserveSmallText:true}})){
   if(process.env.GAMEOCR_SMALL_TEXT_MODE && name!==process.env.GAMEOCR_SMALL_TEXT_MODE)continue;
-  const engine=engineConfig();Object.assign(engine.inference.parameters,parameters);
+  const engine=engineConfig(process.env.GAMEOCR_TEST_DEVICE??'cpu');Object.assign(engine.inference.parameters,parameters);
   const host=await startExecutor('small-text-'+name,engine,{enableParallelInference:name==='roiTiles',cpuWorkerCount:2,gpuWorkerCount:0});
   try{
     assert.equal(host.ready.type,'ready',JSON.stringify(host.ready));

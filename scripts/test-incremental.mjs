@@ -6,7 +6,7 @@ const gt=corpus.scenarios.find(s=>s.width===3840).groundTruth;
 const frames=['dense-3840','dense-3840','dense-3840-changed','dense-3840-removed','dense-3840-scrolled'];
 const report=[];const outputs=new Map();let id=0;
 for(const incremental of [false,true]){
-  const engine=engineConfig();Object.assign(engine.inference.parameters,{preserveSmallText:true,incremental});
+  const engine=engineConfig(process.env.GAMEOCR_TEST_DEVICE??'cpu');Object.assign(engine.inference.parameters,{preserveSmallText:true,incremental,widthBuckets:process.env.GAMEOCR_WIDTH_BUCKETS==='1'});
   const host=await startExecutor('incremental-'+incremental,engine,{enableParallelInference:false});
   try{
     assert.equal(host.ready.type,'ready',JSON.stringify(host.ready));
@@ -18,6 +18,7 @@ for(const incremental of [false,true]){
       if(name.endsWith('-removed'))expected.shift();
       if(name.endsWith('-scrolled'))for(const item of expected){item.bbox[1]+=27;item.bbox[3]+=27;}
       const quality=accuracy(expected,r.blocks);
+      assert.equal(quality.characterErrorRate,0);assert.equal(quality.exactLineRecall,1);assert.equal(quality.unexpectedBlocks,0);
       if(!incremental)outputs.set(step,r.blocks);
       else {
         assert.equal(compareOutputs(outputs.get(step),r.blocks).disagreement,false,'Cached output differs from uncached');
@@ -38,5 +39,5 @@ for(const incremental of [false,true]){
     }
   }finally{await host.close();}
 }
-fs.writeFileSync('docs/test-results/incremental.json',JSON.stringify({executedAt:new Date().toISOString(),report},null,2)+'\n');
+fs.writeFileSync(process.env.GAMEOCR_INCREMENTAL_REPORT??'docs/test-results/incremental.json',JSON.stringify({executedAt:new Date().toISOString(),device:process.env.GAMEOCR_TEST_DEVICE??'cpu',widthBuckets:process.env.GAMEOCR_WIDTH_BUCKETS==='1',report},null,2)+'\n');
 console.log('Incremental exactness, small-number changes, deletion, scroll, source switch and cancellation passed.');

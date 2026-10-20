@@ -1,0 +1,38 @@
+{
+  "executedAt": "2026-10-20T07:37:07.691Z",
+  "measurement": "Native adapter; excludes desktop capture/encoding",
+  "report": [
+    {
+      "widthBuckets": false,
+      "device": "cuda",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.820208960272007,
+        "meanCenterErrorPx": 3.952284487786619,
+        "unexpectedBlocks": 0
+      },
+      "medianMs": 2389.2325,
+      "p95Ms": 2549.5944,
+      "recognitionMs": 1955.6624,
+      "batches": 9,
+      "pixels": 1016304
+    },
+    {
+      "widthBuckets": true,
+      "device": "cuda",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.820208960272007,
+        "meanCenterErrorPx": 3.952284487786619,
+        "unexpectedBlocks": 0
+      },
+      "medianMs": 2686.5822000000003,
+      "p95Ms": 2761.5663,
+      "recognitionMs": 2286.6141,
+      "batches": 11,
+      "pixels": 912384
+    }
+  ]
+}

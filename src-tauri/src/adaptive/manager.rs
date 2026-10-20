@@ -123,7 +123,9 @@ impl ExecutionStrategyManager {
         let message = if mode == ExecutionMode::Adaptive
             && matches!(&config.inference, gameocr_core::engine::RuntimeConfig::Onnx(p) if p.requires_whole_frame())
         {
-            Some("自适应优化：局部／小字检测仅使用 CPU×1，保留完整线程预算".into())
+            Some(
+                "自适应优化：局部、小字、补检或增量识别启用时仅使用 CPU×1，保留完整线程预算".into(),
+            )
         } else if mode == ExecutionMode::Adaptive {
             Some("自适应优化：CPU 候选，按需切换；GPU 探索未启用".into())
         } else {

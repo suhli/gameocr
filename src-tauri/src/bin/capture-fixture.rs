@@ -1,6 +1,12 @@
 //! Visible, deterministic Win32 test target. Only controls its own test window.
 #![windows_subsystem = "windows"]
-use std::{path::PathBuf, sync::OnceLock};
+use std::{
+    path::PathBuf,
+    sync::{
+        OnceLock,
+        atomic::{AtomicBool, Ordering},
+    },
+};
 use windows::{
     Win32::{
         Foundation::*,
@@ -11,6 +17,7 @@ use windows::{
     core::w,
 };
 static CONTROL: OnceLock<PathBuf> = OnceLock::new();
+static NUMBER_CHANGED: AtomicBool = AtomicBool::new(false);
 unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRESULT {
     unsafe {
         match msg {
@@ -37,7 +44,14 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                 SetBkMode(dc, TRANSPARENT);
                 for (y, line) in [
                     (28, "GAME OCR TEST"),
-                    (92, "Health: 100 / 100"),
+                    (
+                        92,
+                        if NUMBER_CHANGED.load(Ordering::Relaxed) {
+                            "Health: 101 / 100"
+                        } else {
+                            "Health: 100 / 100"
+                        },
+                    ),
                     (156, "Quest complete!"),
                     (220, "你好 世界 · こんにちは"),
                 ] {
@@ -67,6 +81,10 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                     if let Ok(action) = std::fs::read_to_string(path) {
                         let _ = std::fs::remove_file(path);
                         match action.trim() {
+                            "number" => {
+                                NUMBER_CHANGED.store(true, Ordering::Relaxed);
+                                let _ = InvalidateRect(Some(hwnd), None, true);
+                            }
                             "large" => {
                                 let _ = SetWindowPos(
                                     hwnd,

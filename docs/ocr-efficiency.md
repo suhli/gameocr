@@ -4,8 +4,8 @@
 2. 区域级增量识别与缓存：CPU 连续帧一致性、来源切换和取消验证通过。
 3. 识别宽度分桶与像素预算：CPU 质量与耗时基准通过，待 CUDA 回归。
 4. 预处理、传输与 CTC 解码开销：原生输出一致性通过，待桌面传输回归。
-5. 困难区域选择性复验：实现中，等待基准。
-6. GPU FP16 / CPU INT8 的兼容性与质量评估：待实现。
+5. 困难区域选择性复验：CPU 基准通过；4K 补检 8 个区域完整召回，耗时低于完整分块。
+6. GPU FP16 / CPU INT8 的兼容性与质量评估：完成，候选可用但本机未提速，保留 FP32 默认。
 
 所有功能保留兼容旧设置的默认值。基准区分首次识别与连续识别，分别记录耗时和准确率；不把增加召回的额外计算描述为加速。
 
@@ -15,9 +15,9 @@
 
 `onnx.detectionRegion` 为可选的 `[left, top, width, height]` 比例，范围 0–1。只识别区域内内容，但输出尺寸与坐标仍相对完整截图。
 
-局部／小字模式目前使用单 Worker 和完整 CPU 线程预算，避免外层分块重复解释 ROI 或先识别断句。手动并行设置保留，加载提示说明实际执行方式；自适应在此配置下只选择 CPU×1。关闭后恢复原策略。
+局部、小字、选择性补检和增量模式使用单 Worker 和完整 CPU 线程预算，避免外层分块重复解释 ROI、缓存或先识别断句。手动并行设置保留，加载提示说明实际执行方式；自适应在此配置下只选择 CPU×1。关闭后恢复原策略。
 
-分块会增加检测次数，适合小字召回不足的高分辨率画面。ROI 可以减少检测面积；连续帧复用将在第二项实现。合并保留倾斜框，对重叠的水平截断行拼接；任意排版仍需实际样本检验。
+分块会增加检测次数，适合小字召回不足的高分辨率画面。ROI 可以减少检测面积，连续帧可以配合下述增量识别。合并保留倾斜框，对重叠的水平截断行拼接；任意排版仍需实际样本检验。
 
 验证：`scripts/create-small-text-fixtures.ps1` 生成 2K / 4K 合成 UI，各有 53 行、16 px 小字与跨块长句；`node scripts/test-small-text.mjs` 比较整图、小字、ROI、ROI 小字四种配置，结果写入 `docs/test-results/small-text.json`。这不是实际游戏准确率基准。
 
@@ -50,3 +50,31 @@ ONNX 输入缓冲区在 Worker 中复用，使用 ORT 借用 TensorRef；每批 
 `onnx.selectiveDetection` 默认关闭。概览检测后，在原图的 32 px 单元上统计局部边缘，排除平坦背景、过密噪声和已有清晰框覆盖的单元，按未解释细节为局部区域排序；最多补检 `refinementRegions` 个区域（默认 4，范围 1–8）。所有框在识别前统一合并。完整小字模式优先，不再重复执行选择性补检。
 
 这是有预算的漏检风险启发式，不是文字定位真值，也不以识别置信度证明完整性。纹理、低对比度和极细笔画仍可能误判；预算不足时应缩小 ROI、提高补检预算或启用完整小字模式。
+
+CPU Small，预热 1 次、测量 3 次：4K 整图 1/53、327 ms；补检 4 个区域 49/53、2238 ms；补检 8 个区域 53/53、3247 ms；完整分块 53/53、5616 ms。2K 原整图已经完整召回，补检会增加耗时。补检 8 区与完整分块两尺寸均 CER=0、无额外框，空白帧均为空。报告：[refinement.json](test-results/refinement.json)。
+
+## FP16／INT8 实验
+
+工具仅生成独立模型目录，不覆盖原权重、不修改用户配置、不添加桌面 Python 依赖、不加入默认下载目录。转换校验源文件 SHA-256，保持 FP32 输入／输出和原字典顺序，再写新 Manifest、哈希与转换元数据。
+
+- FP16：使用锁定版本 ONNX Runtime 的 float16 转换器；Softmax、Sigmoid、ReduceMean、Pow 等保留 FP32，转换后重新排列图拓扑并校验。
+- INT8：MinMax 静态校准、逐通道权重量化、带符号 INT8 QDQ，仅处理 Conv／MatMul／Gemm。旧 opset 先升到 14 以支持 QDQ axis；校准使用独立的 8 张合成图及 40 个真值框裁图，不使用测试集。
+- 校准的 RGB→BGR、归一化、48 px 识别高度与 padding 沿用原生约定；Pillow 插值和真值框裁图不是原生透视预处理的逐像素副本，因此评估必须再次通过真正的 Rust Worker。
+
+```powershell
+python -m venv .cache/onnx-tools
+.cache/onnx-tools/Scripts/python.exe -m pip install -r scripts/onnx-tools-requirements.txt
+.cache/onnx-tools/Scripts/python.exe scripts/optimize-onnx.py --manifest .cache/test-models/ppocrv6-small.json --mode fp16 --output .cache/optimized-models/small-fp16
+.cache/onnx-tools/Scripts/python.exe scripts/optimize-onnx.py --manifest .cache/test-models/ppocrv6-small.json --mode int8 --output .cache/optimized-models/small-int8
+node scripts/benchmark-precision.mjs
+```
+
+输出目录必须不存在；重新实验时选择新的父目录（其中仍命名为 `small-fp16` / `small-int8`），用 `GAMEOCR_OPTIMIZED_MODELS` 指向它。`GAMEOCR_PRECISION_VARIANT` 可选择逗号分隔的 `fp32-cpu,int8-cpu,fp32-cuda,fp16-cuda`，`GAMEOCR_PRECISION_REPORT` 指定报告路径。GPU 测试需要 CUDA Worker；不自动改用 CPU 来伪造 GPU 结果。
+
+2026-10-20，Ryzen 5 5600G / GTX1650 4 GB，驱动 610.88，原生 Small，每场景预热 1 次、测量 3 次。评估图片哈希与校准集无交集；英文、中日繁体关键词通过，空白无输出，2K／4K 的三次测量均 53/53、CER=0、无额外块。框位置与置信度并非逐位一致；INT8 2K 存在与 FP32 的框匹配差异，不将文本全对等同于坐标无变化。报告：[precision.json](test-results/precision.json)。
+
+- CPU：2K FP32 1169 ms、INT8 1347 ms；4K 补检 8 区 FP32 3208 ms、INT8 4323 ms。
+- CUDA：2K FP32 2895 ms、混合 FP16 3270 ms；4K 补检 8 区 FP32 5377 ms、混合 FP16 5772 ms。
+- 模型加字典由 FP32 31.11 MB 降为 FP16 15.69 MB、INT8 8.62 MB，但测量的五种场景均未提速，**不提升为默认模型**。未测低精度 Medium、其他显卡、真实游戏语料和长期显存峰值；磁盘变小不能当作运行时内存收益。
+
+不改用 GPU ArgMax／设备输出绑定：当前已验证的是 CPU 借用输入缓冲区，仍保留完整概率输出和原 CTC 校验；没有实现或宣称 GPU 零拷贝。

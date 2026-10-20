@@ -379,7 +379,7 @@ impl Executor {
         } else if parallel.enable_parallel_inference
             && matches!(&config.inference, RuntimeConfig::Onnx(p) if p.requires_whole_frame())
         {
-            Some("局部／小字检测使用单 Worker 合并检测框，保留完整线程预算".into())
+            Some("局部、小字、补检或增量识别启用时使用单 Worker，保留完整线程预算".into())
         } else {
             None
         };
@@ -559,6 +559,10 @@ impl Executor {
                         result.metrics.recognition_ms.unwrap_or(0.);
                     *aggregate.detection_regions.get_or_insert(0) +=
                         result.metrics.detection_regions.unwrap_or(0);
+                    *aggregate.recognition_batches.get_or_insert(0) +=
+                        result.metrics.recognition_batches.unwrap_or(0);
+                    *aggregate.recognition_pixels.get_or_insert(0) +=
+                        result.metrics.recognition_pixels.unwrap_or(0);
                     for block in &result.blocks {
                         uncertain |= touches_internal_edge(block, tile, source);
                         blocks.push(map_block(block.clone(), tile, source)?);

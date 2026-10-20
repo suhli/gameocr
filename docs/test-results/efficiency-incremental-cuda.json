@@ -1,0 +1,556 @@
+{
+  "executedAt": "2026-10-20T07:36:34.595Z",
+  "device": "cuda",
+  "widthBuckets": true,
+  "report": [
+    {
+      "incremental": false,
+      "step": 0,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 5542.284299999999,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 1,
+          "cache": null,
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8979.3616,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 11.462399999999999,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8966.653400000001
+        },
+        "inferenceMs": 8210.8159,
+        "parsingMs": 252.0281,
+        "preprocessingMs": 499.04209999999995,
+        "recognitionBatches": 12,
+        "recognitionMs": 2668.5316000000003,
+        "recognitionPixels": 1096704,
+        "totalMs": 8964.150399999999
+      }
+    },
+    {
+      "incremental": false,
+      "step": 1,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 5276.6296999999995,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 2,
+          "cache": null,
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8786.2769,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 12.540000000000001,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8772.554
+        },
+        "inferenceMs": 8018.1725,
+        "parsingMs": 248.1015,
+        "preprocessingMs": 501.2733,
+        "recognitionBatches": 12,
+        "recognitionMs": 2741.5428,
+        "recognitionPixels": 1096704,
+        "totalMs": 8769.7214
+      }
+    },
+    {
+      "incremental": false,
+      "step": 2,
+      "name": "dense-3840-changed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7678039140422231,
+        "meanCenterErrorPx": 2.9961405445429827,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 5234.1499,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 3,
+          "cache": null,
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8724.697300000002,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 13.8847,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8709.5988
+        },
+        "inferenceMs": 7893.0459,
+        "parsingMs": 253.544,
+        "preprocessingMs": 558.3430000000002,
+        "recognitionBatches": 12,
+        "recognitionMs": 2658.8959999999997,
+        "recognitionPixels": 1096704,
+        "totalMs": 8707.305699999999
+      }
+    },
+    {
+      "incremental": false,
+      "step": 3,
+      "name": "dense-3840-removed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7675272079370576,
+        "meanCenterErrorPx": 2.9883776266565034,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 5237.2309000000005,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 4,
+          "cache": null,
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8868.662,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 12.5465,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8854.589
+        },
+        "inferenceMs": 8053.0591,
+        "parsingMs": 250.86509999999996,
+        "preprocessingMs": 546.0395999999996,
+        "recognitionBatches": 12,
+        "recognitionMs": 2815.8282,
+        "recognitionPixels": 1078272,
+        "totalMs": 8852.2635
+      }
+    },
+    {
+      "incremental": false,
+      "step": 4,
+      "name": "dense-3840-scrolled",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7497317212265877,
+        "meanCenterErrorPx": 2.9516934595333395,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 5253.1138,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 5,
+          "cache": null,
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8154.4384,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 12.5456,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8140.6691
+        },
+        "inferenceMs": 7379.819,
+        "parsingMs": 253.0626,
+        "preprocessingMs": 502.7912000000002,
+        "recognitionBatches": 10,
+        "recognitionMs": 2126.7052,
+        "recognitionPixels": 1130496,
+        "totalMs": 8137.866900000001
+      }
+    },
+    {
+      "incremental": true,
+      "step": 0,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": true,
+          "reusedLines": 0,
+          "reusedRegions": 0
+        },
+        "detectionMs": 5357.4035,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 1,
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8990.0782,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 11.7153,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8977.1595
+        },
+        "inferenceMs": 8190.645,
+        "parsingMs": 251.16810000000004,
+        "preprocessingMs": 531.6037,
+        "recognitionBatches": 12,
+        "recognitionMs": 2833.2415,
+        "recognitionPixels": 1096704,
+        "totalMs": 8975.6383
+      }
+    },
+    {
+      "incremental": true,
+      "step": 1,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 53,
+          "reusedRegions": 19
+        },
+        "detectionMs": 0,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 2,
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 19
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 38.0644,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 12.6258,
+          "wholeFrameFallback": false,
+          "workerWallMs": 24.3754
+        },
+        "inferenceMs": 0,
+        "parsingMs": 0.0618,
+        "preprocessingMs": 21.7856,
+        "recognitionBatches": 0,
+        "recognitionMs": 0,
+        "recognitionPixels": 0,
+        "totalMs": 21.8936
+      }
+    },
+    {
+      "incremental": true,
+      "step": 2,
+      "name": "dense-3840-changed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7678039140422231,
+        "meanCenterErrorPx": 2.9961405445429827,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 52,
+          "reusedRegions": 17
+        },
+        "detectionMs": 805.9939,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 3,
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 52,
+            "reusedRegions": 17
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 1338.7709,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 11.6418,
+          "wholeFrameFallback": false,
+          "workerWallMs": 1325.9501
+        },
+        "inferenceMs": 1128.9381,
+        "parsingMs": 19.0559,
+        "preprocessingMs": 175.29109999999997,
+        "recognitionBatches": 1,
+        "recognitionMs": 322.9442,
+        "recognitionPixels": 18432,
+        "totalMs": 1323.5311000000002
+      }
+    },
+    {
+      "incremental": true,
+      "step": 3,
+      "name": "dense-3840-removed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7675272079370576,
+        "meanCenterErrorPx": 2.9883776266565034,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 52,
+          "reusedRegions": 17
+        },
+        "detectionMs": 617.6209,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 4,
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 52,
+            "reusedRegions": 17
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 737.9544,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 13.2372,
+          "wholeFrameFallback": false,
+          "workerWallMs": 723.5187
+        },
+        "inferenceMs": 617.6209,
+        "parsingMs": 8.427900000000001,
+        "preprocessingMs": 94.48380000000004,
+        "recognitionBatches": 0,
+        "recognitionMs": 0,
+        "recognitionPixels": 0,
+        "totalMs": 720.7778999999999
+      }
+    },
+    {
+      "incremental": true,
+      "step": 4,
+      "name": "dense-3840-scrolled",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7497317212265877,
+        "meanCenterErrorPx": 2.9516934595333395,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 0,
+          "reusedRegions": 8
+        },
+        "detectionMs": 3321.2178000000004,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 5,
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 0,
+            "reusedRegions": 8
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 6451.4411,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 15.761199999999999,
+          "wholeFrameFallback": false,
+          "workerWallMs": 6434.6876999999995
+        },
+        "inferenceMs": 5850.73,
+        "parsingMs": 169.75,
+        "preprocessingMs": 410.25269999999995,
+        "recognitionBatches": 10,
+        "recognitionMs": 2529.5121999999997,
+        "recognitionPixels": 1130496,
+        "totalMs": 6432.2546999999995
+      }
+    },
+    {
+      "check": "source-generation-invalidates",
+      "metrics": {
+        "cache": {
+          "refreshed": true,
+          "reusedLines": 0,
+          "reusedRegions": 0
+        },
+        "detectionMs": 5664.271200000001,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 6,
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 8750.609199999999,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 13.5344,
+          "wholeFrameFallback": false,
+          "workerWallMs": 8735.9401
+        },
+        "inferenceMs": 7882.345700000002,
+        "parsingMs": 257.4343,
+        "preprocessingMs": 590.9822999999998,
+        "recognitionBatches": 10,
+        "recognitionMs": 2218.0745,
+        "recognitionPixels": 1130496,
+        "totalMs": 8733.334499999999
+      }
+    },
+    {
+      "check": "cancel-invalidates",
+      "metrics": {
+        "cache": {
+          "refreshed": true,
+          "reusedLines": 0,
+          "reusedRegions": 0
+        },
+        "detectionMs": 5061.187,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 8,
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "cpuTasks": 0,
+          "detectionRegions": 19,
+          "endToEndMs": 7971.9165,
+          "failedTasks": 0,
+          "gpuTasks": 1,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 12.4999,
+          "wholeFrameFallback": false,
+          "workerWallMs": 7958.189
+        },
+        "inferenceMs": 7212.5185,
+        "parsingMs": 241.45030000000003,
+        "preprocessingMs": 499.22259999999994,
+        "recognitionBatches": 10,
+        "recognitionMs": 2151.3315,
+        "recognitionPixels": 1130496,
+        "totalMs": 7955.3142
+      }
+    }
+  ]
+}
