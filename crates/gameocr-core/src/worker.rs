@@ -61,11 +61,13 @@ pub fn serve(factory: EngineFactory) -> Result<()> {
                 frame_id,
                 timestamp,
                 mode,
+                cache_context,
             } => {
                 let loaded = engine
                     .as_mut()
                     .ok_or_else(|| anyhow::anyhow!("Model not loaded"))?;
                 ensure!(loaded.capabilities().supports(mode), "Unsupported OCR mode");
+                loaded.set_frame_context(cache_context);
                 Ok(WorkerResponse::Result {
                     result: loaded.recognize(Path::new(&image), frame_id, timestamp, mode)?,
                 })

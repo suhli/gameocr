@@ -1,0 +1,109 @@
+{
+  "executedAt": "2026-10-20T02:03:28.535Z",
+  "report": [
+    {
+      "name": "whole",
+      "scene": "dense-2560",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.820208960272007,
+        "meanCenterErrorPx": 3.952284487786619,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 1305.0025,
+      "regions": 1
+    },
+    {
+      "name": "whole",
+      "scene": "dense-3840",
+      "quality": {
+        "exactLineRecall": 0.018867924528301886,
+        "characterErrorRate": 0.9011494252873563,
+        "meanBoxIoU": 0.2791009672033819,
+        "meanCenterErrorPx": 25.09291878382166,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 326.9147,
+      "regions": 1
+    },
+    {
+      "name": "selective4",
+      "scene": "dense-2560",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7650174563970152,
+        "meanCenterErrorPx": 3.166936742252343,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 2386.7161,
+      "regions": 5
+    },
+    {
+      "name": "selective4",
+      "scene": "dense-3840",
+      "quality": {
+        "exactLineRecall": 0.9245283018867925,
+        "characterErrorRate": 0.06551724137931035,
+        "meanBoxIoU": 0.7326573922604535,
+        "meanCenterErrorPx": 4.110834486791925,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 2237.8817999999997,
+      "regions": 5
+    },
+    {
+      "name": "selective8",
+      "scene": "dense-2560",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7695803708855146,
+        "meanCenterErrorPx": 3.055505068869906,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 2833.2162,
+      "regions": 8
+    },
+    {
+      "name": "selective8",
+      "scene": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 3247.0387,
+      "regions": 9
+    },
+    {
+      "name": "full",
+      "scene": "dense-2560",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7695803708855146,
+        "meanCenterErrorPx": 3.055505068869906,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 2895.9363,
+      "regions": 9
+    },
+    {
+      "name": "full",
+      "scene": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "p50Ms": 5615.6956,
+      "regions": 19
+    }
+  ]
+}

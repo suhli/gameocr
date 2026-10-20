@@ -33,7 +33,21 @@ pub struct Metrics {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub detection_regions: Option<usize>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cache: Option<CacheMetrics>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub recognition_batches: Option<usize>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub recognition_pixels: Option<usize>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub execution: Option<crate::parallel::ExecutionMetrics>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CacheMetrics {
+    pub reused_regions: usize,
+    pub reused_lines: usize,
+    pub refreshed: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -131,6 +145,8 @@ pub enum WorkerRequest {
         frame_id: u64,
         timestamp: u64,
         mode: OcrMode,
+        #[serde(default)]
+        cache_context: Option<[u64; 3]>,
     },
     Unload,
     Shutdown,

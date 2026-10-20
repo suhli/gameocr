@@ -1,0 +1,47 @@
+{
+  "executedAt": "2026-10-20T01:58:14.079Z",
+  "report": [
+    {
+      "variant": "before",
+      "image": "tests/fixtures/small-text/dense-2560.png",
+      "p50Ms": 1303.9780999999998,
+      "parsingMs": 124.7322,
+      "preprocessingMs": 76.8676
+    },
+    {
+      "variant": "before",
+      "image": "tests/fixtures/english.png",
+      "p50Ms": 110.4626,
+      "parsingMs": 8.008000000000001,
+      "preprocessingMs": 4.6605
+    },
+    {
+      "variant": "before",
+      "image": "tests/fixtures/blank.png",
+      "p50Ms": 136.84650000000002,
+      "parsingMs": 1.7882000000000002,
+      "preprocessingMs": 14.221200000000001
+    },
+    {
+      "variant": "after",
+      "image": "tests/fixtures/small-text/dense-2560.png",
+      "p50Ms": 1274.4296,
+      "parsingMs": 105.4944,
+      "preprocessingMs": 73.9682
+    },
+    {
+      "variant": "after",
+      "image": "tests/fixtures/english.png",
+      "p50Ms": 121.26910000000001,
+      "parsingMs": 7.6156999999999995,
+      "preprocessingMs": 5.3171
+    },
+    {
+      "variant": "after",
+      "image": "tests/fixtures/blank.png",
+      "p50Ms": 141.6086,
+      "parsingMs": 2.1751000000000005,
+      "preprocessingMs": 15.4485
+    }
+  ]
+}

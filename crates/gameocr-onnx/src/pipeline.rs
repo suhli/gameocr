@@ -151,7 +151,7 @@ pub fn reading_order(boxes: &mut [Quad]) {
         }
     }
 }
-pub fn crop(image: &RgbImage, q: &Quad) -> Result<RgbImage> {
+fn crop_dimensions(q: &Quad) -> (u32, u32) {
     let w = distance(q[0], q[1])
         .max(distance(q[2], q[3]))
         .round()
@@ -160,6 +160,17 @@ pub fn crop(image: &RgbImage, q: &Quad) -> Result<RgbImage> {
         .max(distance(q[1], q[2]))
         .round()
         .max(1.) as u32;
+    (w, h)
+}
+pub fn recognition_width(q: &Quad) -> usize {
+    let (mut w, mut h) = crop_dimensions(q);
+    if h as f64 / w as f64 >= 1.5 {
+        std::mem::swap(&mut w, &mut h);
+    }
+    (48. * w as f64 / h as f64).ceil() as usize
+}
+pub fn crop(image: &RgbImage, q: &Quad) -> Result<RgbImage> {
+    let (w, h) = crop_dimensions(q);
     ensure!(
         (w as u64) * (h as u64) <= 32_000_000,
         "Text crop exceeds memory budget"
@@ -194,7 +205,9 @@ pub fn decode_ctc(
     dictionary: &[String],
 ) -> Result<(String, f32)> {
     ensure!(
-        classes == dictionary.len() && classes > 1 && prob.len() == steps * classes,
+        classes == dictionary.len()
+            && classes > 1
+            && steps.checked_mul(classes) == Some(prob.len()),
         "Recognizer class count does not match dictionary"
     );
     let mut text = String::new();
@@ -202,16 +215,17 @@ pub fn decode_ctc(
     let mut count = 0;
     let mut previous = 0;
     for row in prob.chunks_exact(classes) {
-        ensure!(
-            row.iter()
-                .all(|v| v.is_finite() && (0.0..=1.00001).contains(v)),
-            "Recognizer must output CTC probabilities"
-        );
-        let (index, &score) = row
-            .iter()
-            .enumerate()
-            .max_by(|a, b| a.1.total_cmp(b.1))
-            .unwrap();
+        let (mut index, mut score) = (0, f32::NEG_INFINITY);
+        let mut valid = true;
+        for (i, &value) in row.iter().enumerate() {
+            valid &= value.is_finite() && (0.0..=1.00001).contains(&value);
+            // Match Iterator::max_by: the last equal maximum wins.
+            if value.total_cmp(&score).is_ge() {
+                index = i;
+                score = value;
+            }
+        }
+        ensure!(valid, "Recognizer must output CTC probabilities");
         if index != 0 && index != previous {
             text.push_str(&dictionary[index]);
             confidence += score;
@@ -260,6 +274,14 @@ mod tests {
         assert_eq!(text, "中中Aあ繁");
         assert!((score - 0.95).abs() < 1e-5);
         assert!(decode_ctc(&p, ids.len(), 4, &d).is_err());
+        let d = vec!["".into(), "a".into(), "b".into()];
+        assert_eq!(
+            decode_ctc(&[0., 0.5, 0.5], 1, 3, &d).unwrap(),
+            ("b".into(), 0.5)
+        );
+        for value in [f32::NAN, f32::INFINITY, -0.001, 1.1] {
+            assert!(decode_ctc(&[value, 0.9, 0.1], 1, 3, &d).is_err());
+        }
     }
     #[test]
     fn empty_detector_and_coordinate_restore() {

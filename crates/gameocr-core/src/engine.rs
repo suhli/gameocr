@@ -54,6 +54,11 @@ pub struct OnnxConfig {
     pub preserve_small_text: bool,
     /// Normalized [left, top, width, height] in the original captured frame.
     pub detection_region: Option<[f64; 4]>,
+    pub incremental: bool,
+    pub width_buckets: bool,
+    pub recognition_pixel_budget: usize,
+    pub selective_detection: bool,
+    pub refinement_regions: usize,
 }
 impl Default for OnnxConfig {
     fn default() -> Self {
@@ -66,14 +71,26 @@ impl Default for OnnxConfig {
             detection_resize: 960,
             preserve_small_text: false,
             detection_region: None,
+            incremental: false,
+            width_buckets: false,
+            recognition_pixel_budget: 196608,
+            selective_detection: false,
+            refinement_regions: 4,
         }
     }
 }
 impl OnnxConfig {
     pub fn requires_whole_frame(&self) -> bool {
-        self.preserve_small_text || self.detection_region.is_some()
+        self.preserve_small_text
+            || self.detection_region.is_some()
+            || self.incremental
+            || self.selective_detection
     }
     pub fn validate(&self) -> Result<()> {
+        ensure!(
+            (1..=8).contains(&self.refinement_regions),
+            "Refinement regions must be in 1..8"
+        );
         for value in [
             self.detection_threshold,
             self.box_threshold,
@@ -93,11 +110,15 @@ impl OnnxConfig {
             "Batch size must be in 1..32"
         );
         ensure!(
+            (153600..=786432).contains(&self.recognition_pixel_budget),
+            "Recognition pixel budget must be in 153600..786432"
+        );
+        ensure!(
             (32..=2048).contains(&self.detection_resize),
             "Detection resize must be in 32..2048"
         );
         ensure!(
-            !self.preserve_small_text || self.detection_resize >= 256,
+            !(self.preserve_small_text || self.selective_detection) || self.detection_resize >= 256,
             "Small-text detection requires a detection edge of at least 256 px"
         );
         if let Some([x, y, w, h]) = self.detection_region {
@@ -136,6 +157,8 @@ impl EngineConfig {
     }
 }
 pub trait OcrEngine {
+    /// Capture generation, cancellation epoch and executor cache revision.
+    fn set_frame_context(&mut self, _context: Option<[u64; 3]>) {}
     fn recognize(
         &mut self,
         image: &Path,

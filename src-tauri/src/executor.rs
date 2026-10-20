@@ -115,6 +115,7 @@ pub struct Executor {
     runtime: String,
     resize: u32,
     batch: u64,
+    cache_revision: u64,
     pub device: String,
     pub load_ms: f64,
     pub message: Option<String>,
@@ -394,6 +395,7 @@ impl Executor {
             runtime: config.manifest.runtime,
             resize,
             batch: 0,
+            cache_revision: 0,
             device,
             load_ms: elapsed(started),
             message,
@@ -456,11 +458,27 @@ impl Executor {
         };
         let mut result = match &mut self.strategy {
             Strategy::Sequential(slot) => {
-                let path = directory.0.join("inference.png");
+                let native = self.runtime == "onnx";
+                let path = directory.0.join(if native {
+                    "inference.ppm"
+                } else {
+                    "inference.png"
+                });
                 let write_path = path.clone();
                 let input = frame.clone();
                 let start = Instant::now();
-                tokio::task::spawn_blocking(move || input.image.save(write_path)).await??;
+                tokio::task::spawn_blocking(move || -> Result<()> {
+                    if native {
+                        write_tile(
+                            &write_path,
+                            &input.image,
+                            &Tile::whole(input.image.width(), input.image.height(), 960),
+                        )
+                    } else {
+                        input.image.save(write_path).map_err(Into::into)
+                    }
+                })
+                .await??;
                 metrics.transfer_ms = elapsed(start);
                 ensure!(!cancel.cancelled(), "任务已取消");
                 let s = slot.as_mut().context("模型工作程序不可用")?;
@@ -473,6 +491,7 @@ impl Executor {
                         frame_id: frame.id,
                         timestamp: frame.timestamp,
                         mode,
+                        cache_context: Some([frame.generation, cancel.epoch, self.cache_revision]),
                     })
                     .await;
                 metrics.worker_wall_ms = elapsed(start);
@@ -594,7 +613,10 @@ impl Executor {
                 }
             }
         };
-        ensure!(!cancel.cancelled(), "任务已取消");
+        if cancel.cancelled() {
+            self.cache_revision = self.cache_revision.wrapping_add(1);
+            bail!("任务已取消");
+        }
         ensure!(
             result.model_id.as_deref() == Some(&self.model_id)
                 && result.runtime.as_deref() == Some(&self.runtime),
@@ -608,6 +630,8 @@ impl Executor {
             "Worker 返回了过期帧或错误坐标尺寸"
         );
         metrics.end_to_end_ms = elapsed(started);
+        metrics.cache = result.metrics.cache.clone();
+        metrics.detection_regions = result.metrics.detection_regions;
         if self.status.lock().parallel {
             result.metrics.total_ms = metrics.end_to_end_ms;
         }

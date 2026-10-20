@@ -338,7 +338,17 @@ impl Service {
             };
         };
         let settings = self.settings.read().clone();
+        // The thumbnail gate can hide a one-character update. Incremental OCR
+        // performs its own exact, region-level comparison inside the worker.
+        let incremental = settings.onnx.incremental
+            && self
+                .executor
+                .lock()
+                .await
+                .as_ref()
+                .is_some_and(|e| e.incremental());
         if !force
+            && !incremental
             && settings.change_detection
             && !self
                 .detector

@@ -48,6 +48,8 @@ enum Request {
         image: PathBuf,
         #[serde(rename = "frameId")]
         frame_id: u64,
+        #[serde(default)]
+        generation: Option<u64>,
     },
     Cancel {
         image: PathBuf,
@@ -187,9 +189,13 @@ async fn main() -> Result<()> {
             }
             _ => {}
         }
-        let (path, frame_id, cancel_delay) = match request {
-            Request::Recognize { image, frame_id } => (image, frame_id, None),
-            Request::Cancel { image, delay_ms } => (image, 999999, Some(delay_ms)),
+        let (path, frame_id, generation, cancel_delay) = match request {
+            Request::Recognize {
+                image,
+                frame_id,
+                generation,
+            } => (image, frame_id, generation.unwrap_or(1), None),
+            Request::Cancel { image, delay_ms } => (image, 999999, 1, Some(delay_ms)),
             _ => unreachable!(),
         };
         // Corpus decoding is outside the measured frame pipeline: WGC supplies RGB.
@@ -197,7 +203,7 @@ async fn main() -> Result<()> {
             tokio::task::spawn_blocking(move || image::open(path).map(|im| im.to_rgb8())).await??;
         let active = Arc::new(AtomicBool::new(true));
         let valid = active.clone();
-        let cancel = Cancellation::new(frame_id, move || valid.load(Ordering::Acquire));
+        let cancel = Cancellation::new(1, move || valid.load(Ordering::Acquire));
         let timer = cancel_delay.map(|ms| {
             tokio::spawn(async move {
                 tokio::time::sleep(Duration::from_millis(ms)).await;
@@ -207,7 +213,7 @@ async fn main() -> Result<()> {
         let frame = Arc::new(FrameInput {
             id: frame_id,
             timestamp: now_ms(),
-            generation: 1,
+            generation,
             image,
         });
         let start = Instant::now();

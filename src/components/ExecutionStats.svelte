@@ -16,6 +16,7 @@
       <span>{adaptive.reason}</span>{#if adaptive.qualityRisk}<span>检测到完整性风险信号；置信度不能证明没有漏字</span>{/if}
     </div>{/if}
     {#if value.last}
+      {#if value.last.cache}<div class="timings" aria-label="OCR 缓存统计"><span>复用检测区域 {value.last.cache.reusedRegions} / {value.last.detectionRegions??0}</span><span>复用文字 {value.last.cache.reusedLines} 行</span><span>{value.last.cache.refreshed?'本帧刷新缓存':'逐像素校验缓存'}</span></div>{/if}
       <div class="timings"><span>传输 {ms(value.last.transferMs)}</span><span>切片 {ms(value.last.splitMs)}</span><span>最长排队 {ms(value.last.queueWaitMs)}</span><span>执行墙钟 {ms(value.last.workerWallMs)}</span><span>合并 {ms(value.last.mergeMs)}</span><span>任务 CPU {value.last.cpuTasks} / GPU {value.last.gpuTasks}</span><span>失败 {value.last.failedTasks} / 重试 {value.last.retriedTasks}</span>{#if value.last.wholeFrameFallback}<span>边界完整性：整图复验</span>{/if}{#if value.last.speedup!=null}<span>相对可比基线 {value.last.speedup.toFixed(2)}×</span>{/if}</div>
     {/if}
     <div class="workers">{#each value.workers as worker}<span>{worker.device} #{worker.id+1} · {states[worker.state]??worker.state} · {worker.threads} 线程 · {worker.completedTasks} 次 · 平均 {ms(worker.averageMs)}</span>{/each}</div>

@@ -72,6 +72,7 @@ fn main() -> anyhow::Result<()> {
                 frame_id,
                 timestamp,
                 mode,
+                ..
             } => Ok(WorkerResponse::Result {
                 result: if let Some(e) = adapted.as_mut() {
                     e.recognize(Path::new(&image), frame_id, timestamp, mode)?

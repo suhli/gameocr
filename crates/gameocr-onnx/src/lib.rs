@@ -1,4 +1,7 @@
+mod batching;
+mod cache;
 pub mod pipeline;
+mod refinement;
 pub mod regions;
 use anyhow::{Context, Result, ensure};
 use gameocr_core::{
@@ -8,7 +11,7 @@ use gameocr_core::{
 use image::RgbImage;
 use ort::{
     session::Session,
-    value::{Tensor, TensorElementType, ValueType},
+    value::{Tensor, TensorElementType, TensorRef, ValueType},
 };
 use std::{path::Path, time::Instant};
 
@@ -19,6 +22,10 @@ pub struct PaddleOcrAdapter {
     config: OnnxConfig,
     model_id: String,
     device: String,
+    cache: Option<cache::FrameCache>,
+    cache_context: Option<[u64; 3]>,
+    detection_buffer: Vec<f32>,
+    recognition_buffer: Vec<f32>,
 }
 fn ms(start: Instant) -> f64 {
     start.elapsed().as_secs_f64() * 1000.
@@ -157,6 +164,10 @@ impl PaddleOcrAdapter {
                 "CPU"
             }
             .into(),
+            cache: None,
+            cache_context: None,
+            detection_buffer: Vec::new(),
+            recognition_buffer: Vec::new(),
         };
         // Run both graphs before Ready. Missing kernels/DLLs surface during load,
         // allowing the parent to discard this process and retry a CPU worker.
@@ -192,14 +203,51 @@ impl PaddleOcrAdapter {
     ) -> Result<OcrResult> {
         let source = image.dimensions();
         ensure!(source.0 > 0 && source.1 > 0, "Empty image");
-        let regions = regions::plan(source, &self.config, detection_resize)?;
+        let mut regions = regions::plan(source, &self.config, detection_resize)?;
+        let refine = self.config.selective_detection && !self.config.preserve_small_text;
         let scope = regions[0];
+        let cache_enabled = self.config.incremental
+            && self.cache_context.is_some()
+            && image.as_raw().len() <= 64 * 1024 * 1024;
+        // Taking ownership ensures failures cannot keep partially updated data.
+        let previous = self
+            .cache
+            .take()
+            .filter(|c| cache_enabled && c.valid(&image, detection_resize));
+        let mut cache_metrics = CacheMetrics {
+            refreshed: previous.is_none(),
+            ..Default::default()
+        };
+        let mut next_regions = Vec::new();
         let mut preprocessing_ms = ms(total);
         let mut detection_ms = 0.;
         let mut parsing_ms = 0.;
         let mut candidates = Vec::new();
-        for (index, region) in regions.iter().copied().enumerate() {
+        for index in 0..65 {
+            let Some(region) = regions.get(index).copied() else {
+                break;
+            };
             let prep = Instant::now();
+            if let Some(boxes) = previous.as_ref().and_then(|c| c.region(&image, region)) {
+                cache_metrics.reused_regions += 1;
+                candidates.extend(boxes.iter().map(|&quad| regions::Candidate {
+                    quad,
+                    clipped: region.clipped(&quad, scope),
+                    region: index,
+                }));
+                next_regions.push((region, boxes));
+                if index == 0 && refine {
+                    let overview = candidates.iter().map(|c| c.quad).collect::<Vec<_>>();
+                    regions.extend(refinement::select(
+                        &image,
+                        &self.config,
+                        detection_resize,
+                        &overview,
+                    )?);
+                }
+                preprocessing_ms += ms(prep);
+                continue;
+            }
             let ratio = (detection_resize as f64 / region.w.max(region.h) as f64).min(1.);
             let w = ((region.w as f64 * ratio / 32.).round() as u32 * 32).max(32);
             let h = ((region.h as f64 * ratio / 32.).round() as u32 * 32).max(32);
@@ -207,18 +255,19 @@ impl PaddleOcrAdapter {
             let resized =
                 image::imageops::resize(&*view, w, h, image::imageops::FilterType::Triangle);
             let plane = (w * h) as usize;
-            let mut input = vec![0.; plane * 3];
+            self.detection_buffer.resize(plane * 3, 0.);
             for (i, pixel) in resized.pixels().enumerate() {
                 for c in 0..3 {
-                    input[c * plane + i] = (pixel[2 - c] as f32 / 255. - [0.485, 0.456, 0.406][c])
+                    self.detection_buffer[c * plane + i] = (pixel[2 - c] as f32 / 255.
+                        - [0.485, 0.456, 0.406][c])
                         / [0.229, 0.224, 0.225][c];
                 }
             }
             preprocessing_ms += ms(prep);
             let det_start = Instant::now();
-            let outputs = self.detector.run(ort::inputs![Tensor::from_array((
+            let outputs = self.detector.run(ort::inputs![TensorRef::from_array_view((
                 [1usize, 3, h as usize, w as usize],
-                input
+                self.detection_buffer.as_slice()
             ))?])?;
             detection_ms += ms(det_start);
             let post = Instant::now();
@@ -227,23 +276,44 @@ impl PaddleOcrAdapter {
                 shape.len() == 4 && shape[0] == 1 && shape[1] == 1 && shape[2] > 0 && shape[3] > 0,
                 "Invalid DB detector output"
             );
-            for q in pipeline::detect_boxes(
+            let detected = pipeline::detect_boxes(
                 prob,
                 shape[3] as u32,
                 shape[2] as u32,
                 (region.w, region.h),
                 &self.config,
-            )? {
-                let quad = region.restore(q);
+            )?
+            .into_iter()
+            .map(|q| region.restore(q))
+            .collect::<Vec<_>>();
+            for &quad in &detected {
                 candidates.push(regions::Candidate {
                     quad,
                     clipped: region.clipped(&quad, scope),
                     region: index,
                 });
             }
+            next_regions.push((region, detected));
+            if index == 0 && refine {
+                let overview = candidates.iter().map(|c| c.quad).collect::<Vec<_>>();
+                regions.extend(refinement::select(
+                    &image,
+                    &self.config,
+                    detection_resize,
+                    &overview,
+                )?);
+            }
             parsing_ms += ms(post);
+            ensure!(
+                candidates.len() <= 12000,
+                "Detection exceeds 12000 boxes; select a smaller ROI"
+            );
         }
         let post = Instant::now();
+        ensure!(
+            candidates.len() <= 12000,
+            "Detection exceeds 12000 boxes; select a smaller ROI"
+        );
         let boxes = if regions.len() > 1 {
             regions::merge(candidates)
         } else {
@@ -251,57 +321,75 @@ impl PaddleOcrAdapter {
         };
         parsing_ms += ms(post);
         let mut recognition_ms = 0.;
-        let mut blocks = Vec::new();
-        // Sort crop indices by aspect ratio for bounded, efficient batches. Keep
-        // original reading order in the final result.
-        let mut order: Vec<_> = (0..boxes.len()).collect();
-        order.sort_by(|&a, &b| {
-            let ratio = |i: usize| {
-                let w = pipeline::distance(boxes[i][0], boxes[i][1]);
-                let h = pipeline::distance(boxes[i][0], boxes[i][3]);
-                w.max(h) / w.min(h).max(1.)
-            };
-            ratio(a).total_cmp(&ratio(b))
-        });
-        for batch in order.chunks(self.config.batch_size) {
+        let prep = Instant::now();
+        let batches = batching::plan(&boxes, &self.config);
+        let mut widths = vec![0; boxes.len()];
+        for batch in &batches {
+            for &i in &batch.indices {
+                widths[i] = batch.width;
+            }
+        }
+        let mut decoded: Vec<Option<(String, f32)>> = boxes
+            .iter()
+            .enumerate()
+            .map(|(i, q)| {
+                let value = previous.as_ref().and_then(|c| c.line(&image, q, widths[i]));
+                if value.is_some() {
+                    cache_metrics.reused_lines += 1;
+                }
+                value
+            })
+            .collect();
+        preprocessing_ms += ms(prep);
+        let mut recognition_batches = 0;
+        let mut recognition_pixels = 0;
+        for planned in batches {
+            let batch: Vec<_> = planned
+                .indices
+                .into_iter()
+                .filter(|&i| decoded[i].is_none())
+                .collect();
+            if batch.is_empty() {
+                continue;
+            }
+            let width = planned.width;
+            recognition_batches += 1;
+            recognition_pixels += batch.len() * 48 * width;
             let prep = Instant::now();
-            let crops: Vec<_> = batch
-                .iter()
-                .map(|&i| pipeline::crop(&image, &boxes[i]))
-                .collect::<Result<_>>()?;
-            let width = crops
-                .iter()
-                .map(|im| (48. * im.width() as f64 / im.height() as f64).ceil() as usize)
-                .max()
-                .unwrap_or(320)
-                .clamp(320, 3200);
             let plane = 48 * width;
-            let mut tensor = vec![0f32; batch.len() * 3 * plane];
-            for (n, crop) in crops.iter().enumerate() {
+            self.recognition_buffer.resize(batch.len() * 3 * plane, 0.);
+            self.recognition_buffer.fill(0.); // Padding must not retain an earlier batch.
+            for (n, &index) in batch.iter().enumerate() {
+                let crop = pipeline::crop(&image, &boxes[index])?;
                 let rw = ((48. * crop.width() as f64 / crop.height() as f64).ceil() as usize)
                     .min(width)
                     .max(1);
                 let resized = image::imageops::resize(
-                    crop,
+                    &crop,
                     rw as u32,
                     48,
                     image::imageops::FilterType::Triangle,
                 );
-                for y in 0..48 {
-                    for x in 0..rw {
-                        for c in 0..3 {
-                            tensor[n * 3 * plane + c * plane + y * width + x] =
-                                resized.get_pixel(x as u32, y as u32)[2 - c] as f32 / 127.5 - 1.;
-                        }
+                let sample = &mut self.recognition_buffer[n * 3 * plane..(n + 1) * 3 * plane];
+                let (blue, rest) = sample.split_at_mut(plane);
+                let (green, red) = rest.split_at_mut(plane);
+                for (y, row) in resized.as_raw().chunks_exact(rw * 3).enumerate() {
+                    for (x, pixel) in row.chunks_exact(3).enumerate() {
+                        let i = y * width + x;
+                        blue[i] = pixel[2] as f32 / 127.5 - 1.;
+                        green[i] = pixel[1] as f32 / 127.5 - 1.;
+                        red[i] = pixel[0] as f32 / 127.5 - 1.;
                     }
                 }
             }
             preprocessing_ms += ms(prep);
             let rec_start = Instant::now();
-            let output = self.recognizer.run(ort::inputs![Tensor::from_array((
-                [batch.len(), 3, 48, width],
-                tensor
-            ))?])?;
+            let output = self
+                .recognizer
+                .run(ort::inputs![TensorRef::from_array_view((
+                    [batch.len(), 3, 48, width],
+                    self.recognition_buffer.as_slice()
+                ))?])?;
             recognition_ms += ms(rec_start);
             let post = Instant::now();
             let (shape, prob) = output[0].try_extract_tensor::<f32>()?;
@@ -321,29 +409,51 @@ impl PaddleOcrAdapter {
                     classes,
                     &self.dictionary,
                 )?;
-                if !text.is_empty() && confidence >= self.config.recognition_threshold {
-                    blocks.push((
-                        index,
-                        OcrBlock {
-                            id: format!("block-{index}"),
-                            text,
-                            label: Some("text".into()),
-                            bbox: Some(pipeline::bbox(&boxes[index])),
-                            polygon: Some(boxes[index].to_vec()),
-                            confidence: Some(confidence),
-                        },
-                    ));
-                }
+                decoded[index] = Some((text, confidence));
             }
             parsing_ms += ms(post);
         }
-        blocks.sort_by_key(|b| b.0);
+        let blocks = decoded
+            .iter()
+            .enumerate()
+            .filter_map(|(index, value)| {
+                let (text, confidence) = value.as_ref()?;
+                (!text.is_empty() && *confidence >= self.config.recognition_threshold).then(|| {
+                    OcrBlock {
+                        id: format!("block-{index}"),
+                        text: text.clone(),
+                        label: Some("text".into()),
+                        bbox: Some(pipeline::bbox(&boxes[index])),
+                        polygon: Some(boxes[index].to_vec()),
+                        confidence: Some(*confidence),
+                    }
+                })
+            })
+            .collect();
+        if cache_enabled && boxes.len() <= 4096 {
+            let lines = boxes
+                .into_iter()
+                .zip(decoded)
+                .zip(widths)
+                .filter_map(|((q, value), width)| {
+                    value.map(|(text, score)| (q, width, text, score))
+                })
+                .collect();
+            self.cache = Some(cache::FrameCache {
+                image,
+                regions: next_regions,
+                lines,
+                refreshed: previous.as_ref().map_or_else(Instant::now, |c| c.refreshed),
+                frames: previous.as_ref().map_or(0, |c| c.frames + 1),
+                edge: detection_resize,
+            });
+        }
         Ok(OcrResult {
             frame_id,
             timestamp,
             source_width: source.0,
             source_height: source.1,
-            blocks: blocks.into_iter().map(|b| b.1).collect(),
+            blocks,
             raw_output: String::new(),
             metrics: Metrics {
                 preprocessing_ms,
@@ -353,6 +463,9 @@ impl PaddleOcrAdapter {
                 detection_ms: Some(detection_ms),
                 recognition_ms: Some(recognition_ms),
                 detection_regions: Some(regions.len()),
+                cache: cache_enabled.then_some(cache_metrics),
+                recognition_batches: Some(recognition_batches),
+                recognition_pixels: Some(recognition_pixels),
                 execution: None,
             },
             device: self.device.clone(),
@@ -364,6 +477,12 @@ impl PaddleOcrAdapter {
     }
 }
 impl OcrEngine for PaddleOcrAdapter {
+    fn set_frame_context(&mut self, context: Option<[u64; 3]>) {
+        if context.is_none() || self.cache_context != context {
+            self.cache = None;
+        }
+        self.cache_context = context;
+    }
     fn recognize(
         &mut self,
         path: &Path,

@@ -1,0 +1,478 @@
+{
+  "executedAt": "2026-10-20T01:52:26.459Z",
+  "report": [
+    {
+      "incremental": false,
+      "step": 0,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 3724.4907,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 1,
+          "cpuTasks": 1,
+          "endToEndMs": 5961.5417,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 24.9349,
+          "wholeFrameFallback": false,
+          "workerWallMs": 5935.1377999999995
+        },
+        "inferenceMs": 5133.6648000000005,
+        "parsingMs": 297.02520000000004,
+        "preprocessingMs": 486.19789999999995,
+        "recognitionMs": 1409.1741,
+        "totalMs": 5932.0262
+      }
+    },
+    {
+      "incremental": false,
+      "step": 1,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 3846.963100000001,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 2,
+          "cpuTasks": 1,
+          "endToEndMs": 5801.8506,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 7.7064,
+          "wholeFrameFallback": false,
+          "workerWallMs": 5792.7641
+        },
+        "inferenceMs": 4958.561300000001,
+        "parsingMs": 310.5233,
+        "preprocessingMs": 505.0732000000001,
+        "recognitionMs": 1111.5982,
+        "totalMs": 5790.1856
+      }
+    },
+    {
+      "incremental": false,
+      "step": 2,
+      "name": "dense-3840-changed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7678039140422231,
+        "meanCenterErrorPx": 2.9961405445429827,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 3758.9771,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 3,
+          "cpuTasks": 1,
+          "endToEndMs": 6069.2519999999995,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 7.870699999999999,
+          "wholeFrameFallback": false,
+          "workerWallMs": 6060.5668000000005
+        },
+        "inferenceMs": 5169.7747,
+        "parsingMs": 337.26619999999997,
+        "preprocessingMs": 534.5068,
+        "recognitionMs": 1410.7976,
+        "totalMs": 6058.2851
+      }
+    },
+    {
+      "incremental": false,
+      "step": 3,
+      "name": "dense-3840-removed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7675272079370576,
+        "meanCenterErrorPx": 2.9883776266565034,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 3762.105000000001,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 4,
+          "cpuTasks": 1,
+          "endToEndMs": 5732.0367,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 6.8344,
+          "wholeFrameFallback": false,
+          "workerWallMs": 5724.0458
+        },
+        "inferenceMs": 4883.2116000000005,
+        "parsingMs": 295.0482999999999,
+        "preprocessingMs": 526.8267999999998,
+        "recognitionMs": 1121.1065999999998,
+        "totalMs": 5721.2244
+      }
+    },
+    {
+      "incremental": false,
+      "step": 4,
+      "name": "dense-3840-scrolled",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7497317212265877,
+        "meanCenterErrorPx": 2.9516934595333395,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "detectionMs": 3775.3603,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 5,
+          "cpuTasks": 1,
+          "endToEndMs": 5997.7713,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 6.2907,
+          "wholeFrameFallback": false,
+          "workerWallMs": 5990.578799999999
+        },
+        "inferenceMs": 5127.9061,
+        "parsingMs": 305.43159999999995,
+        "preprocessingMs": 536.503,
+        "recognitionMs": 1352.5458,
+        "totalMs": 5987.5695000000005
+      }
+    },
+    {
+      "incremental": true,
+      "step": 0,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": true,
+          "reusedLines": 0,
+          "reusedRegions": 0
+        },
+        "detectionMs": 4034.690200000001,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 1,
+          "cpuTasks": 1,
+          "endToEndMs": 6379.5775,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 7.0739,
+          "wholeFrameFallback": false,
+          "workerWallMs": 6371.3222
+        },
+        "inferenceMs": 5500.5681,
+        "parsingMs": 311.98720000000003,
+        "preprocessingMs": 540.1518000000002,
+        "recognitionMs": 1465.8779,
+        "totalMs": 6369.7451
+      }
+    },
+    {
+      "incremental": true,
+      "step": 1,
+      "name": "dense-3840",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.767904998641798,
+        "meanCenterErrorPx": 2.9889199087414995,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 53,
+          "reusedRegions": 19
+        },
+        "detectionMs": 0,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 2,
+          "cpuTasks": 1,
+          "endToEndMs": 31.914499999999997,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 7.0558000000000005,
+          "wholeFrameFallback": false,
+          "workerWallMs": 23.9847
+        },
+        "inferenceMs": 0,
+        "parsingMs": 0.0414,
+        "preprocessingMs": 21.305399999999995,
+        "recognitionMs": 0,
+        "totalMs": 21.3868
+      }
+    },
+    {
+      "incremental": true,
+      "step": 2,
+      "name": "dense-3840-changed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7678039140422231,
+        "meanCenterErrorPx": 2.9961405445429827,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 52,
+          "reusedRegions": 17
+        },
+        "detectionMs": 260.501,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 3,
+          "cpuTasks": 1,
+          "endToEndMs": 391.77,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 6.6224,
+          "wholeFrameFallback": false,
+          "workerWallMs": 384.184
+        },
+        "inferenceMs": 279.04359999999997,
+        "parsingMs": 10.9456,
+        "preprocessingMs": 90.4632,
+        "recognitionMs": 18.5426,
+        "totalMs": 381.1823
+      }
+    },
+    {
+      "incremental": true,
+      "step": 3,
+      "name": "dense-3840-removed",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7675272079370576,
+        "meanCenterErrorPx": 2.9883776266565034,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 52,
+          "reusedRegions": 17
+        },
+        "detectionMs": 259.4813,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 4,
+          "cpuTasks": 1,
+          "endToEndMs": 363.6299,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 7.8408,
+          "wholeFrameFallback": false,
+          "workerWallMs": 354.6527
+        },
+        "inferenceMs": 259.4813,
+        "parsingMs": 6.8222000000000005,
+        "preprocessingMs": 85.51939999999998,
+        "recognitionMs": 0,
+        "totalMs": 352.3087
+      }
+    },
+    {
+      "incremental": true,
+      "step": 4,
+      "name": "dense-3840-scrolled",
+      "quality": {
+        "exactLineRecall": 1,
+        "characterErrorRate": 0,
+        "meanBoxIoU": 0.7497317212265877,
+        "meanCenterErrorPx": 2.9516934595333395,
+        "unexpectedBlocks": 0
+      },
+      "metrics": {
+        "cache": {
+          "refreshed": false,
+          "reusedLines": 0,
+          "reusedRegions": 8
+        },
+        "detectionMs": 2206.6687,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 5,
+          "cpuTasks": 1,
+          "endToEndMs": 4073.8961,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 5.9475999999999996,
+          "wholeFrameFallback": false,
+          "workerWallMs": 4066.9537
+        },
+        "inferenceMs": 3491.5801,
+        "parsingMs": 186.3914,
+        "preprocessingMs": 371.1992,
+        "recognitionMs": 1284.9114,
+        "totalMs": 4064.226900000001
+      }
+    },
+    {
+      "check": "source-generation-invalidates",
+      "metrics": {
+        "cache": {
+          "refreshed": true,
+          "reusedLines": 0,
+          "reusedRegions": 0
+        },
+        "detectionMs": 3899.7648,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 6,
+          "cpuTasks": 1,
+          "endToEndMs": 6003.4137,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 8.139999999999999,
+          "wholeFrameFallback": false,
+          "workerWallMs": 5994.3161
+        },
+        "inferenceMs": 5140.7538,
+        "parsingMs": 308.0645,
+        "preprocessingMs": 526.4158000000001,
+        "recognitionMs": 1240.989,
+        "totalMs": 5991.368299999999
+      }
+    },
+    {
+      "check": "cancel-invalidates",
+      "metrics": {
+        "cache": {
+          "refreshed": true,
+          "reusedLines": 0,
+          "reusedRegions": 0
+        },
+        "detectionMs": 3727.4486,
+        "detectionRegions": 19,
+        "execution": {
+          "adaptive": null,
+          "batchId": 8,
+          "cpuTasks": 1,
+          "endToEndMs": 5677.231400000001,
+          "failedTasks": 0,
+          "gpuTasks": 0,
+          "mergeMs": 0,
+          "queueWaitMs": 0,
+          "retriedTasks": 0,
+          "speedup": null,
+          "splitMs": 0,
+          "tileCount": 1,
+          "transferMs": 6.4941,
+          "wholeFrameFallback": false,
+          "workerWallMs": 5669.7173
+        },
+        "inferenceMs": 4857.353499999999,
+        "parsingMs": 306.241,
+        "preprocessingMs": 486.8580999999999,
+        "recognitionMs": 1129.9049,
+        "totalMs": 5667.162700000001
+      }
+    }
+  ]
+}

@@ -81,6 +81,8 @@ pub struct ExecutionMetrics {
     // Filled only by the benchmark when an identical-input baseline exists.
     pub speedup: Option<f64>,
     pub adaptive: Option<crate::adaptive::AdaptiveMetrics>,
+    pub cache: Option<crate::types::CacheMetrics>,
+    pub detection_regions: Option<usize>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

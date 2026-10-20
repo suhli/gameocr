@@ -363,6 +363,9 @@ impl ExecutionStrategyManager {
         self.status.lock().learning = Some(self.profiles.summary());
         Ok(result)
     }
+    pub fn incremental(&self) -> bool {
+        matches!(&self.config.inference, gameocr_core::engine::RuntimeConfig::Onnx(p) if p.incremental)
+    }
 }
 
 #[derive(Default)]
