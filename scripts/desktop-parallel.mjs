@@ -92,6 +92,8 @@ try{
     const bounds=await page.locator('dialog').boundingBox(),viewport=await page.evaluate(()=>({width:innerWidth,height:innerHeight}));
     assert(Math.abs(bounds.x+bounds.width/2-viewport.width/2)<3);assert(Math.abs(bounds.y+bounds.height/2-viewport.height/2)<3);
     await page.screenshot({path:path.join(out,'efficiency-settings.png')});
+    await page.getByLabel('每帧最多补检区域',{exact:true}).scrollIntoViewIfNeeded();
+    await page.screenshot({path:path.join(out,'efficiency-controls.png')});
     await page.getByRole('button',{name:'保存设置',exact:true}).click();await until(async()=>!(await page.locator('dialog').count()));
     settings=await invoke('get_settings');assert(settings.onnx.incremental&&settings.onnx.widthBuckets&&settings.onnx.selectiveDetection);assert.equal(settings.onnx.refinementRegions,8);assert.deepEqual(settings.onnx.detectionRegion,[0,0,1,1]);
     await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();assert.deepEqual((await invoke('get_settings')).onnx,settings.onnx);
@@ -107,6 +109,7 @@ try{
     await invoke('start_ocr');fs.writeFileSync(control,'number');
     const changed=await until(async()=>{const entry=(await invoke('get_history'))[0];return entry?.result.blocks.some(b=>b.text.replace(/\s/g,'').includes('Health:101/100'))&&entry;});
     assert(changed.result.frameId>reused.result.frameId);
+    assert(!changed.result.blocks.some(b=>b.text.replace(/\s/g,'').includes('Health:100/100')));
     await invoke('stop_ocr');await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
     checks.push('Automatic OCR sees a single-number update despite maximum thumbnail change threshold; no stale text and workers cleaned on unload');
     settings={...settings,onnx:originalOnnx,changeDetection:false};

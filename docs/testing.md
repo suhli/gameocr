@@ -113,16 +113,20 @@ node scripts/desktop-runtimes.mjs
 - [本轮发行校验](test-results/adaptive-package-validation.json)：CPU ZIP 16,864,172 字节，45 个文件/35 个 x64 二进制依赖校验通过；完整 ZIP 1,718,102,751 字节，86 个文件/75 个依赖校验通过。两包主程序 SHA-256 均为 `b42a55008efae8481aa2b9882750d0919e7448bf47824db3c777150b1380df36`，与桌面报告一致。NSIS/MSI 未重新构建，现存安装版不包含 Adaptive。
 - CI 加入真实 Adaptive CPU 回归及报告上传。本轮未运行远端 GitHub Actions。
 
-## 六项识别效率优化（2026-10-20）
+## 六项识别效率优化（2026-10-20–21）
 
 实现与质量／速度取舍见 [效率优化说明](ocr-efficiency.md)。默认关闭 ROI、小字分块、增量复用、宽度分桶与选择性补检；模型仍为 FP32。以下为本机合成语料和自有窗口测试，不代表实际游戏的整体准确率。
 
 - Rust core 23、ONNX 11、desktop lib 16 项通过；前端检查 0 错误／警告、Vitest 2 项通过。
 - 最新 Small／Medium 原生 [CPU 8 例](test-results/efficiency-onnx-cpu.json)与 [CUDA 8 例](test-results/efficiency-onnx-cuda.json)通过，包括错误 IPC、卸载／重载、空白、多语言与 Worker 替换。执行时允许桌面编译，因此这些报告用于正确性，不用于性能比较。
 - [CPU 增量＋宽度分桶](test-results/efficiency-incremental-cpu.json)通过：4K 的重复、单数字变化、删除、滚动与无缓存文本／坐标一致，均 CER=0、召回完整；来源切换、取消后刷新及临时文件清理正常。
+- 对应 [CUDA 增量＋分桶](test-results/efficiency-incremental-cuda.json)通过相同序列和失效检查。[CUDA 小字／ROI](test-results/efficiency-small-text-cuda.json)在 2K / 4K 分别完整召回 53 行及 4 行，无额外框。[CUDA 分桶基准](test-results/batching-cuda.json)质量不变，但 GTX1650 总耗时 2389→2687 ms，因此保留默认关闭。
 - 最新 [Adaptive 9 项](test-results/efficiency-adaptive.json)与 [Executor／GGUF 13 项](test-results/efficiency-compatibility.json)通过。此次持续 CPU×2 检查约 31 秒／34 帧，用于回归，并不替代前述三分钟检查或长期压力测试。
 - [低精度评估](test-results/precision.json)完成 4 个配置 × 5 个场景，每场景预热 1 次、测量 3 次。2K／4K 测量文本全部正确，英文／中日繁体关键词通过，空白无输出；INT8、混合 FP16 均未比对应 FP32 提速，保留独立实验模型。转换脚本校验模型和字典，拒绝覆盖已有输出；桌面没有 Python 依赖。
 - CI 加入完整小字／ROI 与增量＋分桶 CPU 检查及报告上传；本轮没有远端 CI 执行记录。低精度评估不加入默认发布流程。
+- [CPU 便携包桌面 11 组](test-results/desktop-efficiency-cpu-portable.json)通过，新增设置持久化、居中、完整分块与补检互斥控件、真实 WGC 的 PPM 输入、增量复用及自动 OCR 单数字变化。[CPU 包运行时 12 组](test-results/efficiency-desktop-runtimes.json)通过模型切换、损坏／删除、显式 CUDA 错误、Auto 回退、崩溃隔离和恢复。
+- [完整便携包桌面 11 组](test-results/desktop-efficiency-portable.json)同样通过，额外明确断言数字改为 101 后最新结果不含旧值 100。两包均使用内嵌前端，没有启动 Vite；包内 ONNX Worker 哈希与精度基准实际使用的二进制一致。
+- 2026-10-21 [最终分发校验](test-results/efficiency-package-validation.json)：CPU ZIP 16,920,304 字节，45 个文件／35 个 x64 依赖检查通过；完整 ZIP 1,718,202,975 字节，86 个文件／75 个依赖通过。两包主程序 SHA-256 为 `6a743c7419003e462fd1ef17a29dc77f1d18940c9c6e1eae76b4bad313d14853`，与桌面报告一致；ZIP 每个文件均逐一核对。NSIS／MSI 未重建，现存安装包不包含这次升级。
 
 复现时先按 README 构建 Worker 和 `executor-bench`，不同耗时基准应单独运行，不与编译、其他 OCR 或 GPU 负载并发。`test-incremental.mjs` 支持 `GAMEOCR_TEST_DEVICE`、`GAMEOCR_WIDTH_BUCKETS=1`、`GAMEOCR_INCREMENTAL_REPORT`；`test-small-text.mjs` 支持设备、场景、模式、次数和报告路径覆盖。
 

@@ -1,0 +1,43 @@
+{
+  "executedAt": "2026-10-21T01:54:18.325Z",
+  "status": "passed",
+  "appSha256": "6a743c7419003e462fd1ef17a29dc77f1d18940c9c6e1eae76b4bad313d14853",
+  "packages": [
+    {
+      "backend": "cpu",
+      "archive": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 16920304,
+      "sha256": "15f56810e47408b58c8334901123bf2d04bad275cc3a6a0f69ea4190420396a1",
+      "verifiedFileCount": 45,
+      "verifiedNativeImports": 35,
+      "appSha256": "6a743c7419003e462fd1ef17a29dc77f1d18940c9c6e1eae76b4bad313d14853",
+      "nativeWorkersMatchMeasuredBinaries": true
+    },
+    {
+      "backend": "both",
+      "archive": "artifacts/GameOCR-windows-x64-portable.zip",
+      "bytes": 1718202975,
+      "sha256": "22f469d36025b47abccc6fed83325908e6b9d74f68efcf26caa457a164ffdc23",
+      "verifiedFileCount": 86,
+      "verifiedNativeImports": 75,
+      "appSha256": "6a743c7419003e462fd1ef17a29dc77f1d18940c9c6e1eae76b4bad313d14853",
+      "nativeWorkersMatchMeasuredBinaries": true
+    }
+  ],
+  "desktopReports": [
+    "docs/test-results/desktop-efficiency-cpu-portable.json",
+    "docs/test-results/desktop-efficiency-portable.json",
+    "docs/test-results/efficiency-desktop-runtimes.json"
+  ],
+  "checks": [
+    "Both ZIPs verified byte-for-byte against their packaged directories",
+    "Native x64 imports resolved using package paths and system32",
+    "Both packages passed eleven real WGC desktop checks",
+    "CPU-only package passed twelve model/runtime desktop checks",
+    "Packaged ONNX workers match the native precision benchmark binaries"
+  ],
+  "limitations": [
+    "NSIS/MSI were not rebuilt; existing installers predate this upgrade",
+    "Not a clean Windows VM, RTX5060Ti or real-game accuracy validation"
+  ]
+}
