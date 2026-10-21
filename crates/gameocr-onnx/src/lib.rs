@@ -1,11 +1,15 @@
 mod batching;
 mod cache;
 pub mod pipeline;
+mod recognizer;
 mod refinement;
 pub mod regions;
+mod temporal;
 use anyhow::{Context, Result, ensure};
 use gameocr_core::{
-    engine::{EngineConfig, OcrCapabilities, OcrEngine, OnnxConfig, RuntimeConfig},
+    engine::{
+        EngineConfig, OcrCapabilities, OcrEngine, OnnxConfig, RuntimeConfig, TemporalStrategy,
+    },
     types::*,
 };
 use image::RgbImage;
@@ -18,6 +22,8 @@ use std::{path::Path, time::Instant};
 pub struct PaddleOcrAdapter {
     detector: Session,
     recognizer: Session,
+    compact: Option<Session>,
+    compact_status: String,
     dictionary: Vec<String>,
     config: OnnxConfig,
     model_id: String,
@@ -42,7 +48,7 @@ pub fn initialize_runtime() -> Result<()> {
     ort::init_from(&path)?.with_name("GameOCR").commit();
     Ok(())
 }
-fn session(path: &Path, device: Device, threads: u32) -> Result<Session> {
+fn session(path: &Path, device: Device, threads: u32, output_count: usize) -> Result<Session> {
     let builder = Session::builder()?
         .with_intra_threads(threads as usize)
         .map_err(|e| anyhow::anyhow!(e.to_string()))?;
@@ -88,8 +94,8 @@ fn session(path: &Path, device: Device, threads: u32) -> Result<Session> {
         .commit_from_file(path)
         .with_context(|| format!("ONNX session: {}", path.display()))?;
     ensure!(
-        session.inputs().len() == 1 && session.outputs().len() == 1,
-        "PP-OCR adapter expects one input and one output"
+        session.inputs().len() == 1 && session.outputs().len() == output_count,
+        "PP-OCR adapter has unexpected input/output count"
     );
     match session.inputs()[0].dtype() {
         ValueType::Tensor {
@@ -141,11 +147,12 @@ impl PaddleOcrAdapter {
             dictionary.len() == 18710,
             "PP-OCRv6 requires the complete 18708-character dictionary (+ blank and space)"
         );
+        let compact_path = config.manifest.files.iter().find(|f|f.role=="recognizer-ctc").map(|f|Path::new(&config.directory).join(&f.path));
         let RuntimeConfig::Onnx(parameters) = config.inference else {
             anyhow::bail!("Expected ONNX configuration")
         };
-        let detector = session(&detector_path, config.device, config.threads)?;
-        let recognizer = session(&recognizer_path, config.device, config.threads)?;
+        let detector = session(&detector_path, config.device, config.threads, 1)?;
+        let recognizer = session(&recognizer_path, config.device, config.threads, 1)?;
         if let ValueType::Tensor { shape, .. } = recognizer.outputs()[0].dtype() {
             ensure!(
                 shape.len() == 3 && (shape[2] < 0 || shape[2] == dictionary.len() as i64),
@@ -155,6 +162,8 @@ impl PaddleOcrAdapter {
         let mut loaded = Self {
             detector,
             recognizer,
+            compact: None,
+            compact_status: "disabled".into(),
             dictionary,
             config: parameters,
             model_id: config.manifest.id,
@@ -191,6 +200,17 @@ impl PaddleOcrAdapter {
             verify_cuda_execution(&mut loaded.detector)?;
             verify_cuda_execution(&mut loaded.recognizer)?;
         }
+        if loaded.config.experimental_gpu_ctc {
+            loaded.compact_status = "requires CUDA and an imported recognizer-ctc model".into();
+            if config.device==Device::Cuda {
+                if let Some(path)=compact_path {
+                    match recognizer::compact_session(&path,config.device,config.threads) {
+                        Ok(session)=>{loaded.compact=Some(session);loaded.compact_status="experimental".into();}
+                        Err(e)=>{eprintln!("Compact CTC fallback: {e:#}");loaded.compact_status=format!("initialization fallback: {e}");}
+                    }
+                }
+            }
+        }
         Ok(Box::new(loaded))
     }
     fn run(
@@ -200,13 +220,20 @@ impl PaddleOcrAdapter {
         timestamp: u64,
         total: Instant,
         detection_resize: u32,
+        force_full: bool,
     ) -> Result<OcrResult> {
+        let mut detail = PipelineMetrics {
+            decode_ms: ms(total),
+            compact_status: self.compact_status.clone(),
+            ..Default::default()
+        };
         let source = image.dimensions();
         ensure!(source.0 > 0 && source.1 > 0, "Empty image");
         let mut regions = regions::plan(source, &self.config, detection_resize)?;
         let refine = self.config.selective_detection && !self.config.preserve_small_text;
         let scope = regions[0];
-        let cache_enabled = self.config.incremental
+        let temporal_enabled = self.config.temporal.enabled && self.cache_context.is_some();
+        let cache_enabled = (self.config.incremental || temporal_enabled)
             && self.cache_context.is_some()
             && image.as_raw().len() <= 64 * 1024 * 1024;
         // Taking ownership ensures failures cannot keep partially updated data.
@@ -214,6 +241,43 @@ impl PaddleOcrAdapter {
             .cache
             .take()
             .filter(|c| cache_enabled && c.valid(&image, detection_resize));
+        let tracker = Instant::now();
+        let decision = if temporal_enabled && !force_full {
+            previous.as_ref().map(|c| {
+                temporal::assess(
+                    c,
+                    &image,
+                    &self.config.temporal,
+                    frame_id,
+                    self.cache_context.unwrap(),
+                    scope,
+                )
+            })
+        } else {
+            None
+        };
+        let temporal_fast = decision.as_ref().is_some_and(|d| !d.full);
+        let mut temporal_metrics = TemporalMetrics {
+            path: "full".into(),
+            reason: decision
+                .as_ref()
+                .map_or(
+                    if force_full {
+                        "recognition-risk"
+                    } else {
+                        "initial-or-invalidated"
+                    },
+                    |d| d.reason,
+                )
+                .into(),
+            tracker_ms: ms(tracker),
+            risk_fallbacks: usize::from(decision.as_ref().is_some_and(|d| {
+                d.full
+                    && !["forced-full", "periodic-refresh", "untrusted-boundaries"]
+                        .contains(&d.reason)
+            })),
+            ..Default::default()
+        };
         let mut cache_metrics = CacheMetrics {
             refreshed: previous.is_none(),
             ..Default::default()
@@ -223,12 +287,16 @@ impl PaddleOcrAdapter {
         let mut detection_ms = 0.;
         let mut parsing_ms = 0.;
         let mut candidates = Vec::new();
-        for index in 0..65 {
+        for index in 0..if temporal_fast { 0 } else { 65 } {
             let Some(region) = regions.get(index).copied() else {
                 break;
             };
             let prep = Instant::now();
-            if let Some(boxes) = previous.as_ref().and_then(|c| c.region(&image, region)) {
+            if let Some(boxes) = previous
+                .as_ref()
+                .filter(|_| !temporal_enabled)
+                .and_then(|c| c.region(&image, region))
+            {
                 cache_metrics.reused_regions += 1;
                 candidates.extend(boxes.iter().map(|&quad| regions::Candidate {
                     quad,
@@ -263,7 +331,10 @@ impl PaddleOcrAdapter {
                         / [0.229, 0.224, 0.225][c];
                 }
             }
-            preprocessing_ms += ms(prep);
+            let prep_ms = ms(prep);
+            preprocessing_ms += prep_ms;
+            detail.detector_preprocess_ms += prep_ms;
+            detail.detector_calls += 1;
             let det_start = Instant::now();
             let outputs = self.detector.run(ort::inputs![TensorRef::from_array_view((
                 [1usize, 3, h as usize, w as usize],
@@ -303,7 +374,9 @@ impl PaddleOcrAdapter {
                     &overview,
                 )?);
             }
-            parsing_ms += ms(post);
+            let post_ms = ms(post);
+            parsing_ms += post_ms;
+            detail.db_ms += post_ms;
             ensure!(
                 candidates.len() <= 12000,
                 "Detection exceeds 12000 boxes; select a smaller ROI"
@@ -314,12 +387,21 @@ impl PaddleOcrAdapter {
             candidates.len() <= 12000,
             "Detection exceeds 12000 boxes; select a smaller ROI"
         );
-        let boxes = if regions.len() > 1 {
+        let boxes = if temporal_fast {
+            previous
+                .as_ref()
+                .unwrap()
+                .lines
+                .iter()
+                .map(|l| l.0)
+                .collect()
+        } else if regions.len() > 1 {
             regions::merge(candidates)
         } else {
             candidates.into_iter().map(|c| c.quad).collect()
         };
-        parsing_ms += ms(post);
+        detail.merge_ms += ms(post);
+        parsing_ms += detail.merge_ms;
         let mut recognition_ms = 0.;
         let prep = Instant::now();
         let batches = batching::plan(&boxes, &self.config);
@@ -333,7 +415,14 @@ impl PaddleOcrAdapter {
             .iter()
             .enumerate()
             .map(|(i, q)| {
-                let value = previous.as_ref().and_then(|c| c.line(&image, q, widths[i]));
+                let value = previous
+                    .as_ref()
+                    .filter(|_| {
+                        !temporal_enabled
+                            || (temporal_fast
+                                && self.config.temporal.strategy != TemporalStrategy::RecOnly)
+                    })
+                    .and_then(|c| c.line(&image, q, widths[i]));
                 if value.is_some() {
                     cache_metrics.reused_lines += 1;
                 }
@@ -341,78 +430,60 @@ impl PaddleOcrAdapter {
             })
             .collect();
         preprocessing_ms += ms(prep);
-        let mut recognition_batches = 0;
-        let mut recognition_pixels = 0;
-        for planned in batches {
-            let batch: Vec<_> = planned
-                .indices
-                .into_iter()
-                .filter(|&i| decoded[i].is_none())
-                .collect();
-            if batch.is_empty() {
-                continue;
+        let reused: Vec<bool> = decoded.iter().map(Option::is_some).collect();
+        let work = recognizer::recognize_regions(
+            &mut self.recognizer,
+            &mut self.compact,
+            &self.dictionary,
+            &self.config,
+            &mut self.recognition_buffer,
+            &image,
+            &boxes,
+            batches,
+            &mut decoded,
+            &mut detail,
+        )?;
+        recognition_ms += work.inference_ms;
+        preprocessing_ms += work.preprocessing_ms;
+        parsing_ms += work.parsing_ms;
+        let recognition_batches = work.batches;
+        let recognition_pixels = work.pixels;
+        detail.recognizer_preprocess_ms =
+            (detail.recognizer_preprocess_ms - detail.crop_ms).max(0.);
+        if temporal_fast
+            && detail.recognizer_calls > 0
+            && decoded.iter().any(|v| {
+                v.as_ref().is_none_or(|(text, score)| {
+                    text.is_empty() || *score < self.config.temporal.min_confidence
+                })
+            })
+        {
+            // Publish only the full retry, accounting for the rejected rec-only work.
+            let mut result = self.run(
+                image,
+                frame_id,
+                timestamp,
+                Instant::now(),
+                detection_resize,
+                true,
+            )?;
+            result.metrics.total_ms = ms(total);
+            result.metrics.preprocessing_ms += preprocessing_ms;
+            result.metrics.parsing_ms += parsing_ms;
+            result.metrics.inference_ms += detection_ms + recognition_ms;
+            *result.metrics.recognition_ms.get_or_insert(0.) += recognition_ms;
+            *result.metrics.recognition_batches.get_or_insert(0) += recognition_batches;
+            *result.metrics.recognition_pixels.get_or_insert(0) += recognition_pixels;
+            if let Some(d) = result.metrics.pipeline.as_mut() {
+                d.accumulate(&detail);
             }
-            let width = planned.width;
-            recognition_batches += 1;
-            recognition_pixels += batch.len() * 48 * width;
-            let prep = Instant::now();
-            let plane = 48 * width;
-            self.recognition_buffer.resize(batch.len() * 3 * plane, 0.);
-            self.recognition_buffer.fill(0.); // Padding must not retain an earlier batch.
-            for (n, &index) in batch.iter().enumerate() {
-                let crop = pipeline::crop(&image, &boxes[index])?;
-                let rw = ((48. * crop.width() as f64 / crop.height() as f64).ceil() as usize)
-                    .min(width)
-                    .max(1);
-                let resized = image::imageops::resize(
-                    &crop,
-                    rw as u32,
-                    48,
-                    image::imageops::FilterType::Triangle,
-                );
-                let sample = &mut self.recognition_buffer[n * 3 * plane..(n + 1) * 3 * plane];
-                let (blue, rest) = sample.split_at_mut(plane);
-                let (green, red) = rest.split_at_mut(plane);
-                for (y, row) in resized.as_raw().chunks_exact(rw * 3).enumerate() {
-                    for (x, pixel) in row.chunks_exact(3).enumerate() {
-                        let i = y * width + x;
-                        blue[i] = pixel[2] as f32 / 127.5 - 1.;
-                        green[i] = pixel[1] as f32 / 127.5 - 1.;
-                        red[i] = pixel[0] as f32 / 127.5 - 1.;
-                    }
-                }
+            if let Some(t) = result.metrics.temporal.as_mut() {
+                t.risk_fallbacks += 1;
+                t.tracker_ms += temporal_metrics.tracker_ms;
             }
-            preprocessing_ms += ms(prep);
-            let rec_start = Instant::now();
-            let output = self
-                .recognizer
-                .run(ort::inputs![TensorRef::from_array_view((
-                    [batch.len(), 3, 48, width],
-                    self.recognition_buffer.as_slice()
-                ))?])?;
-            recognition_ms += ms(rec_start);
-            let post = Instant::now();
-            let (shape, prob) = output[0].try_extract_tensor::<f32>()?;
-            ensure!(
-                shape.len() == 3
-                    && shape[0] == batch.len() as i64
-                    && shape[1] > 0
-                    && shape[2] == self.dictionary.len() as i64,
-                "Invalid CTC output dimensions"
-            );
-            let steps = shape[1] as usize;
-            let classes = shape[2] as usize;
-            for (n, &index) in batch.iter().enumerate() {
-                let (text, confidence) = pipeline::decode_ctc(
-                    &prob[n * steps * classes..(n + 1) * steps * classes],
-                    steps,
-                    classes,
-                    &self.dictionary,
-                )?;
-                decoded[index] = Some((text, confidence));
-            }
-            parsing_ms += ms(post);
+            return Ok(result);
         }
+        let cache_start = Instant::now();
         let blocks = decoded
             .iter()
             .enumerate()
@@ -431,7 +502,7 @@ impl PaddleOcrAdapter {
             })
             .collect();
         if cache_enabled && boxes.len() <= 4096 {
-            let lines = boxes
+            let lines: Vec<_> = boxes
                 .into_iter()
                 .zip(decoded)
                 .zip(widths)
@@ -439,6 +510,24 @@ impl PaddleOcrAdapter {
                     value.map(|(text, score)| (q, width, text, score))
                 })
                 .collect();
+            let tracker = Instant::now();
+            let temporal = temporal_enabled.then(|| {
+                temporal::update(
+                    previous.as_ref(),
+                    &image,
+                    &lines,
+                    !temporal_fast,
+                    frame_id,
+                    self.cache_context.unwrap(),
+                    &reused,
+                )
+            });
+            temporal_metrics.tracker_ms += ms(tracker);
+            temporal_metrics.cache_bytes = image.as_raw().len()
+                + lines
+                    .iter()
+                    .map(|l| l.2.len() + std::mem::size_of_val(l))
+                    .sum::<usize>();
             self.cache = Some(cache::FrameCache {
                 image,
                 regions: next_regions,
@@ -446,8 +535,21 @@ impl PaddleOcrAdapter {
                 refreshed: previous.as_ref().map_or_else(Instant::now, |c| c.refreshed),
                 frames: previous.as_ref().map_or(0, |c| c.frames + 1),
                 edge: detection_resize,
+                temporal,
             });
         }
+        temporal_metrics.full_detections = detail.detector_calls;
+        temporal_metrics.reused_lines = cache_metrics.reused_lines;
+        if temporal_fast {
+            temporal_metrics.path = if detail.recognizer_calls == 0 {
+                "cache-only"
+            } else {
+                "rec-only"
+            }
+            .into();
+            temporal_metrics.rec_only_regions = reused.iter().filter(|&&v| !v).count();
+        }
+        detail.cache_ms += ms(cache_start);
         Ok(OcrResult {
             frame_id,
             timestamp,
@@ -467,6 +569,8 @@ impl PaddleOcrAdapter {
                 recognition_batches: Some(recognition_batches),
                 recognition_pixels: Some(recognition_pixels),
                 execution: None,
+                pipeline: Some(detail),
+                temporal: temporal_enabled.then_some(temporal_metrics),
             },
             device: self.device.clone(),
             truncated: false,
@@ -503,6 +607,7 @@ impl OcrEngine for PaddleOcrAdapter {
             timestamp,
             total,
             self.config.detection_resize,
+            false,
         )
     }
     fn recognize_tile(
@@ -530,6 +635,7 @@ impl OcrEngine for PaddleOcrAdapter {
             timestamp,
             total,
             detection_resize,
+            false,
         )
     }
     fn capabilities(&self) -> OcrCapabilities {

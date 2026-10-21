@@ -10,6 +10,28 @@ pub struct FrameInput {
     pub timestamp: u64,
     pub generation: u64,
     pub image: RgbImage,
+    pub capture: CaptureTiming,
+}
+
+#[derive(Clone, Default)]
+pub struct CaptureTiming {
+    pub arrived: Option<std::time::Instant>,
+    pub ready: Option<std::time::Instant>,
+    pub readback_ms: Option<f64>,
+    pub conversion_ms: Option<f64>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct AppLatency {
+    pub capture_readback_ms: Option<f64>,
+    pub conversion_ms: Option<f64>,
+    pub frame_wait_ms: Option<f64>,
+    pub gate_ms: f64,
+    pub preview_ms: f64,
+    /// Capture callback to just before event publication; excludes UI rendering.
+    pub capture_to_publish_ms: Option<f64>,
+    pub publish_ms: Option<f64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -83,6 +105,10 @@ pub struct ExecutionMetrics {
     pub adaptive: Option<crate::adaptive::AdaptiveMetrics>,
     pub cache: Option<crate::types::CacheMetrics>,
     pub detection_regions: Option<usize>,
+    pub pipeline: Option<crate::types::PipelineMetrics>,
+    pub app_latency: Option<AppLatency>,
+    pub ipc_overhead_ms: Option<f64>,
+    pub temporal: Option<crate::types::TemporalMetrics>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

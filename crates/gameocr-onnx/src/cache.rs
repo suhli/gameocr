@@ -13,6 +13,7 @@ pub struct FrameCache {
     pub refreshed: Instant,
     pub frames: u32,
     pub edge: u32,
+    pub temporal: Option<crate::temporal::State>,
 }
 impl FrameCache {
     pub fn valid(&self, image: &RgbImage, edge: u32) -> bool {
@@ -99,6 +100,7 @@ mod tests {
             refreshed: Instant::now(),
             frames: 0,
             edge: 960,
+            temporal: None,
         };
         assert!(c.valid(&c.image, 960));
         assert!(!c.valid(&c.image, 1280));

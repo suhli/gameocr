@@ -40,6 +40,64 @@ pub struct Metrics {
     pub recognition_pixels: Option<usize>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub execution: Option<crate::parallel::ExecutionMetrics>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pipeline: Option<PipelineMetrics>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub temporal: Option<TemporalMetrics>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct TemporalMetrics {
+    pub path: String,
+    pub reason: String,
+    pub tracker_ms: f64,
+    pub reused_lines: usize,
+    pub rec_only_regions: usize,
+    pub full_detections: usize,
+    pub risk_fallbacks: usize,
+    pub cache_bytes: usize,
+}
+
+/// Wall-clock stages. ORT run includes synchronization and implicit copies;
+/// these numbers must never be described as pure CUDA kernel duration.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct PipelineMetrics {
+    pub decode_ms: f64,
+    pub detector_preprocess_ms: f64,
+    pub db_ms: f64,
+    pub crop_ms: f64,
+    pub recognizer_preprocess_ms: f64,
+    pub ctc_ms: f64,
+    pub merge_ms: f64,
+    pub cache_ms: f64,
+    pub detector_calls: usize,
+    pub recognizer_calls: usize,
+    pub output_bytes: usize,
+    pub recognition_shapes: Vec<[usize; 4]>,
+    pub compact_batches: usize,
+    pub compact_fallbacks: usize,
+    pub compact_status: String,
+}
+impl PipelineMetrics {
+    pub fn accumulate(&mut self, other: &Self) {
+        self.decode_ms += other.decode_ms;
+        self.detector_preprocess_ms += other.detector_preprocess_ms;
+        self.db_ms += other.db_ms;
+        self.crop_ms += other.crop_ms;
+        self.recognizer_preprocess_ms += other.recognizer_preprocess_ms;
+        self.ctc_ms += other.ctc_ms;
+        self.merge_ms += other.merge_ms;
+        self.cache_ms += other.cache_ms;
+        self.detector_calls += other.detector_calls;
+        self.recognizer_calls += other.recognizer_calls;
+        self.output_bytes += other.output_bytes;
+        self.compact_batches += other.compact_batches;
+        self.compact_fallbacks += other.compact_fallbacks;
+        self.recognition_shapes
+            .extend_from_slice(&other.recognition_shapes);
+    }
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

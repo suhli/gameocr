@@ -337,10 +337,15 @@ impl Service {
                 Ok(())
             };
         };
+        let gate_start = Instant::now();
+        let frame_wait_ms = frame
+            .capture
+            .ready
+            .map(|t| t.elapsed().as_secs_f64() * 1000.);
         let settings = self.settings.read().clone();
         // The thumbnail gate can hide a one-character update. Incremental OCR
         // performs its own exact, region-level comparison inside the worker.
-        let incremental = settings.onnx.incremental
+        let incremental = (settings.onnx.incremental || settings.onnx.temporal.enabled)
             && self
                 .executor
                 .lock()
@@ -358,6 +363,7 @@ impl Service {
             self.performance.lock().skipped_frames += 1;
             return Ok(());
         }
+        let gate_ms = gate_start.elapsed().as_secs_f64() * 1000.;
         let epoch = self.ocr_epoch.load(Ordering::Acquire);
         let generation = frame.generation;
         self.set_ocr_status("processing");
@@ -387,9 +393,18 @@ impl Service {
             && generation == self.shared.generation.load(Ordering::Acquire);
         match outcome {
             Ok(mut result) if current => {
+                let preview_start = Instant::now();
                 let f = frame.clone();
                 let preview = tokio::task::spawn_blocking(move || preview(&f)).await??;
                 if let Some(metrics) = &mut result.metrics.execution {
+                    metrics.app_latency = Some(gameocr_core::parallel::AppLatency {
+                        capture_readback_ms: frame.capture.readback_ms,
+                        conversion_ms: frame.capture.conversion_ms,
+                        frame_wait_ms,
+                        gate_ms,
+                        preview_ms: preview_start.elapsed().as_secs_f64() * 1000.,
+                        ..Default::default()
+                    });
                     metrics.end_to_end_ms = end_to_end.elapsed().as_secs_f64() * 1000.;
                     if let Some(status) = self.executor_status.read().as_ref() {
                         status.lock().last = Some(metrics.clone());
@@ -407,7 +422,7 @@ impl Service {
                     self.adaptive_profiles.commit(event);
                 }
                 self.detector.lock().commit(&frame.image);
-                *self.recognized_frame.lock() = Some(frame);
+                *self.recognized_frame.lock() = Some(frame.clone());
                 {
                     let mut perf = self.performance.lock();
                     perf.last_ocr_ms = Some(result.metrics.total_ms);
@@ -423,6 +438,17 @@ impl Service {
                     Some(ds.iter().sum::<f64>() / ds.len() as f64);
                 drop(ds);
                 self.times.lock().push_back(Instant::now());
+                if let Some(m) = result
+                    .metrics
+                    .execution
+                    .as_mut()
+                    .and_then(|m| m.app_latency.as_mut())
+                {
+                    m.capture_to_publish_ms = frame
+                        .capture
+                        .arrived
+                        .map(|t| t.elapsed().as_secs_f64() * 1000.);
+                }
                 let snapshot = Snapshot { result, preview };
                 {
                     let mut history = self.history.lock();
@@ -434,7 +460,16 @@ impl Service {
                         history.pop_back();
                     }
                 }
-                let _ = self.app.emit("ocr-result", snapshot);
+                let publish = Instant::now();
+                let _ = self.app.emit("ocr-result", &snapshot);
+                // Emission duration is available after emitting: update telemetry, not the past event.
+                if let Some(status) = self.executor_status.read().as_ref() {
+                    let mut metrics = snapshot.result.metrics.execution.clone();
+                    if let Some(a) = metrics.as_mut().and_then(|m| m.app_latency.as_mut()) {
+                        a.publish_ms = Some(publish.elapsed().as_secs_f64() * 1000.);
+                    }
+                    status.lock().last = metrics;
+                }
             }
             Err(e) => {
                 // A failed worker is never still advertised as ready, even when its request became stale.

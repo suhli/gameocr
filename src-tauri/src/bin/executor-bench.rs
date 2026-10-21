@@ -211,6 +211,7 @@ async fn main() -> Result<()> {
             })
         });
         let frame = Arc::new(FrameInput {
+            capture: Default::default(),
             id: frame_id,
             timestamp: now_ms(),
             generation,

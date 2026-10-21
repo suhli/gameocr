@@ -508,7 +508,12 @@ impl Executor {
                 }
                 self.status.lock().last = Some(metrics.clone());
                 match response {
-                    Ok(WorkerResponse::Result { result }) => result,
+                    Ok(WorkerResponse::Result { result }) => {
+                        metrics.ipc_overhead_ms =
+                            Some((metrics.worker_wall_ms - result.metrics.total_ms).max(0.));
+                        metrics.pipeline = result.metrics.pipeline.clone();
+                        result
+                    }
                     other => {
                         *slot = None;
                         return Err(other
@@ -550,6 +555,12 @@ impl Executor {
                             && result.runtime.as_deref() == Some("onnx"),
                         "错误的模型响应"
                     );
+                    if let Some(d) = &result.metrics.pipeline {
+                        aggregate
+                            .pipeline
+                            .get_or_insert_with(Default::default)
+                            .accumulate(d);
+                    }
                     aggregate.preprocessing_ms += result.metrics.preprocessing_ms;
                     aggregate.inference_ms += result.metrics.inference_ms;
                     aggregate.parsing_ms += result.metrics.parsing_ms;
@@ -635,6 +646,8 @@ impl Executor {
         );
         metrics.end_to_end_ms = elapsed(started);
         metrics.cache = result.metrics.cache.clone();
+        metrics.temporal = result.metrics.temporal.clone();
+        metrics.pipeline = result.metrics.pipeline.clone();
         metrics.detection_regions = result.metrics.detection_regions;
         if self.status.lock().parallel {
             result.metrics.total_ms = metrics.end_to_end_ms;

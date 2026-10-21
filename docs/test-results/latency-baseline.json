@@ -1,0 +1,4133 @@
+{
+  "executedAt": "2026-10-21T02:19:51.602Z",
+  "cpu": "AMD Ryzen 5 5600G with Radeon Graphics         ",
+  "scope": "Native: decode through result; executor: PPM transfer through merge. Neither includes WGC or UI. First frame separate; three warm samples. No cache.",
+  "results": [
+    {
+      "device": "cpu",
+      "strategy": "native",
+      "load": {
+        "type": "ready",
+        "device": "CPU",
+        "load_ms": 314.6532
+      },
+      "first": {
+        "metrics": {
+          "preprocessingMs": 81.9005,
+          "inferenceMs": 1349.1941,
+          "parsingMs": 112.22200000000001,
+          "totalMs": 1552.3821,
+          "detectionMs": 159.9623,
+          "recognitionMs": 1189.2318,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 16.0635,
+            "detectorPreprocessMs": 33.5383,
+            "dbMs": 3.0752,
+            "cropMs": 8.278199999999998,
+            "recognizerPreprocessMs": 23.9578,
+            "ctcMs": 109.1463,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0941,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ]
+          }
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "preprocessingMs": 73.47380000000001,
+            "inferenceMs": 1030.6174,
+            "parsingMs": 110.62989999999999,
+            "totalMs": 1223.8546,
+            "detectionMs": 123.6016,
+            "recognitionMs": 907.0158,
+            "detectionRegions": 1,
+            "recognitionBatches": 9,
+            "recognitionPixels": 1016304,
+            "pipeline": {
+              "decodeMs": 15.6548,
+              "detectorPreprocessMs": 32.4042,
+              "dbMs": 4.799,
+              "cropMs": 7.615999999999999,
+              "recognizerPreprocessMs": 17.7831,
+              "ctcMs": 105.83070000000001,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0936,
+              "detectorCalls": 1,
+              "recognizerCalls": 9,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ]
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "preprocessingMs": 84.46659999999997,
+            "inferenceMs": 963.5985999999999,
+            "parsingMs": 107.3423,
+            "totalMs": 1164.3156000000001,
+            "detectionMs": 125.0438,
+            "recognitionMs": 838.5547999999999,
+            "detectionRegions": 1,
+            "recognitionBatches": 9,
+            "recognitionPixels": 1016304,
+            "pipeline": {
+              "decodeMs": 19.8581,
+              "detectorPreprocessMs": 38.9541,
+              "dbMs": 3.5638,
+              "cropMs": 7.1922999999999995,
+              "recognizerPreprocessMs": 18.444,
+              "ctcMs": 103.77839999999999,
+              "mergeMs": 0.00009999999999999999,
+              "cacheMs": 0.0329,
+              "detectorCalls": 1,
+              "recognizerCalls": 9,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ]
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "preprocessingMs": 70.6661,
+            "inferenceMs": 997.0794000000001,
+            "parsingMs": 116.3714,
+            "totalMs": 1193.5989,
+            "detectionMs": 108.6882,
+            "recognitionMs": 888.3912000000001,
+            "detectionRegions": 1,
+            "recognitionBatches": 9,
+            "recognitionPixels": 1016304,
+            "pipeline": {
+              "decodeMs": 15.3671,
+              "detectorPreprocessMs": 29.7178,
+              "dbMs": 4.2314,
+              "cropMs": 7.3527999999999984,
+              "recognizerPreprocessMs": 18.209000000000003,
+              "ctcMs": 112.1398,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0424,
+              "detectorCalls": 1,
+              "recognizerCalls": 9,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ]
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 1193.9230333333333,
+      "p50Ms": 1193.5989,
+      "p95Ms": 1223.8546,
+      "p99Ms": 1223.8546,
+      "resources": {
+        "at": "2026-10-21T02:19:58.311Z",
+        "processes": null,
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 21, 2285, 4096"
+      },
+      "workerSha256": "f7f4742ced4f4d8357dd0a3e56918a8287f8bc6e0140a2986bfd10f4fd0cc216"
+    },
+    {
+      "device": "cpu",
+      "strategy": "single",
+      "load": {
+        "coldStartMs": 301.7802,
+        "device": "CPU",
+        "executor": {
+          "executionMode": "single",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": false,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 45772,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "message": null,
+        "type": "ready"
+      },
+      "first": {
+        "metrics": {
+          "detectionMs": 212.4207,
+          "detectionRegions": 1,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": null,
+            "cpuTasks": 1,
+            "detectionRegions": 1,
+            "endToEndMs": 1620.6855999999998,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 1.9639999999997144,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 0.0922,
+              "cropMs": 7.975999999999999,
+              "ctcMs": 107.0263,
+              "dbMs": 3.075,
+              "decodeMs": 4.761900000000001,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 35.3742,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 23.7345
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "tileCount": 1,
+            "transferMs": 5.4905,
+            "wholeFrameFallback": false,
+            "workerWallMs": 1613.5199999999998
+          },
+          "inferenceMs": 1419.8463,
+          "parsingMs": 110.1015,
+          "pipeline": {
+            "cacheMs": 0.0922,
+            "cropMs": 7.975999999999999,
+            "ctcMs": 107.0263,
+            "dbMs": 3.075,
+            "decodeMs": 4.761900000000001,
+            "detectorCalls": 1,
+            "detectorPreprocessMs": 35.3742,
+            "mergeMs": 0.0002,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 23.7345
+          },
+          "preprocessingMs": 71.87100000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 1207.4256,
+          "recognitionPixels": 1016304,
+          "totalMs": 1611.556
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "detectionMs": 117.7984,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 2,
+              "cache": null,
+              "cpuTasks": 1,
+              "detectionRegions": 1,
+              "endToEndMs": 1345.8542,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": 1.7389999999998054,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.08,
+                "cropMs": 8.5556,
+                "ctcMs": 114.8276,
+                "dbMs": 4.5217,
+                "decodeMs": 6.1000000000000005,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 45.8468,
+                "mergeMs": 0.0005,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 23.178800000000003
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 7.3747,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1337.2794999999999
+            },
+            "inferenceMs": 1122.6237999999998,
+            "parsingMs": 119.3498,
+            "pipeline": {
+              "cacheMs": 0.08,
+              "cropMs": 8.5556,
+              "ctcMs": 114.8276,
+              "dbMs": 4.5217,
+              "decodeMs": 6.1000000000000005,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 45.8468,
+              "mergeMs": 0.0005,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 23.178800000000003
+            },
+            "preprocessingMs": 83.7079,
+            "recognitionBatches": 9,
+            "recognitionMs": 1004.8254,
+            "recognitionPixels": 1016304,
+            "totalMs": 1335.5405
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 118.3426,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 3,
+              "cache": null,
+              "cpuTasks": 1,
+              "detectionRegions": 1,
+              "endToEndMs": 1149.9703000000002,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": 1.4920999999999367,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0562,
+                "cropMs": 7.7082000000000015,
+                "ctcMs": 98.9613,
+                "dbMs": 4.2688,
+                "decodeMs": 5.2773,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 32.0336,
+                "mergeMs": 0.0013,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 19.1165
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 5.5423,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1143.5797
+            },
+            "inferenceMs": 965.6131,
+            "parsingMs": 103.23139999999998,
+            "pipeline": {
+              "cacheMs": 0.0562,
+              "cropMs": 7.7082000000000015,
+              "ctcMs": 98.9613,
+              "dbMs": 4.2688,
+              "decodeMs": 5.2773,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 32.0336,
+              "mergeMs": 0.0013,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 19.1165
+            },
+            "preprocessingMs": 64.16189999999999,
+            "recognitionBatches": 9,
+            "recognitionMs": 847.2705,
+            "recognitionPixels": 1016304,
+            "totalMs": 1142.0876
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 103.4529,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 4,
+              "cache": null,
+              "cpuTasks": 1,
+              "detectionRegions": 1,
+              "endToEndMs": 1228.7606,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": 1.4385999999999513,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.061500000000000006,
+                "cropMs": 8.4018,
+                "ctcMs": 112.851,
+                "dbMs": 2.8952,
+                "decodeMs": 4.7808,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 30.669600000000003,
+                "mergeMs": 0.0001,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 22.2496
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 5.4653,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1222.2676999999999
+            },
+            "inferenceMs": 1030.0687,
+            "parsingMs": 115.7463,
+            "pipeline": {
+              "cacheMs": 0.061500000000000006,
+              "cropMs": 8.4018,
+              "ctcMs": 112.851,
+              "dbMs": 2.8952,
+              "decodeMs": 4.7808,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 30.669600000000003,
+              "mergeMs": 0.0001,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 22.2496
+            },
+            "preprocessingMs": 66.1164,
+            "recognitionBatches": 9,
+            "recognitionMs": 926.6158,
+            "recognitionPixels": 1016304,
+            "totalMs": 1220.8291
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 1241.5283666666667,
+      "p50Ms": 1228.7606,
+      "p95Ms": 1345.8542,
+      "p99Ms": 1345.8542,
+      "resources": {
+        "at": "2026-10-21T02:20:04.668Z",
+        "processes": {
+          "Id": 51328,
+          "ProcessName": "executor-bench",
+          "CPU": 0.15625,
+          "WorkingSet64": 7462912,
+          "PrivateMemorySize64": 2584576,
+          "PeakWorkingSet64": 33226752
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 13, 2284, 4096"
+      }
+    },
+    {
+      "device": "cpu",
+      "strategy": "manual",
+      "load": {
+        "coldStartMs": 621.7239,
+        "device": "CPU",
+        "executor": {
+          "executionMode": "manual",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": true,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 29532,
+              "state": "idle",
+              "threads": 2
+            },
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 1,
+              "pid": 37512,
+              "state": "idle",
+              "threads": 2
+            }
+          ]
+        },
+        "message": "并行已启用：CUDA × 0 / CPU × 2；根据实测耗时动态分配",
+        "type": "ready"
+      },
+      "first": {
+        "metrics": {
+          "detectionMs": 215.2088,
+          "detectionRegions": 1,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": null,
+            "cpuTasks": 5,
+            "detectionRegions": 1,
+            "endToEndMs": 3179.1505,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": null,
+            "mergeMs": 0.1183,
+            "pipeline": null,
+            "queueWaitMs": 1146.8989000000001,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0.6972,
+            "tileCount": 4,
+            "transferMs": 16.438200000000002,
+            "wholeFrameFallback": true,
+            "workerWallMs": 3159.8033
+          },
+          "inferenceMs": 1567.0996999999998,
+          "parsingMs": 102.943,
+          "pipeline": {
+            "cacheMs": 0.050800000000000005,
+            "cropMs": 7.039700000000002,
+            "ctcMs": 99.977,
+            "dbMs": 2.9654,
+            "decodeMs": 6.425400000000001,
+            "detectorCalls": 1,
+            "detectorPreprocessMs": 39.9388,
+            "mergeMs": 0.0006,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 19.2183
+          },
+          "preprocessingMs": 72.6417,
+          "recognitionBatches": 9,
+          "recognitionMs": 1351.8909,
+          "recognitionPixels": 1016304,
+          "totalMs": 3179.1505
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "detectionMs": 127.911,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 2,
+              "cache": null,
+              "cpuTasks": 5,
+              "detectionRegions": 1,
+              "endToEndMs": 2505.9998,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": null,
+              "mergeMs": 0.079,
+              "pipeline": null,
+              "queueWaitMs": 860.2121000000001,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.5253,
+              "tileCount": 4,
+              "transferMs": 14.308600000000002,
+              "wholeFrameFallback": true,
+              "workerWallMs": 2489.8296
+            },
+            "inferenceMs": 1265.0612,
+            "parsingMs": 94.4932,
+            "pipeline": {
+              "cacheMs": 0.0698,
+              "cropMs": 6.424100000000002,
+              "ctcMs": 91.031,
+              "dbMs": 3.4619999999999997,
+              "decodeMs": 5.5347,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 30.5958,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 14.7622
+            },
+            "preprocessingMs": 57.333400000000005,
+            "recognitionBatches": 9,
+            "recognitionMs": 1137.1501999999998,
+            "recognitionPixels": 1016304,
+            "totalMs": 2505.9998
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 120.3666,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 3,
+              "cache": null,
+              "cpuTasks": 5,
+              "detectionRegions": 1,
+              "endToEndMs": 2331.2133,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": null,
+              "mergeMs": 0.12439999999999998,
+              "pipeline": null,
+              "queueWaitMs": 723.7620000000001,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.4994,
+              "tileCount": 4,
+              "transferMs": 15.293199999999999,
+              "wholeFrameFallback": true,
+              "workerWallMs": 2314.3498
+            },
+            "inferenceMs": 1248.2753,
+            "parsingMs": 97.5049,
+            "pipeline": {
+              "cacheMs": 0.0692,
+              "cropMs": 6.538700000000001,
+              "ctcMs": 94.6703,
+              "dbMs": 2.8344,
+              "decodeMs": 5.1431,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 29.9706,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 14.938299999999998
+            },
+            "preprocessingMs": 56.60900000000001,
+            "recognitionBatches": 9,
+            "recognitionMs": 1127.9087,
+            "recognitionPixels": 1016304,
+            "totalMs": 2331.2133
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 163.3696,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 4,
+              "cache": null,
+              "cpuTasks": 5,
+              "detectionRegions": 1,
+              "endToEndMs": 2827.3988,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": null,
+              "mergeMs": 0.11610000000000001,
+              "pipeline": null,
+              "queueWaitMs": 809.8231999999999,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.5388,
+              "tileCount": 4,
+              "transferMs": 16.535400000000003,
+              "wholeFrameFallback": true,
+              "workerWallMs": 2809.0571
+            },
+            "inferenceMs": 1633.8262,
+            "parsingMs": 108.5863,
+            "pipeline": {
+              "cacheMs": 0.0694,
+              "cropMs": 7.112500000000001,
+              "ctcMs": 105.6597,
+              "dbMs": 2.9263000000000003,
+              "decodeMs": 5.7143999999999995,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 33.4705,
+              "mergeMs": 0.0003,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 18.7306
+            },
+            "preprocessingMs": 65.04230000000001,
+            "recognitionBatches": 9,
+            "recognitionMs": 1470.4566,
+            "recognitionPixels": 1016304,
+            "totalMs": 2827.3988
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 2554.8706333333334,
+      "p50Ms": 2505.9998,
+      "p95Ms": 2827.3988,
+      "p99Ms": 2827.3988,
+      "resources": {
+        "at": "2026-10-21T02:20:16.945Z",
+        "processes": {
+          "Id": 21848,
+          "ProcessName": "executor-bench",
+          "CPU": 0.234375,
+          "WorkingSet64": 8032256,
+          "PrivateMemorySize64": 3239936,
+          "PeakWorkingSet64": 33742848
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 3, 2511, 4096"
+      }
+    },
+    {
+      "device": "cpu",
+      "strategy": "adaptive",
+      "load": {
+        "coldStartMs": 471.9711,
+        "device": "CPU",
+        "executor": {
+          "executionMode": "adaptive",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": false,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CPU",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 46772,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "message": "自适应优化：CPU 候选，按需切换；GPU 探索未启用",
+        "type": "ready"
+      },
+      "first": {
+        "metrics": {
+          "detectionMs": 236.3871,
+          "detectionRegions": 1,
+          "execution": {
+            "adaptive": {
+              "analysisMs": 3.0585,
+              "availableMemoryMb": 34970,
+              "cpuLoad": null,
+              "decisionMs": 0.4109,
+              "exploring": false,
+              "fallbackRisk": 0.07390328761597417,
+              "matchKind": "unknown",
+              "ocrMs": 2214.7592999999997,
+              "parallelMedianMs": null,
+              "predictedMs": null,
+              "qualityRisk": false,
+              "reason": "历史证据不足，使用完整单 Worker 基线",
+              "reliable": false,
+              "similarSamples": 0,
+              "singleMedianMs": null,
+              "strategy": "cpu-single",
+              "switchMs": 0
+            },
+            "appLatency": null,
+            "batchId": 1,
+            "cache": null,
+            "cpuTasks": 1,
+            "detectionRegions": 1,
+            "endToEndMs": 2218.2571000000003,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 1.5974999999998545,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 0.054,
+              "cropMs": 9.0263,
+              "ctcMs": 144.4793,
+              "dbMs": 4.8685,
+              "decodeMs": 6.1636,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 42.886300000000006,
+              "mergeMs": 0.0001,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 26.02849999999999
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "tileCount": 1,
+            "transferMs": 7.1034999999999995,
+            "wholeFrameFallback": false,
+            "workerWallMs": 2199.4937
+          },
+          "inferenceMs": 1954.2764999999995,
+          "parsingMs": 149.3479,
+          "pipeline": {
+            "cacheMs": 0.054,
+            "cropMs": 9.0263,
+            "ctcMs": 144.4793,
+            "dbMs": 4.8685,
+            "decodeMs": 6.1636,
+            "detectorCalls": 1,
+            "detectorPreprocessMs": 42.886300000000006,
+            "mergeMs": 0.0001,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 26.02849999999999
+          },
+          "preprocessingMs": 84.12920000000003,
+          "recognitionBatches": 9,
+          "recognitionMs": 1717.8893999999998,
+          "recognitionPixels": 1016304,
+          "totalMs": 2218.2571000000003
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "detectionMs": 161.749,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": {
+                "analysisMs": 2.4631000000000003,
+                "availableMemoryMb": 34221,
+                "cpuLoad": 0.9044289044289044,
+                "decisionMs": 0.2087,
+                "exploring": false,
+                "fallbackRisk": 0.07390328761597417,
+                "matchKind": "image",
+                "ocrMs": 1476.7652,
+                "parallelMedianMs": null,
+                "predictedMs": 2148.380269650888,
+                "qualityRisk": false,
+                "reason": "历史证据不足，使用完整单 Worker 基线；当前负载、内存余量或上一帧延迟不适合探索",
+                "reliable": false,
+                "similarSamples": 1,
+                "singleMedianMs": 2148.380269650888,
+                "strategy": "cpu-single",
+                "switchMs": 0
+              },
+              "appLatency": null,
+              "batchId": 2,
+              "cache": null,
+              "cpuTasks": 1,
+              "detectionRegions": 1,
+              "endToEndMs": 1479.4547,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": 1.6247000000000753,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0476,
+                "cropMs": 10.0147,
+                "ctcMs": 112.9326,
+                "dbMs": 11.1735,
+                "decodeMs": 8.4824,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 58.5489,
+                "mergeMs": 0.0004,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 22.529100000000003
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 9.6168,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1461.9077
+            },
+            "inferenceMs": 1223.5983,
+            "parsingMs": 124.1065,
+            "pipeline": {
+              "cacheMs": 0.0476,
+              "cropMs": 10.0147,
+              "ctcMs": 112.9326,
+              "dbMs": 11.1735,
+              "decodeMs": 8.4824,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 58.5489,
+              "mergeMs": 0.0004,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 22.529100000000003
+            },
+            "preprocessingMs": 99.59720000000002,
+            "recognitionBatches": 9,
+            "recognitionMs": 1061.8493,
+            "recognitionPixels": 1016304,
+            "totalMs": 1479.4547
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 123.372,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": {
+                "analysisMs": 2.1025,
+                "availableMemoryMb": 34421,
+                "cpuLoad": 0.828125,
+                "decisionMs": 0.0591,
+                "exploring": false,
+                "fallbackRisk": 0.07390328761597417,
+                "matchKind": "image",
+                "ocrMs": 1501.0719,
+                "parallelMedianMs": null,
+                "predictedMs": 1603.5741590600935,
+                "qualityRisk": false,
+                "reason": "历史证据不足，使用完整单 Worker 基线",
+                "reliable": false,
+                "similarSamples": 2,
+                "singleMedianMs": 1467.3726314123946,
+                "strategy": "cpu-single",
+                "switchMs": 0
+              },
+              "appLatency": null,
+              "batchId": 3,
+              "cache": null,
+              "cpuTasks": 1,
+              "detectionRegions": 1,
+              "endToEndMs": 1503.2672,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": 1.5450000000003001,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0718,
+                "cropMs": 8.5112,
+                "ctcMs": 113.3854,
+                "dbMs": 3.8363,
+                "decodeMs": 7.765700000000001,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 39.7653,
+                "mergeMs": 0.0007,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 45.83409999999999
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 5.9498,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1491.7074000000002
+            },
+            "inferenceMs": 1261.5255000000002,
+            "parsingMs": 117.2224,
+            "pipeline": {
+              "cacheMs": 0.0718,
+              "cropMs": 8.5112,
+              "ctcMs": 113.3854,
+              "dbMs": 3.8363,
+              "decodeMs": 7.765700000000001,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 39.7653,
+              "mergeMs": 0.0007,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 45.83409999999999
+            },
+            "preprocessingMs": 101.8989,
+            "recognitionBatches": 9,
+            "recognitionMs": 1138.1535,
+            "recognitionPixels": 1016304,
+            "totalMs": 1503.2672
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 179.2319,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": {
+                "analysisMs": 3.1887,
+                "availableMemoryMb": 34349,
+                "cpuLoad": 0.7869415807560137,
+                "decisionMs": 0.0644,
+                "exploring": false,
+                "fallbackRisk": 0.07390328761597417,
+                "matchKind": "image",
+                "ocrMs": 1680.3626,
+                "parallelMedianMs": null,
+                "predictedMs": 1603.5741590600935,
+                "qualityRisk": false,
+                "reason": "历史证据不足，使用完整单 Worker 基线；当前负载、内存余量或上一帧延迟不适合探索",
+                "reliable": false,
+                "similarSamples": 3,
+                "singleMedianMs": 1467.3726314123946,
+                "strategy": "cpu-single",
+                "switchMs": 0
+              },
+              "appLatency": null,
+              "batchId": 4,
+              "cache": null,
+              "cpuTasks": 1,
+              "detectionRegions": 1,
+              "endToEndMs": 1683.6293,
+              "failedTasks": 0,
+              "gpuTasks": 0,
+              "ipcOverheadMs": 1.0775999999998476,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0314,
+                "cropMs": 10.5685,
+                "ctcMs": 131.1763,
+                "dbMs": 4.8774,
+                "decodeMs": 5.127,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 39.0044,
+                "mergeMs": 0.0004,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 26.9906
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 6.6530000000000005,
+              "wholeFrameFallback": false,
+              "workerWallMs": 1670.1886
+            },
+            "inferenceMs": 1440.5687999999998,
+            "parsingMs": 136.0541,
+            "pipeline": {
+              "cacheMs": 0.0314,
+              "cropMs": 10.5685,
+              "ctcMs": 131.1763,
+              "dbMs": 4.8774,
+              "decodeMs": 5.127,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 39.0044,
+              "mergeMs": 0.0004,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 26.9906
+            },
+            "preprocessingMs": 81.70930000000003,
+            "recognitionBatches": 9,
+            "recognitionMs": 1261.3368999999998,
+            "recognitionPixels": 1016304,
+            "totalMs": 1683.6293
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 1555.4504,
+      "p50Ms": 1503.2672,
+      "p95Ms": 1683.6293,
+      "p99Ms": 1683.6293,
+      "resources": {
+        "at": "2026-10-21T02:20:25.116Z",
+        "processes": {
+          "Id": 7432,
+          "ProcessName": "executor-bench",
+          "CPU": 0.171875,
+          "WorkingSet64": 7516160,
+          "PrivateMemorySize64": 2646016,
+          "PeakWorkingSet64": 33370112
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 28, 2332, 4096"
+      }
+    },
+    {
+      "device": "cuda",
+      "strategy": "native",
+      "load": {
+        "type": "ready",
+        "device": "CUDA",
+        "load_ms": 2412.9917
+      },
+      "first": {
+        "metrics": {
+          "preprocessingMs": 190.68070000000003,
+          "inferenceMs": 3659.8834999999995,
+          "parsingMs": 140.6824,
+          "totalMs": 3992.5484,
+          "detectionMs": 427.678,
+          "recognitionMs": 3232.2054999999996,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 48.1759,
+            "detectorPreprocessMs": 102.64059999999999,
+            "dbMs": 11.5098,
+            "cropMs": 9.565000000000001,
+            "recognizerPreprocessMs": 30.263999999999992,
+            "ctcMs": 129.1715,
+            "mergeMs": 0.0011,
+            "cacheMs": 0.3248,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ]
+          }
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "preprocessingMs": 89.64139999999999,
+            "inferenceMs": 2745.9947,
+            "parsingMs": 117.3767,
+            "totalMs": 2953.3496,
+            "detectionMs": 293.8731,
+            "recognitionMs": 2452.1216000000004,
+            "detectionRegions": 1,
+            "recognitionBatches": 9,
+            "recognitionPixels": 1016304,
+            "pipeline": {
+              "decodeMs": 18.677,
+              "detectorPreprocessMs": 45.5428,
+              "dbMs": 3.0474,
+              "cropMs": 7.3993,
+              "recognizerPreprocessMs": 18.007500000000004,
+              "ctcMs": 114.32910000000001,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0471,
+              "detectorCalls": 1,
+              "recognizerCalls": 9,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ]
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "preprocessingMs": 103.98970000000003,
+            "inferenceMs": 2520.3673000000003,
+            "parsingMs": 108.23839999999998,
+            "totalMs": 2733.0220999999997,
+            "detectionMs": 341.4227,
+            "recognitionMs": 2178.9446000000003,
+            "detectionRegions": 1,
+            "recognitionBatches": 9,
+            "recognitionPixels": 1016304,
+            "pipeline": {
+              "decodeMs": 19.664,
+              "detectorPreprocessMs": 60.17080000000001,
+              "dbMs": 5.7185999999999995,
+              "cropMs": 7.039900000000001,
+              "recognizerPreprocessMs": 17.094699999999996,
+              "ctcMs": 102.51919999999998,
+              "mergeMs": 0.0006,
+              "cacheMs": 0.046400000000000004,
+              "detectorCalls": 1,
+              "recognizerCalls": 9,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ]
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "preprocessingMs": 70.70600000000002,
+            "inferenceMs": 2221.5148,
+            "parsingMs": 96.26929999999999,
+            "totalMs": 2388.8273999999997,
+            "detectionMs": 221.0796,
+            "recognitionMs": 2000.4352,
+            "detectionRegions": 1,
+            "recognitionBatches": 9,
+            "recognitionPixels": 1016304,
+            "pipeline": {
+              "decodeMs": 15.3346,
+              "detectorPreprocessMs": 34.8287,
+              "dbMs": 3.245,
+              "cropMs": 6.192,
+              "recognizerPreprocessMs": 14.3294,
+              "ctcMs": 93.024,
+              "mergeMs": 0.0003,
+              "cacheMs": 0.0327,
+              "detectorCalls": 1,
+              "recognizerCalls": 9,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ]
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 2691.7330333333334,
+      "p50Ms": 2733.0220999999997,
+      "p95Ms": 2953.3496,
+      "p99Ms": 2953.3496,
+      "resources": {
+        "at": "2026-10-21T02:20:40.347Z",
+        "processes": null,
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 42, 2897, 4096"
+      },
+      "workerSha256": "5baba5153887f359fd6c15eaa37fe407b8aa52da8a8507fb19fa2ce3c948e22a"
+    },
+    {
+      "device": "cuda",
+      "strategy": "single",
+      "load": {
+        "coldStartMs": 1290.0808000000002,
+        "device": "CUDA",
+        "executor": {
+          "executionMode": "single",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": false,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 6464,
+              "state": "idle",
+              "threads": 4
+            }
+          ]
+        },
+        "message": null,
+        "type": "ready"
+      },
+      "first": {
+        "metrics": {
+          "detectionMs": 313.3578,
+          "detectionRegions": 1,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": null,
+            "cpuTasks": 0,
+            "detectionRegions": 1,
+            "endToEndMs": 2639.5647000000004,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 1.224500000000262,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 0.0409,
+              "cropMs": 8.713700000000001,
+              "ctcMs": 111.56449999999998,
+              "dbMs": 3.3885,
+              "decodeMs": 4.4764,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 46.1028,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 20.132799999999996
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "tileCount": 1,
+            "transferMs": 5.5859000000000005,
+            "wholeFrameFallback": false,
+            "workerWallMs": 2632.3286000000003
+          },
+          "inferenceMs": 2436.4605,
+          "parsingMs": 114.95319999999998,
+          "pipeline": {
+            "cacheMs": 0.0409,
+            "cropMs": 8.713700000000001,
+            "ctcMs": 111.56449999999998,
+            "dbMs": 3.3885,
+            "decodeMs": 4.4764,
+            "detectorCalls": 1,
+            "detectorPreprocessMs": 46.1028,
+            "mergeMs": 0.0002,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 20.132799999999996
+          },
+          "preprocessingMs": 79.44619999999999,
+          "recognitionBatches": 9,
+          "recognitionMs": 2123.1027,
+          "recognitionPixels": 1016304,
+          "totalMs": 2631.1041
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "detectionMs": 235.2858,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 2,
+              "cache": null,
+              "cpuTasks": 0,
+              "detectionRegions": 1,
+              "endToEndMs": 2420.257,
+              "failedTasks": 0,
+              "gpuTasks": 1,
+              "ipcOverheadMs": 1.7301000000002205,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0406,
+                "cropMs": 6.4285999999999985,
+                "ctcMs": 111.5016,
+                "dbMs": 4.441,
+                "decodeMs": 5.4149,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 40.3602,
+                "mergeMs": 0.0002,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 15.349900000000002
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 6.0784,
+              "wholeFrameFallback": false,
+              "workerWallMs": 2413.2325
+            },
+            "inferenceMs": 2227.6429000000003,
+            "parsingMs": 115.9428,
+            "pipeline": {
+              "cacheMs": 0.0406,
+              "cropMs": 6.4285999999999985,
+              "ctcMs": 111.5016,
+              "dbMs": 4.441,
+              "decodeMs": 5.4149,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 40.3602,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 15.349900000000002
+            },
+            "preprocessingMs": 67.57320000000001,
+            "recognitionBatches": 9,
+            "recognitionMs": 1992.3571,
+            "recognitionPixels": 1016304,
+            "totalMs": 2411.5024
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 226.731,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 3,
+              "cache": null,
+              "cpuTasks": 0,
+              "detectionRegions": 1,
+              "endToEndMs": 2313.5218,
+              "failedTasks": 0,
+              "gpuTasks": 1,
+              "ipcOverheadMs": 1.307299999999941,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0305,
+                "cropMs": 6.169300000000001,
+                "ctcMs": 90.2503,
+                "dbMs": 3.2046,
+                "decodeMs": 5.52,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 41.7244,
+                "mergeMs": 0.0002,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 14.5242
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 5.7815,
+              "wholeFrameFallback": false,
+              "workerWallMs": 2306.7941
+            },
+            "inferenceMs": 2143.831,
+            "parsingMs": 93.4551,
+            "pipeline": {
+              "cacheMs": 0.0305,
+              "cropMs": 6.169300000000001,
+              "ctcMs": 90.2503,
+              "dbMs": 3.2046,
+              "decodeMs": 5.52,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 41.7244,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 14.5242
+            },
+            "preprocessingMs": 67.9509,
+            "recognitionBatches": 9,
+            "recognitionMs": 1917.1,
+            "recognitionPixels": 1016304,
+            "totalMs": 2305.4868
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 234.5041,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 4,
+              "cache": null,
+              "cpuTasks": 0,
+              "detectionRegions": 1,
+              "endToEndMs": 2333.3947999999996,
+              "failedTasks": 0,
+              "gpuTasks": 1,
+              "ipcOverheadMs": 2.068499999999858,
+              "mergeMs": 0,
+              "pipeline": {
+                "cacheMs": 0.0479,
+                "cropMs": 6.342599999999999,
+                "ctcMs": 94.8688,
+                "dbMs": 2.8214,
+                "decodeMs": 4.9335,
+                "detectorCalls": 1,
+                "detectorPreprocessMs": 40.8301,
+                "mergeMs": 0.0001,
+                "outputBytes": 197802120,
+                "recognitionShapes": [
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    320
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    369
+                  ],
+                  [
+                    6,
+                    3,
+                    48,
+                    419
+                  ],
+                  [
+                    5,
+                    3,
+                    48,
+                    985
+                  ]
+                ],
+                "recognizerCalls": 9,
+                "recognizerPreprocessMs": 15.190499999999998
+              },
+              "queueWaitMs": 0,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0,
+              "tileCount": 1,
+              "transferMs": 5.8716,
+              "wholeFrameFallback": false,
+              "workerWallMs": 2326.2527999999998
+            },
+            "inferenceMs": 2158.8713,
+            "parsingMs": 97.6903,
+            "pipeline": {
+              "cacheMs": 0.0479,
+              "cropMs": 6.342599999999999,
+              "ctcMs": 94.8688,
+              "dbMs": 2.8214,
+              "decodeMs": 4.9335,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 40.8301,
+              "mergeMs": 0.0001,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 15.190499999999998
+            },
+            "preprocessingMs": 67.3104,
+            "recognitionBatches": 9,
+            "recognitionMs": 1924.3672,
+            "recognitionPixels": 1016304,
+            "totalMs": 2324.1843
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 2355.7245333333335,
+      "p50Ms": 2333.3947999999996,
+      "p95Ms": 2420.257,
+      "p99Ms": 2420.257,
+      "resources": {
+        "at": "2026-10-21T02:20:52.241Z",
+        "processes": {
+          "Id": 38788,
+          "ProcessName": "executor-bench",
+          "CPU": 0.109375,
+          "WorkingSet64": 7254016,
+          "PrivateMemorySize64": 2572288,
+          "PeakWorkingSet64": 33112064
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 39, 2791, 4096"
+      }
+    },
+    {
+      "device": "cuda",
+      "strategy": "manual",
+      "load": {
+        "coldStartMs": 2330.6504999999997,
+        "device": "CUDA",
+        "executor": {
+          "executionMode": "manual",
+          "frameId": null,
+          "last": null,
+          "learning": null,
+          "parallel": true,
+          "queuedTasks": 0,
+          "workers": [
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 0,
+              "pid": 28308,
+              "state": "idle",
+              "threads": 1
+            },
+            {
+              "averageMs": 0,
+              "completedTasks": 0,
+              "device": "CUDA",
+              "failedTasks": 0,
+              "id": 1,
+              "pid": 40852,
+              "state": "idle",
+              "threads": 1
+            }
+          ]
+        },
+        "message": "并行已启用：CUDA × 2 / CPU × 0；根据实测耗时动态分配",
+        "type": "ready"
+      },
+      "first": {
+        "metrics": {
+          "detectionMs": 235.1467,
+          "detectionRegions": 1,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": null,
+            "cpuTasks": 0,
+            "detectionRegions": 1,
+            "endToEndMs": 6169.1336,
+            "failedTasks": 0,
+            "gpuTasks": 5,
+            "ipcOverheadMs": null,
+            "mergeMs": 0.0889,
+            "pipeline": null,
+            "queueWaitMs": 3024.7405,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0.7104,
+            "tileCount": 4,
+            "transferMs": 20.9178,
+            "wholeFrameFallback": true,
+            "workerWallMs": 6146.160599999999
+          },
+          "inferenceMs": 2187.1662999999994,
+          "parsingMs": 148.7427,
+          "pipeline": {
+            "cacheMs": 0.0305,
+            "cropMs": 6.361599999999999,
+            "ctcMs": 145.41180000000003,
+            "dbMs": 3.3306,
+            "decodeMs": 6.581,
+            "detectorCalls": 1,
+            "detectorPreprocessMs": 38.497,
+            "mergeMs": 0.0003,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 22.367700000000003
+          },
+          "preprocessingMs": 73.82159999999999,
+          "recognitionBatches": 9,
+          "recognitionMs": 1952.0195999999996,
+          "recognitionPixels": 1016304,
+          "totalMs": 6169.1336
+        },
+        "quality": {
+          "exactLineRecall": 1,
+          "characterErrorRate": 0,
+          "meanBoxIoU": 0.820208960272007,
+          "meanCenterErrorPx": 3.952284487786619,
+          "unexpectedBlocks": 0
+        }
+      },
+      "warm": [
+        {
+          "metrics": {
+            "detectionMs": 241.4674,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 2,
+              "cache": null,
+              "cpuTasks": 0,
+              "detectionRegions": 1,
+              "endToEndMs": 5887.080199999999,
+              "failedTasks": 0,
+              "gpuTasks": 5,
+              "ipcOverheadMs": null,
+              "mergeMs": 0.0722,
+              "pipeline": null,
+              "queueWaitMs": 2981.8632000000002,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.6129,
+              "tileCount": 4,
+              "transferMs": 26.588900000000002,
+              "wholeFrameFallback": true,
+              "workerWallMs": 5858.9005
+            },
+            "inferenceMs": 2095.8149,
+            "parsingMs": 95.4761,
+            "pipeline": {
+              "cacheMs": 0.0327,
+              "cropMs": 6.433799999999996,
+              "ctcMs": 92.1211,
+              "dbMs": 3.3548,
+              "decodeMs": 8.2594,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 44.2598,
+              "mergeMs": 0.0002,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 14.952500000000002
+            },
+            "preprocessingMs": 73.91950000000001,
+            "recognitionBatches": 9,
+            "recognitionMs": 1854.3475,
+            "recognitionPixels": 1016304,
+            "totalMs": 5887.080199999999
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 234.7819,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 3,
+              "cache": null,
+              "cpuTasks": 0,
+              "detectionRegions": 1,
+              "endToEndMs": 6050.2083999999995,
+              "failedTasks": 0,
+              "gpuTasks": 5,
+              "ipcOverheadMs": null,
+              "mergeMs": 0.0892,
+              "pipeline": null,
+              "queueWaitMs": 2945.6915,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.6456,
+              "tileCount": 4,
+              "transferMs": 16.9381,
+              "wholeFrameFallback": true,
+              "workerWallMs": 6031.502200000001
+            },
+            "inferenceMs": 2173.9184,
+            "parsingMs": 96.5321,
+            "pipeline": {
+              "cacheMs": 0.0336,
+              "cropMs": 6.307099999999998,
+              "ctcMs": 93.2956,
+              "dbMs": 3.2361,
+              "decodeMs": 6.4525,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 41.8894,
+              "mergeMs": 0.0004,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 14.430300000000004
+            },
+            "preprocessingMs": 69.094,
+            "recognitionBatches": 9,
+            "recognitionMs": 1939.1365,
+            "recognitionPixels": 1016304,
+            "totalMs": 6050.2083999999995
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        },
+        {
+          "metrics": {
+            "detectionMs": 285.8525,
+            "detectionRegions": 1,
+            "execution": {
+              "adaptive": null,
+              "appLatency": null,
+              "batchId": 4,
+              "cache": null,
+              "cpuTasks": 0,
+              "detectionRegions": 1,
+              "endToEndMs": 6120.9398,
+              "failedTasks": 0,
+              "gpuTasks": 5,
+              "ipcOverheadMs": null,
+              "mergeMs": 0.054400000000000004,
+              "pipeline": null,
+              "queueWaitMs": 2834.9982000000005,
+              "retriedTasks": 0,
+              "speedup": null,
+              "splitMs": 0.7689,
+              "tileCount": 4,
+              "transferMs": 16.989800000000002,
+              "wholeFrameFallback": true,
+              "workerWallMs": 6102.2109
+            },
+            "inferenceMs": 2368.4196,
+            "parsingMs": 99.7855,
+            "pipeline": {
+              "cacheMs": 0.0352,
+              "cropMs": 6.026200000000002,
+              "ctcMs": 96.7923,
+              "dbMs": 2.9929,
+              "decodeMs": 6.9391,
+              "detectorCalls": 1,
+              "detectorPreprocessMs": 41.7195,
+              "mergeMs": 0.0003,
+              "outputBytes": 197802120,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  419
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  985
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 13.7319
+            },
+            "preprocessingMs": 68.4308,
+            "recognitionBatches": 9,
+            "recognitionMs": 2082.5671,
+            "recognitionPixels": 1016304,
+            "totalMs": 6120.9398
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.820208960272007,
+            "meanCenterErrorPx": 3.952284487786619,
+            "unexpectedBlocks": 0
+          }
+        }
+      ],
+      "meanMs": 6019.409466666667,
+      "p50Ms": 6050.2083999999995,
+      "p95Ms": 6120.9398,
+      "p99Ms": 6120.9398,
+      "resources": {
+        "at": "2026-10-21T02:21:19.751Z",
+        "processes": {
+          "Id": 44908,
+          "ProcessName": "executor-bench",
+          "CPU": 0.28125,
+          "WorkingSet64": 7876608,
+          "PrivateMemorySize64": 2867200,
+          "PeakWorkingSet64": 33624064
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 46, 3080, 4096"
+      }
+    }
+  ],
+  "unsupported": [
+    "CUDA Adaptive: existing scheduler supports CPU only",
+    "RTX 5060 Ti unavailable"
+  ]
+}

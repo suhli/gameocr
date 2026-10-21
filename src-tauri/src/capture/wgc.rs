@@ -50,7 +50,10 @@ impl GraphicsCaptureApiHandler for Handler {
             return Ok(());
         }
         self.last = Some(Instant::now());
+        let arrived = Instant::now();
         let buffer = frame.buffer()?;
+        let readback_ms = arrived.elapsed().as_secs_f64() * 1000.;
+        let convert = Instant::now();
         let (w, h) = (buffer.width(), buffer.height());
         if w == 0 || h == 0 || w as u64 * h as u64 > 64_000_000 {
             return Err("无效的捕获图像尺寸".into());
@@ -61,7 +64,16 @@ impl GraphicsCaptureApiHandler for Handler {
             rgb.extend_from_slice(&px[..3]);
         }
         if let Some(image) = image::RgbImage::from_raw(w, h, rgb) {
-            self.flags.shared.publish(image, self.flags.generation);
+            self.flags.shared.publish_timed(
+                image,
+                self.flags.generation,
+                gameocr_core::parallel::CaptureTiming {
+                    arrived: Some(arrived),
+                    ready: None,
+                    readback_ms: Some(readback_ms),
+                    conversion_ms: Some(convert.elapsed().as_secs_f64() * 1000.),
+                },
+            );
         }
         Ok(())
     }

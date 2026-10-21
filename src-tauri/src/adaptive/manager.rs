@@ -366,7 +366,7 @@ impl ExecutionStrategyManager {
         Ok(result)
     }
     pub fn incremental(&self) -> bool {
-        matches!(&self.config.inference, gameocr_core::engine::RuntimeConfig::Onnx(p) if p.incremental)
+        matches!(&self.config.inference, gameocr_core::engine::RuntimeConfig::Onnx(p) if p.incremental || p.temporal.enabled)
     }
 }
 

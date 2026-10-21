@@ -44,6 +44,9 @@ impl OcrCapabilities {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct OnnxConfig {
+    pub temporal: TemporalConfig,
+    pub experimental_gpu_ctc: bool,
+    pub experimental_shared_memory: bool,
     pub detection_threshold: f32,
     pub box_threshold: f32,
     pub unclip_ratio: f32,
@@ -63,6 +66,9 @@ pub struct OnnxConfig {
 impl Default for OnnxConfig {
     fn default() -> Self {
         Self {
+            temporal: TemporalConfig::default(),
+            experimental_gpu_ctc: false,
+            experimental_shared_memory: false,
             detection_threshold: 0.2,
             box_threshold: 0.45,
             unclip_ratio: 1.4,
@@ -85,8 +91,10 @@ impl OnnxConfig {
             || self.detection_region.is_some()
             || self.incremental
             || self.selective_detection
+            || self.temporal.enabled
     }
     pub fn validate(&self) -> Result<()> {
+        self.temporal.validate()?;
         ensure!(
             (1..=8).contains(&self.refinement_regions),
             "Refinement regions must be in 1..8"
@@ -133,6 +141,58 @@ impl OnnxConfig {
                 "Detection region must be [left, top, width, height] inside 0..1"
             );
         }
+        Ok(())
+    }
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
+#[serde(rename_all = "kebab-case")]
+pub enum TemporalStrategy {
+    #[default]
+    Auto,
+    Full,
+    RecOnly,
+    CacheOnly,
+}
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct TemporalConfig {
+    pub enabled: bool,
+    pub strategy: TemporalStrategy,
+    pub refresh_ms: u64,
+    pub max_reuse: u32,
+    pub min_confidence: f32,
+    pub edge_delta: u8,
+}
+impl Default for TemporalConfig {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            strategy: TemporalStrategy::Auto,
+            refresh_ms: 1000,
+            max_reuse: 30,
+            min_confidence: 0.85,
+            edge_delta: 12,
+        }
+    }
+}
+impl TemporalConfig {
+    pub fn validate(&self) -> Result<()> {
+        ensure!(
+            (100..=10000).contains(&self.refresh_ms),
+            "Temporal refresh must be 100..10000 ms"
+        );
+        ensure!(
+            (1..=60).contains(&self.max_reuse),
+            "Temporal reuse must be 1..60 frames"
+        );
+        ensure!(
+            self.min_confidence.is_finite() && (0.5..=1.).contains(&self.min_confidence),
+            "Temporal confidence must be 0.5..1"
+        );
+        ensure!(
+            (1..=32).contains(&self.edge_delta),
+            "Temporal edge threshold must be 1..32"
+        );
         Ok(())
     }
 }

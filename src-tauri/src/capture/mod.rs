@@ -75,7 +75,16 @@ impl CaptureShared {
         let _ = self.app.emit("capture-error", error);
     }
     pub fn publish(&self, image: image::RgbImage, generation: u64) {
+        self.publish_timed(image, generation, Default::default());
+    }
+    pub fn publish_timed(
+        &self,
+        image: image::RgbImage,
+        generation: u64,
+        mut capture: gameocr_core::parallel::CaptureTiming,
+    ) {
         let _gate = self.transition.lock();
+        capture.ready = Some(Instant::now());
         if self.paused.load(Ordering::Acquire)
             || self.generation.load(Ordering::Acquire) != generation
         {
@@ -86,6 +95,7 @@ impl CaptureShared {
             timestamp: now_ms(),
             generation,
             image,
+            capture,
         });
         self.latest.lock().replace(frame.clone());
         *self.preview_frame.lock() = Some(frame);

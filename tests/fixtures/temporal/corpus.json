@@ -1,0 +1,6572 @@
+{
+  "schemaVersion": 1,
+  "source": "synthetic; not real game footage",
+  "scenarios": [
+    {
+      "name": "static-dialog",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "static-dialog-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "static-dialog-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "static-dialog-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "static-dialog-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "static-dialog-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "static-dialog-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "dynamic-background",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "dynamic-background-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "dynamic-background-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "dynamic-background-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "dynamic-background-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "dynamic-background-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "dynamic-background-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "typewriter",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "typewriter-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "typewriter-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "typewriter-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "typewriter-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest sta",
+              "bbox": [
+                80,
+                179,
+                225,
+                207
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "typewriter-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest start",
+              "bbox": [
+                80,
+                179,
+                249,
+                207
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "typewriter-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest started",
+              "bbox": [
+                80,
+                178,
+                287,
+                207
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "replacement",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "replacement-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "replacement-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "replacement-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "replacement-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Mission failed",
+              "bbox": [
+                80,
+                178,
+                293,
+                204
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "replacement-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Mission failed",
+              "bbox": [
+                80,
+                178,
+                293,
+                204
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "replacement-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Mission failed",
+              "bbox": [
+                80,
+                178,
+                293,
+                204
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "hud-digit",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "hud-digit-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "hud-digit-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "hud-digit-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "hud-digit-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 101",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "hud-digit-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 101",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "hud-digit-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 101",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "new-region",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "new-region-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "new-region-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "new-region-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "new-region-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            },
+            {
+              "text": "New message",
+              "bbox": [
+                850,
+                459,
+                1062,
+                492
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "new-region-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            },
+            {
+              "text": "New message",
+              "bbox": [
+                850,
+                459,
+                1062,
+                492
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "new-region-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            },
+            {
+              "text": "New message",
+              "bbox": [
+                850,
+                459,
+                1062,
+                492
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "removed-region",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "removed-region-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "removed-region-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "removed-region-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "removed-region-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "removed-region-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "removed-region-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "scroll",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "scroll-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "scroll-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "scroll-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "scroll-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                148,
+                248,
+                174
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                218,
+                323,
+                252
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                287,
+                293,
+                318
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "scroll-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                148,
+                248,
+                174
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                218,
+                323,
+                252
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                287,
+                293,
+                318
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "scroll-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                148,
+                248,
+                174
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                218,
+                323,
+                252
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                287,
+                293,
+                318
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "move-resize",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "move-resize-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "move-resize-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "move-resize-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "move-resize-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                180,
+                168,
+                348,
+                194
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                180,
+                238,
+                423,
+                272
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                180,
+                307,
+                393,
+                338
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "move-resize-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                180,
+                168,
+                348,
+                194
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                180,
+                238,
+                423,
+                272
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                180,
+                307,
+                393,
+                338
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "move-resize-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                180,
+                168,
+                348,
+                194
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                180,
+                238,
+                423,
+                272
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                180,
+                307,
+                393,
+                338
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "translucent",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "translucent-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "translucent-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "translucent-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "translucent-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "translucent-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "translucent-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "mixed-cjk",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "mixed-cjk-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "mixed-cjk-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "mixed-cjk-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "mixed-cjk-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 繁體 日本語 101",
+              "bbox": [
+                80,
+                246,
+                388,
+                279
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        },
+        {
+          "image": "mixed-cjk-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 繁體 日本語 101",
+              "bbox": [
+                80,
+                246,
+                388,
+                279
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 1
+        },
+        {
+          "image": "mixed-cjk-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 繁體 日本語 101",
+              "bbox": [
+                80,
+                246,
+                388,
+                279
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "scene-switch",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "scene-switch-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "scene-switch-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "scene-switch-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "scene-switch-3.png",
+          "groundTruth": [
+            {
+              "text": "New scene",
+              "bbox": [
+                700,
+                509,
+                865,
+                534
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 2
+        },
+        {
+          "image": "scene-switch-4.png",
+          "groundTruth": [
+            {
+              "text": "New scene",
+              "bbox": [
+                700,
+                509,
+                865,
+                534
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 2
+        },
+        {
+          "image": "scene-switch-5.png",
+          "groundTruth": [
+            {
+              "text": "New scene",
+              "bbox": [
+                700,
+                509,
+                865,
+                534
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "generation-reset",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "generation-reset-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "generation-reset-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "generation-reset-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "generation-reset-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 2
+        },
+        {
+          "image": "generation-reset-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 2
+        },
+        {
+          "image": "generation-reset-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "dense-2560",
+      "source": "synthetic",
+      "parameters": {
+        "preserveSmallText": true
+      },
+      "frames": [
+        {
+          "image": "../small-text/dense-2560.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                70,
+                843.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                106,
+                843.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                142,
+                843.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                178,
+                843.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                214,
+                843.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                250,
+                843.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                286,
+                843.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                322,
+                843.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                358,
+                843.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                394,
+                843.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                430,
+                853.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                466,
+                853.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                70,
+                1483.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                106,
+                1483.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                142,
+                1483.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                178,
+                1483.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                214,
+                1483.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                250,
+                1483.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                286,
+                1483.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                322,
+                1483.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                358,
+                1483.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                394,
+                1483.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                430,
+                1493.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                466,
+                1493.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1320,
+                1080,
+                1547.7161254882812,
+                1103.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1114,
+                1547.7161254882812,
+                1137.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1148,
+                1547.7161254882812,
+                1171.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1182,
+                1547.7161254882812,
+                1205.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "../small-text/dense-2560.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                70,
+                843.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                106,
+                843.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                142,
+                843.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                178,
+                843.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                214,
+                843.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                250,
+                843.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                286,
+                843.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                322,
+                843.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                358,
+                843.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                394,
+                843.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                430,
+                853.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                466,
+                853.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                70,
+                1483.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                106,
+                1483.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                142,
+                1483.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                178,
+                1483.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                214,
+                1483.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                250,
+                1483.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                286,
+                1483.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                322,
+                1483.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                358,
+                1483.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                394,
+                1483.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                430,
+                1493.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                466,
+                1493.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1320,
+                1080,
+                1547.7161254882812,
+                1103.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1114,
+                1547.7161254882812,
+                1137.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1148,
+                1547.7161254882812,
+                1171.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1182,
+                1547.7161254882812,
+                1205.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "../small-text/dense-2560.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                70,
+                843.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                106,
+                843.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                142,
+                843.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                178,
+                843.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                214,
+                843.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                250,
+                843.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                286,
+                843.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                322,
+                843.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                358,
+                843.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                394,
+                843.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                430,
+                853.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                466,
+                853.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                70,
+                1483.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                106,
+                1483.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                142,
+                1483.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                178,
+                1483.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                214,
+                1483.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                250,
+                1483.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                286,
+                1483.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                322,
+                1483.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                358,
+                1483.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                394,
+                1483.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                430,
+                1493.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                466,
+                1493.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1320,
+                1080,
+                1547.7161254882812,
+                1103.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1114,
+                1547.7161254882812,
+                1137.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1148,
+                1547.7161254882812,
+                1171.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1182,
+                1547.7161254882812,
+                1205.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "../small-text/dense-2560.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                70,
+                843.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                106,
+                843.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                142,
+                843.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                178,
+                843.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                214,
+                843.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                250,
+                843.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                286,
+                843.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                322,
+                843.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                358,
+                843.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                394,
+                843.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                430,
+                853.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                690,
+                466,
+                853.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                70,
+                1483.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                106,
+                1483.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                142,
+                1483.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                178,
+                1483.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                214,
+                1483.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                250,
+                1483.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                286,
+                1483.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                322,
+                1483.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                358,
+                1483.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                394,
+                1483.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                430,
+                1493.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1330,
+                466,
+                1493.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1320,
+                1080,
+                1547.7161254882812,
+                1103.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1114,
+                1547.7161254882812,
+                1137.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1148,
+                1547.7161254882812,
+                1171.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1320,
+                1182,
+                1547.7161254882812,
+                1205.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        }
+      ]
+    },
+    {
+      "name": "dense-3840",
+      "source": "synthetic",
+      "parameters": {
+        "preserveSmallText": true
+      },
+      "frames": [
+        {
+          "image": "../small-text/dense-3840.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                70,
+                1163.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                106,
+                1163.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                142,
+                1163.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                178,
+                1163.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                214,
+                1163.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                250,
+                1163.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                286,
+                1163.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                322,
+                1163.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                358,
+                1163.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                394,
+                1163.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                430,
+                1173.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                466,
+                1173.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                70,
+                3083.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                106,
+                3083.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                142,
+                3083.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                178,
+                3083.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                214,
+                3083.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                250,
+                3083.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                286,
+                3083.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                322,
+                3083.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                358,
+                3083.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                394,
+                3083.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                430,
+                3093.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                466,
+                3093.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1960,
+                1620,
+                2187.7161254882812,
+                1643.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1654,
+                2187.7161254882812,
+                1677.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1688,
+                2187.7161254882812,
+                1711.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1722,
+                2187.7161254882812,
+                1745.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "../small-text/dense-3840.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                70,
+                1163.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                106,
+                1163.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                142,
+                1163.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                178,
+                1163.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                214,
+                1163.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                250,
+                1163.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                286,
+                1163.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                322,
+                1163.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                358,
+                1163.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                394,
+                1163.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                430,
+                1173.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                466,
+                1173.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                70,
+                3083.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                106,
+                3083.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                142,
+                3083.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                178,
+                3083.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                214,
+                3083.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                250,
+                3083.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                286,
+                3083.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                322,
+                3083.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                358,
+                3083.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                394,
+                3083.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                430,
+                3093.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                466,
+                3093.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1960,
+                1620,
+                2187.7161254882812,
+                1643.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1654,
+                2187.7161254882812,
+                1677.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1688,
+                2187.7161254882812,
+                1711.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1722,
+                2187.7161254882812,
+                1745.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "../small-text/dense-3840.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                70,
+                1163.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                106,
+                1163.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                142,
+                1163.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                178,
+                1163.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                214,
+                1163.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                250,
+                1163.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                286,
+                1163.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                322,
+                1163.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                358,
+                1163.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                394,
+                1163.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                430,
+                1173.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                466,
+                1173.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                70,
+                3083.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                106,
+                3083.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                142,
+                3083.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                178,
+                3083.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                214,
+                3083.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                250,
+                3083.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                286,
+                3083.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                322,
+                3083.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                358,
+                3083.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                394,
+                3083.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                430,
+                3093.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                466,
+                3093.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1960,
+                1620,
+                2187.7161254882812,
+                1643.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1654,
+                2187.7161254882812,
+                1677.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1688,
+                2187.7161254882812,
+                1711.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1722,
+                2187.7161254882812,
+                1745.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "../small-text/dense-3840.png",
+          "groundTruth": [
+            {
+              "bbox": [
+                50,
+                70,
+                203.41143798828125,
+                93.1171875
+              ],
+              "text": "Item 0-0 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                106,
+                203.41143798828125,
+                129.1171875
+              ],
+              "text": "Item 0-1 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                142,
+                203.41143798828125,
+                165.1171875
+              ],
+              "text": "Item 0-2 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                178,
+                203.41143798828125,
+                201.1171875
+              ],
+              "text": "Item 0-3 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                214,
+                203.41143798828125,
+                237.1171875
+              ],
+              "text": "Item 0-4 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                250,
+                203.41143798828125,
+                273.1171875
+              ],
+              "text": "Item 0-5 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                286,
+                203.41143798828125,
+                309.1171875
+              ],
+              "text": "Item 0-6 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                322,
+                203.41143798828125,
+                345.1171875
+              ],
+              "text": "Item 0-7 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                358,
+                203.41143798828125,
+                381.1171875
+              ],
+              "text": "Item 0-8 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                394,
+                203.41143798828125,
+                417.1171875
+              ],
+              "text": "Item 0-9 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                430,
+                213.07550048828125,
+                453.1171875
+              ],
+              "text": "Item 0-10 Health 80"
+            },
+            {
+              "bbox": [
+                50,
+                466,
+                213.07550048828125,
+                489.1171875
+              ],
+              "text": "Item 0-11 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                70,
+                1163.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 1-0 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                106,
+                1163.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 1-1 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                142,
+                1163.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 1-2 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                178,
+                1163.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 1-3 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                214,
+                1163.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 1-4 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                250,
+                1163.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 1-5 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                286,
+                1163.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 1-6 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                322,
+                1163.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 1-7 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                358,
+                1163.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 1-8 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                394,
+                1163.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 1-9 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                430,
+                1173.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 1-10 Health 80"
+            },
+            {
+              "bbox": [
+                1010,
+                466,
+                1173.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 1-11 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                70,
+                2123.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 2-0 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                106,
+                2123.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 2-1 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                142,
+                2123.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 2-2 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                178,
+                2123.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 2-3 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                214,
+                2123.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 2-4 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                250,
+                2123.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 2-5 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                286,
+                2123.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 2-6 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                322,
+                2123.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 2-7 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                358,
+                2123.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 2-8 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                394,
+                2123.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 2-9 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                430,
+                2133.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 2-10 Health 80"
+            },
+            {
+              "bbox": [
+                1970,
+                466,
+                2133.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 2-11 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                70,
+                3083.4114379882812,
+                93.1171875
+              ],
+              "text": "Item 3-0 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                106,
+                3083.4114379882812,
+                129.1171875
+              ],
+              "text": "Item 3-1 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                142,
+                3083.4114379882812,
+                165.1171875
+              ],
+              "text": "Item 3-2 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                178,
+                3083.4114379882812,
+                201.1171875
+              ],
+              "text": "Item 3-3 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                214,
+                3083.4114379882812,
+                237.1171875
+              ],
+              "text": "Item 3-4 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                250,
+                3083.4114379882812,
+                273.1171875
+              ],
+              "text": "Item 3-5 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                286,
+                3083.4114379882812,
+                309.1171875
+              ],
+              "text": "Item 3-6 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                322,
+                3083.4114379882812,
+                345.1171875
+              ],
+              "text": "Item 3-7 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                358,
+                3083.4114379882812,
+                381.1171875
+              ],
+              "text": "Item 3-8 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                394,
+                3083.4114379882812,
+                417.1171875
+              ],
+              "text": "Item 3-9 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                430,
+                3093.0755004882812,
+                453.1171875
+              ],
+              "text": "Item 3-10 Health 80"
+            },
+            {
+              "bbox": [
+                2930,
+                466,
+                3093.0755004882812,
+                489.1171875
+              ],
+              "text": "Item 3-11 Health 80"
+            },
+            {
+              "bbox": [
+                350,
+                650,
+                1082.774658203125,
+                681.7861328125
+              ],
+              "text": "CROSS TILE BOUNDARY every character stays in this long sentence"
+            },
+            {
+              "bbox": [
+                1960,
+                1620,
+                2187.7161254882812,
+                1643.1171875
+              ],
+              "text": "Quest 0 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1654,
+                2187.7161254882812,
+                1677.1171875
+              ],
+              "text": "Quest 1 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1688,
+                2187.7161254882812,
+                1711.1171875
+              ],
+              "text": "Quest 2 Find the hidden key"
+            },
+            {
+              "bbox": [
+                1960,
+                1722,
+                2187.7161254882812,
+                1745.1171875
+              ],
+              "text": "Quest 3 Find the hidden key"
+            }
+          ],
+          "atMs": 300,
+          "generation": 1
+        }
+      ]
+    }
+  ]
+}

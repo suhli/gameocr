@@ -14,5 +14,5 @@ export async function startNative(engine){
   function request(value){if(pending||ended)throw Error('Worker unavailable/busy');return new Promise((resolve,reject)=>{pending={resolve,reject,timer:setTimeout(()=>{pending=null;child.kill();reject(Error('Native OCR timeout: '+stderr));},240000)};child.stdin.write(JSON.stringify(value)+'\n');});}
   async function close(){if(!ended){try{await request({type:'shutdown'});}catch{}child.stdin.end();}await exited;}
   const ready=await request({type:'loadEngine',protocol_version:2,config:engine});
-  return {ready,request,close,recognize: image=>request({type:'recognize',image:path.resolve(image),frame_id:++frameId,timestamp:Date.now(),mode:'grounding',cache_context:[1,1,0]}),executable};
+  return {child,ready,request,close,recognize: image=>request({type:'recognize',image:path.resolve(image),frame_id:++frameId,timestamp:Date.now(),mode:'grounding',cache_context:[1,1,0]}),executable};
 }
