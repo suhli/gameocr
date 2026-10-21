@@ -113,6 +113,13 @@ fn session(path: &Path, device: Device, threads: u32, output_count: usize) -> Re
 fn verify_cuda_execution(session: &mut Session) -> Result<()> {
     let path = session.end_profiling()?;
     let bytes = std::fs::read(&path)?;
+    if let Some(directory) = std::env::var_os("GAMEOCR_ORT_PROFILE_DIR") {
+        let directory = std::path::PathBuf::from(directory);
+        std::fs::create_dir_all(&directory)?;
+        if let Some(name) = Path::new(&path).file_name() {
+            std::fs::copy(&path, directory.join(name))?;
+        }
+    }
     let _ = std::fs::remove_file(&path);
     let events: serde_json::Value = serde_json::from_slice(&bytes)?;
     ensure!(
@@ -147,7 +154,12 @@ impl PaddleOcrAdapter {
             dictionary.len() == 18710,
             "PP-OCRv6 requires the complete 18708-character dictionary (+ blank and space)"
         );
-        let compact_path = config.manifest.files.iter().find(|f|f.role=="recognizer-ctc").map(|f|Path::new(&config.directory).join(&f.path));
+        let compact_path = config
+            .manifest
+            .files
+            .iter()
+            .find(|f| f.role == "recognizer-ctc")
+            .map(|f| Path::new(&config.directory).join(&f.path));
         let RuntimeConfig::Onnx(parameters) = config.inference else {
             anyhow::bail!("Expected ONNX configuration")
         };
@@ -202,11 +214,17 @@ impl PaddleOcrAdapter {
         }
         if loaded.config.experimental_gpu_ctc {
             loaded.compact_status = "requires CUDA and an imported recognizer-ctc model".into();
-            if config.device==Device::Cuda {
-                if let Some(path)=compact_path {
-                    match recognizer::compact_session(&path,config.device,config.threads) {
-                        Ok(session)=>{loaded.compact=Some(session);loaded.compact_status="experimental".into();}
-                        Err(e)=>{eprintln!("Compact CTC fallback: {e:#}");loaded.compact_status=format!("initialization fallback: {e}");}
+            if config.device == Device::Cuda {
+                if let Some(path) = compact_path {
+                    match recognizer::compact_session(&path, config.device, config.threads) {
+                        Ok(session) => {
+                            loaded.compact = Some(session);
+                            loaded.compact_status = "experimental".into();
+                        }
+                        Err(e) => {
+                            eprintln!("Compact CTC fallback: {e:#}");
+                            loaded.compact_status = format!("initialization fallback: {e}");
+                        }
                     }
                 }
             }
@@ -237,10 +255,14 @@ impl PaddleOcrAdapter {
             && self.cache_context.is_some()
             && image.as_raw().len() <= 64 * 1024 * 1024;
         // Taking ownership ensures failures cannot keep partially updated data.
-        let previous = self
-            .cache
-            .take()
-            .filter(|c| cache_enabled && c.valid(&image, detection_resize));
+        let previous = self.cache.take().filter(|c| {
+            cache_enabled
+                && if temporal_enabled {
+                    c.image.dimensions() == image.dimensions() && c.edge == detection_resize
+                } else {
+                    c.valid(&image, detection_resize)
+                }
+        });
         let tracker = Instant::now();
         let decision = if temporal_enabled && !force_full {
             previous.as_ref().map(|c| {
@@ -279,7 +301,7 @@ impl PaddleOcrAdapter {
             ..Default::default()
         };
         let mut cache_metrics = CacheMetrics {
-            refreshed: previous.is_none(),
+            refreshed: previous.is_none() || (temporal_enabled && !temporal_fast),
             ..Default::default()
         };
         let mut next_regions = Vec::new();
@@ -443,6 +465,9 @@ impl PaddleOcrAdapter {
             &mut decoded,
             &mut detail,
         )?;
+        if detail.compact_fallbacks > 0 {
+            self.compact_status = detail.compact_status.clone();
+        }
         recognition_ms += work.inference_ms;
         preprocessing_ms += work.preprocessing_ms;
         parsing_ms += work.parsing_ms;
@@ -533,12 +558,12 @@ impl PaddleOcrAdapter {
                 regions: next_regions,
                 lines,
                 refreshed: previous.as_ref().map_or_else(Instant::now, |c| c.refreshed),
-                frames: previous.as_ref().map_or(0, |c| c.frames + 1),
+                frames: previous.as_ref().map_or(0, |c| c.frames.saturating_add(1)),
                 edge: detection_resize,
                 temporal,
             });
         }
-        temporal_metrics.full_detections = detail.detector_calls;
+        temporal_metrics.full_detections = usize::from(!temporal_fast);
         temporal_metrics.reused_lines = cache_metrics.reused_lines;
         if temporal_fast {
             temporal_metrics.path = if detail.recognizer_calls == 0 {
@@ -581,6 +606,22 @@ impl PaddleOcrAdapter {
     }
 }
 impl OcrEngine for PaddleOcrAdapter {
+    fn recognize_rgb(
+        &mut self,
+        image: RgbImage,
+        frame_id: u64,
+        timestamp: u64,
+        _mode: OcrMode,
+    ) -> Result<OcrResult> {
+        self.run(
+            image,
+            frame_id,
+            timestamp,
+            Instant::now(),
+            self.config.detection_resize,
+            false,
+        )
+    }
     fn set_frame_context(&mut self, context: Option<[u64; 3]>) {
         if context.is_none() || self.cache_context != context {
             self.cache = None;

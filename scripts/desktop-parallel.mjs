@@ -114,6 +114,31 @@ try{
     checks.push('Automatic OCR sees a single-number update despite maximum thumbnail change threshold; no stale text and workers cleaned on unload');
     settings={...settings,onnx:originalOnnx,changeDetection:false};
   }
+  if(process.env.GAMEOCR_TEST_TEMPORAL==='1'){
+    const original=structuredClone(settings);
+    settings={...settings,executionMode:'manual',enableParallelInference:true,changeDetection:true,changeThreshold:1};
+    await invoke('update_settings',{settings});await page.getByRole('button',{name:'打开设置'}).click();
+    assert.equal(await page.getByLabel('时序识别（实验性）',{exact:true}).isChecked(),false);
+    assert.equal(await page.getByLabel('共享内存传输（实验性，仅单 Worker）',{exact:true}).isChecked(),false);
+    await page.getByLabel('时序识别（实验性）',{exact:true}).check();
+    await page.getByLabel('共享内存传输（实验性，仅单 Worker）',{exact:true}).check();
+    await page.getByLabel('完整刷新间隔 (ms)',{exact:true}).fill('10000');
+    await page.screenshot({path:path.join(out,'temporal-settings.png')});await page.getByRole('button',{name:'保存设置',exact:true}).click();await until(async()=>!(await page.locator('dialog').count()));
+    settings=await invoke('get_settings');assert(settings.onnx.temporal.enabled&&settings.onnx.experimentalSharedMemory);
+    await invoke('load_model',{id:'ppocrv6-small'});assert.equal(children().length,1);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
+    const measured=[];
+    for(let i=0;i<4;i++){await delay(150);await invoke('recognize_once');measured.push((await invoke('get_history'))[0].result);}
+    const last=measured.at(-1);assert(last.metrics.execution.appLatency.previewReused);assert.equal(last.metrics.temporal.path,'cache-only');assert.equal(last.metrics.execution.transport,'shared-memory');assert(last.metrics.execution.appLatency.captureReadbackMs>=0);assert(last.metrics.execution.appLatency.captureToPublishMs>last.metrics.totalMs);
+    fs.writeFileSync(path.join(out,'temporal-wgc-metrics.json'),JSON.stringify({settings,measured},null,2));
+    await until(async()=>await page.getByLabel('时序识别统计').count());await page.screenshot({path:path.join(out,'temporal-wgc.png')});
+    checks.push('Temporal settings persist; Manual uses one worker; real WGC shared-memory cache-only path reports capture-to-publish latency');
+    await invoke('pause_capture');await invoke('resume_capture');await delay(200);await invoke('recognize_once');assert.equal((await invoke('get_history'))[0].result.metrics.temporal.path,'full');
+    await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
+    settings={...settings,executionMode:'adaptive',enableParallelInference:false};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});assert.equal(children().length,1);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));await invoke('recognize_once');assert.equal((await invoke('get_history'))[0].result.metrics.temporal.path,'full');
+    const pid=children()[0];execFileSync('taskkill.exe',['/PID',String(pid),'/F'],{windowsHide:true,stdio:'ignore'});await assert.rejects(invoke('recognize_once'));await invoke('stop_capture');await invoke('unload_model');
+    await invoke('load_model',{id:'ppocrv6-small'});await invoke('start_capture');await until(()=>invoke('get_capture_preview'));await invoke('recognize_once');assert.equal((await invoke('get_history'))[0].result.metrics.temporal.path,'full');await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
+    checks.push('Temporal pause/resume, Adaptive single-worker restriction, process crash and model reload invalidate tracking and shared-memory lifetime');settings=original;
+  }
   await invoke('update_settings',{settings:{...settings,executionMode:'manual',enableParallelInference:true}});await invoke('load_model',{id:'ppocrv6-small'});const owned=children();assert.equal(owned.length,2);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
   const pendingExit=invoke('recognize_once').catch(()=>{});await delay(30);await invoke('plugin:window|close',{label:'main'}).catch(()=>{});await until(()=>app.exitCode!==null);await pendingExit;assert.equal(app.exitCode,0);invoke=null;
   const remaining=execFileSync('powershell.exe',['-NoProfile','-Command',`Get-Process -Id @(${owned.join(',')}) -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id; exit 0`],{windowsHide:true,encoding:'utf8'}).trim();assert.equal(remaining,'');assert.deepEqual(fs.readdirSync(path.join(dataDir,'sessions')),[]);checks.push('Normal application exit during parallel inference removes owned workers and session files');

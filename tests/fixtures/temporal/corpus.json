@@ -2679,6 +2679,636 @@
       ]
     },
     {
+      "name": "fade",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "fade-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "fade-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "fade-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "fade-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 2
+        },
+        {
+          "image": "fade-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 2
+        },
+        {
+          "image": "fade-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "moving-shadow",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "moving-shadow-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "moving-shadow-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "moving-shadow-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "moving-shadow-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 2
+        },
+        {
+          "image": "moving-shadow-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 2
+        },
+        {
+          "image": "moving-shadow-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 2
+        }
+      ]
+    },
+    {
+      "name": "textured-background",
+      "source": "synthetic",
+      "frames": [
+        {
+          "image": "textured-background-0.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 0,
+          "generation": 1
+        },
+        {
+          "image": "textured-background-1.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 100,
+          "generation": 1
+        },
+        {
+          "image": "textured-background-2.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 200,
+          "generation": 1
+        },
+        {
+          "image": "textured-background-3.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 300,
+          "generation": 2
+        },
+        {
+          "image": "textured-background-4.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 400,
+          "generation": 2
+        },
+        {
+          "image": "textured-background-5.png",
+          "groundTruth": [
+            {
+              "text": "Health 100",
+              "bbox": [
+                80,
+                108,
+                248,
+                134
+              ]
+            },
+            {
+              "text": "Quest complete",
+              "bbox": [
+                80,
+                178,
+                323,
+                212
+              ]
+            },
+            {
+              "text": "游戏 OCR Test",
+              "bbox": [
+                80,
+                247,
+                293,
+                278
+              ]
+            }
+          ],
+          "atMs": 500,
+          "generation": 2
+        }
+      ]
+    },
+    {
       "name": "dense-2560",
       "source": "synthetic",
       "parameters": {

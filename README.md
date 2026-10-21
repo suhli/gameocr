@@ -78,7 +78,7 @@ npm run desktop
 脚本会导入 VS 开发环境，使用 Ninja、配置 `LIBCLANG_PATH`，收集 CUDA 和 MSVC app-local DLL。可用 `-Runtime onnx` 或 `-Runtime llamacpp` 单独构建。CPU / CUDA ORT DLL 放在各自 Worker 旁；大型 CUDA/cuDNN DLL 仅在 `workers/cuda-runtime` 存一份，并仅加入 GPU 子进程 PATH。仅针对本机旧 CUDA 12.1 / 较新 MSVC 的验证环境提供 `-LocalCuda121Compatibility -CudaArchitectures '75;80;86;89'`；正式 CI 不使用该开关。
 
 ## 独立模型验证
-
+ 
 ```powershell
 cargo run -p gameocr-core --bin model-test --release -- `
   --model ./models/LightOnOCR-3-0.8B-Q8_0.gguf `
@@ -179,3 +179,7 @@ GitHub Actions 自动完成同样步骤并生成完整便携 ZIP、独立 CPU ZI
 - `.github/workflows/windows.yml`：自动测试、编译、NSIS/MSI/Portable 与 Draft Release。
 
 架构与取消语义见 [架构说明](docs/architecture.md)。许可证为 MIT，第三方组件及运行库保留各自条款，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+
+## 实时时序识别（实验性）
+
+新增逐阶段延迟统计、时序文字跟踪、独立 Rec-only、可选共享内存和 CUDA 概率压缩。全部默认关闭；在设置中可启用，Manual/Adaptive 时序会限制为单 Worker。参见 [时序使用与标注](docs/temporal-ocr.md) 和 [分阶段实测、兼容性及限制](docs/latency-optimization.md)。RTX5060Ti 尚未实测；当前 GTX1650 不支持 TensorRT RTX。

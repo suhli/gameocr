@@ -29,6 +29,7 @@ pub struct AppLatency {
     pub frame_wait_ms: Option<f64>,
     pub gate_ms: f64,
     pub preview_ms: f64,
+    pub preview_reused: bool,
     /// Capture callback to just before event publication; excludes UI rendering.
     pub capture_to_publish_ms: Option<f64>,
     pub publish_ms: Option<f64>,
@@ -109,6 +110,8 @@ pub struct ExecutionMetrics {
     pub app_latency: Option<AppLatency>,
     pub ipc_overhead_ms: Option<f64>,
     pub temporal: Option<crate::types::TemporalMetrics>,
+    pub transport: String,
+    pub transport_fallback: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

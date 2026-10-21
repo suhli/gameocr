@@ -142,3 +142,11 @@ node scripts/desktop-runtimes.mjs
 - 大型 cuDNN/CUDA 运行库仍占较多发行空间，已跨 Runtime 共享一份；完整 ZIP、NSIS、MSI 均含 CPU/CUDA，另提供不含 NVIDIA 运行库的独立 CPU ZIP。CPU 包的 Auto 模式显示回退原因后使用 CPU，显式 CUDA 报告缺少 Worker。
 
 停止 OCR 立即取消结果发布，进入原生库的调用会完成或在 180 秒超时后终止。UI 显存遥测不可用；单 Worker 引擎 totalMs 不含捕获、传输前 PNG 编码、结果 JPEG 和 UI 绘制。新增 execution.endToEndMs 包含帧传输、任务调度与合并，桌面值另含结果 JPEG；并行 totalMs 使用 Executor 墙钟，不能用各 Worker 阶段之和代替。
+
+## 实时 OCR 的独立验证入口
+
+新增 `benchmark-latency.mjs`（无缓存基线）、`benchmark-temporal.mjs`（时序逐帧 GT/Full 对照）、`benchmark-compact-ctc.mjs`（CUDA 字符/置信度一致性）、`benchmark-transfer.mjs`（PPM/共享内存与取消恢复），报告分别在 `docs/test-results/`。测试应串行执行，不能与编译同时测性能。
+
+时序脚本默认 CPU；`GAMEOCR_TEST_DEVICE=cuda` 切换设备，`GAMEOCR_TEMPORAL_SCENE` 筛选场景，`GAMEOCR_TEMPORAL_REPORT` 指定报告，`GAMEOCR_TEMPORAL_BUCKETS=1` 比较宽度桶。`GAMEOCR_TEMPORAL_RESUME=1` 仅跳过已完成五策略的场景；改变实现后应重新跑受影响场景，不把旧结果当新结果。`GAMEOCR_TEST_TEMPORAL=1 node scripts/desktop-parallel.mjs` 增加真实 WGC、UI、暂停/恢复、Adaptive 单实例和 Worker 崩溃重载检查。
+
+真实序列可用 `scripts/temporal-annotator.html` 标注，再由 `import-temporal-corpus.mjs` 导入。没有实际游戏语料时只报告合成数据；截图时间与脚本送帧时间分开说明。详见 [完整测量口径](latency-optimization.md)。

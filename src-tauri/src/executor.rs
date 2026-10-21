@@ -113,6 +113,7 @@ pub struct Executor {
     pub status: SharedStatus,
     model_id: String,
     runtime: String,
+    shared_memory: bool,
     resize: u32,
     batch: u64,
     cache_revision: u64,
@@ -379,7 +380,7 @@ impl Executor {
         } else if parallel.enable_parallel_inference
             && matches!(&config.inference, RuntimeConfig::Onnx(p) if p.requires_whole_frame())
         {
-            Some("局部、小字、补检或增量识别启用时使用单 Worker，保留完整线程预算".into())
+            Some("局部、小字、补检、增量或时序识别启用时使用单 Worker，保留完整线程预算".into())
         } else {
             None
         };
@@ -391,6 +392,7 @@ impl Executor {
         Ok(Self {
             strategy,
             status,
+            shared_memory: matches!(&config.inference, RuntimeConfig::Onnx(p) if p.experimental_shared_memory),
             model_id: config.manifest.id,
             runtime: config.manifest.runtime,
             resize,
@@ -464,36 +466,56 @@ impl Executor {
                 } else {
                     "inference.png"
                 });
-                let write_path = path.clone();
-                let input = frame.clone();
                 let start = Instant::now();
-                tokio::task::spawn_blocking(move || -> Result<()> {
-                    if native {
-                        write_tile(
-                            &write_path,
-                            &input.image,
-                            &Tile::whole(input.image.width(), input.image.height(), 960),
-                        )
-                    } else {
-                        input.image.save(write_path).map_err(Into::into)
-                    }
-                })
-                .await??;
-                metrics.transfer_ms = elapsed(start);
-                ensure!(!cancel.cancelled(), "任务已取消");
                 let s = slot.as_mut().context("模型工作程序不可用")?;
-                self.status.lock().workers[s.id].state = "busy".into();
-                let start = Instant::now();
-                let response = s
-                    .worker
-                    .request(WorkerRequest::Recognize {
+                let context = [frame.generation, cancel.epoch, self.cache_revision];
+                let shared = if native && self.shared_memory {
+                    match s.worker.shared_frame(&frame.image, frame.id, context) {
+                        Ok(frame) => Some(frame),
+                        Err(e) => {
+                            metrics.transport_fallback = Some(e.to_string());
+                            None
+                        }
+                    }
+                } else {
+                    None
+                };
+                let request = if let Some(descriptor) = shared {
+                    metrics.transport = "shared-memory".into();
+                    WorkerRequest::RecognizeShared {
+                        frame: descriptor,
+                        timestamp: frame.timestamp,
+                        mode,
+                    }
+                } else {
+                    metrics.transport = if native { "ppm" } else { "png" }.into();
+                    let write_path = path.clone();
+                    let input = frame.clone();
+                    tokio::task::spawn_blocking(move || -> Result<()> {
+                        if native {
+                            write_tile(
+                                &write_path,
+                                &input.image,
+                                &Tile::whole(input.image.width(), input.image.height(), 960),
+                            )
+                        } else {
+                            input.image.save(write_path).map_err(Into::into)
+                        }
+                    })
+                    .await??;
+                    WorkerRequest::Recognize {
                         image: path.to_string_lossy().into(),
                         frame_id: frame.id,
                         timestamp: frame.timestamp,
                         mode,
-                        cache_context: Some([frame.generation, cancel.epoch, self.cache_revision]),
-                    })
-                    .await;
+                        cache_context: Some(context),
+                    }
+                };
+                metrics.transfer_ms = elapsed(start);
+                ensure!(!cancel.cancelled(), "任务已取消");
+                self.status.lock().workers[s.id].state = "busy".into();
+                let start = Instant::now();
+                let response = s.worker.request(request).await;
                 metrics.worker_wall_ms = elapsed(start);
                 metrics.tile_count = 1;
                 let success = matches!(&response, Ok(WorkerResponse::Result { .. }));
@@ -523,6 +545,7 @@ impl Executor {
                 }
             }
             Strategy::Parallel(pool) => {
+                metrics.transport = "ppm-tiles".into();
                 let start = Instant::now();
                 let input = frame.clone();
                 let count = pool.slots.iter().flatten().count();
@@ -600,7 +623,26 @@ impl Executor {
                             &mut metrics,
                         )
                         .await?;
-                    full.pop().context("完整性重试没有结果")?.1
+                    let mut full = full.pop().context("完整性重试没有结果")?.1;
+                    // Retrying the whole image must retain the cost of discarded tiles.
+                    full.metrics.preprocessing_ms += aggregate.preprocessing_ms;
+                    full.metrics.inference_ms += aggregate.inference_ms;
+                    full.metrics.parsing_ms += aggregate.parsing_ms;
+                    *full.metrics.detection_ms.get_or_insert(0.) +=
+                        aggregate.detection_ms.unwrap_or(0.);
+                    *full.metrics.recognition_ms.get_or_insert(0.) +=
+                        aggregate.recognition_ms.unwrap_or(0.);
+                    *full.metrics.recognition_batches.get_or_insert(0) +=
+                        aggregate.recognition_batches.unwrap_or(0);
+                    *full.metrics.recognition_pixels.get_or_insert(0) +=
+                        aggregate.recognition_pixels.unwrap_or(0);
+                    if let Some(p) = aggregate.pipeline {
+                        full.metrics
+                            .pipeline
+                            .get_or_insert_with(Default::default)
+                            .accumulate(&p);
+                    }
+                    full
                 } else {
                     let cpu = results.iter().any(|(_, r)| r.device == "CPU");
                     let gpu = results.iter().any(|(_, r)| r.device == "CUDA");

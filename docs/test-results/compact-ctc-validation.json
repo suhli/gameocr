@@ -1,0 +1,12 @@
+{
+  "scope": "Appended graph on CPU; Rust rejects zero maxima and applies blank/repeat semantics",
+  "checks": [
+    "tie-last",
+    "blank",
+    "nonmax-nan",
+    "nonmax-negative",
+    "infinity",
+    "over-one",
+    "negative-zero"
+  ]
+}

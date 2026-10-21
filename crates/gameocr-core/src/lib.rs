@@ -7,5 +7,6 @@ pub mod inference;
 pub mod latest;
 pub mod manifest;
 pub mod parallel;
+pub mod shared_frame;
 pub mod types;
 pub mod worker;

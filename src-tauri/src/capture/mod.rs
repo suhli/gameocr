@@ -47,6 +47,48 @@ pub fn preview(frame: &Frame) -> Result<Preview> {
         ),
     })
 }
+/// Reuse an already published JPEG only when the complete source frame is
+/// identical. OCR-region similarity is not sufficient for preview equivalence.
+pub fn reuse_preview(previous: &Frame, current: &Frame, encoded: &Preview) -> Option<Preview> {
+    if previous.generation != current.generation
+        || encoded.generation != previous.generation
+        || encoded.frame_id != previous.id
+        || previous.image.dimensions() != current.image.dimensions()
+        || (encoded.width, encoded.height) != current.image.dimensions()
+        || previous.image.as_raw() != current.image.as_raw()
+    {
+        return None;
+    }
+    let mut result = encoded.clone();
+    result.frame_id = current.id;
+    Some(result)
+}
+
+#[cfg(test)]
+mod preview_tests {
+    use super::*;
+    #[test]
+    fn reuse_keeps_current_identity_and_rejects_one_pixel_or_generation_change() {
+        let previous = Frame {
+            id: 1,
+            timestamp: 1,
+            generation: 1,
+            image: image::RgbImage::new(40, 20),
+            capture: Default::default(),
+        };
+        let mut current = previous.clone();
+        current.id = 2;
+        let encoded = preview(&previous).unwrap();
+        let reused = reuse_preview(&previous, &current, &encoded).unwrap();
+        assert_eq!(reused.frame_id, 2);
+        assert_eq!(reused.data_url, encoded.data_url);
+        current.image.put_pixel(20, 10, image::Rgb([1, 0, 0]));
+        assert!(reuse_preview(&previous, &current, &encoded).is_none());
+        current = previous.clone();
+        current.generation = 2;
+        assert!(reuse_preview(&previous, &current, &encoded).is_none());
+    }
+}
 pub struct CaptureShared {
     pub latest: Mutex<Latest<Arc<Frame>>>,
     pub preview_frame: Mutex<Option<Arc<Frame>>>,

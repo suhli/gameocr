@@ -183,6 +183,11 @@ impl InferenceConfig {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 pub enum WorkerRequest {
+    RecognizeShared {
+        frame: crate::shared_frame::SharedFrame,
+        timestamp: u64,
+        mode: OcrMode,
+    },
     RecognizeTile {
         image: String,
         frame_id: u64,

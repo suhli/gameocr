@@ -80,20 +80,25 @@ pub fn recognize_regions(
         if let Some(session) = compact.as_mut() {
             let start = Instant::now();
             let result = run_compact(session, buffer, batch.len(), width, dictionary);
-            recognition_ms += ms(start);
             match result {
-                Ok((values, bytes)) => {
+                Ok((values, bytes, inference, decode)) => {
+                    recognition_ms += inference;
+                    parsing_ms += decode;
+                    detail.ctc_ms += decode;
                     detail.compact_batches += 1;
                     detail.output_bytes += bytes;
-                    for (&index,value) in batch.iter().zip(values) { decoded[index]=Some(value); }
+                    for (&index, value) in batch.iter().zip(values) {
+                        decoded[index] = Some(value);
+                    }
                     continue;
                 }
                 Err(e) => {
+                    recognition_ms += ms(start);
                     detail.compact_fallbacks += 1;
                     detail.recognizer_calls += 1; // the fallback executes a second graph
                     detail.compact_status = format!("runtime fallback: {e}");
                     // Disable for this worker after any error, while retaining the original session.
-                    *compact=None;
+                    *compact = None;
                 }
             }
         }
@@ -137,41 +142,117 @@ pub fn recognize_regions(
     })
 }
 
-pub fn compact_session(path:&std::path::Path,device:gameocr_core::types::Device,threads:u32)->Result<Session>{
-    let mut session=crate::session(path,device,threads,3)?;
-    let _=run_compact(&mut session,&vec![0.;3*48*320],1,320,&vec![String::new();18710])?;
+pub fn compact_session(
+    path: &std::path::Path,
+    device: gameocr_core::types::Device,
+    threads: u32,
+) -> Result<Session> {
+    let mut session = crate::session(path, device, threads, 3)?;
+    let _ = run_compact(
+        &mut session,
+        &vec![0.; 3 * 48 * 320],
+        1,
+        320,
+        &vec![String::new(); 18710],
+    )?;
     crate::verify_cuda_execution(&mut session)?;
     Ok(session)
 }
-fn run_compact(session:&mut Session,buffer:&[f32],batch:usize,width:usize,dictionary:&[String])->Result<(Vec<(String,f32)>,usize)>{
-    let output=session.run(ort::inputs![TensorRef::from_array_view(([batch,3,48,width],buffer))?])?;
-    let (shape,ids)=output["gameocr_ctc_ids"].try_extract_tensor::<i64>()?;
-    let (scores_shape,scores)=output["gameocr_ctc_scores"].try_extract_tensor::<f32>()?;
-    let (valid_shape,valid)=output["gameocr_ctc_valid"].try_extract_tensor::<f32>()?;
-    ensure!(shape.len()==2 && shape[0]==batch as i64 && shape[1]>0 && shape==scores_shape && shape==valid_shape,"Invalid compact CTC dimensions");
-    let steps=shape[1] as usize;
-    let mut values=Vec::new();
-    for n in 0..batch {let r=n*steps..(n+1)*steps;values.push(decode_compact(&ids[r.clone()],&scores[r.clone()],&valid[r],dictionary)?);}
-    Ok((values,ids.len()*16))
+fn run_compact(
+    session: &mut Session,
+    buffer: &[f32],
+    batch: usize,
+    width: usize,
+    dictionary: &[String],
+) -> Result<(Vec<(String, f32)>, usize, f64, f64)> {
+    let start = Instant::now();
+    let output = session.run(ort::inputs![TensorRef::from_array_view((
+        [batch, 3, 48, width],
+        buffer
+    ))?])?;
+    let inference = ms(start);
+    let decode = Instant::now();
+    let (shape, ids) = output
+        .get("gameocr_ctc_ids")
+        .ok_or_else(|| anyhow::anyhow!("Missing compact CTC ids"))?
+        .try_extract_tensor::<i64>()?;
+    let (scores_shape, scores) = output
+        .get("gameocr_ctc_scores")
+        .ok_or_else(|| anyhow::anyhow!("Missing compact CTC scores"))?
+        .try_extract_tensor::<f32>()?;
+    let (valid_shape, valid) = output
+        .get("gameocr_ctc_valid")
+        .ok_or_else(|| anyhow::anyhow!("Missing compact CTC valid"))?
+        .try_extract_tensor::<f32>()?;
+    ensure!(
+        shape.len() == 2
+            && shape[0] == batch as i64
+            && shape[1] > 0
+            && shape == scores_shape
+            && shape == valid_shape,
+        "Invalid compact CTC dimensions"
+    );
+    let steps = shape[1] as usize;
+    let mut values = Vec::new();
+    for n in 0..batch {
+        let r = n * steps..(n + 1) * steps;
+        values.push(decode_compact(
+            &ids[r.clone()],
+            &scores[r.clone()],
+            &valid[r],
+            dictionary,
+        )?);
+    }
+    Ok((values, ids.len() * 16, inference, ms(decode)))
 }
-fn decode_compact(ids:&[i64],scores:&[f32],valid:&[f32],dictionary:&[String])->Result<(String,f32)>{
-    ensure!(ids.len()==scores.len() && ids.len()==valid.len(),"Compact CTC length mismatch");
-    let mut text=String::new();let mut previous=0;let mut sum=0.;let mut count=0;
-    for ((&index,&score),&ok) in ids.iter().zip(scores).zip(valid) {
+fn decode_compact(
+    ids: &[i64],
+    scores: &[f32],
+    valid: &[f32],
+    dictionary: &[String],
+) -> Result<(String, f32)> {
+    ensure!(
+        ids.len() == scores.len() && ids.len() == valid.len(),
+        "Compact CTC length mismatch"
+    );
+    let mut text = String::new();
+    let mut previous = 0;
+    let mut sum = 0.;
+    let mut count = 0;
+    for ((&index, &score), &ok) in ids.iter().zip(scores).zip(valid) {
         // All-class validation is computed in the graph. Zero maxima fall back
         // to preserve total_cmp signed-zero tie semantics exactly.
-        ensure!(ok==1. && score.is_finite() && score>0. && score<=1.00001 && index>=0 && (index as usize)<dictionary.len(),"Invalid compact CTC probability/class");
-        if index!=0 && index!=previous {text.push_str(&dictionary[index as usize]);sum+=score;count+=1;}
-        previous=index;
+        ensure!(
+            ok == 1.
+                && score.is_finite()
+                && score > 0.
+                && score <= 1.00001
+                && index >= 0
+                && (index as usize) < dictionary.len(),
+            "Invalid compact CTC probability/class"
+        );
+        if index != 0 && index != previous {
+            text.push_str(&dictionary[index as usize]);
+            sum += score;
+            count += 1;
+        }
+        previous = index;
     }
-    Ok((text,if count==0{0.}else{sum/count as f32}))
+    Ok((text, if count == 0 { 0. } else { sum / count as f32 }))
 }
-#[cfg(test)]mod tests{
- use super::*;
- #[test]fn compact_preserves_blank_repeat_confidence_and_rejects_invalid_nonmax(){
-  let d=vec!["".into(),"中".into(),"A".into()];
-  assert_eq!(decode_compact(&[1,1,0,1,2],&[0.9;5],&[1.;5],&d).unwrap(),("中中A".into(),0.9));
-  for invalid in [0.,f32::NAN,f32::INFINITY]{assert!(decode_compact(&[1],&[0.9],&[invalid],&d).is_err());}
-  assert!(decode_compact(&[1],&[0.],&[1.],&d).is_err());assert!(decode_compact(&[3],&[0.9],&[1.],&d).is_err());
- }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn compact_preserves_blank_repeat_confidence_and_rejects_invalid_nonmax() {
+        let d = vec!["".into(), "中".into(), "A".into()];
+        let (text, score) = decode_compact(&[1, 1, 0, 1, 2], &[0.9; 5], &[1.; 5], &d).unwrap();
+        assert_eq!(text, "中中A");
+        assert!((score - 0.9).abs() < 1e-6);
+        for invalid in [0., f32::NAN, f32::INFINITY] {
+            assert!(decode_compact(&[1], &[0.9], &[invalid], &d).is_err());
+        }
+        assert!(decode_compact(&[1], &[0.], &[1.], &d).is_err());
+        assert!(decode_compact(&[3], &[0.9], &[1.], &d).is_err());
+    }
 }

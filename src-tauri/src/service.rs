@@ -395,7 +395,33 @@ impl Service {
             Ok(mut result) if current => {
                 let preview_start = Instant::now();
                 let f = frame.clone();
-                let preview = tokio::task::spawn_blocking(move || preview(&f)).await??;
+                let previous = settings
+                    .onnx
+                    .temporal
+                    .enabled
+                    .then(|| self.recognized_frame.lock().clone())
+                    .flatten();
+                let encoded = previous.as_ref().and_then(|p| {
+                    self.history
+                        .lock()
+                        .iter()
+                        .find(|s| {
+                            s.preview.frame_id == p.id && s.preview.generation == p.generation
+                        })
+                        .map(|s| s.preview.clone())
+                });
+                let (preview, preview_reused) =
+                    tokio::task::spawn_blocking(move || -> Result<_> {
+                        if let (Some(previous), Some(encoded)) = (previous, encoded) {
+                            if let Some(reused) =
+                                crate::capture::reuse_preview(&previous, &f, &encoded)
+                            {
+                                return Ok((reused, true));
+                            }
+                        }
+                        Ok((preview(&f)?, false))
+                    })
+                    .await??;
                 if let Some(metrics) = &mut result.metrics.execution {
                     metrics.app_latency = Some(gameocr_core::parallel::AppLatency {
                         capture_readback_ms: frame.capture.readback_ms,
@@ -403,6 +429,7 @@ impl Service {
                         frame_wait_ms,
                         gate_ms,
                         preview_ms: preview_start.elapsed().as_secs_f64() * 1000.,
+                        preview_reused,
                         ..Default::default()
                     });
                     metrics.end_to_end_ms = end_to_end.elapsed().as_secs_f64() * 1000.;
@@ -523,7 +550,12 @@ impl Service {
                     last = Instant::now();
                     let _ = service.recognize(false).await;
                 }
-                tokio::time::sleep(Duration::from_millis(40)).await;
+                let poll_ms = if service.settings.read().onnx.temporal.enabled && interval < 100 {
+                    5
+                } else {
+                    40
+                };
+                tokio::time::sleep(Duration::from_millis(poll_ms)).await;
             }
         });
         let service = self.clone();

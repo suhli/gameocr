@@ -1,0 +1,1598 @@
+{
+  "executedAt": "2026-10-21T06:55:01.855Z",
+  "scope": "CUDA Small; independent experimental graph, unchanged full graph available for fallback; native decode included",
+  "results": [
+    {
+      "compact": false,
+      "image": "tests/fixtures/english.png",
+      "loadMs": 988.4446,
+      "firstMs": 424.9341,
+      "p50Ms": 389.98119999999994,
+      "comparison": {
+        "firstBlocks": 3,
+        "secondBlocks": 3,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 6.3842,
+          "inferenceMs": 412.2563,
+          "parsingMs": 6.2548,
+          "totalMs": 424.9341,
+          "detectionMs": 215.7053,
+          "recognitionMs": 196.55100000000002,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 1.5341,
+            "detectorPreprocessMs": 2.3745,
+            "dbMs": 1.6425999999999998,
+            "cropMs": 1.1508,
+            "recognizerPreprocessMs": 1.3088999999999997,
+            "ctcMs": 4.608700000000001,
+            "mergeMs": 0.0035,
+            "cacheMs": 0.0048,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 10776960,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 4.116,
+          "inferenceMs": 382.866,
+          "parsingMs": 8.9634,
+          "totalMs": 395.9747,
+          "detectionMs": 203.1741,
+          "recognitionMs": 179.69189999999998,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 0.6308,
+            "detectorPreprocessMs": 1.4278,
+            "dbMs": 2.1914000000000002,
+            "cropMs": 1.029,
+            "recognizerPreprocessMs": 1.0246,
+            "ctcMs": 6.7716,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.005699999999999999,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 10776960,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 3.6508000000000003,
+          "inferenceMs": 348.3008,
+          "parsingMs": 5.7778,
+          "totalMs": 357.74289999999996,
+          "detectionMs": 177.8573,
+          "recognitionMs": 170.4435,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 0.5723,
+            "detectorPreprocessMs": 1.1734,
+            "dbMs": 1.2743,
+            "cropMs": 0.887,
+            "recognizerPreprocessMs": 1.0148,
+            "ctcMs": 4.503,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0044,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 10776960,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 3.8617999999999997,
+          "inferenceMs": 380.3352,
+          "parsingMs": 5.7692000000000005,
+          "totalMs": 389.98119999999994,
+          "detectionMs": 196.9538,
+          "recognitionMs": 183.3814,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 0.8245,
+            "detectorPreprocessMs": 1.1939,
+            "dbMs": 1.1885999999999999,
+            "cropMs": 0.8829,
+            "recognizerPreprocessMs": 0.9571999999999998,
+            "ctcMs": 4.580500000000001,
+            "mergeMs": 0.00009999999999999999,
+            "cacheMs": 0.0044,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 10776960,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        }
+      ]
+    },
+    {
+      "compact": false,
+      "image": "tests/fixtures/mixed-cjk.png",
+      "loadMs": 988.4446,
+      "firstMs": 471.66380000000004,
+      "p50Ms": 460.6724,
+      "comparison": {
+        "firstBlocks": 4,
+        "secondBlocks": 4,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 16.2942,
+          "inferenceMs": 441.7061,
+          "parsingMs": 13.5154,
+          "totalMs": 471.66380000000004,
+          "detectionMs": 212.5896,
+          "recognitionMs": 229.1165,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.2829,
+            "detectorPreprocessMs": 12.3322,
+            "dbMs": 2.1637,
+            "cropMs": 0.8220999999999999,
+            "recognizerPreprocessMs": 1.8517000000000001,
+            "ctcMs": 11.3513,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.0068000000000000005,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 24248160,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 15.0732,
+          "inferenceMs": 428.028,
+          "parsingMs": 14.8702,
+          "totalMs": 458.1059,
+          "detectionMs": 225.5764,
+          "recognitionMs": 202.4516,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.2448,
+            "detectorPreprocessMs": 11.4588,
+            "dbMs": 2.2030000000000003,
+            "cropMs": 0.8282999999999999,
+            "recognizerPreprocessMs": 1.537,
+            "ctcMs": 12.667,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0067,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 24248160,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 18.9957,
+          "inferenceMs": 443.8111,
+          "parsingMs": 14.7187,
+          "totalMs": 477.7421,
+          "detectionMs": 220.50400000000002,
+          "recognitionMs": 223.30710000000002,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.6672,
+            "detectorPreprocessMs": 14.4353,
+            "dbMs": 2.7597,
+            "cropMs": 0.9573,
+            "recognizerPreprocessMs": 1.9299,
+            "ctcMs": 11.9588,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0067,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 24248160,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 17.04,
+          "inferenceMs": 430.5054,
+          "parsingMs": 12.9439,
+          "totalMs": 460.6724,
+          "detectionMs": 220.67929999999998,
+          "recognitionMs": 209.8261,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.3101,
+            "detectorPreprocessMs": 12.8994,
+            "dbMs": 2.1078,
+            "cropMs": 0.9410000000000001,
+            "recognizerPreprocessMs": 1.8746000000000003,
+            "ctcMs": 10.835799999999999,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0063,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 24248160,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        }
+      ]
+    },
+    {
+      "compact": false,
+      "image": "tests/fixtures/blank.png",
+      "loadMs": 988.4446,
+      "firstMs": 235.3102,
+      "p50Ms": 218.5512,
+      "comparison": {
+        "firstBlocks": 0,
+        "secondBlocks": 0,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 16.8604,
+          "inferenceMs": 216.50539999999998,
+          "parsingMs": 1.8373,
+          "totalMs": 235.3102,
+          "detectionMs": 216.50539999999998,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.3686,
+            "detectorPreprocessMs": 15.4886,
+            "dbMs": 1.8371,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.00039999999999999996,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 12.8655,
+          "inferenceMs": 203.7363,
+          "parsingMs": 1.8368,
+          "totalMs": 218.5512,
+          "detectionMs": 203.7363,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.2796,
+            "detectorPreprocessMs": 11.5839,
+            "dbMs": 1.8367,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00009999999999999999,
+            "cacheMs": 0.00039999999999999996,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 13.607099999999999,
+          "inferenceMs": 204.829,
+          "parsingMs": 2.2471,
+          "totalMs": 220.7957,
+          "detectionMs": 204.829,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.4074,
+            "detectorPreprocessMs": 12.1974,
+            "dbMs": 2.2469,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0003,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 11.8009,
+          "inferenceMs": 201.8498,
+          "parsingMs": 2.0494000000000003,
+          "totalMs": 215.8328,
+          "detectionMs": 201.8498,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.2371,
+            "detectorPreprocessMs": 10.5617,
+            "dbMs": 2.0492000000000004,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0005,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        }
+      ]
+    },
+    {
+      "compact": false,
+      "image": "tests/fixtures/small-text/dense-2560.png",
+      "loadMs": 988.4446,
+      "firstMs": 2256.4565000000002,
+      "p50Ms": 2197.9902,
+      "comparison": {
+        "firstBlocks": 53,
+        "secondBlocks": 53,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 74.9761,
+          "inferenceMs": 2088.0762,
+          "parsingMs": 93.0519,
+          "totalMs": 2256.4565000000002,
+          "detectionMs": 234.2823,
+          "recognitionMs": 1853.7939000000001,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 15.896,
+            "detectorPreprocessMs": 38.72,
+            "dbMs": 3.6868,
+            "cropMs": 5.9652,
+            "recognizerPreprocessMs": 14.3584,
+            "ctcMs": 89.3643,
+            "mergeMs": 0.0007999999999999999,
+            "cacheMs": 0.033,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 74.1523,
+          "inferenceMs": 2032.2067,
+          "parsingMs": 91.30560000000003,
+          "totalMs": 2197.9902,
+          "detectionMs": 224.3897,
+          "recognitionMs": 1807.817,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 17.4028,
+            "detectorPreprocessMs": 36.0173,
+            "dbMs": 3.8703000000000003,
+            "cropMs": 6.174899999999998,
+            "recognizerPreprocessMs": 14.538100000000004,
+            "ctcMs": 87.43480000000002,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0418,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 74.7621,
+          "inferenceMs": 2044.5279,
+          "parsingMs": 92.2359,
+          "totalMs": 2211.8191,
+          "detectionMs": 237.8982,
+          "recognitionMs": 1806.6297,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 15.6817,
+            "detectorPreprocessMs": 36.598,
+            "dbMs": 2.9539,
+            "cropMs": 6.706600000000001,
+            "recognizerPreprocessMs": 15.7593,
+            "ctcMs": 89.2817,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.044199999999999996,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 69.21270000000001,
+          "inferenceMs": 2016.7141,
+          "parsingMs": 91.2516,
+          "totalMs": 2177.4702,
+          "detectionMs": 220.80700000000002,
+          "recognitionMs": 1795.9071,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 15.5942,
+            "detectorPreprocessMs": 33.7888,
+            "dbMs": 3.1233,
+            "cropMs": 6.001200000000001,
+            "recognizerPreprocessMs": 13.8142,
+            "ctcMs": 88.1278,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0329,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        }
+      ]
+    },
+    {
+      "compact": true,
+      "image": "tests/fixtures/english.png",
+      "loadMs": 1433.4842,
+      "firstMs": 439.15070000000003,
+      "p50Ms": 367.933,
+      "comparison": {
+        "firstBlocks": 3,
+        "secondBlocks": 3,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 4.7738,
+          "inferenceMs": 433.0234,
+          "parsingMs": 1.3336000000000001,
+          "totalMs": 439.15070000000003,
+          "detectionMs": 223.1644,
+          "recognitionMs": 209.85899999999998,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 1.0412,
+            "detectorPreprocessMs": 1.6291,
+            "dbMs": 1.332,
+            "cropMs": 1.0171000000000001,
+            "recognizerPreprocessMs": 1.0776,
+            "ctcMs": 0,
+            "mergeMs": 0.0015999999999999999,
+            "cacheMs": 0.0043,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 2304,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 3.6997,
+          "inferenceMs": 383.79359999999997,
+          "parsingMs": 1.3072,
+          "totalMs": 388.8098,
+          "detectionMs": 184.8604,
+          "recognitionMs": 198.9332,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 0.6526000000000001,
+            "detectorPreprocessMs": 1.2376,
+            "dbMs": 1.3069,
+            "cropMs": 0.8878999999999999,
+            "recognizerPreprocessMs": 0.9182000000000001,
+            "ctcMs": 0,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0036,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 2304,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 3.7465,
+          "inferenceMs": 362.9836,
+          "parsingMs": 1.1937,
+          "totalMs": 367.933,
+          "detectionMs": 184.1182,
+          "recognitionMs": 178.8654,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 0.7305,
+            "detectorPreprocessMs": 1.1638,
+            "dbMs": 1.1935,
+            "cropMs": 0.9065000000000001,
+            "recognizerPreprocessMs": 0.9431,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0038,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 2304,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 3.8844,
+          "inferenceMs": 360.8194,
+          "parsingMs": 1.1981,
+          "totalMs": 365.9121,
+          "detectionMs": 178.7742,
+          "recognitionMs": 182.0452,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 54864,
+          "pipeline": {
+            "decodeMs": 0.6409,
+            "detectorPreprocessMs": 1.1402999999999999,
+            "dbMs": 1.1979,
+            "cropMs": 1.0715,
+            "recognizerPreprocessMs": 1.0282,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0031999999999999997,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 2304,
+            "recognitionShapes": [
+              [
+                3,
+                3,
+                48,
+                381
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        }
+      ]
+    },
+    {
+      "compact": true,
+      "image": "tests/fixtures/mixed-cjk.png",
+      "loadMs": 1433.4842,
+      "firstMs": 461.897,
+      "p50Ms": 458.6691,
+      "comparison": {
+        "firstBlocks": 4,
+        "secondBlocks": 4,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 19.2085,
+          "inferenceMs": 440.6784,
+          "parsingMs": 1.9509,
+          "totalMs": 461.897,
+          "detectionMs": 223.709,
+          "recognitionMs": 216.9694,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.2226,
+            "detectorPreprocessMs": 15.4246,
+            "dbMs": 1.9507,
+            "cropMs": 0.8115,
+            "recognizerPreprocessMs": 1.7456999999999998,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0044,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 5184,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 17.5418,
+          "inferenceMs": 429.429,
+          "parsingMs": 2.2903,
+          "totalMs": 449.4599,
+          "detectionMs": 210.8541,
+          "recognitionMs": 218.57489999999999,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.3028,
+            "detectorPreprocessMs": 12.525599999999999,
+            "dbMs": 2.2897,
+            "cropMs": 1.2169999999999999,
+            "recognizerPreprocessMs": 2.4914000000000005,
+            "ctcMs": 0,
+            "mergeMs": 0.0006,
+            "cacheMs": 0.0937,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 5184,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 19.141099999999998,
+          "inferenceMs": 435.69919999999996,
+          "parsingMs": 3.737,
+          "totalMs": 458.6691,
+          "detectionMs": 206.09279999999998,
+          "recognitionMs": 229.60639999999998,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.4831,
+            "detectorPreprocessMs": 15.0945,
+            "dbMs": 3.7366,
+            "cropMs": 0.916,
+            "recognizerPreprocessMs": 1.6437,
+            "ctcMs": 0,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.0055,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 5184,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 14.2556,
+          "inferenceMs": 449.3754,
+          "parsingMs": 2.4530000000000003,
+          "totalMs": 466.14840000000004,
+          "detectionMs": 226.8745,
+          "recognitionMs": 222.5009,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.3228,
+            "detectorPreprocessMs": 10.357899999999999,
+            "dbMs": 2.4528000000000003,
+            "cropMs": 0.8756999999999999,
+            "recognizerPreprocessMs": 1.6952999999999998,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0042,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 5184,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        }
+      ]
+    },
+    {
+      "compact": true,
+      "image": "tests/fixtures/blank.png",
+      "loadMs": 1433.4842,
+      "firstMs": 243.2424,
+      "p50Ms": 224.5094,
+      "comparison": {
+        "firstBlocks": 0,
+        "secondBlocks": 0,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 17.2866,
+          "inferenceMs": 223.682,
+          "parsingMs": 2.1008,
+          "totalMs": 243.2424,
+          "detectionMs": 223.682,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.3605,
+            "detectorPreprocessMs": 15.923300000000001,
+            "dbMs": 2.1002,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.0006,
+            "cacheMs": 0.0005,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 12.564400000000001,
+          "inferenceMs": 204.36409999999998,
+          "parsingMs": 2.0154,
+          "totalMs": 219.0686,
+          "detectionMs": 204.36409999999998,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.3243,
+            "detectorPreprocessMs": 11.2382,
+            "dbMs": 2.0152,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.00039999999999999996,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 13.0442,
+          "inferenceMs": 213.1146,
+          "parsingMs": 1.7684,
+          "totalMs": 228.0384,
+          "detectionMs": 213.1146,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.6793,
+            "detectorPreprocessMs": 11.3613,
+            "dbMs": 1.7682,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0005,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 12.334000000000001,
+          "inferenceMs": 209.01500000000001,
+          "parsingMs": 2.9797,
+          "totalMs": 224.5094,
+          "detectionMs": 209.01500000000001,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.294,
+            "detectorPreprocessMs": 11.0374,
+            "dbMs": 2.9793,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.0005,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        }
+      ]
+    },
+    {
+      "compact": true,
+      "image": "tests/fixtures/small-text/dense-2560.png",
+      "loadMs": 1433.4842,
+      "firstMs": 2334.3626,
+      "p50Ms": 2222.4973999999997,
+      "comparison": {
+        "firstBlocks": 53,
+        "secondBlocks": 53,
+        "missingFromSecond": 0,
+        "extraInSecond": 0,
+        "disagreement": false,
+        "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+      },
+      "maxConfidenceDelta": 0,
+      "runs": [
+        {
+          "preprocessingMs": 84.27779999999998,
+          "inferenceMs": 2246.7541,
+          "parsingMs": 3.1117,
+          "totalMs": 2334.3626,
+          "detectionMs": 253.69170000000003,
+          "recognitionMs": 1993.0624000000003,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 17.281399999999998,
+            "detectorPreprocessMs": 41.443099999999994,
+            "dbMs": 3.1113,
+            "cropMs": 7.1494,
+            "recognizerPreprocessMs": 18.3838,
+            "ctcMs": 0,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.0348,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 42288,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 9,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 88.337,
+          "inferenceMs": 2159.3599,
+          "parsingMs": 2.9198000000000004,
+          "totalMs": 2250.8472,
+          "detectionMs": 220.61339999999998,
+          "recognitionMs": 1938.7465,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 17.3535,
+            "detectorPreprocessMs": 43.8418,
+            "dbMs": 2.9193000000000002,
+            "cropMs": 7.6175,
+            "recognizerPreprocessMs": 19.5029,
+            "ctcMs": 0,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.037200000000000004,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 42288,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 9,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 78.75460000000001,
+          "inferenceMs": 2140.3842,
+          "parsingMs": 3.1495,
+          "totalMs": 2222.4973999999997,
+          "detectionMs": 222.633,
+          "recognitionMs": 1917.7512,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 16.1706,
+            "detectorPreprocessMs": 36.13,
+            "dbMs": 3.1492,
+            "cropMs": 7.5703000000000005,
+            "recognizerPreprocessMs": 18.8689,
+            "ctcMs": 0,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0351,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 42288,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 9,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 80.74510000000001,
+          "inferenceMs": 2117.9034,
+          "parsingMs": 3.0543,
+          "totalMs": 2201.9002,
+          "detectionMs": 222.6472,
+          "recognitionMs": 1895.2562,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 16.176,
+            "detectorPreprocessMs": 38.9665,
+            "dbMs": 3.0539,
+            "cropMs": 7.444500000000001,
+            "recognizerPreprocessMs": 18.1434,
+            "ctcMs": 0,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.035800000000000005,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 42288,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 9,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ use tokio::{
 /// Each worker owns its native models and sessions on its inference thread.
 /// The desktop process has no CUDA-linked imports and can always start on CPU-only PCs.
 pub struct Worker {
+    mapping: Option<gameocr_core::shared_frame::Mapping>,
     child: Child,
     input: ChildStdin,
     output: BufReader<ChildStdout>,
@@ -89,6 +90,7 @@ impl Worker {
             }
         });
         Ok(Self {
+            mapping: None,
             child,
             input,
             output,
@@ -127,6 +129,26 @@ impl Worker {
                 }
             }
         }
+    }
+    pub fn shared_frame(
+        &mut self,
+        image: &image::RgbImage,
+        frame_id: u64,
+        context: [u64; 3],
+    ) -> Result<gameocr_core::shared_frame::SharedFrame> {
+        if self
+            .mapping
+            .as_ref()
+            .is_none_or(|m| m.capacity < image.as_raw().len() + 64)
+        {
+            self.mapping = Some(gameocr_core::shared_frame::Mapping::create(
+                image.as_raw().len(),
+            )?);
+        }
+        self.mapping
+            .as_mut()
+            .unwrap()
+            .write(image, frame_id, context)
     }
     pub async fn shutdown(&mut self) {
         let graceful = tokio::time::timeout(Duration::from_secs(2), async {

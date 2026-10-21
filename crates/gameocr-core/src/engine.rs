@@ -217,6 +217,15 @@ impl EngineConfig {
     }
 }
 pub trait OcrEngine {
+    fn recognize_rgb(
+        &mut self,
+        _image: image::RgbImage,
+        _frame_id: u64,
+        _timestamp: u64,
+        _mode: OcrMode,
+    ) -> Result<OcrResult> {
+        anyhow::bail!("This adapter does not support RGB transport")
+    }
     /// Capture generation, cancellation epoch and executor cache revision.
     fn set_frame_context(&mut self, _context: Option<[u64; 3]>) {}
     fn recognize(

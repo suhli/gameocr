@@ -1,0 +1,11 @@
+{
+  "executedAt": "2026-10-21T07:21:55.016Z",
+  "scope": "UI/import workflow only; test strings are not OCR ground truth",
+  "checks": [
+    "draw source-coordinate box",
+    "edit text",
+    "review each frame",
+    "export ordered annotations",
+    "import with SHA-256"
+  ]
+}

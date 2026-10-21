@@ -123,3 +123,9 @@ Manifest v2 声明 ID、名称、runtime、adapter、版本、精度、能力、
 - `scripts/`、CI：原生依赖收集、固定版本下载、真实模型/桌面测试、发行包检查。
 
 Metrics 的 preprocessingMs 包括图像解码、缩放、裁剪、识别张量准备；detectionMs / recognitionMs 是实际网络运行；parsingMs 包括 DB 与 CTC；inferenceMs 为两个网络耗时之和。单 Worker 的 totalMs 含引擎调用内全部耗时，不包括 WGC、发送前 PNG 编码和 UI JPEG；并行与完整端到端口径见上文。实时 UI 显存遥测仍显示不可用；独立 benchmark 可采集 nvidia-smi 整卡采样，明确包含其他应用占用。
+
+## 2026-10 实时时序扩展
+
+沿用 OnnxConfig / Factory / Worker / Executor，时序元数据归属现有 FrameCache。`temporal::assess` 决定 Full 或可信边界路径；`recognizer::recognize_regions` 与 Full 共用识别和 CTC。新字段 serde 默认保持旧配置、历史和 GGUF 兼容。Manual/Adaptive 检测到 temporal.enabled 时仅单 Worker；服务绕过旧缩略图门控。
+
+`RecognizeShared` 是可选 NDJSON 请求，Windows mapping 每 Worker 独占，头部验证尺寸、容量、frameId 和 context，子进程自有 RGB 防止缓存被复写；原 PPM 和瓦片协议保留。实验 compact CTC 模型是附加 manifest 角色，原识别 Session 始终保留作回退。实现边界、默认参数和安全刷新规则见 [temporal-ocr.md](temporal-ocr.md)，计时口径见 [latency-optimization.md](latency-optimization.md)。

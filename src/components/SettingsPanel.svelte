@@ -17,7 +17,7 @@
   <header class="row spread"><h2><Settings2/> 设置</h2><button class="icon-btn" aria-label="关闭设置" onclick={onClose}><X/></button></header>
   <div class="body">
     <section><h3>捕获与调度</h3><p>捕获持续更新最新帧，OCR 按独立间隔读取。忙碌时自动丢弃旧帧。</p>
-      <div class="fields"><label>截图频率 (FPS)<input type="number" min="1" max="60" bind:value={draft.captureFps}/></label><label>OCR 间隔 (ms)<input type="number" min="100" max="60000" step="100" bind:value={draft.ocrIntervalMs}/></label></div>
+      <div class="fields"><label>截图频率 (FPS)<input type="number" min="1" max="60" bind:value={draft.captureFps}/></label><label>OCR 间隔 (ms)<input type="number" min="10" max="60000" step="10" bind:value={draft.ocrIntervalMs}/></label></div>
       <div class="fields"><label>变化检测阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.changeThreshold}/></label><label>历史记录上限<input type="number" min="1" max="100" bind:value={draft.historyLimit}/></label></div>
       <label class="check"><input type="checkbox" bind:checked={draft.changeDetection}/> 跳过没有显著变化的画面</label>
     </section>
@@ -33,6 +33,16 @@
       <label class="check"><input type="checkbox" bind:checked={draft.onnx.preserveSmallText}/> 保留高分辨率小字（重叠分块检测）</label>
       <label class="check"><input type="checkbox" disabled={draft.onnx.preserveSmallText} bind:checked={draft.onnx.selectiveDetection}/> 对疑似漏字区域补做高分辨率检测</label>
       {#if draft.onnx.selectiveDetection && !draft.onnx.preserveSmallText}<label>每帧最多补检区域<input type="number" min="1" max="8" bind:value={draft.onnx.refinementRegions}/></label><p>根据原图细节和已有检测框选择区域，不以识别置信度判断是否漏字。预算耗尽后仍可能漏检；密集小字可使用完整分块模式。补检使用单 Worker。</p>{/if}
+      <label class="check"><input type="checkbox" bind:checked={draft.onnx.temporal.enabled}/> 时序识别（实验性）</label>
+      {#if draft.onnx.temporal.enabled}
+      <p>变化响应还受截图频率和 OCR 间隔限制。固定文字框可复用或仅识别。新增边缘、边界变化、低置信度和超时会重新检测；动态背景仍可能触发完整识别。仅单 Worker 生效，手动并行和自适应会使用单实例。</p>
+      <div class="fields"><label>时序策略<select bind:value={draft.onnx.temporal.strategy}><option value="auto">自动</option><option value="full">始终完整检测</option><option value="rec-only">可信框仅识别</option><option value="cache-only">仅复用完全相同的文字</option></select></label><label>完整刷新间隔 (ms)<input type="number" min="100" max="10000" bind:value={draft.onnx.temporal.refreshMs}/></label></div>
+      <div class="fields"><label>最多复用帧数<input type="number" min="1" max="60" bind:value={draft.onnx.temporal.maxReuse}/></label><label>可信识别最低置信度<input type="number" min="0.5" max="1" step="0.01" bind:value={draft.onnx.temporal.minConfidence}/></label></div>
+      <label>边缘变化阈值（越小越保守）<input type="number" min="1" max="32" bind:value={draft.onnx.temporal.edgeDelta}/></label>
+      {/if}
+      <label class="check"><input type="checkbox" bind:checked={draft.onnx.experimentalSharedMemory}/> 共享内存传输（实验性，仅单 Worker）</label>
+      <label class="check"><input type="checkbox" bind:checked={draft.onnx.experimentalGpuCtc}/> CUDA 概率压缩（实验性）</label>
+      {#if draft.onnx.experimentalGpuCtc}<p>需要导入包含 recognizer-ctc 文件的实验模型。不可用或校验失败时使用原识别器；当前显卡未测得稳定加速。</p>{/if}
       <label class="check"><input type="checkbox" bind:checked={draft.onnx.incremental}/> 增量识别：复用像素完全未变的区域与文字</label>
       <label class="check"><input type="checkbox" bind:checked={draft.onnx.widthBuckets}/> 按文字宽度分批，限制每批像素量</label>
       {#if draft.onnx.widthBuckets}<label>每批像素预算（不含颜色通道）<input type="number" min="153600" max="786432" step="1536" bind:value={draft.onnx.recognitionPixelBudget}/></label><p>相近宽度的文字同批识别；超长文本独立分批。Batch Size 仍是每批行数上限。实际速度取决于设备和文字长度分布。</p>{/if}
@@ -42,7 +52,7 @@
         <p>以完整截图为基准，输入 0–1 的比例。区域以外不识别，结果坐标仍对应完整截图。</p>
         <div class="fields"><label>左边比例<input type="number" min="0" max="0.99" step="0.01" bind:value={draft.onnx.detectionRegion[0]}/></label><label>顶部比例<input type="number" min="0" max="0.99" step="0.01" bind:value={draft.onnx.detectionRegion[1]}/></label><label>宽度比例<input type="number" min="0.01" max="1" step="0.01" bind:value={draft.onnx.detectionRegion[2]}/></label><label>高度比例<input type="number" min="0.01" max="1" step="0.01" bind:value={draft.onnx.detectionRegion[3]}/></label></div>
       {/if}
-      {#if draft.onnx.preserveSmallText || draft.onnx.detectionRegion || draft.onnx.incremental || draft.onnx.selectiveDetection}
+      {#if draft.onnx.preserveSmallText || draft.onnx.detectionRegion || draft.onnx.incremental || draft.onnx.selectiveDetection || draft.onnx.temporal.enabled}
         <p>启用局部、小字、补检或增量识别时使用单 Worker，保留完整线程预算。检测框合并后从原图识别；限定区域可减少处理量。小字／补检模式要求检测最长边至少 256 px；完整小字模式最多 64 个局部分块。</p>
       {/if}
       <label>OCR 执行策略<select aria-label="OCR 执行策略" bind:value={draft.executionMode}><option value="single">单 Worker</option><option value="manual">手动并行</option><option value="adaptive">自适应优化</option></select></label>

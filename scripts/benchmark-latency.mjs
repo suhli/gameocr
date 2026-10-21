@@ -27,7 +27,7 @@ for(const device of ['cpu','cuda'])for(const strategy of ['native','single','man
         runs.push({metrics:result.metrics,quality});
       }
       const samples=runs.slice(1).map(r=>r.metrics.execution?.endToEndMs??r.metrics.totalMs);
-      const row={device,strategy,load:worker.ready,first:runs[0],warm:runs.slice(1),meanMs:samples.reduce((a,b)=>a+b,0)/samples.length,p50Ms:quantile(samples,.5),p95Ms:quantile(samples,.95),p99Ms:quantile(samples,.99),resources:resources(worker.child?[worker.child.pid,...(worker.ready.status?.workers??[]).map(w=>w.pid)]:[])};
+      const row={device,strategy,load:worker.ready,first:runs[0],warm:runs.slice(1),meanMs:samples.reduce((a,b)=>a+b,0)/samples.length,p50Ms:quantile(samples,.5),p95Ms:quantile(samples,.95),p99Ms:quantile(samples,.99),resources:resources(worker.child?[worker.child.pid,...(worker.ready.executor?.workers??[]).map(w=>w.pid)]:[])};
       if(native)row.workerSha256=createHash('sha256').update(fs.readFileSync(worker.executable)).digest('hex');
       report.results.push(row);save();console.log(JSON.stringify({device,strategy,p50Ms:row.p50Ms,quality:runs[1].quality}));
     }

@@ -7,7 +7,7 @@ root=Path('tests/fixtures/temporal');root.mkdir(parents=True,exist_ok=True)
 font=ImageFont.truetype('C:/Windows/Fonts/msyh.ttc',32)
 scenarios=[]
 base=[('Health 100',80,100),('Quest complete',80,170),('游戏 OCR Test',80,240)]
-names=['static-dialog','dynamic-background','typewriter','replacement','hud-digit','new-region','removed-region','scroll','move-resize','translucent','mixed-cjk','scene-switch','generation-reset']
+names=['static-dialog','dynamic-background','typewriter','replacement','hud-digit','new-region','removed-region','scroll','move-resize','translucent','mixed-cjk','scene-switch','generation-reset','fade','moving-shadow','textured-background']
 for name in names:
     frames=[]
     for n in range(6):
@@ -19,6 +19,11 @@ for name in names:
             for x in range(w):
                 c=20+int(10*(1+math.sin(x/250+n*.22)))
                 for y in range(h):pixels[x,y]=(c,c+8,c+20)
+        if name=='textured-background':
+            import numpy as np
+            rng=np.random.default_rng(200+n)
+            texture=rng.integers(12,55,size=(h,w,1),dtype=np.uint8)
+            image=Image.fromarray(np.repeat(texture,3,axis=2),'RGB')
         if n>=3:
             if name=='typewriter':lines[1]=('Quest '+['sta','start','started'][n-3],80,170)
             if name=='replacement':lines[1]=('Mission failed',80,170)
@@ -33,10 +38,13 @@ for name in names:
             layer=Image.new('RGBA',image.size);ImageDraw.Draw(layer).rectangle((50,70,620,320),fill=(10,20,30,100));image=Image.alpha_composite(image.convert('RGBA'),layer).convert('RGB')
         draw=ImageDraw.Draw(image);gt=[]
         for text,x,y in lines:
-            draw.text((x,y),text,font=font,fill='white')
+            if name=='moving-shadow':draw.text((x+3+n,y+3),text,font=font,fill=(0,0,0))
+            color=(255,255,255)
+            if name=='fade' and n>=3:color=([190,120,60][n-3],)*3
+            draw.text((x,y),text,font=font,fill=color)
             gt.append({'text':text,'bbox':list(draw.textbbox((x,y),text,font=font))})
         file=f'{name}-{n}.png';image.save(root/file)
-        frames.append({'image':file,'groundTruth':gt,'atMs':n*100,'generation':2 if name in ['scene-switch','generation-reset'] and n>=3 else 1})
+        frames.append({'image':file,'groundTruth':gt,'atMs':n*100,'generation':2 if name in ['scene-switch','generation-reset','fade','moving-shadow','textured-background'] and n>=3 else 1})
     scenarios.append({'name':name,'source':'synthetic','frames':frames})
 dense=json.loads(Path('tests/fixtures/small-text/corpus.json').read_text(encoding='utf-8-sig'))
 for size in [2560,3840]:

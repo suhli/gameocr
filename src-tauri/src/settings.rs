@@ -138,8 +138,8 @@ impl Settings {
             "捕获频率必须为 1–60 FPS"
         );
         ensure!(
-            (100..=60000).contains(&self.ocr_interval_ms),
-            "OCR 间隔必须为 100–60000 ms"
+            (10..=60000).contains(&self.ocr_interval_ms),
+            "OCR 间隔必须为 10–60000 ms"
         );
         ensure!(
             self.change_threshold.is_finite() && (0.0..=1.0).contains(&self.change_threshold),

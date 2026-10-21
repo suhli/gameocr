@@ -95,6 +95,27 @@ pub fn assess(
             reason: "exact-frame",
         };
     }
+    for track in &state.tracks {
+        let b = bounds(&track.quad, image);
+        let mut edges = 0;
+        let mut sum = 0u64;
+        let mut count = 0;
+        for y in b[1].saturating_sub(4)..(b[3] + 4).min(image.height()) {
+            for x in b[0].saturating_sub(4)..(b[2] + 4).min(image.width()) {
+                let g = gradient(image, x, y);
+                edges += usize::from(g.0.abs() + g.1.abs() > 40);
+                if x < b[0] || x >= b[2] || y < b[1] || y >= b[3] {
+                    sum += gray(image, x, y) as u64;
+                    count += 1;
+                }
+            }
+        }
+        if edges * 2 < track.edge_count
+            || (sum as f32 / count.max(1) as f32 - track.surround_mean).abs() > 64.
+        {
+            return Decision::full("fade-or-surrounding-change");
+        }
+    }
     if cache.lines.is_empty() {
         return Decision::full("changed-empty-scene");
     }

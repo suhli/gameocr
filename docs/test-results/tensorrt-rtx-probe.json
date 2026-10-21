@@ -1,0 +1,19 @@
+{
+  "executedAt": "2026-10-21T07:25:13.7826842Z",
+  "gpu": "NVIDIA GeForce GTX 1650, 7.5, 610.88",
+  "providers": {
+    "cpuCompiled": true,
+    "cudaCompiled": true,
+    "modelBuildTested": false,
+    "tensorRtCompiled": true,
+    "tensorRtRtxCompiled": false
+  },
+  "ortVersion": "1.24.20260304.5.3a728b7",
+  "ortSha256": "7814FFC2DE24D66777237ADC25EBAA35304331EA55AA9EDE7FAFE356A32FC294",
+  "hardwareMeetsAmpereMinimum": false,
+  "modelBuildTested": false,
+  "cacheCreated": false,
+  "defaultChanged": false,
+  "status": "unsupported hardware: TensorRT RTX excludes Turing",
+  "reference": "https://nvidia.github.io/TensorRT-RTX-EP-ABI/prerequisites.html"
+}
