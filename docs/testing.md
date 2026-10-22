@@ -147,6 +147,21 @@ node scripts/desktop-runtimes.mjs
 
 新增 `benchmark-latency.mjs`（无缓存基线）、`benchmark-temporal.mjs`（时序逐帧 GT/Full 对照）、`benchmark-compact-ctc.mjs`（CUDA 字符/置信度一致性）、`benchmark-transfer.mjs`（PPM/共享内存与取消恢复），报告分别在 `docs/test-results/`。测试应串行执行，不能与编译同时测性能。
 
-时序脚本默认 CPU；`GAMEOCR_TEST_DEVICE=cuda` 切换设备，`GAMEOCR_TEMPORAL_SCENE` 筛选场景，`GAMEOCR_TEMPORAL_REPORT` 指定报告，`GAMEOCR_TEMPORAL_BUCKETS=1` 比较宽度桶。`GAMEOCR_TEMPORAL_RESUME=1` 仅跳过已完成五策略的场景；改变实现后应重新跑受影响场景，不把旧结果当新结果。`GAMEOCR_TEST_TEMPORAL=1 node scripts/desktop-parallel.mjs` 增加真实 WGC、UI、暂停/恢复、Adaptive 单实例和 Worker 崩溃重载检查。
+时序脚本默认 CPU；`GAMEOCR_TEST_DEVICE=cuda` 切换设备，`GAMEOCR_TEMPORAL_SCENE` 筛选场景，`GAMEOCR_TEMPORAL_REPORT` 指定报告，`GAMEOCR_TEMPORAL_BUCKETS=1` 比较宽度桶，`GAMEOCR_TEMPORAL_BATCH` 设置批大小，`GAMEOCR_TEST_MODEL=ppocrv6-medium` 切换模型。`GAMEOCR_TEMPORAL_RESUME=1` 仅跳过已完成五策略的场景，并拒绝不同 Worker/语料哈希、模型或批处理配置的报告；改变实现后应重新运行，不把旧结果当新结果。`GAMEOCR_TEST_TEMPORAL=1 node scripts/desktop-parallel.mjs` 增加真实 WGC、UI、暂停/恢复、Adaptive 单实例和 Worker 崩溃重载检查。
+
+Windows CI 加入真实 CPU 时序五策略回归和报告上传；新字延迟统计用 `test-temporal-measurements.mjs` 覆盖即时响应、延迟恢复、未恢复即被替换和无变化情况。远端 CI 本轮未执行。`test-ctc-fallback.mjs` 用真实原始模型验证 CPU/CUDA 在实验图缺失或损坏时继续识别。`GAMEOCR_TRANSFER_4K=1` 与 `GAMEOCR_TRANSFER_REPORT` 可单独比较 4K 的 PPM/共享内存；保留完整小字分块。
 
 真实序列可用 `scripts/temporal-annotator.html` 标注，再由 `import-temporal-corpus.mjs` 导入。没有实际游戏语料时只报告合成数据；截图时间与脚本送帧时间分开说明。详见 [完整测量口径](latency-optimization.md)。
+
+## 实时 OCR 最终回归（2026-10-22）
+
+- Rust core 24、ONNX 14、desktop lib 17 项通过，合计 55 项；格式检查通过，前端检查 0 错误/警告、Vitest 2 项通过。
+- [CPU](test-results/temporal-cpu.json) 与 [CUDA](test-results/temporal-cuda.json) 各 18 个场景、五种策略、520 帧，均无相对 Full 的文字/位置差异，GT CER 0、精确行召回完整。渐隐、阴影和纹理变化的语料保持同一 generation，验证实际风险检测而非依赖来源切换。分桶 120 帧、Medium HUD 60 帧的专项也通过，效果和未达标边界单独报告。
+- 原生 Small/Medium [CPU 8 例](test-results/temporal-onnx-cpu.json)、[CUDA 8 例](test-results/temporal-onnx-cuda.json)及 [Executor/GGUF 13 项](test-results/temporal-compatibility.json)通过。此次持续 CPU×2 检查为 32.73 秒/32 帧，预热后私有内存合计变化 +0.56 MiB，临时文件、队列和自有进程清理通过；不替代先前三分钟检查或长期压力测试。
+- CUDA CTC 的 7 项 CPU 子图检查、[8 项实际 CUDA 边界检查](test-results/compact-ctc-cuda-validation.json)、[6 项原始图回退检查](test-results/compact-ctc-fallback.json)通过。[Provider 记录](test-results/ctc-provider-profile.json)确认最终图的 ArgMax/归约在 CUDA 执行；仅覆盖加载预热。早期 CPU ArgMax 回退实验另存报告，不用于声称设备传输减少。
+- [CPU 便携包桌面 13 组](test-results/desktop-temporal.json)与 [模型/运行时 12 组](test-results/temporal-desktop-runtimes.json)通过，使用内嵌前端。时序检查明确从 Manual 设置启动并断言实际单 Worker，独立于旧增量/分桶/补检开关；新增共享内存、严格预览复用、暂停恢复和崩溃重载生命周期校验。测试窗口使用内存整帧绘制，避免抗锯齿叠加及绘制中途的画面干扰。
+- [完整便携包桌面 14 组](test-results/desktop-temporal-full-package.json)通过，在上述检查之外，实际从界面选择生成的实验模型，在 GTX1650 上完成 CUDA WGC 识别并断言使用压缩图。该包的独立捕获计时另存 `temporal-wgc-full-package.json`，不与 CPU 包的少量手动触发样本混算分位数。
+- [最终分发校验](test-results/temporal-package-validation.json)：CPU ZIP 17,002,407 字节，45 个文件/35 个 x64 依赖校验通过；完整 ZIP 1,718,318,976 字节，86 个文件/75 个依赖通过。两包主程序 SHA-256 为 `7fbcd33bda20f2cc14797d5359f5155af497215f58574016b5427339683d8ad5`，与三份桌面报告一致；包内 ONNX Worker 与时序基准二进制一致。NSIS/MSI 未重建，现存安装版不包含这次升级。
+- [真实素材标注入口](test-results/temporal-annotation.json)的绘框、编辑、逐帧确认、导出及 SHA-256 导入五项工作流通过。该工作流检查不代表已完成真实游戏准确率测试。
+
+复现完整桌面覆盖可同时设置 `GAMEOCR_TEST_ADAPTIVE=1`、`GAMEOCR_TEST_EFFICIENCY=1`、`GAMEOCR_TEST_TEMPORAL=1`，并用 `GAMEOCR_APP` 指向正式便携包。另设 `GAMEOCR_TEST_COMPACT_DIR` 指向已生成的实验模型目录，可验证模型列表发现/选择及实际 CUDA WGC 推理；需要完整 CUDA 包及兼容硬件。`GAMEOCR_TEMPORAL_DEBUG_FRAMES=1` 只用于诊断，额外写 PNG 会改变送帧间隔，不与常规性能结果混用。

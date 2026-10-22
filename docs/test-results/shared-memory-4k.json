@@ -1,0 +1,2958 @@
+{
+  "executedAt": "2026-10-22T02:11:29.581Z",
+  "scope": "Same native adapter via desktop executor; full and repeated static-frame paths. Includes transfer/worker/merge, excludes WGC and JPEG/UI.",
+  "results": [
+    {
+      "device": "cpu",
+      "temporal": true,
+      "shared": false,
+      "image": "tests/fixtures/small-text/dense-3840.png",
+      "p50Ms": 45.3502,
+      "transferMs": 18.3435,
+      "decodeMs": 12.9384,
+      "resources": {
+        "at": "2026-10-22T02:11:46.449Z",
+        "processes": [
+          {
+            "Id": 7528,
+            "ProcessName": "executor-bench",
+            "CPU": 0.3125,
+            "WorkingSet64": 7368704,
+            "PrivateMemorySize64": 2592768,
+            "PeakWorkingSet64": 65478656
+          },
+          {
+            "Id": 11112,
+            "ProcessName": "onnx-worker",
+            "CPU": 50.984375,
+            "WorkingSet64": 113963008,
+            "PrivateMemorySize64": 103059456,
+            "PeakWorkingSet64": 295071744
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 5, 2199, 4096"
+      },
+      "runs": [
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 4649.8565,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 7634.9709,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 1.7442999999993845,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.8067,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 7.525600000000001,
+              "ctcMs": 139.1283,
+              "dbMs": 234.642,
+              "decodeMs": 10.5465,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 680.6980000000001,
+              "mergeMs": 0.0702,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 30.5359
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.7335
+            },
+            "tileCount": 1,
+            "transferMs": 13.478800000000001,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 7620.001399999999
+          },
+          "inferenceMs": 6496.5697,
+          "parsingMs": 373.8405,
+          "pipeline": {
+            "cacheMs": 2.8067,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 7.525600000000001,
+            "ctcMs": 139.1283,
+            "dbMs": 234.642,
+            "decodeMs": 10.5465,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 680.6980000000001,
+            "mergeMs": 0.0702,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 30.5359
+          },
+          "preprocessingMs": 729.3461000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 1846.7132,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "initial-or-invalidated",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.7335
+          },
+          "totalMs": 7618.2571
+        },
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 4458.733500000001,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 2,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 6975.197999999999,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 2.4277000000001863,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 3.2382,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 6.961200000000002,
+              "ctcMs": 140.1623,
+              "dbMs": 243.9766,
+              "decodeMs": 14.9847,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 655.6062000000001,
+              "mergeMs": 0.0487,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 23.8878
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 3.1936000000000004
+            },
+            "tileCount": 1,
+            "transferMs": 16.048099999999998,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 6957.969300000001
+          },
+          "inferenceMs": 5849.5700000000015,
+          "parsingMs": 384.1876,
+          "pipeline": {
+            "cacheMs": 3.2382,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 6.961200000000002,
+            "ctcMs": 140.1623,
+            "dbMs": 243.9766,
+            "decodeMs": 14.9847,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 655.6062000000001,
+            "mergeMs": 0.0487,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 23.8878
+          },
+          "preprocessingMs": 701.4634000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 1390.8365,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "untrusted-boundaries",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 3.1936000000000004
+          },
+          "totalMs": 6955.5416000000005
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 3,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 45.3502,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 2.7865999999999964,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.1565,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 16.0209,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0058000000000000005,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 6.4722
+            },
+            "tileCount": 1,
+            "transferMs": 18.3435,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 26.113999999999997
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0058000000000000005,
+          "pipeline": {
+            "cacheMs": 2.1565,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 16.0209,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0058000000000000005,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 21.1603,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 6.4722
+          },
+          "totalMs": 23.3274
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 4,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 47.3868,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 3.0259000000000036,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.3192,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 12.6788,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.004,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 5.4033
+            },
+            "tileCount": 1,
+            "transferMs": 23.945999999999998,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 22.0331
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.004,
+          "pipeline": {
+            "cacheMs": 2.3192,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 12.6788,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.004,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 16.6791,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 5.4033
+          },
+          "totalMs": 19.007199999999997
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 5,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 36.4852,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 2.5688999999999993,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.6158,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 12.9384,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0038,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 5.609
+            },
+            "tileCount": 1,
+            "transferMs": 13.2319,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 22.2055
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0038,
+          "pipeline": {
+            "cacheMs": 2.6158,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 12.9384,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0038,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 17.011200000000002,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 5.609
+          },
+          "totalMs": 19.6366
+        }
+      ]
+    },
+    {
+      "device": "cpu",
+      "temporal": true,
+      "shared": true,
+      "image": "tests/fixtures/small-text/dense-3840.png",
+      "p50Ms": 21.4731,
+      "transferMs": 2.1039000000000003,
+      "decodeMs": 11.718000000000002,
+      "resources": {
+        "at": "2026-10-22T02:12:06.084Z",
+        "processes": [
+          {
+            "Id": 50908,
+            "ProcessName": "executor-bench",
+            "CPU": 0.296875,
+            "WorkingSet64": 32342016,
+            "PrivateMemorySize64": 2703360,
+            "PeakWorkingSet64": 90370048
+          },
+          {
+            "Id": 42192,
+            "ProcessName": "onnx-worker",
+            "CPU": 47.484375,
+            "WorkingSet64": 113311744,
+            "PrivateMemorySize64": 102330368,
+            "PeakWorkingSet64": 269520896
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 32, 2124, 4096"
+      },
+      "runs": [
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 4321.1837000000005,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 6989.8324,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 0.5572000000001935,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.4967,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 6.480099999999999,
+              "ctcMs": 127.087,
+              "dbMs": 217.25509999999997,
+              "decodeMs": 10.79,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 680.5776,
+              "mergeMs": 0.068,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 25.667900000000003
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.3834
+            },
+            "tileCount": 1,
+            "transferMs": 8.854600000000001,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 6979.9045
+          },
+          "inferenceMs": 5891.985000000001,
+          "parsingMs": 344.4101,
+          "pipeline": {
+            "cacheMs": 2.4967,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 6.480099999999999,
+            "ctcMs": 127.087,
+            "dbMs": 217.25509999999997,
+            "decodeMs": 10.79,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 680.5776,
+            "mergeMs": 0.068,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 25.667900000000003
+          },
+          "preprocessingMs": 723.5648,
+          "recognitionBatches": 9,
+          "recognitionMs": 1570.8013,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "initial-or-invalidated",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.3834
+          },
+          "totalMs": 6979.347299999999
+        },
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 4373.0251,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 2,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 6658.037399999999,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 0.7173000000002503,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.4038000000000004,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 6.7749,
+              "ctcMs": 131.9799,
+              "dbMs": 247.00879999999995,
+              "decodeMs": 10.8022,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 609.4142999999999,
+              "mergeMs": 0.0617,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 25.5714
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.3278
+            },
+            "tileCount": 1,
+            "transferMs": 2.6170999999999998,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 6654.1165
+          },
+          "inferenceMs": 5600.108,
+          "parsingMs": 379.0504,
+          "pipeline": {
+            "cacheMs": 2.4038000000000004,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 6.7749,
+            "ctcMs": 131.9799,
+            "dbMs": 247.00879999999995,
+            "decodeMs": 10.8022,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 609.4142999999999,
+            "mergeMs": 0.0617,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 25.5714
+          },
+          "preprocessingMs": 652.5934000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 1227.0829,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "untrusted-boundaries",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.3278
+          },
+          "totalMs": 6653.3992
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 3,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 21.4731,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 0.6150999999999982,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.0460000000000003,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 12.1491,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0042,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 4.1687
+            },
+            "tileCount": 1,
+            "transferMs": 2.1039000000000003,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 18.3764
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0042,
+          "pipeline": {
+            "cacheMs": 2.0460000000000003,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 12.1491,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0042,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 14.8206,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 4.1687
+          },
+          "totalMs": 17.761300000000002
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 4,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 20.1934,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 0.654799999999998,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 1.8155,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 11.288000000000002,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0031,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 3.8935
+            },
+            "tileCount": 1,
+            "transferMs": 2.0972999999999997,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 17.1467
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0031,
+          "pipeline": {
+            "cacheMs": 1.8155,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 11.288000000000002,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0031,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 13.8592,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 3.8935
+          },
+          "totalMs": 16.4919
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 5,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 1,
+            "detectionRegions": 19,
+            "endToEndMs": 21.9453,
+            "failedTasks": 0,
+            "gpuTasks": 0,
+            "ipcOverheadMs": 0.6495999999999995,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.0010000000000003,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 11.718000000000002,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0043,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 4.5298
+            },
+            "tileCount": 1,
+            "transferMs": 2.267,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 18.476699999999997
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0043,
+          "pipeline": {
+            "cacheMs": 2.0010000000000003,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 11.718000000000002,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0043,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 14.8212,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 4.5298
+          },
+          "totalMs": 17.827099999999998
+        }
+      ]
+    },
+    {
+      "device": "cuda",
+      "temporal": true,
+      "shared": false,
+      "image": "tests/fixtures/small-text/dense-3840.png",
+      "p50Ms": 41.796600000000005,
+      "transferMs": 12.7284,
+      "decodeMs": 17.6525,
+      "resources": {
+        "at": "2026-10-22T02:12:30.802Z",
+        "processes": [
+          {
+            "Id": 48424,
+            "ProcessName": "executor-bench",
+            "CPU": 0.359375,
+            "WorkingSet64": 7426048,
+            "PrivateMemorySize64": 2678784,
+            "PeakWorkingSet64": 65482752
+          },
+          {
+            "Id": 12752,
+            "ProcessName": "onnx-worker",
+            "CPU": 18.8125,
+            "WorkingSet64": 858435584,
+            "PrivateMemorySize64": 1997946880,
+            "PeakWorkingSet64": 940220416
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 15, 2975, 4096"
+      },
+      "runs": [
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 5743.0821000000005,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 9034.971300000001,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 2.808000000000902,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.3118000000000003,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 5.7886,
+              "ctcMs": 115.07410000000002,
+              "dbMs": 169.2468,
+              "decodeMs": 22.5452,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 666.6034999999999,
+              "mergeMs": 0.0514,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 21.713200000000004
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.2635
+            },
+            "tileCount": 1,
+            "transferMs": 12.6707,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 9021.6147
+          },
+          "inferenceMs": 8009.5792,
+          "parsingMs": 284.3723,
+          "pipeline": {
+            "cacheMs": 2.3118000000000003,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 5.7886,
+            "ctcMs": 115.07410000000002,
+            "dbMs": 169.2468,
+            "decodeMs": 22.5452,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 666.6034999999999,
+            "mergeMs": 0.0514,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 21.713200000000004
+          },
+          "preprocessingMs": 716.6913000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 2266.4970999999996,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "initial-or-invalidated",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.2635
+          },
+          "totalMs": 9018.8067
+        },
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 5659.7029999999995,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 2,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 8880.123599999999,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 5.305999999998676,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.228,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 5.4459,
+              "ctcMs": 109.76810000000002,
+              "dbMs": 184.73470000000003,
+              "decodeMs": 20.0252,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 623.7627,
+              "mergeMs": 0.0528,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 17.729300000000002
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.1922
+            },
+            "tileCount": 1,
+            "transferMs": 15.8833,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 8863.5234
+          },
+          "inferenceMs": 7889.6985,
+          "parsingMs": 294.5556,
+          "pipeline": {
+            "cacheMs": 2.228,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 5.4459,
+            "ctcMs": 109.76810000000002,
+            "dbMs": 184.73470000000003,
+            "decodeMs": 20.0252,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 623.7627,
+            "mergeMs": 0.0528,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 17.729300000000002
+          },
+          "preprocessingMs": 666.9919000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 2229.9955,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "untrusted-boundaries",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.1922
+          },
+          "totalMs": 8858.217400000001
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 3,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 43.7343,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 5.5593,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.2451,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 19.1308,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0042,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 4.8553999999999995
+            },
+            "tileCount": 1,
+            "transferMs": 12.7284,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 30.1961
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0042,
+          "pipeline": {
+            "cacheMs": 2.2451,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 19.1308,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0042,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 22.3844,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 4.8553999999999995
+          },
+          "totalMs": 24.6368
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 4,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 41.796600000000005,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 6.604900000000001,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.1016,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 17.6525,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0038,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 4.506600000000001
+            },
+            "tileCount": 1,
+            "transferMs": 11.7257,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 29.4026
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0038,
+          "pipeline": {
+            "cacheMs": 2.1016,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 17.6525,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0038,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 20.6884,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 4.506600000000001
+          },
+          "totalMs": 22.7977
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 5,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 41.078900000000004,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 6.0745000000000005,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.5132000000000003,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 14.8097,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0047,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 5.0357
+            },
+            "tileCount": 1,
+            "transferMs": 13.5196,
+            "transport": "ppm",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 26.6308
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0047,
+          "pipeline": {
+            "cacheMs": 2.5132000000000003,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 14.8097,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0047,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 18.035,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 5.0357
+          },
+          "totalMs": 20.5563
+        }
+      ]
+    },
+    {
+      "device": "cuda",
+      "temporal": true,
+      "shared": true,
+      "image": "tests/fixtures/small-text/dense-3840.png",
+      "p50Ms": 24.2942,
+      "transferMs": 2.7303,
+      "decodeMs": 13.291800000000002,
+      "resources": {
+        "at": "2026-10-22T02:12:56.665Z",
+        "processes": [
+          {
+            "Id": 36000,
+            "ProcessName": "executor-bench",
+            "CPU": 0.296875,
+            "WorkingSet64": 32272384,
+            "PrivateMemorySize64": 2613248,
+            "PeakWorkingSet64": 90324992
+          },
+          {
+            "Id": 38544,
+            "ProcessName": "onnx-worker",
+            "CPU": 18.40625,
+            "WorkingSet64": 857509888,
+            "PrivateMemorySize64": 2000592896,
+            "PeakWorkingSet64": 914726912
+          }
+        ],
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 47, 3021, 4096"
+      },
+      "runs": [
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 5464.101500000001,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 1,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 8715.494400000001,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 0.5204000000012456,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.482,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 6.084300000000001,
+              "ctcMs": 111.6635,
+              "dbMs": 159.4285,
+              "decodeMs": 11.3476,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 553.4493,
+              "mergeMs": 0.0953,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 23.1564
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.4324
+            },
+            "tileCount": 1,
+            "transferMs": 9.8227,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 8704.8608
+          },
+          "inferenceMs": 7834.0208,
+          "parsingMs": 271.18730000000005,
+          "pipeline": {
+            "cacheMs": 2.482,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 6.084300000000001,
+            "ctcMs": 111.6635,
+            "dbMs": 159.4285,
+            "decodeMs": 11.3476,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 553.4493,
+            "mergeMs": 0.0953,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 23.1564
+          },
+          "preprocessingMs": 594.0926,
+          "recognitionBatches": 9,
+          "recognitionMs": 2369.9193,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "initial-or-invalidated",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.4324
+          },
+          "totalMs": 8704.3404
+        },
+        {
+          "cache": {
+            "refreshed": true,
+            "reusedLines": 0,
+            "reusedRegions": 0
+          },
+          "detectionMs": 5692.721300000001,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 2,
+            "cache": {
+              "refreshed": true,
+              "reusedLines": 0,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 8787.5311,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 0.6497000000017579,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.7886,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 5.8534999999999995,
+              "ctcMs": 114.5028,
+              "dbMs": 163.1295,
+              "decodeMs": 10.9997,
+              "detectorCalls": 19,
+              "detectorPreprocessMs": 555.9439000000001,
+              "mergeMs": 0.0478,
+              "outputBytes": 221676080,
+              "recognitionShapes": [
+                [
+                  6,
+                  3,
+                  48,
+                  369
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  372
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  374
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  392
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  397
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  438
+                ],
+                [
+                  6,
+                  3,
+                  48,
+                  465
+                ],
+                [
+                  5,
+                  3,
+                  48,
+                  929
+                ]
+              ],
+              "recognizerCalls": 9,
+              "recognizerPreprocessMs": 20.427100000000003
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 1,
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "recOnlyRegions": 0,
+              "reusedLines": 0,
+              "riskFallbacks": 0,
+              "trackerMs": 2.7302
+            },
+            "tileCount": 1,
+            "transferMs": 2.0021,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 8784.4935
+          },
+          "inferenceMs": 7906.573100000001,
+          "parsingMs": 277.68010000000004,
+          "pipeline": {
+            "cacheMs": 2.7886,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 5.8534999999999995,
+            "ctcMs": 114.5028,
+            "dbMs": 163.1295,
+            "decodeMs": 10.9997,
+            "detectorCalls": 19,
+            "detectorPreprocessMs": 555.9439000000001,
+            "mergeMs": 0.0478,
+            "outputBytes": 221676080,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                372
+              ],
+              [
+                6,
+                3,
+                48,
+                374
+              ],
+              [
+                6,
+                3,
+                48,
+                392
+              ],
+              [
+                6,
+                3,
+                48,
+                397
+              ],
+              [
+                6,
+                3,
+                48,
+                438
+              ],
+              [
+                6,
+                3,
+                48,
+                465
+              ],
+              [
+                5,
+                3,
+                48,
+                929
+              ]
+            ],
+            "recognizerCalls": 9,
+            "recognizerPreprocessMs": 20.427100000000003
+          },
+          "preprocessingMs": 593.2492000000001,
+          "recognitionBatches": 9,
+          "recognitionMs": 2213.8518,
+          "recognitionPixels": 1138512,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 1,
+            "path": "full",
+            "reason": "untrusted-boundaries",
+            "recOnlyRegions": 0,
+            "reusedLines": 0,
+            "riskFallbacks": 0,
+            "trackerMs": 2.7302
+          },
+          "totalMs": 8783.843799999999
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 3,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 23.5194,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 0.6678999999999995,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.4676,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 12.0167,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0035,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 4.636699999999999
+            },
+            "tileCount": 1,
+            "transferMs": 2.8833,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 19.5487
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0035,
+          "pipeline": {
+            "cacheMs": 2.4676,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 12.0167,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0035,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 15.1661,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 4.636699999999999
+          },
+          "totalMs": 18.8808
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 4,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 24.2942,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 0.7466000000000008,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.882,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 13.291800000000002,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0043,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 5.3262
+            },
+            "tileCount": 1,
+            "transferMs": 2.3411999999999997,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 20.910700000000002
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0043,
+          "pipeline": {
+            "cacheMs": 2.882,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 13.291800000000002,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0043,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 16.421,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 5.3262
+          },
+          "totalMs": 20.1641
+        },
+        {
+          "cache": {
+            "refreshed": false,
+            "reusedLines": 53,
+            "reusedRegions": 0
+          },
+          "detectionMs": 0,
+          "detectionRegions": 19,
+          "execution": {
+            "adaptive": null,
+            "appLatency": null,
+            "batchId": 5,
+            "cache": {
+              "refreshed": false,
+              "reusedLines": 53,
+              "reusedRegions": 0
+            },
+            "cpuTasks": 0,
+            "detectionRegions": 19,
+            "endToEndMs": 25.6892,
+            "failedTasks": 0,
+            "gpuTasks": 1,
+            "ipcOverheadMs": 0.6933000000000007,
+            "mergeMs": 0,
+            "pipeline": {
+              "cacheMs": 2.5763000000000003,
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled",
+              "cropMs": 0,
+              "ctcMs": 0,
+              "dbMs": 0,
+              "decodeMs": 13.7141,
+              "detectorCalls": 0,
+              "detectorPreprocessMs": 0,
+              "mergeMs": 0.0040999999999999995,
+              "outputBytes": 0,
+              "recognitionShapes": [],
+              "recognizerCalls": 0,
+              "recognizerPreprocessMs": 0
+            },
+            "queueWaitMs": 0,
+            "retriedTasks": 0,
+            "speedup": null,
+            "splitMs": 0,
+            "temporal": {
+              "cacheBytes": 24889755,
+              "fullDetections": 0,
+              "path": "cache-only",
+              "reason": "exact-frame",
+              "recOnlyRegions": 0,
+              "reusedLines": 53,
+              "riskFallbacks": 0,
+              "trackerMs": 5.4358
+            },
+            "tileCount": 1,
+            "transferMs": 2.7303,
+            "transport": "shared-memory",
+            "transportFallback": null,
+            "wholeFrameFallback": false,
+            "workerWallMs": 22.034200000000002
+          },
+          "inferenceMs": 0,
+          "parsingMs": 0.0040999999999999995,
+          "pipeline": {
+            "cacheMs": 2.5763000000000003,
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled",
+            "cropMs": 0,
+            "ctcMs": 0,
+            "dbMs": 0,
+            "decodeMs": 13.7141,
+            "detectorCalls": 0,
+            "detectorPreprocessMs": 0,
+            "mergeMs": 0.0040999999999999995,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "recognizerCalls": 0,
+            "recognizerPreprocessMs": 0
+          },
+          "preprocessingMs": 17.4701,
+          "recognitionBatches": 0,
+          "recognitionMs": 0,
+          "recognitionPixels": 0,
+          "temporal": {
+            "cacheBytes": 24889755,
+            "fullDetections": 0,
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "recOnlyRegions": 0,
+            "reusedLines": 53,
+            "riskFallbacks": 0,
+            "trackerMs": 5.4358
+          },
+          "totalMs": 21.3409
+        }
+      ]
+    }
+  ]
+}

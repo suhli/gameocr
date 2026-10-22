@@ -8,11 +8,15 @@ import numpy as np
 import onnx
 from onnx import helper as h,TensorProto as T
 import onnxruntime as ort
-model=onnx.load('.cache/optimized-models/small-compact-ctc/recognizer-ctc.onnx')
-nodes=list(model.graph.node);index=next(i for i,n in enumerate(nodes) if 'gameocr_ctc_ids' in n.output)
+import sys
+model=onnx.load(sys.argv[1] if len(sys.argv)>1 else '.cache/optimized-models/small-compact-ctc/recognizer-ctc.onnx')
+nodes=list(model.graph.node);index=next(i for i,n in enumerate(nodes) if any(o.startswith('gameocr_ctc_') for o in n.output))
 prob=nodes[index].input[0]
-graph=h.make_graph(nodes[index:],'compact-validation',[h.make_tensor_value_info(prob,T.FLOAT,[1,1,4])],list(model.graph.output),[i for i in model.graph.initializer if i.name.startswith('gameocr_ctc_')])
+reverse=next((i for i in model.graph.initializer if i.name=='gameocr_ctc_reverse'),None)
+classes=onnx.numpy_helper.to_array(reverse).size if reverse is not None else 4
+graph=h.make_graph(nodes[index:],'compact-validation',[h.make_tensor_value_info(prob,T.FLOAT,[1,1,classes])],list(model.graph.output),[i for i in model.graph.initializer if i.name.startswith('gameocr_ctc_')])
 test=h.make_model(graph,opset_imports=list(model.opset_import));test.ir_version=model.ir_version;onnx.checker.check_model(test)
+if len(sys.argv)>2:onnx.save(test,sys.argv[2])
 options=ort.SessionOptions();options.intra_op_num_threads=1
 session=ort.InferenceSession(test.SerializeToString(),sess_options=options,providers=['CPUExecutionProvider'])
 checks=[]
@@ -22,7 +26,8 @@ for name,values,valid,expected in [
     ('infinity',[float('inf'),.9,.1,0],False,None),('over-one',[0,1.1,.1,0],False,None),
     ('negative-zero',[0.,-0.,0.,-0.],True,None),
 ]:
-    ids,scores,ok=session.run(None,{prob:np.array(values,dtype=np.float32).reshape(1,1,4)})
+    values=values+[0.]*(classes-len(values))
+    ids,scores,ok=session.run(None,{prob:np.array(values,dtype=np.float32).reshape(1,1,classes)})
     assert (ok.item()==1.)==valid,name
     if expected is not None:assert ids.item()==expected,name
     if name=='negative-zero':assert scores.item()==0. # Rust deliberately falls back

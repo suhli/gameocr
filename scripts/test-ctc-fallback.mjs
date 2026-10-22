@@ -14,7 +14,7 @@ for(const device of ['cpu','cuda']){
   const w=await startNative(engine);try{
    assert.equal(w.ready.type,'ready',JSON.stringify(w.ready));const r=await w.recognize('tests/fixtures/english.png');assert.equal(r.type,'result',JSON.stringify(r));
    if(mode==='off')baseline=r.result.blocks;else assert.equal(compareOutputs(baseline,r.result.blocks).disagreement,false);
-   assert.equal(r.result.metrics.pipeline.compactBatches,0);checks.push({device,mode,status:r.result.metrics.pipeline.compactStatus,originalRecognizerRan:r.result.metrics.pipeline.recognizerCalls>0});
+   assert.equal(r.result.metrics.pipeline.compactBatches,0);assert(r.result.metrics.pipeline.recognizerCalls>0);checks.push({device,mode,status:r.result.metrics.pipeline.compactStatus,originalRecognizerRan:true});
   }finally{await w.close();}
  }
 }

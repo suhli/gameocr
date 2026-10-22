@@ -62,6 +62,7 @@ pub struct Service {
     pub shared: Arc<CaptureShared>,
     pub selected: Mutex<Option<WindowInfo>>,
     pub models: Arc<ModelManager>,
+    pub cuda_runtime: crate::cuda_runtime::RuntimeManager,
     pub model_status: Mutex<ModelStatus>,
     executor: tokio::sync::Mutex<Option<ExecutionStrategyManager>>,
     pub adaptive_profiles: Arc<ProfileRepository>,
@@ -106,6 +107,7 @@ impl Service {
             shared,
             selected: Mutex::new(None),
             models: Arc::new(ModelManager::new()?),
+            cuda_runtime: Default::default(),
             model_status: Mutex::new(ModelStatus {
                 status: "unloaded".into(),
                 id: None,
@@ -255,8 +257,16 @@ impl Service {
             entry.capabilities.supports(settings.mode),
             "模型不支持当前识别模式"
         );
+        let root = resource_root(&self.app)?;
+        if settings.device == Device::Cuda {
+            self.cuda_runtime
+                .ensure(&root, &entry.runtime, self.shutdown.clone(), |progress| {
+                    let _ = self.app.emit("cuda-runtime-progress", progress);
+                })
+                .await?;
+        }
         let loaded = ExecutionStrategyManager::load(
-            &resource_root(&self.app)?,
+            &root,
             settings.engine_config(entry, settings.device)?,
             &settings.parallel,
             settings.selected_mode(),

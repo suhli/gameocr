@@ -1,0 +1,612 @@
+{
+  "executedAt": "2026-10-22T02:14:41.963Z",
+  "scope": "ORT load-time warmup only: detector 1x3x32x32, recognizer 1x3x48x320. Node event duration is not steady-state GPU kernel timing. Raw profiles remain in the supplied local directory.",
+  "profiles": [
+    {
+      "file": "gameocr-ort-20552-1792635241686475300_2026-10-22_10-14-01.json",
+      "sha256": "a97d69d50e0c3d2c0eb39e70403045a4fefcb779333a18435e309621d86ee668",
+      "providers": {
+        "CUDAExecutionProvider": {
+          "events": 190,
+          "nodeDurationUs": 402717
+        }
+      },
+      "operations": {
+        "CUDAExecutionProvider:Conv": {
+          "events": 83,
+          "nodeDurationUs": 300261
+        },
+        "CUDAExecutionProvider:Relu": {
+          "events": 20,
+          "nodeDurationUs": 2051
+        },
+        "CUDAExecutionProvider:MaxPool": {
+          "events": 1,
+          "nodeDurationUs": 13890
+        },
+        "CUDAExecutionProvider:Concat": {
+          "events": 2,
+          "nodeDurationUs": 623
+        },
+        "CUDAExecutionProvider:ReduceMean": {
+          "events": 5,
+          "nodeDurationUs": 1758
+        },
+        "CUDAExecutionProvider:HardSigmoid": {
+          "events": 13,
+          "nodeDurationUs": 523
+        },
+        "CUDAExecutionProvider:Mul": {
+          "events": 13,
+          "nodeDurationUs": 61444
+        },
+        "CUDAExecutionProvider:Gelu": {
+          "events": 13,
+          "nodeDurationUs": 861
+        },
+        "CUDAExecutionProvider:Add": {
+          "events": 23,
+          "nodeDurationUs": 1482
+        },
+        "CUDAExecutionProvider:GlobalAveragePool": {
+          "events": 8,
+          "nodeDurationUs": 448
+        },
+        "CUDAExecutionProvider:Resize": {
+          "events": 6,
+          "nodeDurationUs": 11956
+        },
+        "CUDAExecutionProvider:ConvTranspose": {
+          "events": 2,
+          "nodeDurationUs": 7288
+        },
+        "CUDAExecutionProvider:Sigmoid": {
+          "events": 1,
+          "nodeDurationUs": 132
+        }
+      },
+      "cpuNodes": [],
+      "reductions": []
+    },
+    {
+      "file": "gameocr-ort-20552-1792635241785621600_2026-10-22_10-14-01.json",
+      "sha256": "d0fa0ae1887c7ecbae75d84c92c4085989dd0de0a0ba2746b193b4d4b4d9d053",
+      "providers": {
+        "CUDAExecutionProvider": {
+          "events": 187,
+          "nodeDurationUs": 400068
+        },
+        "CPUExecutionProvider": {
+          "events": 2,
+          "nodeDurationUs": 58
+        }
+      },
+      "operations": {
+        "CUDAExecutionProvider:Conv": {
+          "events": 57,
+          "nodeDurationUs": 368208
+        },
+        "CUDAExecutionProvider:Relu": {
+          "events": 10,
+          "nodeDurationUs": 368
+        },
+        "CUDAExecutionProvider:MaxPool": {
+          "events": 1,
+          "nodeDurationUs": 41
+        },
+        "CUDAExecutionProvider:Concat": {
+          "events": 1,
+          "nodeDurationUs": 912
+        },
+        "CUDAExecutionProvider:ReduceMean": {
+          "events": 6,
+          "nodeDurationUs": 722
+        },
+        "CUDAExecutionProvider:HardSigmoid": {
+          "events": 5,
+          "nodeDurationUs": 247
+        },
+        "CUDAExecutionProvider:Mul": {
+          "events": 7,
+          "nodeDurationUs": 321
+        },
+        "CUDAExecutionProvider:Gelu": {
+          "events": 13,
+          "nodeDurationUs": 688
+        },
+        "CUDAExecutionProvider:Add": {
+          "events": 24,
+          "nodeDurationUs": 1233
+        },
+        "CUDAExecutionProvider:AveragePool": {
+          "events": 1,
+          "nodeDurationUs": 59
+        },
+        "CUDAExecutionProvider:QuickGelu": {
+          "events": 5,
+          "nodeDurationUs": 909
+        },
+        "CUDAExecutionProvider:Shape": {
+          "events": 3,
+          "nodeDurationUs": 82
+        },
+        "CPUExecutionProvider:Slice": {
+          "events": 1,
+          "nodeDurationUs": 37
+        },
+        "CPUExecutionProvider:Concat": {
+          "events": 1,
+          "nodeDurationUs": 21
+        },
+        "CUDAExecutionProvider:Reshape": {
+          "events": 8,
+          "nodeDurationUs": 134
+        },
+        "CUDAExecutionProvider:Sub": {
+          "events": 1,
+          "nodeDurationUs": 127
+        },
+        "CUDAExecutionProvider:Transpose": {
+          "events": 11,
+          "nodeDurationUs": 1897
+        },
+        "CUDAExecutionProvider:SimplifiedLayerNormalization": {
+          "events": 1,
+          "nodeDurationUs": 923
+        },
+        "CUDAExecutionProvider:MatMul": {
+          "events": 12,
+          "nodeDurationUs": 790
+        },
+        "CUDAExecutionProvider:Slice": {
+          "events": 6,
+          "nodeDurationUs": 1211
+        },
+        "CUDAExecutionProvider:Squeeze": {
+          "events": 7,
+          "nodeDurationUs": 92
+        },
+        "CUDAExecutionProvider:Softmax": {
+          "events": 2,
+          "nodeDurationUs": 3096
+        },
+        "CUDAExecutionProvider:LayerNormalization": {
+          "events": 3,
+          "nodeDurationUs": 159
+        },
+        "CUDAExecutionProvider:SkipLayerNormalization": {
+          "events": 1,
+          "nodeDurationUs": 2783
+        },
+        "CUDAExecutionProvider:FusedMatMul": {
+          "events": 1,
+          "nodeDurationUs": 278
+        },
+        "CUDAExecutionProvider:BiasSoftmax": {
+          "events": 1,
+          "nodeDurationUs": 14788
+        }
+      },
+      "cpuNodes": [
+        {
+          "name": "Slice.2_kernel_time",
+          "op": "Slice",
+          "durationUs": 37
+        },
+        {
+          "name": "Concat.2_kernel_time",
+          "op": "Concat",
+          "durationUs": 21
+        }
+      ],
+      "reductions": []
+    },
+    {
+      "file": "gameocr-ort-54112-1792635261984002100_2026-10-22_10-14-21.json",
+      "sha256": "bf755eab72468ac70c6e4a128aa2ff6eaea6691ac957965577617ff9fba22b67",
+      "providers": {
+        "CUDAExecutionProvider": {
+          "events": 190,
+          "nodeDurationUs": 422196
+        }
+      },
+      "operations": {
+        "CUDAExecutionProvider:Conv": {
+          "events": 83,
+          "nodeDurationUs": 307187
+        },
+        "CUDAExecutionProvider:Relu": {
+          "events": 20,
+          "nodeDurationUs": 2575
+        },
+        "CUDAExecutionProvider:MaxPool": {
+          "events": 1,
+          "nodeDurationUs": 18549
+        },
+        "CUDAExecutionProvider:Concat": {
+          "events": 2,
+          "nodeDurationUs": 594
+        },
+        "CUDAExecutionProvider:ReduceMean": {
+          "events": 5,
+          "nodeDurationUs": 1487
+        },
+        "CUDAExecutionProvider:HardSigmoid": {
+          "events": 13,
+          "nodeDurationUs": 475
+        },
+        "CUDAExecutionProvider:Mul": {
+          "events": 13,
+          "nodeDurationUs": 73496
+        },
+        "CUDAExecutionProvider:Gelu": {
+          "events": 13,
+          "nodeDurationUs": 730
+        },
+        "CUDAExecutionProvider:Add": {
+          "events": 23,
+          "nodeDurationUs": 941
+        },
+        "CUDAExecutionProvider:GlobalAveragePool": {
+          "events": 8,
+          "nodeDurationUs": 433
+        },
+        "CUDAExecutionProvider:Resize": {
+          "events": 6,
+          "nodeDurationUs": 9400
+        },
+        "CUDAExecutionProvider:ConvTranspose": {
+          "events": 2,
+          "nodeDurationUs": 6271
+        },
+        "CUDAExecutionProvider:Sigmoid": {
+          "events": 1,
+          "nodeDurationUs": 58
+        }
+      },
+      "cpuNodes": [],
+      "reductions": []
+    },
+    {
+      "file": "gameocr-ort-54112-1792635262082158900_2026-10-22_10-14-22.json",
+      "sha256": "60562ea6b278a0b94ac25f9521dc4a349251dd74a065c23201d11afd1e392217",
+      "providers": {
+        "CUDAExecutionProvider": {
+          "events": 187,
+          "nodeDurationUs": 276763
+        },
+        "CPUExecutionProvider": {
+          "events": 2,
+          "nodeDurationUs": 53
+        }
+      },
+      "operations": {
+        "CUDAExecutionProvider:Conv": {
+          "events": 57,
+          "nodeDurationUs": 247397
+        },
+        "CUDAExecutionProvider:Relu": {
+          "events": 10,
+          "nodeDurationUs": 631
+        },
+        "CUDAExecutionProvider:MaxPool": {
+          "events": 1,
+          "nodeDurationUs": 57
+        },
+        "CUDAExecutionProvider:Concat": {
+          "events": 1,
+          "nodeDurationUs": 544
+        },
+        "CUDAExecutionProvider:ReduceMean": {
+          "events": 6,
+          "nodeDurationUs": 559
+        },
+        "CUDAExecutionProvider:HardSigmoid": {
+          "events": 5,
+          "nodeDurationUs": 283
+        },
+        "CUDAExecutionProvider:Mul": {
+          "events": 7,
+          "nodeDurationUs": 541
+        },
+        "CUDAExecutionProvider:Gelu": {
+          "events": 13,
+          "nodeDurationUs": 398
+        },
+        "CUDAExecutionProvider:Add": {
+          "events": 24,
+          "nodeDurationUs": 736
+        },
+        "CUDAExecutionProvider:AveragePool": {
+          "events": 1,
+          "nodeDurationUs": 45
+        },
+        "CUDAExecutionProvider:QuickGelu": {
+          "events": 5,
+          "nodeDurationUs": 803
+        },
+        "CUDAExecutionProvider:Shape": {
+          "events": 3,
+          "nodeDurationUs": 68
+        },
+        "CPUExecutionProvider:Slice": {
+          "events": 1,
+          "nodeDurationUs": 34
+        },
+        "CPUExecutionProvider:Concat": {
+          "events": 1,
+          "nodeDurationUs": 19
+        },
+        "CUDAExecutionProvider:Reshape": {
+          "events": 8,
+          "nodeDurationUs": 101
+        },
+        "CUDAExecutionProvider:Sub": {
+          "events": 1,
+          "nodeDurationUs": 92
+        },
+        "CUDAExecutionProvider:Transpose": {
+          "events": 11,
+          "nodeDurationUs": 1247
+        },
+        "CUDAExecutionProvider:SimplifiedLayerNormalization": {
+          "events": 1,
+          "nodeDurationUs": 775
+        },
+        "CUDAExecutionProvider:MatMul": {
+          "events": 12,
+          "nodeDurationUs": 571
+        },
+        "CUDAExecutionProvider:Slice": {
+          "events": 6,
+          "nodeDurationUs": 881
+        },
+        "CUDAExecutionProvider:Squeeze": {
+          "events": 7,
+          "nodeDurationUs": 68
+        },
+        "CUDAExecutionProvider:Softmax": {
+          "events": 2,
+          "nodeDurationUs": 3282
+        },
+        "CUDAExecutionProvider:LayerNormalization": {
+          "events": 3,
+          "nodeDurationUs": 129
+        },
+        "CUDAExecutionProvider:SkipLayerNormalization": {
+          "events": 1,
+          "nodeDurationUs": 2757
+        },
+        "CUDAExecutionProvider:FusedMatMul": {
+          "events": 1,
+          "nodeDurationUs": 133
+        },
+        "CUDAExecutionProvider:BiasSoftmax": {
+          "events": 1,
+          "nodeDurationUs": 14665
+        }
+      },
+      "cpuNodes": [
+        {
+          "name": "Slice.2_kernel_time",
+          "op": "Slice",
+          "durationUs": 34
+        },
+        {
+          "name": "Concat.2_kernel_time",
+          "op": "Concat",
+          "durationUs": 19
+        }
+      ],
+      "reductions": []
+    },
+    {
+      "file": "gameocr-ort-54112-1792635262895705800_2026-10-22_10-14-22.json",
+      "sha256": "ed1f65c67bae29ff1cc640080745082d3cd9de9adc332f7144af0f3a904aa026",
+      "providers": {
+        "CUDAExecutionProvider": {
+          "events": 192,
+          "nodeDurationUs": 231780
+        },
+        "CPUExecutionProvider": {
+          "events": 2,
+          "nodeDurationUs": 35
+        }
+      },
+      "operations": {
+        "CUDAExecutionProvider:Conv": {
+          "events": 57,
+          "nodeDurationUs": 209254
+        },
+        "CUDAExecutionProvider:Relu": {
+          "events": 10,
+          "nodeDurationUs": 279
+        },
+        "CUDAExecutionProvider:MaxPool": {
+          "events": 1,
+          "nodeDurationUs": 35
+        },
+        "CUDAExecutionProvider:Concat": {
+          "events": 1,
+          "nodeDurationUs": 426
+        },
+        "CUDAExecutionProvider:ReduceMean": {
+          "events": 6,
+          "nodeDurationUs": 399
+        },
+        "CUDAExecutionProvider:HardSigmoid": {
+          "events": 5,
+          "nodeDurationUs": 141
+        },
+        "CUDAExecutionProvider:Mul": {
+          "events": 7,
+          "nodeDurationUs": 242
+        },
+        "CUDAExecutionProvider:Gelu": {
+          "events": 13,
+          "nodeDurationUs": 373
+        },
+        "CUDAExecutionProvider:Add": {
+          "events": 24,
+          "nodeDurationUs": 912
+        },
+        "CUDAExecutionProvider:AveragePool": {
+          "events": 1,
+          "nodeDurationUs": 48
+        },
+        "CUDAExecutionProvider:QuickGelu": {
+          "events": 5,
+          "nodeDurationUs": 191
+        },
+        "CUDAExecutionProvider:Shape": {
+          "events": 3,
+          "nodeDurationUs": 75
+        },
+        "CPUExecutionProvider:Slice": {
+          "events": 1,
+          "nodeDurationUs": 20
+        },
+        "CPUExecutionProvider:Concat": {
+          "events": 1,
+          "nodeDurationUs": 15
+        },
+        "CUDAExecutionProvider:Reshape": {
+          "events": 8,
+          "nodeDurationUs": 139
+        },
+        "CUDAExecutionProvider:Sub": {
+          "events": 2,
+          "nodeDurationUs": 133
+        },
+        "CUDAExecutionProvider:Transpose": {
+          "events": 11,
+          "nodeDurationUs": 551
+        },
+        "CUDAExecutionProvider:SimplifiedLayerNormalization": {
+          "events": 1,
+          "nodeDurationUs": 50
+        },
+        "CUDAExecutionProvider:MatMul": {
+          "events": 12,
+          "nodeDurationUs": 705
+        },
+        "CUDAExecutionProvider:Split": {
+          "events": 2,
+          "nodeDurationUs": 1140
+        },
+        "CUDAExecutionProvider:Squeeze": {
+          "events": 7,
+          "nodeDurationUs": 145
+        },
+        "CUDAExecutionProvider:Softmax": {
+          "events": 2,
+          "nodeDurationUs": 103
+        },
+        "CUDAExecutionProvider:LayerNormalization": {
+          "events": 3,
+          "nodeDurationUs": 123
+        },
+        "CUDAExecutionProvider:SkipLayerNormalization": {
+          "events": 1,
+          "nodeDurationUs": 53
+        },
+        "CUDAExecutionProvider:FusedMatMul": {
+          "events": 1,
+          "nodeDurationUs": 67
+        },
+        "CUDAExecutionProvider:BiasSoftmax": {
+          "events": 1,
+          "nodeDurationUs": 78
+        },
+        "CUDAExecutionProvider:LessOrEqual": {
+          "events": 1,
+          "nodeDurationUs": 122
+        },
+        "CUDAExecutionProvider:GreaterOrEqual": {
+          "events": 1,
+          "nodeDurationUs": 123
+        },
+        "CUDAExecutionProvider:And": {
+          "events": 1,
+          "nodeDurationUs": 112
+        },
+        "CUDAExecutionProvider:Cast": {
+          "events": 1,
+          "nodeDurationUs": 6958
+        },
+        "CUDAExecutionProvider:ReduceMin": {
+          "events": 1,
+          "nodeDurationUs": 4566
+        },
+        "CUDAExecutionProvider:ReduceMax": {
+          "events": 1,
+          "nodeDurationUs": 119
+        },
+        "CUDAExecutionProvider:Gather": {
+          "events": 1,
+          "nodeDurationUs": 3893
+        },
+        "CUDAExecutionProvider:ArgMax": {
+          "events": 1,
+          "nodeDurationUs": 225
+        }
+      },
+      "cpuNodes": [
+        {
+          "name": "Slice.2_kernel_time",
+          "op": "Slice",
+          "durationUs": 20
+        },
+        {
+          "name": "Concat.2_kernel_time",
+          "op": "Concat",
+          "durationUs": 15
+        }
+      ],
+      "reductions": [
+        {
+          "name": "gameocr_ctc_upper_kernel_time",
+          "op": "LessOrEqual",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 122
+        },
+        {
+          "name": "gameocr_ctc_lower_kernel_time",
+          "op": "GreaterOrEqual",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 123
+        },
+        {
+          "name": "gameocr_ctc_ok_kernel_time",
+          "op": "And",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 112
+        },
+        {
+          "name": "gameocr_ctc_float_kernel_time",
+          "op": "Cast",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 6958
+        },
+        {
+          "name": "gameocr_ctc_valid_kernel_time",
+          "op": "ReduceMin",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 4566
+        },
+        {
+          "name": "gameocr_ctc_scores_kernel_time",
+          "op": "ReduceMax",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 119
+        },
+        {
+          "name": "gameocr_ctc_reverse_id_kernel_time",
+          "op": "ArgMax",
+          "provider": "CUDAExecutionProvider",
+          "durationUs": 225
+        }
+      ]
+    }
+  ]
+}

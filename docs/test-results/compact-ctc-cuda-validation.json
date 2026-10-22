@@ -1,0 +1,15 @@
+{
+  "argmaxCuda": true,
+  "checks": [
+    "tie-last",
+    "blank",
+    "nonmax-nan",
+    "nonmax-negative",
+    "infinity",
+    "over-one",
+    "signed-zero",
+    "last-class"
+  ],
+  "profile": ".cache/ctc-graph-cuda_2026-10-22_10-18-34.json",
+  "scope": "Synthetic boundary tensors through the actual exported compact subgraph on CUDA; not OCR inference measurements"
+}

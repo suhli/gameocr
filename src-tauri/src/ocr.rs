@@ -42,10 +42,20 @@ impl Worker {
             .is_some_and(|n| n == "cuda")
         {
             if let Some(root) = path.parent().and_then(Path::parent).and_then(Path::parent) {
-                let mut paths = vec![
-                    path.parent().unwrap().to_path_buf(),
-                    root.join("cuda-runtime"),
-                ];
+                let resource = root.parent().context("CUDA 工作程序目录错误")?.to_owned();
+                let runtime = path
+                    .parent()
+                    .and_then(Path::parent)
+                    .and_then(Path::file_name)
+                    .context("CUDA Runtime 目录错误")?
+                    .to_string_lossy()
+                    .into_owned();
+                let libraries = tokio::task::spawn_blocking(move || {
+                    crate::cuda_runtime::paths(&resource, &runtime)
+                })
+                .await??;
+                let mut paths = vec![path.parent().unwrap().to_path_buf()];
+                paths.extend(libraries);
                 paths.extend(std::env::split_paths(
                     &std::env::var_os("PATH").unwrap_or_default(),
                 ));

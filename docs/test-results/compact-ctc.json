@@ -1,13 +1,37 @@
 {
-  "executedAt": "2026-10-21T06:55:01.855Z",
+  "executedAt": "2026-10-22T02:14:01.290Z",
   "scope": "CUDA Small; independent experimental graph, unchanged full graph available for fallback; native decode included",
   "results": [
     {
       "compact": false,
       "image": "tests/fixtures/english.png",
-      "loadMs": 988.4446,
-      "firstMs": 424.9341,
-      "p50Ms": 389.98119999999994,
+      "model": "ppocrv6-small",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        }
+      ],
+      "loadMs": 1387.0062,
+      "firstMs": 469.505,
+      "p50Ms": 462.66819999999996,
       "comparison": {
         "firstBlocks": 3,
         "secondBlocks": 3,
@@ -17,26 +41,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:05.202Z",
+        "processes": {
+          "Id": 20552,
+          "ProcessName": "onnx-worker",
+          "CPU": 3.296875,
+          "WorkingSet64": 739844096,
+          "PrivateMemorySize64": 1240231936,
+          "PeakWorkingSet64": 739844096
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 44, 2446, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 6.3842,
-          "inferenceMs": 412.2563,
-          "parsingMs": 6.2548,
-          "totalMs": 424.9341,
-          "detectionMs": 215.7053,
-          "recognitionMs": 196.55100000000002,
+          "preprocessingMs": 5.0001999999999995,
+          "inferenceMs": 458.0621,
+          "parsingMs": 6.4057,
+          "totalMs": 469.505,
+          "detectionMs": 232.607,
+          "recognitionMs": 225.4551,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 1.5341,
-            "detectorPreprocessMs": 2.3745,
-            "dbMs": 1.6425999999999998,
-            "cropMs": 1.1508,
-            "recognizerPreprocessMs": 1.3088999999999997,
-            "ctcMs": 4.608700000000001,
-            "mergeMs": 0.0035,
-            "cacheMs": 0.0048,
+            "decodeMs": 1.1941,
+            "detectorPreprocessMs": 1.7644,
+            "dbMs": 1.4488999999999999,
+            "cropMs": 0.9672000000000001,
+            "recognizerPreprocessMs": 1.0636999999999999,
+            "ctcMs": 4.9549,
+            "mergeMs": 0.0019,
+            "cacheMs": 0.0135,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 10776960,
@@ -54,24 +90,24 @@
           }
         },
         {
-          "preprocessingMs": 4.116,
-          "inferenceMs": 382.866,
-          "parsingMs": 8.9634,
-          "totalMs": 395.9747,
-          "detectionMs": 203.1741,
-          "recognitionMs": 179.69189999999998,
+          "preprocessingMs": 4.5049,
+          "inferenceMs": 437.86350000000004,
+          "parsingMs": 7.038,
+          "totalMs": 449.43670000000003,
+          "detectionMs": 210.1416,
+          "recognitionMs": 227.7219,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 0.6308,
-            "detectorPreprocessMs": 1.4278,
-            "dbMs": 2.1914000000000002,
-            "cropMs": 1.029,
-            "recognizerPreprocessMs": 1.0246,
-            "ctcMs": 6.7716,
-            "mergeMs": 0.00039999999999999996,
-            "cacheMs": 0.005699999999999999,
+            "decodeMs": 0.7472,
+            "detectorPreprocessMs": 1.2939,
+            "dbMs": 1.7440000000000002,
+            "cropMs": 1.0876000000000001,
+            "recognizerPreprocessMs": 1.3723,
+            "ctcMs": 5.2938,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0053,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 10776960,
@@ -89,24 +125,24 @@
           }
         },
         {
-          "preprocessingMs": 3.6508000000000003,
-          "inferenceMs": 348.3008,
-          "parsingMs": 5.7778,
-          "totalMs": 357.74289999999996,
-          "detectionMs": 177.8573,
-          "recognitionMs": 170.4435,
+          "preprocessingMs": 3.875,
+          "inferenceMs": 499.5867999999999,
+          "parsingMs": 6.617100000000001,
+          "totalMs": 510.10699999999997,
+          "detectionMs": 303.7911,
+          "recognitionMs": 195.79569999999998,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 0.5723,
-            "detectorPreprocessMs": 1.1734,
-            "dbMs": 1.2743,
-            "cropMs": 0.887,
-            "recognizerPreprocessMs": 1.0148,
-            "ctcMs": 4.503,
-            "mergeMs": 0.0005,
-            "cacheMs": 0.0044,
+            "decodeMs": 0.6719,
+            "detectorPreprocessMs": 1.2478,
+            "dbMs": 1.4258000000000002,
+            "cropMs": 0.996,
+            "recognizerPreprocessMs": 0.9553,
+            "ctcMs": 5.191000000000001,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0054,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 10776960,
@@ -124,24 +160,24 @@
           }
         },
         {
-          "preprocessingMs": 3.8617999999999997,
-          "inferenceMs": 380.3352,
-          "parsingMs": 5.7692000000000005,
-          "totalMs": 389.98119999999994,
-          "detectionMs": 196.9538,
-          "recognitionMs": 183.3814,
+          "preprocessingMs": 3.8872999999999998,
+          "inferenceMs": 452.15689999999995,
+          "parsingMs": 6.6007,
+          "totalMs": 462.66819999999996,
+          "detectionMs": 251.45659999999998,
+          "recognitionMs": 200.7003,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 0.8245,
-            "detectorPreprocessMs": 1.1939,
-            "dbMs": 1.1885999999999999,
-            "cropMs": 0.8829,
-            "recognizerPreprocessMs": 0.9571999999999998,
-            "ctcMs": 4.580500000000001,
-            "mergeMs": 0.00009999999999999999,
-            "cacheMs": 0.0044,
+            "decodeMs": 0.769,
+            "detectorPreprocessMs": 1.2502,
+            "dbMs": 1.248,
+            "cropMs": 0.9025000000000001,
+            "recognizerPreprocessMs": 0.9619,
+            "ctcMs": 5.3525,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0043,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 10776960,
@@ -163,9 +199,33 @@
     {
       "compact": false,
       "image": "tests/fixtures/mixed-cjk.png",
-      "loadMs": 988.4446,
-      "firstMs": 471.66380000000004,
-      "p50Ms": 460.6724,
+      "model": "ppocrv6-small",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        }
+      ],
+      "loadMs": 1387.0062,
+      "firstMs": 584.014,
+      "p50Ms": 553.6388,
       "comparison": {
         "firstBlocks": 4,
         "secondBlocks": 4,
@@ -175,26 +235,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:08.018Z",
+        "processes": {
+          "Id": 20552,
+          "ProcessName": "onnx-worker",
+          "CPU": 5.4375,
+          "WorkingSet64": 776359936,
+          "PrivateMemorySize64": 1489620992,
+          "PeakWorkingSet64": 787165184
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 47, 2638, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 16.2942,
-          "inferenceMs": 441.7061,
-          "parsingMs": 13.5154,
-          "totalMs": 471.66380000000004,
-          "detectionMs": 212.5896,
-          "recognitionMs": 229.1165,
+          "preprocessingMs": 21.399,
+          "inferenceMs": 547.491,
+          "parsingMs": 14.973999999999998,
+          "totalMs": 584.014,
+          "detectionMs": 296.8345,
+          "recognitionMs": 250.6565,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 123840,
           "pipeline": {
-            "decodeMs": 1.2829,
-            "detectorPreprocessMs": 12.3322,
-            "dbMs": 2.1637,
-            "cropMs": 0.8220999999999999,
-            "recognizerPreprocessMs": 1.8517000000000001,
-            "ctcMs": 11.3513,
-            "mergeMs": 0.00039999999999999996,
-            "cacheMs": 0.0068000000000000005,
+            "decodeMs": 1.3542,
+            "detectorPreprocessMs": 15.678600000000001,
+            "dbMs": 3.0149999999999997,
+            "cropMs": 1.2621,
+            "recognizerPreprocessMs": 3.094899999999999,
+            "ctcMs": 11.957699999999999,
+            "mergeMs": 0.0013,
+            "cacheMs": 0.0055,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 24248160,
@@ -212,24 +284,24 @@
           }
         },
         {
-          "preprocessingMs": 15.0732,
-          "inferenceMs": 428.028,
-          "parsingMs": 14.8702,
-          "totalMs": 458.1059,
-          "detectionMs": 225.5764,
-          "recognitionMs": 202.4516,
+          "preprocessingMs": 15.7519,
+          "inferenceMs": 447.99519999999995,
+          "parsingMs": 14.6347,
+          "totalMs": 478.4586,
+          "detectionMs": 219.1916,
+          "recognitionMs": 228.8036,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 123840,
           "pipeline": {
-            "decodeMs": 1.2448,
-            "detectorPreprocessMs": 11.4588,
-            "dbMs": 2.2030000000000003,
-            "cropMs": 0.8282999999999999,
-            "recognizerPreprocessMs": 1.537,
-            "ctcMs": 12.667,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0067,
+            "decodeMs": 1.2446,
+            "detectorPreprocessMs": 12.1374,
+            "dbMs": 2.1764,
+            "cropMs": 0.8729,
+            "recognizerPreprocessMs": 1.4926999999999997,
+            "ctcMs": 12.4582,
+            "mergeMs": 0.00009999999999999999,
+            "cacheMs": 0.0062,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 24248160,
@@ -247,59 +319,59 @@
           }
         },
         {
-          "preprocessingMs": 18.9957,
-          "inferenceMs": 443.8111,
-          "parsingMs": 14.7187,
-          "totalMs": 477.7421,
-          "detectionMs": 220.50400000000002,
-          "recognitionMs": 223.30710000000002,
+          "preprocessingMs": 18.1249,
+          "inferenceMs": 520.4149,
+          "parsingMs": 14.987,
+          "totalMs": 553.6388,
+          "detectionMs": 278.1742,
+          "recognitionMs": 242.2407,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 123840,
           "pipeline": {
-            "decodeMs": 1.6672,
-            "detectorPreprocessMs": 14.4353,
-            "dbMs": 2.7597,
-            "cropMs": 0.9573,
-            "recognizerPreprocessMs": 1.9299,
-            "ctcMs": 11.9588,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0067,
-            "detectorCalls": 1,
-            "recognizerCalls": 1,
-            "outputBytes": 24248160,
-            "recognitionShapes": [
-              [
-                4,
-                3,
-                48,
-                645
-              ]
-            ],
-            "compactBatches": 0,
-            "compactFallbacks": 0,
-            "compactStatus": "disabled"
-          }
-        },
-        {
-          "preprocessingMs": 17.04,
-          "inferenceMs": 430.5054,
-          "parsingMs": 12.9439,
-          "totalMs": 460.6724,
-          "detectionMs": 220.67929999999998,
-          "recognitionMs": 209.8261,
-          "detectionRegions": 1,
-          "recognitionBatches": 1,
-          "recognitionPixels": 123840,
-          "pipeline": {
-            "decodeMs": 1.3101,
-            "detectorPreprocessMs": 12.8994,
-            "dbMs": 2.1078,
-            "cropMs": 0.9410000000000001,
-            "recognizerPreprocessMs": 1.8746000000000003,
-            "ctcMs": 10.835799999999999,
+            "decodeMs": 1.6988999999999999,
+            "detectorPreprocessMs": 12.7036,
+            "dbMs": 2.9688000000000003,
+            "cropMs": 1.2847,
+            "recognizerPreprocessMs": 2.4312,
+            "ctcMs": 12.0179,
             "mergeMs": 0.0003,
-            "cacheMs": 0.0063,
+            "cacheMs": 0.0054,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 24248160,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 21.463900000000002,
+          "inferenceMs": 540.0250000000001,
+          "parsingMs": 16.7519,
+          "totalMs": 578.3317999999999,
+          "detectionMs": 277.2311,
+          "recognitionMs": 262.7939,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.6203,
+            "detectorPreprocessMs": 17.3668,
+            "dbMs": 2.6565,
+            "cropMs": 0.8554999999999999,
+            "recognizerPreprocessMs": 1.6163,
+            "ctcMs": 14.095099999999999,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0072,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 24248160,
@@ -321,9 +393,33 @@
     {
       "compact": false,
       "image": "tests/fixtures/blank.png",
-      "loadMs": 988.4446,
-      "firstMs": 235.3102,
-      "p50Ms": 218.5512,
+      "model": "ppocrv6-small",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        }
+      ],
+      "loadMs": 1387.0062,
+      "firstMs": 474.1083,
+      "p50Ms": 324.5405,
       "comparison": {
         "firstBlocks": 0,
         "secondBlocks": 0,
@@ -333,26 +429,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:10.018Z",
+        "processes": {
+          "Id": 20552,
+          "ProcessName": "onnx-worker",
+          "CPU": 6.671875,
+          "WorkingSet64": 776359936,
+          "PrivateMemorySize64": 1489620992,
+          "PeakWorkingSet64": 787165184
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 41, 2637, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 16.8604,
-          "inferenceMs": 216.50539999999998,
-          "parsingMs": 1.8373,
-          "totalMs": 235.3102,
-          "detectionMs": 216.50539999999998,
+          "preprocessingMs": 18.735899999999997,
+          "inferenceMs": 452.2835,
+          "parsingMs": 2.9987000000000004,
+          "totalMs": 474.1083,
+          "detectionMs": 452.2835,
           "recognitionMs": 0,
           "detectionRegions": 1,
           "recognitionBatches": 0,
           "recognitionPixels": 0,
           "pipeline": {
-            "decodeMs": 1.3686,
-            "detectorPreprocessMs": 15.4886,
-            "dbMs": 1.8371,
+            "decodeMs": 1.4503000000000001,
+            "detectorPreprocessMs": 17.278399999999998,
+            "dbMs": 2.9984,
             "cropMs": 0,
             "recognizerPreprocessMs": 0,
             "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.00039999999999999996,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0005,
             "detectorCalls": 1,
             "recognizerCalls": 0,
             "outputBytes": 0,
@@ -363,24 +471,24 @@
           }
         },
         {
-          "preprocessingMs": 12.8655,
-          "inferenceMs": 203.7363,
-          "parsingMs": 1.8368,
-          "totalMs": 218.5512,
-          "detectionMs": 203.7363,
+          "preprocessingMs": 23.211199999999998,
+          "inferenceMs": 372.15930000000003,
+          "parsingMs": 4.0593,
+          "totalMs": 399.6372,
+          "detectionMs": 372.15930000000003,
           "recognitionMs": 0,
           "detectionRegions": 1,
           "recognitionBatches": 0,
           "recognitionPixels": 0,
           "pipeline": {
-            "decodeMs": 1.2796,
-            "detectorPreprocessMs": 11.5839,
-            "dbMs": 1.8367,
+            "decodeMs": 1.8902,
+            "detectorPreprocessMs": 21.3173,
+            "dbMs": 4.058800000000001,
             "cropMs": 0,
             "recognizerPreprocessMs": 0,
             "ctcMs": 0,
-            "mergeMs": 0.00009999999999999999,
-            "cacheMs": 0.00039999999999999996,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0012,
             "detectorCalls": 1,
             "recognizerCalls": 0,
             "outputBytes": 0,
@@ -391,19 +499,47 @@
           }
         },
         {
-          "preprocessingMs": 13.607099999999999,
-          "inferenceMs": 204.829,
-          "parsingMs": 2.2471,
-          "totalMs": 220.7957,
-          "detectionMs": 204.829,
+          "preprocessingMs": 44.1003,
+          "inferenceMs": 277.549,
+          "parsingMs": 2.6863,
+          "totalMs": 324.5405,
+          "detectionMs": 277.549,
           "recognitionMs": 0,
           "detectionRegions": 1,
           "recognitionBatches": 0,
           "recognitionPixels": 0,
           "pipeline": {
-            "decodeMs": 1.4074,
-            "detectorPreprocessMs": 12.1974,
-            "dbMs": 2.2469,
+            "decodeMs": 2.1397,
+            "detectorPreprocessMs": 41.9542,
+            "dbMs": 2.6858,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0007999999999999999,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 13.545500000000002,
+          "inferenceMs": 276.7213,
+          "parsingMs": 1.8247,
+          "totalMs": 292.1973,
+          "detectionMs": 276.7213,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.2405000000000002,
+            "detectorPreprocessMs": 12.3015,
+            "dbMs": 1.8245,
             "cropMs": 0,
             "recognizerPreprocessMs": 0,
             "ctcMs": 0,
@@ -417,43 +553,39 @@
             "compactFallbacks": 0,
             "compactStatus": "disabled"
           }
-        },
-        {
-          "preprocessingMs": 11.8009,
-          "inferenceMs": 201.8498,
-          "parsingMs": 2.0494000000000003,
-          "totalMs": 215.8328,
-          "detectionMs": 201.8498,
-          "recognitionMs": 0,
-          "detectionRegions": 1,
-          "recognitionBatches": 0,
-          "recognitionPixels": 0,
-          "pipeline": {
-            "decodeMs": 1.2371,
-            "detectorPreprocessMs": 10.5617,
-            "dbMs": 2.0492000000000004,
-            "cropMs": 0,
-            "recognizerPreprocessMs": 0,
-            "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0005,
-            "detectorCalls": 1,
-            "recognizerCalls": 0,
-            "outputBytes": 0,
-            "recognitionShapes": [],
-            "compactBatches": 0,
-            "compactFallbacks": 0,
-            "compactStatus": "disabled"
-          }
         }
       ]
     },
     {
       "compact": false,
       "image": "tests/fixtures/small-text/dense-2560.png",
-      "loadMs": 988.4446,
-      "firstMs": 2256.4565000000002,
-      "p50Ms": 2197.9902,
+      "model": "ppocrv6-small",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        }
+      ],
+      "loadMs": 1387.0062,
+      "firstMs": 2878.9902,
+      "p50Ms": 2658.5036999999998,
       "comparison": {
         "firstBlocks": 53,
         "secondBlocks": 53,
@@ -463,192 +595,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:21.392Z",
+        "processes": {
+          "Id": 20552,
+          "ProcessName": "onnx-worker",
+          "CPU": 17.109375,
+          "WorkingSet64": 832126976,
+          "PrivateMemorySize64": 1705340928,
+          "PeakWorkingSet64": 881725440
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 42, 2756, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 74.9761,
-          "inferenceMs": 2088.0762,
-          "parsingMs": 93.0519,
-          "totalMs": 2256.4565000000002,
-          "detectionMs": 234.2823,
-          "recognitionMs": 1853.7939000000001,
+          "preprocessingMs": 82.475,
+          "inferenceMs": 2685.1984,
+          "parsingMs": 110.98760000000001,
+          "totalMs": 2878.9902,
+          "detectionMs": 278.5418,
+          "recognitionMs": 2406.6566000000003,
           "detectionRegions": 1,
           "recognitionBatches": 9,
           "recognitionPixels": 1016304,
           "pipeline": {
-            "decodeMs": 15.896,
-            "detectorPreprocessMs": 38.72,
-            "dbMs": 3.6868,
-            "cropMs": 5.9652,
-            "recognizerPreprocessMs": 14.3584,
-            "ctcMs": 89.3643,
-            "mergeMs": 0.0007999999999999999,
-            "cacheMs": 0.033,
-            "detectorCalls": 1,
-            "recognizerCalls": 9,
-            "outputBytes": 197802120,
-            "recognitionShapes": [
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                369
-              ],
-              [
-                6,
-                3,
-                48,
-                419
-              ],
-              [
-                5,
-                3,
-                48,
-                985
-              ]
-            ],
-            "compactBatches": 0,
-            "compactFallbacks": 0,
-            "compactStatus": "disabled"
-          }
-        },
-        {
-          "preprocessingMs": 74.1523,
-          "inferenceMs": 2032.2067,
-          "parsingMs": 91.30560000000003,
-          "totalMs": 2197.9902,
-          "detectionMs": 224.3897,
-          "recognitionMs": 1807.817,
-          "detectionRegions": 1,
-          "recognitionBatches": 9,
-          "recognitionPixels": 1016304,
-          "pipeline": {
-            "decodeMs": 17.4028,
-            "detectorPreprocessMs": 36.0173,
-            "dbMs": 3.8703000000000003,
-            "cropMs": 6.174899999999998,
-            "recognizerPreprocessMs": 14.538100000000004,
-            "ctcMs": 87.43480000000002,
-            "mergeMs": 0.0005,
-            "cacheMs": 0.0418,
-            "detectorCalls": 1,
-            "recognizerCalls": 9,
-            "outputBytes": 197802120,
-            "recognitionShapes": [
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                369
-              ],
-              [
-                6,
-                3,
-                48,
-                419
-              ],
-              [
-                5,
-                3,
-                48,
-                985
-              ]
-            ],
-            "compactBatches": 0,
-            "compactFallbacks": 0,
-            "compactStatus": "disabled"
-          }
-        },
-        {
-          "preprocessingMs": 74.7621,
-          "inferenceMs": 2044.5279,
-          "parsingMs": 92.2359,
-          "totalMs": 2211.8191,
-          "detectionMs": 237.8982,
-          "recognitionMs": 1806.6297,
-          "detectionRegions": 1,
-          "recognitionBatches": 9,
-          "recognitionPixels": 1016304,
-          "pipeline": {
-            "decodeMs": 15.6817,
-            "detectorPreprocessMs": 36.598,
-            "dbMs": 2.9539,
-            "cropMs": 6.706600000000001,
-            "recognizerPreprocessMs": 15.7593,
-            "ctcMs": 89.2817,
+            "decodeMs": 19.7266,
+            "detectorPreprocessMs": 38.1339,
+            "dbMs": 2.9364999999999997,
+            "cropMs": 7.130199999999999,
+            "recognizerPreprocessMs": 17.460700000000003,
+            "ctcMs": 108.05080000000001,
             "mergeMs": 0.0003,
-            "cacheMs": 0.044199999999999996,
+            "cacheMs": 0.0317,
             "detectorCalls": 1,
             "recognizerCalls": 9,
             "outputBytes": 197802120,
@@ -714,24 +692,190 @@
           }
         },
         {
-          "preprocessingMs": 69.21270000000001,
-          "inferenceMs": 2016.7141,
-          "parsingMs": 91.2516,
-          "totalMs": 2177.4702,
-          "detectionMs": 220.80700000000002,
-          "recognitionMs": 1795.9071,
+          "preprocessingMs": 80.23330000000001,
+          "inferenceMs": 2488.2893999999997,
+          "parsingMs": 102.4637,
+          "totalMs": 2671.3496999999998,
+          "detectionMs": 236.2699,
+          "recognitionMs": 2252.0195,
           "detectionRegions": 1,
           "recognitionBatches": 9,
           "recognitionPixels": 1016304,
           "pipeline": {
-            "decodeMs": 15.5942,
-            "detectorPreprocessMs": 33.7888,
-            "dbMs": 3.1233,
-            "cropMs": 6.001200000000001,
-            "recognizerPreprocessMs": 13.8142,
-            "ctcMs": 88.1278,
-            "mergeMs": 0.0005,
-            "cacheMs": 0.0329,
+            "decodeMs": 17.5499,
+            "detectorPreprocessMs": 38.9259,
+            "dbMs": 4.8599000000000006,
+            "cropMs": 6.794900000000001,
+            "recognizerPreprocessMs": 16.8734,
+            "ctcMs": 97.60340000000001,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.0318,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 86.4653,
+          "inferenceMs": 2463.5485000000003,
+          "parsingMs": 103.5781,
+          "totalMs": 2653.9947,
+          "detectionMs": 247.6624,
+          "recognitionMs": 2215.8861,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 17.9471,
+            "detectorPreprocessMs": 47.2182,
+            "dbMs": 3.4974,
+            "cropMs": 6.377999999999999,
+            "recognizerPreprocessMs": 14.898899999999998,
+            "ctcMs": 100.0801,
+            "mergeMs": 0.0006,
+            "cacheMs": 0.0356,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 197802120,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          }
+        },
+        {
+          "preprocessingMs": 76.7324,
+          "inferenceMs": 2476.7241,
+          "parsingMs": 104.72109999999999,
+          "totalMs": 2658.5036999999998,
+          "detectionMs": 229.7887,
+          "recognitionMs": 2246.9354,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 18.999599999999997,
+            "detectorPreprocessMs": 36.3487,
+            "dbMs": 3.1472,
+            "cropMs": 6.388099999999999,
+            "recognizerPreprocessMs": 14.978200000000001,
+            "ctcMs": 101.5736,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.034,
             "detectorCalls": 1,
             "recognizerCalls": 9,
             "outputBytes": 197802120,
@@ -801,9 +945,39 @@
     {
       "compact": true,
       "image": "tests/fixtures/english.png",
-      "loadMs": 1433.4842,
-      "firstMs": 439.15070000000003,
-      "p50Ms": 367.933,
+      "model": "ppocrv6-small-compact-ctc-experimental",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        },
+        {
+          "role": "recognizer-ctc",
+          "path": "recognizer-ctc.onnx",
+          "size": 21310368,
+          "sha256": "8a7093d28aa265f78f1ca454f303ed3206ba337773951587f0c882900ee8d47d"
+        }
+      ],
+      "loadMs": 1542.2211,
+      "firstMs": 448.7698,
+      "p50Ms": 489.39939999999996,
       "comparison": {
         "firstBlocks": 3,
         "secondBlocks": 3,
@@ -813,26 +987,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:25.755Z",
+        "processes": {
+          "Id": 54112,
+          "ProcessName": "onnx-worker",
+          "CPU": 3.65625,
+          "WorkingSet64": 764575744,
+          "PrivateMemorySize64": 1557237760,
+          "PeakWorkingSet64": 764575744
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 32, 2711, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 4.7738,
-          "inferenceMs": 433.0234,
-          "parsingMs": 1.3336000000000001,
-          "totalMs": 439.15070000000003,
-          "detectionMs": 223.1644,
-          "recognitionMs": 209.85899999999998,
+          "preprocessingMs": 5.1062,
+          "inferenceMs": 442.0195,
+          "parsingMs": 1.6178,
+          "totalMs": 448.7698,
+          "detectionMs": 216.0836,
+          "recognitionMs": 225.9359,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 1.0412,
-            "detectorPreprocessMs": 1.6291,
-            "dbMs": 1.332,
-            "cropMs": 1.0171000000000001,
-            "recognizerPreprocessMs": 1.0776,
-            "ctcMs": 0,
-            "mergeMs": 0.0015999999999999999,
-            "cacheMs": 0.0043,
+            "decodeMs": 0.9872,
+            "detectorPreprocessMs": 1.9361000000000002,
+            "dbMs": 1.6072,
+            "cropMs": 1.0247,
+            "recognizerPreprocessMs": 1.1481000000000001,
+            "ctcMs": 0.0085,
+            "mergeMs": 0.0021,
+            "cacheMs": 0.0089,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 2304,
@@ -850,24 +1036,24 @@
           }
         },
         {
-          "preprocessingMs": 3.6997,
-          "inferenceMs": 383.79359999999997,
-          "parsingMs": 1.3072,
-          "totalMs": 388.8098,
-          "detectionMs": 184.8604,
-          "recognitionMs": 198.9332,
+          "preprocessingMs": 3.7478,
+          "inferenceMs": 485.58119999999997,
+          "parsingMs": 1.4222,
+          "totalMs": 490.7692,
+          "detectionMs": 208.0253,
+          "recognitionMs": 277.5559,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 0.6526000000000001,
-            "detectorPreprocessMs": 1.2376,
-            "dbMs": 1.3069,
-            "cropMs": 0.8878999999999999,
-            "recognizerPreprocessMs": 0.9182000000000001,
-            "ctcMs": 0,
+            "decodeMs": 0.6572,
+            "detectorPreprocessMs": 1.1974,
+            "dbMs": 1.4135,
+            "cropMs": 0.9178,
+            "recognizerPreprocessMs": 0.9713,
+            "ctcMs": 0.0084,
             "mergeMs": 0.0003,
-            "cacheMs": 0.0036,
+            "cacheMs": 0.0047,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 2304,
@@ -885,24 +1071,24 @@
           }
         },
         {
-          "preprocessingMs": 3.7465,
-          "inferenceMs": 362.9836,
-          "parsingMs": 1.1937,
-          "totalMs": 367.933,
-          "detectionMs": 184.1182,
-          "recognitionMs": 178.8654,
+          "preprocessingMs": 4.126,
+          "inferenceMs": 483.3561,
+          "parsingMs": 1.8937,
+          "totalMs": 489.39939999999996,
+          "detectionMs": 211.2423,
+          "recognitionMs": 272.1138,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 0.7305,
-            "detectorPreprocessMs": 1.1638,
-            "dbMs": 1.1935,
-            "cropMs": 0.9065000000000001,
-            "recognizerPreprocessMs": 0.9431,
-            "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0038,
+            "decodeMs": 0.8584,
+            "detectorPreprocessMs": 1.2784,
+            "dbMs": 1.8846,
+            "cropMs": 0.9692,
+            "recognizerPreprocessMs": 1.0164,
+            "ctcMs": 0.0088,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0049,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 2304,
@@ -920,24 +1106,24 @@
           }
         },
         {
-          "preprocessingMs": 3.8844,
-          "inferenceMs": 360.8194,
-          "parsingMs": 1.1981,
-          "totalMs": 365.9121,
-          "detectionMs": 178.7742,
-          "recognitionMs": 182.0452,
+          "preprocessingMs": 4.1035,
+          "inferenceMs": 471.6181,
+          "parsingMs": 1.3218999999999999,
+          "totalMs": 477.0618,
+          "detectionMs": 220.5471,
+          "recognitionMs": 251.071,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 54864,
           "pipeline": {
-            "decodeMs": 0.6409,
-            "detectorPreprocessMs": 1.1402999999999999,
-            "dbMs": 1.1979,
-            "cropMs": 1.0715,
-            "recognizerPreprocessMs": 1.0282,
-            "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0031999999999999997,
+            "decodeMs": 0.9188,
+            "detectorPreprocessMs": 1.2712,
+            "dbMs": 1.3154,
+            "cropMs": 0.9169999999999999,
+            "recognizerPreprocessMs": 0.9914,
+            "ctcMs": 0.0062,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.0037,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 2304,
@@ -959,9 +1145,39 @@
     {
       "compact": true,
       "image": "tests/fixtures/mixed-cjk.png",
-      "loadMs": 1433.4842,
-      "firstMs": 461.897,
-      "p50Ms": 458.6691,
+      "model": "ppocrv6-small-compact-ctc-experimental",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        },
+        {
+          "role": "recognizer-ctc",
+          "path": "recognizer-ctc.onnx",
+          "size": 21310368,
+          "sha256": "8a7093d28aa265f78f1ca454f303ed3206ba337773951587f0c882900ee8d47d"
+        }
+      ],
+      "loadMs": 1542.2211,
+      "firstMs": 553.8933999999999,
+      "p50Ms": 500.6851,
       "comparison": {
         "firstBlocks": 4,
         "secondBlocks": 4,
@@ -971,26 +1187,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:28.428Z",
+        "processes": {
+          "Id": 54112,
+          "ProcessName": "onnx-worker",
+          "CPU": 5.6875,
+          "WorkingSet64": 798896128,
+          "PrivateMemorySize64": 2534752256,
+          "PeakWorkingSet64": 809701376
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 49, 3503, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 19.2085,
-          "inferenceMs": 440.6784,
-          "parsingMs": 1.9509,
-          "totalMs": 461.897,
-          "detectionMs": 223.709,
-          "recognitionMs": 216.9694,
+          "preprocessingMs": 18.4688,
+          "inferenceMs": 533.2362,
+          "parsingMs": 2.1231999999999998,
+          "totalMs": 553.8933999999999,
+          "detectionMs": 270.5387,
+          "recognitionMs": 262.6975,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 123840,
           "pipeline": {
-            "decodeMs": 1.2226,
-            "detectorPreprocessMs": 15.4246,
-            "dbMs": 1.9507,
-            "cropMs": 0.8115,
-            "recognizerPreprocessMs": 1.7456999999999998,
-            "ctcMs": 0,
+            "decodeMs": 1.734,
+            "detectorPreprocessMs": 14.0896,
+            "dbMs": 2.1111,
+            "cropMs": 0.842,
+            "recognizerPreprocessMs": 1.7976999999999999,
+            "ctcMs": 0.011899999999999999,
             "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0044,
+            "cacheMs": 0.0037,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 5184,
@@ -1008,24 +1236,24 @@
           }
         },
         {
-          "preprocessingMs": 17.5418,
-          "inferenceMs": 429.429,
-          "parsingMs": 2.2903,
-          "totalMs": 449.4599,
-          "detectionMs": 210.8541,
-          "recognitionMs": 218.57489999999999,
+          "preprocessingMs": 16.328100000000003,
+          "inferenceMs": 567.3945,
+          "parsingMs": 2.4266,
+          "totalMs": 586.2766,
+          "detectionMs": 241.60909999999998,
+          "recognitionMs": 325.7854,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 123840,
           "pipeline": {
-            "decodeMs": 1.3028,
-            "detectorPreprocessMs": 12.525599999999999,
-            "dbMs": 2.2897,
-            "cropMs": 1.2169999999999999,
-            "recognizerPreprocessMs": 2.4914000000000005,
-            "ctcMs": 0,
-            "mergeMs": 0.0006,
-            "cacheMs": 0.0937,
+            "decodeMs": 1.3006,
+            "detectorPreprocessMs": 11.8666,
+            "dbMs": 2.4112,
+            "cropMs": 1.1521,
+            "recognizerPreprocessMs": 1.9906000000000001,
+            "ctcMs": 0.0149,
+            "mergeMs": 0.0005,
+            "cacheMs": 0.0048,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 5184,
@@ -1043,59 +1271,59 @@
           }
         },
         {
-          "preprocessingMs": 19.141099999999998,
-          "inferenceMs": 435.69919999999996,
-          "parsingMs": 3.737,
-          "totalMs": 458.6691,
-          "detectionMs": 206.09279999999998,
-          "recognitionMs": 229.60639999999998,
+          "preprocessingMs": 20.659399999999998,
+          "inferenceMs": 477.90189999999996,
+          "parsingMs": 2.064,
+          "totalMs": 500.6851,
+          "detectionMs": 233.1333,
+          "recognitionMs": 244.7686,
           "detectionRegions": 1,
           "recognitionBatches": 1,
           "recognitionPixels": 123840,
           "pipeline": {
-            "decodeMs": 1.4831,
-            "detectorPreprocessMs": 15.0945,
-            "dbMs": 3.7366,
-            "cropMs": 0.916,
-            "recognizerPreprocessMs": 1.6437,
-            "ctcMs": 0,
+            "decodeMs": 1.5966,
+            "detectorPreprocessMs": 16.0421,
+            "dbMs": 2.0528,
+            "cropMs": 1.0534,
+            "recognizerPreprocessMs": 1.9609,
+            "ctcMs": 0.011,
+            "mergeMs": 0.00019999999999999998,
+            "cacheMs": 0.0043,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 5184,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                645
+              ]
+            ],
+            "compactBatches": 1,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 16.3186,
+          "inferenceMs": 450.7045,
+          "parsingMs": 2.0837,
+          "totalMs": 469.1769,
+          "detectionMs": 230.1247,
+          "recognitionMs": 220.5798,
+          "detectionRegions": 1,
+          "recognitionBatches": 1,
+          "recognitionPixels": 123840,
+          "pipeline": {
+            "decodeMs": 1.2573,
+            "detectorPreprocessMs": 12.6594,
+            "dbMs": 2.0718,
+            "cropMs": 0.8574,
+            "recognizerPreprocessMs": 1.5376999999999996,
+            "ctcMs": 0.0115,
             "mergeMs": 0.00039999999999999996,
-            "cacheMs": 0.0055,
-            "detectorCalls": 1,
-            "recognizerCalls": 1,
-            "outputBytes": 5184,
-            "recognitionShapes": [
-              [
-                4,
-                3,
-                48,
-                645
-              ]
-            ],
-            "compactBatches": 1,
-            "compactFallbacks": 0,
-            "compactStatus": "experimental"
-          }
-        },
-        {
-          "preprocessingMs": 14.2556,
-          "inferenceMs": 449.3754,
-          "parsingMs": 2.4530000000000003,
-          "totalMs": 466.14840000000004,
-          "detectionMs": 226.8745,
-          "recognitionMs": 222.5009,
-          "detectionRegions": 1,
-          "recognitionBatches": 1,
-          "recognitionPixels": 123840,
-          "pipeline": {
-            "decodeMs": 1.3228,
-            "detectorPreprocessMs": 10.357899999999999,
-            "dbMs": 2.4528000000000003,
-            "cropMs": 0.8756999999999999,
-            "recognizerPreprocessMs": 1.6952999999999998,
-            "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0042,
+            "cacheMs": 0.0034000000000000002,
             "detectorCalls": 1,
             "recognizerCalls": 1,
             "outputBytes": 5184,
@@ -1117,9 +1345,39 @@
     {
       "compact": true,
       "image": "tests/fixtures/blank.png",
-      "loadMs": 1433.4842,
-      "firstMs": 243.2424,
-      "p50Ms": 224.5094,
+      "model": "ppocrv6-small-compact-ctc-experimental",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        },
+        {
+          "role": "recognizer-ctc",
+          "path": "recognizer-ctc.onnx",
+          "size": 21310368,
+          "sha256": "8a7093d28aa265f78f1ca454f303ed3206ba337773951587f0c882900ee8d47d"
+        }
+      ],
+      "loadMs": 1542.2211,
+      "firstMs": 244.112,
+      "p50Ms": 275.1991,
       "comparison": {
         "firstBlocks": 0,
         "secondBlocks": 0,
@@ -1129,26 +1387,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:30.007Z",
+        "processes": {
+          "Id": 54112,
+          "ProcessName": "onnx-worker",
+          "CPU": 6.703125,
+          "WorkingSet64": 798896128,
+          "PrivateMemorySize64": 2534752256,
+          "PeakWorkingSet64": 809701376
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 49, 3506, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 17.2866,
-          "inferenceMs": 223.682,
-          "parsingMs": 2.1008,
-          "totalMs": 243.2424,
-          "detectionMs": 223.682,
+          "preprocessingMs": 16.7374,
+          "inferenceMs": 225.4675,
+          "parsingMs": 1.8067,
+          "totalMs": 244.112,
+          "detectionMs": 225.4675,
           "recognitionMs": 0,
           "detectionRegions": 1,
           "recognitionBatches": 0,
           "recognitionPixels": 0,
           "pipeline": {
-            "decodeMs": 1.3605,
-            "detectorPreprocessMs": 15.923300000000001,
-            "dbMs": 2.1002,
+            "decodeMs": 1.2294999999999998,
+            "detectorPreprocessMs": 15.5046,
+            "dbMs": 1.8063,
             "cropMs": 0,
             "recognizerPreprocessMs": 0,
             "ctcMs": 0,
-            "mergeMs": 0.0006,
-            "cacheMs": 0.0005,
+            "mergeMs": 0.00039999999999999996,
+            "cacheMs": 0.001,
             "detectorCalls": 1,
             "recognizerCalls": 0,
             "outputBytes": 0,
@@ -1159,23 +1429,51 @@
           }
         },
         {
-          "preprocessingMs": 12.564400000000001,
-          "inferenceMs": 204.36409999999998,
-          "parsingMs": 2.0154,
-          "totalMs": 219.0686,
-          "detectionMs": 204.36409999999998,
+          "preprocessingMs": 14.4269,
+          "inferenceMs": 245.2502,
+          "parsingMs": 2.4121,
+          "totalMs": 262.1936,
+          "detectionMs": 245.2502,
           "recognitionMs": 0,
           "detectionRegions": 1,
           "recognitionBatches": 0,
           "recognitionPixels": 0,
           "pipeline": {
-            "decodeMs": 1.3243,
-            "detectorPreprocessMs": 11.2382,
-            "dbMs": 2.0152,
+            "decodeMs": 1.4024,
+            "detectorPreprocessMs": 13.020199999999999,
+            "dbMs": 2.4114,
             "cropMs": 0,
             "recognizerPreprocessMs": 0,
             "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
+            "mergeMs": 0.0007,
+            "cacheMs": 0.0009,
+            "detectorCalls": 1,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 21.488599999999998,
+          "inferenceMs": 251.8323,
+          "parsingMs": 1.8232,
+          "totalMs": 275.1991,
+          "detectionMs": 251.8323,
+          "recognitionMs": 0,
+          "detectionRegions": 1,
+          "recognitionBatches": 0,
+          "recognitionPixels": 0,
+          "pipeline": {
+            "decodeMs": 1.5984,
+            "detectorPreprocessMs": 19.8856,
+            "dbMs": 1.8226,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.0006,
             "cacheMs": 0.00039999999999999996,
             "detectorCalls": 1,
             "recognizerCalls": 0,
@@ -1187,52 +1485,24 @@
           }
         },
         {
-          "preprocessingMs": 13.0442,
-          "inferenceMs": 213.1146,
-          "parsingMs": 1.7684,
-          "totalMs": 228.0384,
-          "detectionMs": 213.1146,
+          "preprocessingMs": 15.6734,
+          "inferenceMs": 269.8079,
+          "parsingMs": 3.0295,
+          "totalMs": 288.62100000000004,
+          "detectionMs": 269.8079,
           "recognitionMs": 0,
           "detectionRegions": 1,
           "recognitionBatches": 0,
           "recognitionPixels": 0,
           "pipeline": {
-            "decodeMs": 1.6793,
-            "detectorPreprocessMs": 11.3613,
-            "dbMs": 1.7682,
+            "decodeMs": 1.1508,
+            "detectorPreprocessMs": 14.519,
+            "dbMs": 3.0288,
             "cropMs": 0,
             "recognizerPreprocessMs": 0,
             "ctcMs": 0,
-            "mergeMs": 0.00019999999999999998,
-            "cacheMs": 0.0005,
-            "detectorCalls": 1,
-            "recognizerCalls": 0,
-            "outputBytes": 0,
-            "recognitionShapes": [],
-            "compactBatches": 0,
-            "compactFallbacks": 0,
-            "compactStatus": "experimental"
-          }
-        },
-        {
-          "preprocessingMs": 12.334000000000001,
-          "inferenceMs": 209.01500000000001,
-          "parsingMs": 2.9797,
-          "totalMs": 224.5094,
-          "detectionMs": 209.01500000000001,
-          "recognitionMs": 0,
-          "detectionRegions": 1,
-          "recognitionBatches": 0,
-          "recognitionPixels": 0,
-          "pipeline": {
-            "decodeMs": 1.294,
-            "detectorPreprocessMs": 11.0374,
-            "dbMs": 2.9793,
-            "cropMs": 0,
-            "recognizerPreprocessMs": 0,
-            "ctcMs": 0,
-            "mergeMs": 0.00039999999999999996,
-            "cacheMs": 0.0005,
+            "mergeMs": 0.0007,
+            "cacheMs": 0.0006,
             "detectorCalls": 1,
             "recognizerCalls": 0,
             "outputBytes": 0,
@@ -1247,9 +1517,39 @@
     {
       "compact": true,
       "image": "tests/fixtures/small-text/dense-2560.png",
-      "loadMs": 1433.4842,
-      "firstMs": 2334.3626,
-      "p50Ms": 2222.4973999999997,
+      "model": "ppocrv6-small-compact-ctc-experimental",
+      "modelFiles": [
+        {
+          "role": "detector",
+          "path": "ppocrv6-small-det.onnx",
+          "size": 9880512,
+          "sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_det_onnx/resolve/28fe5895c24fd108c19eb3e8479f4ab385fbfc62/inference.onnx"
+        },
+        {
+          "role": "recognizer",
+          "path": "ppocrv6-small-rec.onnx",
+          "size": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+          "url": "https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx/resolve/b8f84f0b80c529de40b4fbb3544b84fa7233a513/inference.onnx"
+        },
+        {
+          "role": "dictionary",
+          "path": "ppocrv6_dict.txt",
+          "size": 74947,
+          "sha256": "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d",
+          "url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/b03f46425e8ff4442b268ce449e3eef758146cd4/ppocr/utils/dict/ppocrv6_dict.txt"
+        },
+        {
+          "role": "recognizer-ctc",
+          "path": "recognizer-ctc.onnx",
+          "size": 21310368,
+          "sha256": "8a7093d28aa265f78f1ca454f303ed3206ba337773951587f0c882900ee8d47d"
+        }
+      ],
+      "loadMs": 1542.2211,
+      "firstMs": 3206.4231,
+      "p50Ms": 2617.4860999999996,
       "comparison": {
         "firstBlocks": 53,
         "secondBlocks": 53,
@@ -1259,26 +1559,38 @@
         "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
       },
       "maxConfidenceDelta": 0,
+      "resources": {
+        "at": "2026-10-22T02:14:41.603Z",
+        "processes": {
+          "Id": 54112,
+          "ProcessName": "onnx-worker",
+          "CPU": 17.28125,
+          "WorkingSet64": 848355328,
+          "PrivateMemorySize64": 3651874816,
+          "PeakWorkingSet64": 898023424
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 32, 3728, 4096"
+      },
       "runs": [
         {
-          "preprocessingMs": 84.27779999999998,
-          "inferenceMs": 2246.7541,
-          "parsingMs": 3.1117,
-          "totalMs": 2334.3626,
-          "detectionMs": 253.69170000000003,
-          "recognitionMs": 1993.0624000000003,
+          "preprocessingMs": 80.50210000000001,
+          "inferenceMs": 3122.6285000000003,
+          "parsingMs": 3.0305,
+          "totalMs": 3206.4231,
+          "detectionMs": 249.0248,
+          "recognitionMs": 2873.6037,
           "detectionRegions": 1,
           "recognitionBatches": 9,
           "recognitionPixels": 1016304,
           "pipeline": {
-            "decodeMs": 17.281399999999998,
-            "detectorPreprocessMs": 41.443099999999994,
-            "dbMs": 3.1113,
-            "cropMs": 7.1494,
-            "recognizerPreprocessMs": 18.3838,
-            "ctcMs": 0,
+            "decodeMs": 16.2712,
+            "detectorPreprocessMs": 38.7503,
+            "dbMs": 2.9407,
+            "cropMs": 7.008200000000002,
+            "recognizerPreprocessMs": 18.448999999999998,
+            "ctcMs": 0.0894,
             "mergeMs": 0.00039999999999999996,
-            "cacheMs": 0.0348,
+            "cacheMs": 0.0356,
             "detectorCalls": 1,
             "recognizerCalls": 9,
             "outputBytes": 42288,
@@ -1344,24 +1656,107 @@
           }
         },
         {
-          "preprocessingMs": 88.337,
-          "inferenceMs": 2159.3599,
-          "parsingMs": 2.9198000000000004,
-          "totalMs": 2250.8472,
-          "detectionMs": 220.61339999999998,
-          "recognitionMs": 1938.7465,
+          "preprocessingMs": 111.6954,
+          "inferenceMs": 2604.9196,
+          "parsingMs": 4.3499,
+          "totalMs": 2721.3192,
+          "detectionMs": 311.71569999999997,
+          "recognitionMs": 2293.2039000000004,
           "detectionRegions": 1,
           "recognitionBatches": 9,
           "recognitionPixels": 1016304,
           "pipeline": {
-            "decodeMs": 17.3535,
-            "detectorPreprocessMs": 43.8418,
-            "dbMs": 2.9193000000000002,
-            "cropMs": 7.6175,
-            "recognizerPreprocessMs": 19.5029,
-            "ctcMs": 0,
+            "decodeMs": 16.565,
+            "detectorPreprocessMs": 62.5407,
+            "dbMs": 4.2389,
+            "cropMs": 10.608499999999998,
+            "recognizerPreprocessMs": 21.956900000000005,
+            "ctcMs": 0.11009999999999999,
+            "mergeMs": 0.0009,
+            "cacheMs": 0.0373,
+            "detectorCalls": 1,
+            "recognizerCalls": 9,
+            "outputBytes": 42288,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                320
+              ],
+              [
+                6,
+                3,
+                48,
+                369
+              ],
+              [
+                6,
+                3,
+                48,
+                419
+              ],
+              [
+                5,
+                3,
+                48,
+                985
+              ]
+            ],
+            "compactBatches": 9,
+            "compactFallbacks": 0,
+            "compactStatus": "experimental"
+          }
+        },
+        {
+          "preprocessingMs": 84.12509999999999,
+          "inferenceMs": 2528.4255,
+          "parsingMs": 4.5954999999999995,
+          "totalMs": 2617.4860999999996,
+          "detectionMs": 299.7408,
+          "recognitionMs": 2228.6847,
+          "detectionRegions": 1,
+          "recognitionBatches": 9,
+          "recognitionPixels": 1016304,
+          "pipeline": {
+            "decodeMs": 16.3287,
+            "detectorPreprocessMs": 43.6391,
+            "dbMs": 4.5172,
+            "cropMs": 6.9342,
+            "recognizerPreprocessMs": 17.201,
+            "ctcMs": 0.0778,
             "mergeMs": 0.0005,
-            "cacheMs": 0.037200000000000004,
+            "cacheMs": 0.037,
             "detectorCalls": 1,
             "recognizerCalls": 9,
             "outputBytes": 42288,
@@ -1427,107 +1822,24 @@
           }
         },
         {
-          "preprocessingMs": 78.75460000000001,
-          "inferenceMs": 2140.3842,
-          "parsingMs": 3.1495,
-          "totalMs": 2222.4973999999997,
-          "detectionMs": 222.633,
-          "recognitionMs": 1917.7512,
+          "preprocessingMs": 87.0935,
+          "inferenceMs": 2363.1228,
+          "parsingMs": 4.3290999999999995,
+          "totalMs": 2454.8766,
+          "detectionMs": 285.1245,
+          "recognitionMs": 2077.9983,
           "detectionRegions": 1,
           "recognitionBatches": 9,
           "recognitionPixels": 1016304,
           "pipeline": {
-            "decodeMs": 16.1706,
-            "detectorPreprocessMs": 36.13,
-            "dbMs": 3.1492,
-            "cropMs": 7.5703000000000005,
-            "recognizerPreprocessMs": 18.8689,
-            "ctcMs": 0,
-            "mergeMs": 0.0003,
-            "cacheMs": 0.0351,
-            "detectorCalls": 1,
-            "recognizerCalls": 9,
-            "outputBytes": 42288,
-            "recognitionShapes": [
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                320
-              ],
-              [
-                6,
-                3,
-                48,
-                369
-              ],
-              [
-                6,
-                3,
-                48,
-                419
-              ],
-              [
-                5,
-                3,
-                48,
-                985
-              ]
-            ],
-            "compactBatches": 9,
-            "compactFallbacks": 0,
-            "compactStatus": "experimental"
-          }
-        },
-        {
-          "preprocessingMs": 80.74510000000001,
-          "inferenceMs": 2117.9034,
-          "parsingMs": 3.0543,
-          "totalMs": 2201.9002,
-          "detectionMs": 222.6472,
-          "recognitionMs": 1895.2562,
-          "detectionRegions": 1,
-          "recognitionBatches": 9,
-          "recognitionPixels": 1016304,
-          "pipeline": {
-            "decodeMs": 16.176,
-            "detectorPreprocessMs": 38.9665,
-            "dbMs": 3.0539,
-            "cropMs": 7.444500000000001,
-            "recognizerPreprocessMs": 18.1434,
-            "ctcMs": 0,
-            "mergeMs": 0.00039999999999999996,
-            "cacheMs": 0.035800000000000005,
+            "decodeMs": 16.7283,
+            "detectorPreprocessMs": 46.813300000000005,
+            "dbMs": 4.2512,
+            "cropMs": 7.070799999999998,
+            "recognizerPreprocessMs": 16.459799999999998,
+            "ctcMs": 0.0767,
+            "mergeMs": 0.0012,
+            "cacheMs": 0.0366,
             "detectorCalls": 1,
             "recognizerCalls": 9,
             "outputBytes": 42288,
@@ -1594,5 +1906,6 @@
         }
       ]
     }
-  ]
+  ],
+  "workerSha256": "1fd057df7f30656f34ae859845fa687e98b1c1c3371342eda32a68f8ce5c79e7"
 }

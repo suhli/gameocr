@@ -102,7 +102,10 @@ try{
     await assert.rejects(invoke('update_settings',{settings:{...settings,onnx:{...settings.onnx,incremental:false}}}));
     await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
     await invoke('recognize_once');const first=(await invoke('get_history'))[0];assert(first.result.blocks.some(b=>b.text.replace(/\s/g,'').includes('Health:100/100')));assert(first.result.metrics.detectionRegions<=9);
+    if(process.env.GAMEOCR_TEMPORAL_DEBUG_FRAMES==='1')await invoke('save_screenshot',{path:path.join(out,'incremental-source-0.png'),recognized:true});
     await delay(200);await invoke('recognize_once');const reused=(await invoke('get_history'))[0];
+    fs.writeFileSync(path.join(out,'incremental-wgc-metrics.json'),JSON.stringify([first.result,reused.result],null,2));
+    if(process.env.GAMEOCR_TEMPORAL_DEBUG_FRAMES==='1')await invoke('save_screenshot',{path:path.join(out,'incremental-source-1.png'),recognized:true});
     assert(reused.result.frameId>first.result.frameId);assert(reused.result.metrics.cache.reusedLines>0);assert.equal(reused.result.metrics.inferenceMs,0);
     assert.deepEqual(reused.result.blocks,first.result.blocks);
     checks.push('Real WGC optimized PPM path: one Worker, bounded refinement, new frame identity, identical repeated-frame output with inference skipped');
@@ -117,19 +120,24 @@ try{
   if(process.env.GAMEOCR_TEST_TEMPORAL==='1'){
     const original=structuredClone(settings);
     settings={...settings,executionMode:'manual',enableParallelInference:true,changeDetection:true,changeThreshold:1};
-    await invoke('update_settings',{settings});await page.getByRole('button',{name:'打开设置'}).click();
+    await invoke('update_settings',{settings});await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();
+    await page.locator('select').filter({has:page.getByRole('option',{name:'PP-OCRv6 small · 已下载',exact:true})}).selectOption('ppocrv6-small');
+    await page.getByRole('button',{name:'打开设置'}).click();
     assert.equal(await page.getByLabel('时序识别（实验性）',{exact:true}).isChecked(),false);
     assert.equal(await page.getByLabel('共享内存传输（实验性，仅单 Worker）',{exact:true}).isChecked(),false);
     await page.getByLabel('时序识别（实验性）',{exact:true}).check();
     await page.getByLabel('共享内存传输（实验性，仅单 Worker）',{exact:true}).check();
     await page.getByLabel('完整刷新间隔 (ms)',{exact:true}).fill('10000');
     await page.screenshot({path:path.join(out,'temporal-settings.png')});await page.getByRole('button',{name:'保存设置',exact:true}).click();await until(async()=>!(await page.locator('dialog').count()));
-    settings=await invoke('get_settings');assert(settings.onnx.temporal.enabled&&settings.onnx.experimentalSharedMemory);
+    settings=await invoke('get_settings');assert.equal(settings.executionMode,'manual');assert(settings.onnx.temporal.enabled&&settings.onnx.experimentalSharedMemory);
     await invoke('load_model',{id:'ppocrv6-small'});assert.equal(children().length,1);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
     const measured=[];
-    for(let i=0;i<4;i++){await delay(150);await invoke('recognize_once');measured.push((await invoke('get_history'))[0].result);}
+    for(let i=0;i<4;i++){
+      await delay(150);await invoke('recognize_once');measured.push((await invoke('get_history'))[0].result);
+      fs.writeFileSync(path.join(out,'temporal-wgc-metrics.json'),JSON.stringify({settings,measured},null,2));
+      if(process.env.GAMEOCR_TEMPORAL_DEBUG_FRAMES==='1')await invoke('save_screenshot',{path:path.join(out,`temporal-source-${i}.png`),recognized:true});
+    }
     const last=measured.at(-1);assert(last.metrics.execution.appLatency.previewReused);assert.equal(last.metrics.temporal.path,'cache-only');assert.equal(last.metrics.execution.transport,'shared-memory');assert(last.metrics.execution.appLatency.captureReadbackMs>=0);assert(last.metrics.execution.appLatency.captureToPublishMs>last.metrics.totalMs);
-    fs.writeFileSync(path.join(out,'temporal-wgc-metrics.json'),JSON.stringify({settings,measured},null,2));
     await until(async()=>await page.getByLabel('时序识别统计').count());await page.screenshot({path:path.join(out,'temporal-wgc.png')});
     checks.push('Temporal settings persist; Manual uses one worker; real WGC shared-memory cache-only path reports capture-to-publish latency');
     await invoke('pause_capture');await invoke('resume_capture');await delay(200);await invoke('recognize_once');assert.equal((await invoke('get_history'))[0].result.metrics.temporal.path,'full');
@@ -138,6 +146,18 @@ try{
     const pid=children()[0];execFileSync('taskkill.exe',['/PID',String(pid),'/F'],{windowsHide:true,stdio:'ignore'});await assert.rejects(invoke('recognize_once'));await invoke('stop_capture');await invoke('unload_model');
     await invoke('load_model',{id:'ppocrv6-small'});await invoke('start_capture');await until(()=>invoke('get_capture_preview'));await invoke('recognize_once');assert.equal((await invoke('get_history'))[0].result.metrics.temporal.path,'full');await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);
     checks.push('Temporal pause/resume, Adaptive single-worker restriction, process crash and model reload invalidate tracking and shared-memory lifetime');settings=original;
+  }
+  if(process.env.GAMEOCR_TEST_COMPACT_DIR){
+    const original=structuredClone(settings),directory=path.resolve(process.env.GAMEOCR_TEST_COMPACT_DIR);
+    const manifest=JSON.parse(fs.readFileSync(path.join(directory,'ppocrv6-small-compact-ctc-experimental.json'),'utf8'));
+    settings={...settings,modelDir:directory,device:'cuda',executionMode:'single',enableParallelInference:false,onnx:{...settings.onnx,incremental:false,preserveSmallText:false,selectiveDetection:false,widthBuckets:false,experimentalSharedMemory:false,experimentalGpuCtc:true,temporal:{...settings.onnx.temporal,enabled:false}}};
+    await invoke('update_settings',{settings});await page.reload();await page.getByRole('heading',{name:/窗口列表/}).waitFor();
+    assert((await invoke('list_models')).some(m=>m.id===manifest.id&&m.imported&&m.installed));
+    await page.locator('select').filter({has:page.getByRole('option',{name:manifest.name+' · 已下载',exact:true})}).selectOption(manifest.id);
+    await invoke('load_model',{id:manifest.id});await invoke('start_capture');await until(()=>invoke('get_capture_preview'));await invoke('recognize_once');
+    const result=(await invoke('get_history'))[0].result;assert.equal(result.modelId,manifest.id);assert(result.metrics.pipeline.compactBatches>0);assert(result.blocks.some(b=>b.text.includes('Health')));
+    await invoke('stop_capture');await invoke('unload_model');assert.equal(children().length,0);settings=original;
+    checks.push('Generated experimental model is discoverable and selectable; real CUDA WGC OCR uses compact graph and unloads cleanly');
   }
   await invoke('update_settings',{settings:{...settings,executionMode:'manual',enableParallelInference:true}});await invoke('load_model',{id:'ppocrv6-small'});const owned=children();assert.equal(owned.length,2);await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
   const pendingExit=invoke('recognize_once').catch(()=>{});await delay(30);await invoke('plugin:window|close',{label:'main'}).catch(()=>{});await until(()=>app.exitCode!==null);await pendingExit;assert.equal(app.exitCode,0);invoke=null;

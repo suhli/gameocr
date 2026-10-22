@@ -1,0 +1,103 @@
+{
+  "sources": [
+    "https://developer.download.nvidia.com/compute/cuda/redist/redistrib_12.8.1.json",
+    "https://developer.download.nvidia.com/compute/cudnn/redist/redistrib_9.8.0.json"
+  ],
+  "packages": [
+    {
+      "id": "cuda_cudart",
+      "name": "CUDA Runtime",
+      "version": "12.8.90",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/windows-x86_64/cuda_cudart-windows-x86_64-12.8.90-archive.zip",
+      "sha256": "4a39058fd8519444a81cfc7ae055d136f48d1a31ffa41ae255b35b2edd61e13b",
+      "size": 3037735,
+      "runtimes": [
+        "llamacpp",
+        "onnx"
+      ],
+      "required": [
+        "cudart64_12.dll"
+      ]
+    },
+    {
+      "id": "libcublas",
+      "name": "cuBLAS",
+      "version": "12.8.4.1",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libcublas/windows-x86_64/libcublas-windows-x86_64-12.8.4.1-archive.zip",
+      "sha256": "57a470112cec7e112c95253dde8b3c7184d795dbd92b0bde77a4cb7f8c94c8aa",
+      "size": 563660944,
+      "runtimes": [
+        "llamacpp",
+        "onnx"
+      ],
+      "required": [
+        "cublas64_12.dll",
+        "cublasLt64_12.dll"
+      ]
+    },
+    {
+      "id": "libcufft",
+      "name": "cuFFT",
+      "version": "11.3.3.83",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libcufft/windows-x86_64/libcufft-windows-x86_64-11.3.3.83-archive.zip",
+      "sha256": "cc6e0ba958cf23387b462017a24464c72bd901549046133f3d1ebcc3d7444c90",
+      "size": 190568498,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "cufft64_11.dll"
+      ]
+    },
+    {
+      "id": "cuda_nvrtc",
+      "name": "NVRTC",
+      "version": "12.8.93",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvrtc/windows-x86_64/cuda_nvrtc-windows-x86_64-12.8.93-archive.zip",
+      "sha256": "a63302a077f0248a743a1a7caa7dbd80d0fac56c6cfa9c41fa05fac9b7e5eda5",
+      "size": 305588898,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "nvrtc64_120_0.dll",
+        "nvrtc-builtins64_128.dll"
+      ]
+    },
+    {
+      "id": "libnvjitlink",
+      "name": "nvJitLink",
+      "version": "12.8.93",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libnvjitlink/windows-x86_64/libnvjitlink-windows-x86_64-12.8.93-archive.zip",
+      "sha256": "5680b0a42ddf20f11705ca9c365d002f032ab876d3fe44382eeba633b558ccc0",
+      "size": 257345522,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "nvJitLink_120_0.dll"
+      ]
+    },
+    {
+      "id": "cudnn",
+      "name": "cuDNN",
+      "version": "9.8.0.87",
+      "url": "https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.8.0.87_cuda12-archive.zip",
+      "sha256": "d8a23705e3884b137b7e05449fb2b61bfa524e7cfc3fda80743d633f423c6ce4",
+      "size": 675349654,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "cudnn64_9.dll",
+        "cudnn_ops64_9.dll",
+        "cudnn_cnn64_9.dll",
+        "cudnn_adv64_9.dll",
+        "cudnn_graph64_9.dll",
+        "cudnn_engines_precompiled64_9.dll",
+        "cudnn_engines_runtime_compiled64_9.dll",
+        "cudnn_heuristic64_9.dll"
+      ]
+    }
+  ]
+}

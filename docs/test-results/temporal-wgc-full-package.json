@@ -1,0 +1,1553 @@
+{
+  "settings": {
+    "captureFps": 20,
+    "ocrIntervalMs": 100,
+    "changeDetection": true,
+    "changeThreshold": 1,
+    "mode": "grounding",
+    "device": "cpu",
+    "threads": 4,
+    "contextSize": 8192,
+    "maxTokens": 2048,
+    "temperature": 0.1,
+    "maxImageEdge": 1280,
+    "onnx": {
+      "temporal": {
+        "enabled": true,
+        "strategy": "auto",
+        "refreshMs": 10000,
+        "maxReuse": 30,
+        "minConfidence": 0.85,
+        "edgeDelta": 12
+      },
+      "experimentalGpuCtc": false,
+      "experimentalSharedMemory": true,
+      "detectionThreshold": 0.2,
+      "boxThreshold": 0.45,
+      "unclipRatio": 1.4,
+      "recognitionThreshold": 0.5,
+      "batchSize": 6,
+      "detectionResize": 960,
+      "preserveSmallText": false,
+      "detectionRegion": null,
+      "incremental": false,
+      "widthBuckets": false,
+      "recognitionPixelBudget": 196608,
+      "selectiveDetection": false,
+      "refinementRegions": 4
+    },
+    "enableParallelInference": true,
+    "enableCpuWorkers": false,
+    "gpuWorkerCount": 1,
+    "cpuWorkerCount": 2,
+    "executionMode": "manual",
+    "adaptive": {
+      "learning": true,
+      "exploration": false,
+      "maxCpuWorkers": 2,
+      "maxGpuWorkers": 0
+    },
+    "modelDir": "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\test-models",
+    "adbPath": "adb",
+    "adbSerial": "",
+    "captureSource": "window",
+    "theme": "dark",
+    "recentWindow": "capture-fixture|GameOCR Capture Fixture",
+    "historyLimit": 30,
+    "downloadMirror": "https://huggingface.co"
+  },
+  "measured": [
+    {
+      "frameId": 72,
+      "timestamp": 1792652812134,
+      "sourceWidth": 1866,
+      "sourceHeight": 1013,
+      "blocks": [
+        {
+          "id": "block-0",
+          "text": "GameOCR Capture Fixture",
+          "label": "text",
+          "bbox": [
+            0,
+            0,
+            175,
+            31
+          ],
+          "confidence": 0.99646586,
+          "polygon": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 175,
+              "y": 1
+            },
+            {
+              "x": 171,
+              "y": 31
+            },
+            {
+              "x": 0,
+              "y": 28
+            }
+          ]
+        },
+        {
+          "id": "block-1",
+          "text": "GAME OCR TEST",
+          "label": "text",
+          "bbox": [
+            28,
+            62,
+            240,
+            94
+          ],
+          "confidence": 0.9987632,
+          "polygon": [
+            {
+              "x": 28,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 94
+            },
+            {
+              "x": 28,
+              "y": 94
+            }
+          ]
+        },
+        {
+          "id": "block-2",
+          "text": "Inventory: 12 / 40",
+          "label": "text",
+          "bbox": [
+            1262,
+            106,
+            1484,
+            138
+          ],
+          "confidence": 0.981685,
+          "polygon": [
+            {
+              "x": 1262,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 138
+            },
+            {
+              "x": 1262,
+              "y": 138
+            }
+          ]
+        },
+        {
+          "id": "block-3",
+          "text": "Health: 101 / 100",
+          "label": "text",
+          "bbox": [
+            29,
+            129,
+            245,
+            156
+          ],
+          "confidence": 0.95294267,
+          "polygon": [
+            {
+              "x": 29,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 156
+            },
+            {
+              "x": 29,
+              "y": 156
+            }
+          ]
+        },
+        {
+          "id": "block-4",
+          "text": "Quest complete!",
+          "label": "text",
+          "bbox": [
+            30,
+            191,
+            236,
+            223
+          ],
+          "confidence": 0.99995697,
+          "polygon": [
+            {
+              "x": 30,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 223
+            },
+            {
+              "x": 30,
+              "y": 223
+            }
+          ]
+        },
+        {
+          "id": "block-5",
+          "text": "你好世界・こんにちは",
+          "label": "text",
+          "bbox": [
+            24,
+            249,
+            322,
+            293
+          ],
+          "confidence": 0.9992725,
+          "polygon": [
+            {
+              "x": 24,
+              "y": 252
+            },
+            {
+              "x": 317,
+              "y": 249
+            },
+            {
+              "x": 322,
+              "y": 289
+            },
+            {
+              "x": 29,
+              "y": 293
+            }
+          ]
+        },
+        {
+          "id": "block-6",
+          "text": "Press ENTER to continue",
+          "label": "text",
+          "bbox": [
+            58,
+            878,
+            364,
+            906
+          ],
+          "confidence": 0.99955946,
+          "polygon": [
+            {
+              "x": 58,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 906
+            },
+            {
+              "x": 58,
+              "y": 906
+            }
+          ]
+        },
+        {
+          "id": "block-7",
+          "text": "Score: 12345",
+          "label": "text",
+          "bbox": [
+            1261,
+            876,
+            1426,
+            907
+          ],
+          "confidence": 0.9968075,
+          "polygon": [
+            {
+              "x": 1261,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 907
+            },
+            {
+              "x": 1261,
+              "y": 907
+            }
+          ]
+        }
+      ],
+      "rawOutput": "",
+      "metrics": {
+        "preprocessingMs": 34.2547,
+        "inferenceMs": 364.4046,
+        "parsingMs": 19.5759,
+        "totalMs": 420.4113,
+        "detectionMs": 161.61790000000002,
+        "recognitionMs": 202.7867,
+        "detectionRegions": 1,
+        "cache": {
+          "reusedRegions": 0,
+          "reusedLines": 0,
+          "refreshed": true
+        },
+        "recognitionBatches": 2,
+        "recognitionPixels": 149472,
+        "execution": {
+          "batchId": 1,
+          "endToEndMs": 470.921,
+          "transferMs": 2.3218,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 420.7797,
+          "mergeMs": 0,
+          "cpuTasks": 1,
+          "gpuTasks": 0,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": {
+            "reusedRegions": 0,
+            "reusedLines": 0,
+            "refreshed": true
+          },
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 2.3417,
+            "detectorPreprocessMs": 26.8871,
+            "dbMs": 4.4401,
+            "cropMs": 1.4732,
+            "recognizerPreprocessMs": 3.5405,
+            "ctcMs": 15.1336,
+            "mergeMs": 0.0022,
+            "cacheMs": 0.6063000000000001,
+            "detectorCalls": 1,
+            "recognizerCalls": 2,
+            "outputBytes": 29187600,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                344
+              ],
+              [
+                2,
+                3,
+                48,
+                525
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.9001,
+            "conversionMs": 4.5037,
+            "frameWaitMs": 33.8425,
+            "gateMs": 0.0048,
+            "previewMs": 45.9958,
+            "previewReused": false,
+            "captureToPublishMs": 519.1795999999999,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.3684000000000083,
+          "temporal": {
+            "path": "full",
+            "reason": "initial-or-invalidated",
+            "trackerMs": 0.5703,
+            "reusedLines": 0,
+            "recOnlyRegions": 0,
+            "fullDetections": 1,
+            "riskFallbacks": 0,
+            "cacheBytes": 5671757
+          },
+          "transport": "shared-memory",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 2.3417,
+          "detectorPreprocessMs": 26.8871,
+          "dbMs": 4.4401,
+          "cropMs": 1.4732,
+          "recognizerPreprocessMs": 3.5405,
+          "ctcMs": 15.1336,
+          "mergeMs": 0.0022,
+          "cacheMs": 0.6063000000000001,
+          "detectorCalls": 1,
+          "recognizerCalls": 2,
+          "outputBytes": 29187600,
+          "recognitionShapes": [
+            [
+              6,
+              3,
+              48,
+              344
+            ],
+            [
+              2,
+              3,
+              48,
+              525
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        },
+        "temporal": {
+          "path": "full",
+          "reason": "initial-or-invalidated",
+          "trackerMs": 0.5703,
+          "reusedLines": 0,
+          "recOnlyRegions": 0,
+          "fullDetections": 1,
+          "riskFallbacks": 0,
+          "cacheBytes": 5671757
+        }
+      },
+      "device": "CPU",
+      "truncated": false,
+      "runtime": "onnx",
+      "modelId": "ppocrv6-small",
+      "engineId": "ppocrv6"
+    },
+    {
+      "frameId": 78,
+      "timestamp": 1792652812784,
+      "sourceWidth": 1866,
+      "sourceHeight": 1013,
+      "blocks": [
+        {
+          "id": "block-0",
+          "text": "GameOCR Capture Fixture",
+          "label": "text",
+          "bbox": [
+            0,
+            0,
+            175,
+            31
+          ],
+          "confidence": 0.99646586,
+          "polygon": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 175,
+              "y": 1
+            },
+            {
+              "x": 171,
+              "y": 31
+            },
+            {
+              "x": 0,
+              "y": 28
+            }
+          ]
+        },
+        {
+          "id": "block-1",
+          "text": "GAME OCR TEST",
+          "label": "text",
+          "bbox": [
+            28,
+            62,
+            240,
+            94
+          ],
+          "confidence": 0.9987632,
+          "polygon": [
+            {
+              "x": 28,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 94
+            },
+            {
+              "x": 28,
+              "y": 94
+            }
+          ]
+        },
+        {
+          "id": "block-2",
+          "text": "Inventory: 12 / 40",
+          "label": "text",
+          "bbox": [
+            1262,
+            106,
+            1484,
+            138
+          ],
+          "confidence": 0.981685,
+          "polygon": [
+            {
+              "x": 1262,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 138
+            },
+            {
+              "x": 1262,
+              "y": 138
+            }
+          ]
+        },
+        {
+          "id": "block-3",
+          "text": "Health: 101 / 100",
+          "label": "text",
+          "bbox": [
+            29,
+            129,
+            245,
+            156
+          ],
+          "confidence": 0.95294267,
+          "polygon": [
+            {
+              "x": 29,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 156
+            },
+            {
+              "x": 29,
+              "y": 156
+            }
+          ]
+        },
+        {
+          "id": "block-4",
+          "text": "Quest complete!",
+          "label": "text",
+          "bbox": [
+            30,
+            191,
+            236,
+            223
+          ],
+          "confidence": 0.99995697,
+          "polygon": [
+            {
+              "x": 30,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 223
+            },
+            {
+              "x": 30,
+              "y": 223
+            }
+          ]
+        },
+        {
+          "id": "block-5",
+          "text": "你好世界・こんにちは",
+          "label": "text",
+          "bbox": [
+            24,
+            249,
+            322,
+            293
+          ],
+          "confidence": 0.9992725,
+          "polygon": [
+            {
+              "x": 24,
+              "y": 252
+            },
+            {
+              "x": 317,
+              "y": 249
+            },
+            {
+              "x": 322,
+              "y": 289
+            },
+            {
+              "x": 29,
+              "y": 293
+            }
+          ]
+        },
+        {
+          "id": "block-6",
+          "text": "Press ENTER to continue",
+          "label": "text",
+          "bbox": [
+            58,
+            878,
+            364,
+            906
+          ],
+          "confidence": 0.99955946,
+          "polygon": [
+            {
+              "x": 58,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 906
+            },
+            {
+              "x": 58,
+              "y": 906
+            }
+          ]
+        },
+        {
+          "id": "block-7",
+          "text": "Score: 12345",
+          "label": "text",
+          "bbox": [
+            1261,
+            876,
+            1426,
+            907
+          ],
+          "confidence": 0.9968075,
+          "polygon": [
+            {
+              "x": 1261,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 907
+            },
+            {
+              "x": 1261,
+              "y": 907
+            }
+          ]
+        }
+      ],
+      "rawOutput": "",
+      "metrics": {
+        "preprocessingMs": 34.4443,
+        "inferenceMs": 296.77840000000003,
+        "parsingMs": 20.9366,
+        "totalMs": 355.4633,
+        "detectionMs": 126.115,
+        "recognitionMs": 170.66340000000002,
+        "detectionRegions": 1,
+        "cache": {
+          "reusedRegions": 0,
+          "reusedLines": 0,
+          "refreshed": true
+        },
+        "recognitionBatches": 2,
+        "recognitionPixels": 149472,
+        "execution": {
+          "batchId": 2,
+          "endToEndMs": 358.4628,
+          "transferMs": 0.45790000000000003,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 355.78409999999997,
+          "mergeMs": 0,
+          "cpuTasks": 1,
+          "gpuTasks": 0,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": {
+            "reusedRegions": 0,
+            "reusedLines": 0,
+            "refreshed": true
+          },
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 2.6813,
+            "detectorPreprocessMs": 25.5367,
+            "dbMs": 3.5162,
+            "cropMs": 1.8887,
+            "recognizerPreprocessMs": 4.3292,
+            "ctcMs": 17.420099999999998,
+            "mergeMs": 0.0003,
+            "cacheMs": 0.8523,
+            "detectorCalls": 1,
+            "recognizerCalls": 2,
+            "outputBytes": 29187600,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                344
+              ],
+              [
+                2,
+                3,
+                48,
+                525
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.9468,
+            "conversionMs": 4.7314,
+            "frameWaitMs": 47.8071,
+            "gateMs": 0.0047,
+            "previewMs": 0.7058,
+            "previewReused": true,
+            "captureToPublishMs": 422.5983,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.3207999999999629,
+          "temporal": {
+            "path": "full",
+            "reason": "untrusted-boundaries",
+            "trackerMs": 0.8351000000000001,
+            "reusedLines": 0,
+            "recOnlyRegions": 0,
+            "fullDetections": 1,
+            "riskFallbacks": 0,
+            "cacheBytes": 5671757
+          },
+          "transport": "shared-memory",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 2.6813,
+          "detectorPreprocessMs": 25.5367,
+          "dbMs": 3.5162,
+          "cropMs": 1.8887,
+          "recognizerPreprocessMs": 4.3292,
+          "ctcMs": 17.420099999999998,
+          "mergeMs": 0.0003,
+          "cacheMs": 0.8523,
+          "detectorCalls": 1,
+          "recognizerCalls": 2,
+          "outputBytes": 29187600,
+          "recognitionShapes": [
+            [
+              6,
+              3,
+              48,
+              344
+            ],
+            [
+              2,
+              3,
+              48,
+              525
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        },
+        "temporal": {
+          "path": "full",
+          "reason": "untrusted-boundaries",
+          "trackerMs": 0.8351000000000001,
+          "reusedLines": 0,
+          "recOnlyRegions": 0,
+          "fullDetections": 1,
+          "riskFallbacks": 0,
+          "cacheBytes": 5671757
+        }
+      },
+      "device": "CPU",
+      "truncated": false,
+      "runtime": "onnx",
+      "modelId": "ppocrv6-small",
+      "engineId": "ppocrv6"
+    },
+    {
+      "frameId": 83,
+      "timestamp": 1792652813350,
+      "sourceWidth": 1866,
+      "sourceHeight": 1013,
+      "blocks": [
+        {
+          "id": "block-0",
+          "text": "GameOCR Capture Fixture",
+          "label": "text",
+          "bbox": [
+            0,
+            0,
+            175,
+            31
+          ],
+          "confidence": 0.99646586,
+          "polygon": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 175,
+              "y": 1
+            },
+            {
+              "x": 171,
+              "y": 31
+            },
+            {
+              "x": 0,
+              "y": 28
+            }
+          ]
+        },
+        {
+          "id": "block-1",
+          "text": "GAME OCR TEST",
+          "label": "text",
+          "bbox": [
+            28,
+            62,
+            240,
+            94
+          ],
+          "confidence": 0.9987632,
+          "polygon": [
+            {
+              "x": 28,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 94
+            },
+            {
+              "x": 28,
+              "y": 94
+            }
+          ]
+        },
+        {
+          "id": "block-2",
+          "text": "Inventory: 12 / 40",
+          "label": "text",
+          "bbox": [
+            1262,
+            106,
+            1484,
+            138
+          ],
+          "confidence": 0.981685,
+          "polygon": [
+            {
+              "x": 1262,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 138
+            },
+            {
+              "x": 1262,
+              "y": 138
+            }
+          ]
+        },
+        {
+          "id": "block-3",
+          "text": "Health: 101 / 100",
+          "label": "text",
+          "bbox": [
+            29,
+            129,
+            245,
+            156
+          ],
+          "confidence": 0.95294267,
+          "polygon": [
+            {
+              "x": 29,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 156
+            },
+            {
+              "x": 29,
+              "y": 156
+            }
+          ]
+        },
+        {
+          "id": "block-4",
+          "text": "Quest complete!",
+          "label": "text",
+          "bbox": [
+            30,
+            191,
+            236,
+            223
+          ],
+          "confidence": 0.99995697,
+          "polygon": [
+            {
+              "x": 30,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 223
+            },
+            {
+              "x": 30,
+              "y": 223
+            }
+          ]
+        },
+        {
+          "id": "block-5",
+          "text": "你好世界・こんにちは",
+          "label": "text",
+          "bbox": [
+            24,
+            249,
+            322,
+            293
+          ],
+          "confidence": 0.9992725,
+          "polygon": [
+            {
+              "x": 24,
+              "y": 252
+            },
+            {
+              "x": 317,
+              "y": 249
+            },
+            {
+              "x": 322,
+              "y": 289
+            },
+            {
+              "x": 29,
+              "y": 293
+            }
+          ]
+        },
+        {
+          "id": "block-6",
+          "text": "Press ENTER to continue",
+          "label": "text",
+          "bbox": [
+            58,
+            878,
+            364,
+            906
+          ],
+          "confidence": 0.99955946,
+          "polygon": [
+            {
+              "x": 58,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 906
+            },
+            {
+              "x": 58,
+              "y": 906
+            }
+          ]
+        },
+        {
+          "id": "block-7",
+          "text": "Score: 12345",
+          "label": "text",
+          "bbox": [
+            1261,
+            876,
+            1426,
+            907
+          ],
+          "confidence": 0.9968075,
+          "polygon": [
+            {
+              "x": 1261,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 907
+            },
+            {
+              "x": 1261,
+              "y": 907
+            }
+          ]
+        }
+      ],
+      "rawOutput": "",
+      "metrics": {
+        "preprocessingMs": 3.0343,
+        "inferenceMs": 0,
+        "parsingMs": 0.0009,
+        "totalMs": 3.9626,
+        "detectionMs": 0,
+        "recognitionMs": 0,
+        "detectionRegions": 1,
+        "cache": {
+          "reusedRegions": 0,
+          "reusedLines": 8,
+          "refreshed": false
+        },
+        "recognitionBatches": 0,
+        "recognitionPixels": 0,
+        "execution": {
+          "batchId": 3,
+          "endToEndMs": 7.0152,
+          "transferMs": 0.4523,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 4.3411,
+          "mergeMs": 0,
+          "cpuTasks": 1,
+          "gpuTasks": 0,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": {
+            "reusedRegions": 0,
+            "reusedLines": 8,
+            "refreshed": false
+          },
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 2.3552,
+            "detectorPreprocessMs": 0,
+            "dbMs": 0,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.0009,
+            "cacheMs": 0.6219,
+            "detectorCalls": 0,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.8852000000000001,
+            "conversionMs": 3.4964000000000004,
+            "frameWaitMs": 39.6653,
+            "gateMs": 0.0058000000000000005,
+            "previewMs": 0.68,
+            "previewReused": true,
+            "captureToPublishMs": 58.5347,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.37849999999999984,
+          "temporal": {
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "trackerMs": 1.1885,
+            "reusedLines": 8,
+            "recOnlyRegions": 0,
+            "fullDetections": 0,
+            "riskFallbacks": 0,
+            "cacheBytes": 5671757
+          },
+          "transport": "shared-memory",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 2.3552,
+          "detectorPreprocessMs": 0,
+          "dbMs": 0,
+          "cropMs": 0,
+          "recognizerPreprocessMs": 0,
+          "ctcMs": 0,
+          "mergeMs": 0.0009,
+          "cacheMs": 0.6219,
+          "detectorCalls": 0,
+          "recognizerCalls": 0,
+          "outputBytes": 0,
+          "recognitionShapes": [],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        },
+        "temporal": {
+          "path": "cache-only",
+          "reason": "exact-frame",
+          "trackerMs": 1.1885,
+          "reusedLines": 8,
+          "recOnlyRegions": 0,
+          "fullDetections": 0,
+          "riskFallbacks": 0,
+          "cacheBytes": 5671757
+        }
+      },
+      "device": "CPU",
+      "truncated": false,
+      "runtime": "onnx",
+      "modelId": "ppocrv6-small",
+      "engineId": "ppocrv6"
+    },
+    {
+      "frameId": 85,
+      "timestamp": 1792652813567,
+      "sourceWidth": 1866,
+      "sourceHeight": 1013,
+      "blocks": [
+        {
+          "id": "block-0",
+          "text": "GameOCR Capture Fixture",
+          "label": "text",
+          "bbox": [
+            0,
+            0,
+            175,
+            31
+          ],
+          "confidence": 0.99646586,
+          "polygon": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 175,
+              "y": 1
+            },
+            {
+              "x": 171,
+              "y": 31
+            },
+            {
+              "x": 0,
+              "y": 28
+            }
+          ]
+        },
+        {
+          "id": "block-1",
+          "text": "GAME OCR TEST",
+          "label": "text",
+          "bbox": [
+            28,
+            62,
+            240,
+            94
+          ],
+          "confidence": 0.9987632,
+          "polygon": [
+            {
+              "x": 28,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 62
+            },
+            {
+              "x": 240,
+              "y": 94
+            },
+            {
+              "x": 28,
+              "y": 94
+            }
+          ]
+        },
+        {
+          "id": "block-2",
+          "text": "Inventory: 12 / 40",
+          "label": "text",
+          "bbox": [
+            1262,
+            106,
+            1484,
+            138
+          ],
+          "confidence": 0.981685,
+          "polygon": [
+            {
+              "x": 1262,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 106
+            },
+            {
+              "x": 1484,
+              "y": 138
+            },
+            {
+              "x": 1262,
+              "y": 138
+            }
+          ]
+        },
+        {
+          "id": "block-3",
+          "text": "Health: 101 / 100",
+          "label": "text",
+          "bbox": [
+            29,
+            129,
+            245,
+            156
+          ],
+          "confidence": 0.95294267,
+          "polygon": [
+            {
+              "x": 29,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 156
+            },
+            {
+              "x": 29,
+              "y": 156
+            }
+          ]
+        },
+        {
+          "id": "block-4",
+          "text": "Quest complete!",
+          "label": "text",
+          "bbox": [
+            30,
+            191,
+            236,
+            223
+          ],
+          "confidence": 0.99995697,
+          "polygon": [
+            {
+              "x": 30,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 191
+            },
+            {
+              "x": 236,
+              "y": 223
+            },
+            {
+              "x": 30,
+              "y": 223
+            }
+          ]
+        },
+        {
+          "id": "block-5",
+          "text": "你好世界・こんにちは",
+          "label": "text",
+          "bbox": [
+            24,
+            249,
+            322,
+            293
+          ],
+          "confidence": 0.9992725,
+          "polygon": [
+            {
+              "x": 24,
+              "y": 252
+            },
+            {
+              "x": 317,
+              "y": 249
+            },
+            {
+              "x": 322,
+              "y": 289
+            },
+            {
+              "x": 29,
+              "y": 293
+            }
+          ]
+        },
+        {
+          "id": "block-6",
+          "text": "Press ENTER to continue",
+          "label": "text",
+          "bbox": [
+            58,
+            878,
+            364,
+            906
+          ],
+          "confidence": 0.99955946,
+          "polygon": [
+            {
+              "x": 58,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 878
+            },
+            {
+              "x": 364,
+              "y": 906
+            },
+            {
+              "x": 58,
+              "y": 906
+            }
+          ]
+        },
+        {
+          "id": "block-7",
+          "text": "Score: 12345",
+          "label": "text",
+          "bbox": [
+            1261,
+            876,
+            1426,
+            907
+          ],
+          "confidence": 0.9968075,
+          "polygon": [
+            {
+              "x": 1261,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 876
+            },
+            {
+              "x": 1426,
+              "y": 907
+            },
+            {
+              "x": 1261,
+              "y": 907
+            }
+          ]
+        }
+      ],
+      "rawOutput": "",
+      "metrics": {
+        "preprocessingMs": 3.4574,
+        "inferenceMs": 0,
+        "parsingMs": 0.0013,
+        "totalMs": 4.6295,
+        "detectionMs": 0,
+        "recognitionMs": 0,
+        "detectionRegions": 1,
+        "cache": {
+          "reusedRegions": 0,
+          "reusedLines": 8,
+          "refreshed": false
+        },
+        "recognitionBatches": 0,
+        "recognitionPixels": 0,
+        "execution": {
+          "batchId": 4,
+          "endToEndMs": 8.092,
+          "transferMs": 0.4918,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 5.0951,
+          "mergeMs": 0,
+          "cpuTasks": 1,
+          "gpuTasks": 0,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": {
+            "reusedRegions": 0,
+            "reusedLines": 8,
+            "refreshed": false
+          },
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 2.7929,
+            "detectorPreprocessMs": 0,
+            "dbMs": 0,
+            "cropMs": 0,
+            "recognizerPreprocessMs": 0,
+            "ctcMs": 0,
+            "mergeMs": 0.0013,
+            "cacheMs": 0.8302,
+            "detectorCalls": 0,
+            "recognizerCalls": 0,
+            "outputBytes": 0,
+            "recognitionShapes": [],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.9229,
+            "conversionMs": 3.9766999999999997,
+            "frameWaitMs": 21.3546,
+            "gateMs": 0.0073,
+            "previewMs": 0.6777000000000001,
+            "previewReused": true,
+            "captureToPublishMs": 41.8661,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.46560000000000024,
+          "temporal": {
+            "path": "cache-only",
+            "reason": "exact-frame",
+            "trackerMs": 1.3224,
+            "reusedLines": 8,
+            "recOnlyRegions": 0,
+            "fullDetections": 0,
+            "riskFallbacks": 0,
+            "cacheBytes": 5671757
+          },
+          "transport": "shared-memory",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 2.7929,
+          "detectorPreprocessMs": 0,
+          "dbMs": 0,
+          "cropMs": 0,
+          "recognizerPreprocessMs": 0,
+          "ctcMs": 0,
+          "mergeMs": 0.0013,
+          "cacheMs": 0.8302,
+          "detectorCalls": 0,
+          "recognizerCalls": 0,
+          "outputBytes": 0,
+          "recognitionShapes": [],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        },
+        "temporal": {
+          "path": "cache-only",
+          "reason": "exact-frame",
+          "trackerMs": 1.3224,
+          "reusedLines": 8,
+          "recOnlyRegions": 0,
+          "fullDetections": 0,
+          "riskFallbacks": 0,
+          "cacheBytes": 5671757
+        }
+      },
+      "device": "CPU",
+      "truncated": false,
+      "runtime": "onnx",
+      "modelId": "ppocrv6-small",
+      "engineId": "ppocrv6"
+    }
+  ]
+}

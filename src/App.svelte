@@ -7,6 +7,7 @@
   import ModelManager from './components/ModelManager.svelte';
   import SettingsPanel from './components/SettingsPanel.svelte';
   import ExecutionStats from './components/ExecutionStats.svelte';
+  import CudaRuntimeProgress from './components/CudaRuntimeProgress.svelte';
   import { api,native,Subscriptions } from './services/api';
   import type { WindowInfo,Settings,ModelEntry,ModelStatus,CaptureStatus,OcrStatus,Preview,Snapshot,Performance,AdbDevice,DownloadProgress } from './types';
   let settings=$state<Settings|null>(null),windows=$state<WindowInfo[]>([]),selected=$state<WindowInfo|null>(null),models=$state<ModelEntry[]>([]);
@@ -75,6 +76,7 @@
   {#if !native}<div class="browser-warning"><AlertCircle/> 这是界面预览。窗口捕获和本地 OCR 需要在 GameOCR 桌面程序中运行。</div>{/if}
   {#if error}<div class="notification error"><AlertCircle/><div><strong>操作未完成</strong><pre>{error}</pre></div><button class="icon-btn" aria-label="关闭错误" onclick={()=>error=''}><X/></button></div>{/if}
   {#if notice}<div class="notification"><Check/><span>{notice}</span><button class="icon-btn" aria-label="关闭通知" onclick={()=>notice=''}><X/></button></div>{/if}
+  {#if native}<CudaRuntimeProgress onError={fail}/>{/if}
   <main>
     <aside class="sidebar">
       <div class="source-section"><div class="row spread"><span class="label">捕获来源</span><span class="chip">LOCAL</span></div><div class="segmented"><button class:active={settings?.captureSource!=='adb'} onclick={()=>sourceChanged('window')} disabled={!settings||!!busy}><Monitor/> Windows</button><button class:active={settings?.captureSource==='adb'} onclick={()=>sourceChanged('adb')} disabled={!settings||!!busy}><Smartphone/> Android</button></div></div>

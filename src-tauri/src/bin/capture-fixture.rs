@@ -23,7 +23,15 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
         match msg {
             WM_PAINT => {
                 let mut paint = PAINTSTRUCT::default();
-                let dc = BeginPaint(hwnd, &mut paint);
+                let window_dc = BeginPaint(hwnd, &mut paint);
+                let mut rect = RECT::default();
+                let _ = GetClientRect(hwnd, &mut rect);
+                let dc = CreateCompatibleDC(Some(window_dc));
+                let bitmap = CreateCompatibleBitmap(window_dc, rect.right, rect.bottom);
+                let old_bitmap = SelectObject(dc, HGDIOBJ(bitmap.0));
+                // Start each frame clean and publish it in one blit: WGC must not
+                // observe accumulated antialiasing or a partially painted frame.
+                let _ = FillRect(dc, &rect, HBRUSH(GetStockObject(WHITE_BRUSH).0));
                 let font = CreateFontW(
                     38,
                     0,
@@ -58,8 +66,6 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                     let text: Vec<u16> = line.encode_utf16().collect();
                     let _ = TextOutW(dc, 32, y, &text);
                 }
-                let mut rect = RECT::default();
-                let _ = GetClientRect(hwnd, &mut rect);
                 if rect.right >= 1280 {
                     for (x, y, line) in [
                         (rect.right - 600, 70, "Inventory: 12 / 40"),
@@ -72,6 +78,20 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                 }
                 SelectObject(dc, old);
                 let _ = DeleteObject(HGDIOBJ(font.0));
+                let _ = BitBlt(
+                    window_dc,
+                    0,
+                    0,
+                    rect.right,
+                    rect.bottom,
+                    Some(dc),
+                    0,
+                    0,
+                    SRCCOPY,
+                );
+                SelectObject(dc, old_bitmap);
+                let _ = DeleteObject(HGDIOBJ(bitmap.0));
+                let _ = DeleteDC(dc);
                 let _ = EndPaint(hwnd, &paint);
                 LRESULT(0)
             }

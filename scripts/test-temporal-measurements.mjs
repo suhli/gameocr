@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {transitions} from './temporal-measurements.mjs';
+const frames = (...texts) => texts.map(text => ({groundTruth: [{text}]}));
+const runs = (...texts) => texts.map(text => ({blocks: [{text}], requestMs: 10}));
+const immediate = transitions(frames('100', '101'), runs('100', '101'))[0];
+assert.equal(immediate.newTextDelayFrames, 0);
+assert.equal(immediate.newTextSequentialResponseMs, 10);
+const delayed = transitions(frames('100', '101', '101'), runs('100', '100', '101'))[0];
+assert.equal(delayed.newTextDelayFrames, 1);
+assert.equal(delayed.staleDurationFrames, 1);
+assert.equal(delayed.staleClearSequentialResponseMs, 20);
+const missed = transitions(frames('100', '101', '102'), runs('100', '100', '101'))[0];
+assert.equal(missed.newTextDelayFrames, null);
+assert.equal(missed.newTextSequentialResponseMs, null);
+assert.deepEqual(transitions(frames('100', '100'), runs('100', '100')), []);
+console.log('Passed immediate, delayed, superseded and unchanged transition checks.');

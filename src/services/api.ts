@@ -4,7 +4,9 @@ import { open,save,confirm } from '@tauri-apps/plugin-dialog';
 import type { WindowInfo,Preview,ModelEntry,ModelStatus,Settings,Performance,Snapshot,CaptureStatus,OcrStatus,AdbDevice,DownloadProgress,LearningSummary } from '../types';
 export const native=isTauri();
 function call<T>(command:string,args?:Record<string,unknown>):Promise<T>{if(!native)return Promise.reject(new Error('请通过 GameOCR 桌面应用运行，浏览器预览无法访问本机捕获和模型。'));return invoke<T>(command,args);}
+export interface CudaRuntimeProgress{state:string;component:string;received:number;total:number;message:string;}
 export const api={
+  cudaRuntimeStatus:()=>call<CudaRuntimeProgress>('get_cuda_runtime_status'),cancelCudaDownload:()=>call<void>('cancel_cuda_runtime_download'),
   adaptiveStatistics:()=>call<LearningSummary>('get_adaptive_statistics'),clearAdaptiveProfiles:()=>call<void>('clear_adaptive_profiles'),
   windows:(showAll=false)=>call<WindowInfo[]>('list_windows',{showAll}),selectWindow:(id:string)=>call<WindowInfo>('select_window',{id}),
   adbDevices:()=>call<AdbDevice[]>('list_adb_devices'),connectAdb:(address:string)=>call<string>('connect_adb',{address}),
@@ -25,7 +27,7 @@ export const api={
   savePng:()=>save({defaultPath:'gameocr-frame.png',filters:[{name:'PNG',extensions:['png']}]}),
   confirmDelete:(name:string)=>confirm(`删除本地模型 ${name}？之后可以重新下载。`,{title:'删除模型',kind:'warning'}),
 };
-export interface Events{'capture-status':CaptureStatus;'capture-preview':Preview;'capture-error':string;'ocr-result':Snapshot;'ocr-status':OcrStatus;'ocr-error':string;'model-status':ModelStatus;'model-download-progress':DownloadProgress;'performance-update':Performance;}
+export interface Events{'capture-status':CaptureStatus;'capture-preview':Preview;'capture-error':string;'ocr-result':Snapshot;'ocr-status':OcrStatus;'ocr-error':string;'model-status':ModelStatus;'model-download-progress':DownloadProgress;'performance-update':Performance;'cuda-runtime-progress':CudaRuntimeProgress;}
 export function subscribe<K extends keyof Events>(event:K,handler:(value:Events[K])=>void):Promise<UnlistenFn>{return listen<Events[K]>(event,e=>handler(e.payload));}
 /** Handles teardown even when async listener registration resolves after unmount. */
 export class Subscriptions{private stopped=false;private off:UnlistenFn[]=[];async add<K extends keyof Events>(event:K,handler:(value:Events[K])=>void){const off=await subscribe(event,handler);if(this.stopped)off();else this.off.push(off);}dispose(){this.stopped=true;this.off.splice(0).forEach(fn=>fn());}}

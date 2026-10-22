@@ -191,6 +191,14 @@ pub async fn load_model(state: AppState<'_>, id: String) -> Reply<()> {
     state.inner().clone().load_model(id).await.map_err(err)
 }
 #[tauri::command]
+pub fn get_cuda_runtime_status(state: AppState<'_>) -> crate::cuda_runtime::Progress {
+    state.cuda_runtime.status()
+}
+#[tauri::command]
+pub fn cancel_cuda_runtime_download(state: AppState<'_>) {
+    state.cuda_runtime.cancel();
+}
+#[tauri::command]
 pub async fn unload_model(state: AppState<'_>) -> Reply<()> {
     state.unload_model().await.map_err(err)
 }

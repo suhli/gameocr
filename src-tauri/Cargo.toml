@@ -22,6 +22,11 @@ required-features = ["test-fixture"]
 name = "gameocr_app"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
+[[bin]]
+name = "cuda-runtime-install"
+path = "src/bin/cuda-runtime-install.rs"
+required-features = ["test-fixture"]
+
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
@@ -43,6 +48,7 @@ base64 = "0.22"
 parking_lot = "0.12"
 dirs = "6"
 uuid = { version = "1", features = ["v4"] }
+zip = { version = "2", default-features = false, features = ["deflate"] }
 
 [target.'cfg(windows)'.dependencies]
 windows-capture = "=2.0.1"

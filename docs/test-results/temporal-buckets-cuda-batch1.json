@@ -1,0 +1,5307 @@
+{
+  "executedAt": "2026-10-22T02:07:05.336Z",
+  "device": "cuda",
+  "workerSha256": "1fd057df7f30656f34ae859845fa687e98b1c1c3371342eda32a68f8ce5c79e7",
+  "source": "synthetic; not real game footage",
+  "scope": "Native worker, file decode included; no WGC/UI. Sequential frames at maximum processing rate; atMs describes corpus order, not actual scheduling.",
+  "results": [
+    {
+      "scene": "dynamic-background",
+      "variant": "full",
+      "model": "ppocrv6-small",
+      "parameters": {
+        "detectionThreshold": 0.2,
+        "boxThreshold": 0.45,
+        "unclipRatio": 1.4,
+        "recognitionThreshold": 0.5,
+        "batchSize": 1,
+        "detectionResize": 960,
+        "widthBuckets": true,
+        "incremental": false,
+        "temporal": {
+          "enabled": false,
+          "strategy": "full",
+          "refreshMs": 1000,
+          "maxReuse": 30,
+          "minConfidence": 0.85,
+          "edgeDelta": 12
+        }
+      },
+      "transitions": [],
+      "pathCounts": {
+        "full": 6
+      },
+      "cacheHitRate": 0,
+      "loadMs": 1100.6236000000001,
+      "firstMs": 890.5193999999999,
+      "p50Ms": 900.2908,
+      "p95Ms": 1042.4567,
+      "p99Ms": 1042.4567,
+      "meanMs": 958.64245,
+      "detectorCalls": 6,
+      "recognizerCalls": 18,
+      "disagreements": 0,
+      "resources": {
+        "at": "2026-10-22T02:07:12.728Z",
+        "processes": {
+          "Id": 12664,
+          "ProcessName": "onnx-worker",
+          "CPU": 6.703125,
+          "WorkingSet64": 724410368,
+          "PrivateMemorySize64": 1324109824,
+          "PeakWorkingSet64": 742662144
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 27, 2707, 4096"
+      },
+      "runs": [
+        {
+          "frame": 0,
+          "requestMs": 892.3273999999999,
+          "metrics": {
+            "preprocessingMs": 20.2716,
+            "inferenceMs": 863.3282,
+            "parsingMs": 6.834899999999999,
+            "totalMs": 890.5193999999999,
+            "detectionMs": 245.7598,
+            "recognitionMs": 617.5684,
+            "detectionRegions": 1,
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.8014000000000001,
+              "detectorPreprocessMs": 16.8732,
+              "dbMs": 2.5145,
+              "cropMs": 0.7765,
+              "recognizerPreprocessMs": 0.8109,
+              "ctcMs": 4.3187,
+              "mergeMs": 0.0017000000000000001,
+              "cacheMs": 0.010499999999999999,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7256868390664231,
+            "meanCenterErrorPx": 2.040840031744433,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977094,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                169,
+                328,
+                215
+              ],
+              "confidence": 0.9999796,
+              "polygon": [
+                {
+                  "x": 77,
+                  "y": 169
+                },
+                {
+                  "x": 328,
+                  "y": 172
+                },
+                {
+                  "x": 325,
+                  "y": 215
+                },
+                {
+                  "x": 74,
+                  "y": 212
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9941437,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "requestMs": 1007.1338000000001,
+          "metrics": {
+            "preprocessingMs": 20.493100000000002,
+            "inferenceMs": 978.278,
+            "parsingMs": 7.1343,
+            "totalMs": 1006.0211999999999,
+            "detectionMs": 236.10819999999998,
+            "recognitionMs": 742.1698,
+            "detectionRegions": 1,
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.7666,
+              "detectorPreprocessMs": 16.8628,
+              "dbMs": 2.7464999999999997,
+              "cropMs": 0.7928999999999999,
+              "recognizerPreprocessMs": 1.0622,
+              "ctcMs": 4.3875,
+              "mergeMs": 0.0003,
+              "cacheMs": 0.0055,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997753,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999704,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99453545,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 2,
+          "requestMs": 895.3859000000002,
+          "metrics": {
+            "preprocessingMs": 24.6754,
+            "inferenceMs": 862.5604000000001,
+            "parsingMs": 6.873099999999999,
+            "totalMs": 894.2247,
+            "detectionMs": 235.9445,
+            "recognitionMs": 626.6159,
+            "detectionRegions": 1,
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 2.1508,
+              "detectorPreprocessMs": 20.6509,
+              "dbMs": 2.4787,
+              "cropMs": 0.8488,
+              "recognizerPreprocessMs": 1.0174,
+              "ctcMs": 4.3942,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0063999999999999994,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977046,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949476,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 3,
+          "requestMs": 901.9072999999999,
+          "metrics": {
+            "preprocessingMs": 28.860200000000003,
+            "inferenceMs": 864.4590999999999,
+            "parsingMs": 6.873800000000001,
+            "totalMs": 900.2908,
+            "detectionMs": 246.9008,
+            "recognitionMs": 617.5582999999999,
+            "detectionRegions": 1,
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 2.3053000000000003,
+              "detectorPreprocessMs": 24.8167,
+              "dbMs": 2.8993,
+              "cropMs": 0.7717,
+              "recognizerPreprocessMs": 0.9584999999999999,
+              "ctcMs": 3.9742,
+              "mergeMs": 0.0003,
+              "cacheMs": 0.0066,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997684,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999733,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949768,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 4,
+          "requestMs": 998.5342,
+          "metrics": {
+            "preprocessingMs": 25.1148,
+            "inferenceMs": 964.3954,
+            "parsingMs": 7.9875,
+            "totalMs": 997.5975999999999,
+            "detectionMs": 257.8071,
+            "recognitionMs": 706.5883,
+            "detectionRegions": 1,
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 2.0103999999999997,
+              "detectorPreprocessMs": 21.2279,
+              "dbMs": 3.5523,
+              "cropMs": 0.886,
+              "recognizerPreprocessMs": 0.9843000000000003,
+              "ctcMs": 4.4348,
+              "mergeMs": 0.00039999999999999996,
+              "cacheMs": 0.0042,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997697,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99497247,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 5,
+          "requestMs": 1043.4652999999998,
+          "metrics": {
+            "preprocessingMs": 29.7654,
+            "inferenceMs": 1004.2917,
+            "parsingMs": 8.299,
+            "totalMs": 1042.4567,
+            "detectionMs": 262.3996,
+            "recognitionMs": 741.8920999999999,
+            "detectionRegions": 1,
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.9176,
+              "detectorPreprocessMs": 25.9742,
+              "dbMs": 3.7619,
+              "cropMs": 0.8340000000000001,
+              "recognizerPreprocessMs": 1.0345,
+              "ctcMs": 4.5367,
+              "mergeMs": 0.00039999999999999996,
+              "cacheMs": 0.0047,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997713,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999715,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99380875,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "dynamic-background",
+      "variant": "old-cache",
+      "model": "ppocrv6-small",
+      "parameters": {
+        "detectionThreshold": 0.2,
+        "boxThreshold": 0.45,
+        "unclipRatio": 1.4,
+        "recognitionThreshold": 0.5,
+        "batchSize": 1,
+        "detectionResize": 960,
+        "widthBuckets": true,
+        "incremental": true,
+        "temporal": {
+          "enabled": false,
+          "strategy": "auto",
+          "refreshMs": 1000,
+          "maxReuse": 30,
+          "minConfidence": 0.85,
+          "edgeDelta": 12
+        }
+      },
+      "transitions": [],
+      "pathCounts": {
+        "full": 6
+      },
+      "cacheHitRate": 0,
+      "loadMs": 1062.7641,
+      "firstMs": 961.7999000000001,
+      "p50Ms": 901.4149,
+      "p95Ms": 1023.2513000000001,
+      "p99Ms": 1023.2513000000001,
+      "meanMs": 939.204025,
+      "detectorCalls": 6,
+      "recognizerCalls": 18,
+      "disagreements": 0,
+      "resources": {
+        "at": "2026-10-22T02:07:20.149Z",
+        "processes": {
+          "Id": 15156,
+          "ProcessName": "onnx-worker",
+          "CPU": 6.734375,
+          "WorkingSet64": 728223744,
+          "PrivateMemorySize64": 1354203136,
+          "PeakWorkingSet64": 746475520
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 42, 2736, 4096"
+      },
+      "runs": [
+        {
+          "frame": 0,
+          "requestMs": 963.0218000000004,
+          "metrics": {
+            "preprocessingMs": 23.0744,
+            "inferenceMs": 927.2955999999999,
+            "parsingMs": 11.279399999999999,
+            "totalMs": 961.7999000000001,
+            "detectionMs": 328.3567,
+            "recognitionMs": 598.9389,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.6723000000000001,
+              "detectorPreprocessMs": 18.2867,
+              "dbMs": 5.891,
+              "cropMs": 1.2595,
+              "recognizerPreprocessMs": 1.8422999999999998,
+              "ctcMs": 5.3839999999999995,
+              "mergeMs": 0.0044,
+              "cacheMs": 0.0192,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7256868390664231,
+            "meanCenterErrorPx": 2.040840031744433,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977094,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                169,
+                328,
+                215
+              ],
+              "confidence": 0.9999796,
+              "polygon": [
+                {
+                  "x": 77,
+                  "y": 169
+                },
+                {
+                  "x": 328,
+                  "y": 172
+                },
+                {
+                  "x": 325,
+                  "y": 215
+                },
+                {
+                  "x": 74,
+                  "y": 212
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9941437,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "requestMs": 818.7849000000006,
+          "metrics": {
+            "preprocessingMs": 20.058400000000002,
+            "inferenceMs": 791.1409,
+            "parsingMs": 6.384500000000001,
+            "totalMs": 817.6722,
+            "detectionMs": 237.00289999999998,
+            "recognitionMs": 554.138,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.8969,
+              "detectorPreprocessMs": 16.7447,
+              "dbMs": 2.3040000000000003,
+              "cropMs": 0.7045,
+              "recognizerPreprocessMs": 0.7066,
+              "ctcMs": 4.0803,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0087,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997753,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999704,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99453545,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 2,
+          "requestMs": 931.5731000000014,
+          "metrics": {
+            "preprocessingMs": 22.7088,
+            "inferenceMs": 899.8344999999999,
+            "parsingMs": 8.0885,
+            "totalMs": 930.7736,
+            "detectionMs": 270.1728,
+            "recognitionMs": 629.6617,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.6347,
+              "detectorPreprocessMs": 18.9004,
+              "dbMs": 3.6317,
+              "cropMs": 0.9768000000000001,
+              "recognizerPreprocessMs": 1.1884,
+              "ctcMs": 4.456300000000001,
+              "mergeMs": 0.0005,
+              "cacheMs": 0.0085,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977046,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949476,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 3,
+          "requestMs": 902.2351999999992,
+          "metrics": {
+            "preprocessingMs": 24.8245,
+            "inferenceMs": 869.3584000000001,
+            "parsingMs": 7.1088000000000005,
+            "totalMs": 901.4149,
+            "detectionMs": 290.01890000000003,
+            "recognitionMs": 579.3395,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.5733,
+              "detectorPreprocessMs": 21.429299999999998,
+              "dbMs": 2.9799,
+              "cropMs": 0.8279,
+              "recognizerPreprocessMs": 0.9855999999999999,
+              "ctcMs": 4.1284,
+              "mergeMs": 0.0005,
+              "cacheMs": 0.0065,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997684,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999733,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949768,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 4,
+          "requestMs": 1024.1994000000013,
+          "metrics": {
+            "preprocessingMs": 21.5403,
+            "inferenceMs": 993.8825999999999,
+            "parsingMs": 7.7348,
+            "totalMs": 1023.2513000000001,
+            "detectionMs": 232.334,
+            "recognitionMs": 761.5486,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.5958,
+              "detectorPreprocessMs": 18.4864,
+              "dbMs": 3.2603,
+              "cropMs": 0.7124,
+              "recognizerPreprocessMs": 0.7406,
+              "ctcMs": 4.4742999999999995,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0069,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997697,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99497247,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 5,
+          "requestMs": 902.1612000000005,
+          "metrics": {
+            "preprocessingMs": 23.0813,
+            "inferenceMs": 870.8446000000001,
+            "parsingMs": 7.362299999999999,
+            "totalMs": 901.3763,
+            "detectionMs": 225.5772,
+            "recognitionMs": 645.2674000000001,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.7717,
+              "detectorPreprocessMs": 19.247899999999998,
+              "dbMs": 2.9402999999999997,
+              "cropMs": 0.9440000000000001,
+              "recognizerPreprocessMs": 1.1113,
+              "ctcMs": 4.4218,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.0067,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997713,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999715,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99380875,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "dynamic-background",
+      "variant": "cache-only",
+      "model": "ppocrv6-small",
+      "parameters": {
+        "detectionThreshold": 0.2,
+        "boxThreshold": 0.45,
+        "unclipRatio": 1.4,
+        "recognitionThreshold": 0.5,
+        "batchSize": 1,
+        "detectionResize": 960,
+        "widthBuckets": true,
+        "incremental": false,
+        "temporal": {
+          "enabled": true,
+          "strategy": "cache-only",
+          "refreshMs": 1000,
+          "maxReuse": 30,
+          "minConfidence": 0.85,
+          "edgeDelta": 12
+        }
+      },
+      "transitions": [],
+      "pathCounts": {
+        "full": 6
+      },
+      "cacheHitRate": 0,
+      "loadMs": 1058.4455,
+      "firstMs": 811.9556,
+      "p50Ms": 907.6812,
+      "p95Ms": 1070.042,
+      "p99Ms": 1070.042,
+      "meanMs": 944.859525,
+      "detectorCalls": 6,
+      "recognizerCalls": 18,
+      "disagreements": 0,
+      "resources": {
+        "at": "2026-10-22T02:07:27.462Z",
+        "processes": {
+          "Id": 35984,
+          "ProcessName": "onnx-worker",
+          "CPU": 6.59375,
+          "WorkingSet64": 726999040,
+          "PrivateMemorySize64": 1329737728,
+          "PeakWorkingSet64": 745250816
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 42, 2711, 4096"
+      },
+      "runs": [
+        {
+          "frame": 0,
+          "requestMs": 812.6687999999995,
+          "metrics": {
+            "preprocessingMs": 20.188000000000002,
+            "inferenceMs": 785.0421,
+            "parsingMs": 6.395100000000001,
+            "totalMs": 811.9556,
+            "detectionMs": 251.67010000000002,
+            "recognitionMs": 533.372,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.7141000000000002,
+              "detectorPreprocessMs": 16.9049,
+              "dbMs": 2.4884,
+              "cropMs": 0.7997,
+              "recognizerPreprocessMs": 0.7592000000000002,
+              "ctcMs": 3.9048000000000007,
+              "mergeMs": 0.0019,
+              "cacheMs": 0.2515,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "trackerMs": 0.23570000000000002,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7256868390664231,
+            "meanCenterErrorPx": 2.040840031744433,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977094,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                169,
+                328,
+                215
+              ],
+              "confidence": 0.9999796,
+              "polygon": [
+                {
+                  "x": 77,
+                  "y": 169
+                },
+                {
+                  "x": 328,
+                  "y": 172
+                },
+                {
+                  "x": 325,
+                  "y": 215
+                },
+                {
+                  "x": 74,
+                  "y": 212
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9941437,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "requestMs": 912.2686999999969,
+          "metrics": {
+            "preprocessingMs": 21.665599999999998,
+            "inferenceMs": 881.1571,
+            "parsingMs": 8.0885,
+            "totalMs": 911.2839,
+            "detectionMs": 220.6327,
+            "recognitionMs": 660.5244,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.9667999999999999,
+              "detectorPreprocessMs": 17.413999999999998,
+              "dbMs": 2.4015999999999997,
+              "cropMs": 1.1087,
+              "recognizerPreprocessMs": 1.1706,
+              "ctcMs": 5.6867,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.27280000000000004,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "trackerMs": 0.2638,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997753,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999704,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99453545,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 2,
+          "requestMs": 946.5224999999991,
+          "metrics": {
+            "preprocessingMs": 34.338300000000004,
+            "inferenceMs": 903.1971000000001,
+            "parsingMs": 7.6689,
+            "totalMs": 945.5723,
+            "detectionMs": 224.93759999999997,
+            "recognitionMs": 678.2595000000001,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.9073,
+              "detectorPreprocessMs": 19.487000000000002,
+              "dbMs": 2.4509000000000003,
+              "cropMs": 0.8405,
+              "recognizerPreprocessMs": 0.8784999999999998,
+              "ctcMs": 5.2177999999999995,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.2725,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "cache-only-content-changed",
+              "trackerMs": 11.4833,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 1,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977046,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949476,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 3,
+          "requestMs": 857.0412000000033,
+          "metrics": {
+            "preprocessingMs": 39.4546,
+            "inferenceMs": 808.8797999999999,
+            "parsingMs": 7.466900000000001,
+            "totalMs": 856.1426,
+            "detectionMs": 240.1881,
+            "recognitionMs": 568.6917,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.6283,
+              "detectorPreprocessMs": 23.0887,
+              "dbMs": 2.7757,
+              "cropMs": 0.845,
+              "recognizerPreprocessMs": 0.8862999999999999,
+              "ctcMs": 4.6905,
+              "mergeMs": 0.0007,
+              "cacheMs": 0.22719999999999999,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "cache-only-content-changed",
+              "trackerMs": 13.2193,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 1,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997684,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999733,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949768,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 4,
+          "requestMs": 1070.904599999998,
+          "metrics": {
+            "preprocessingMs": 33.3174,
+            "inferenceMs": 1027.4427,
+            "parsingMs": 8.8646,
+            "totalMs": 1070.042,
+            "detectionMs": 311.6687,
+            "recognitionMs": 715.774,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.5582,
+              "detectorPreprocessMs": 18.5292,
+              "dbMs": 3.9281,
+              "cropMs": 0.8752,
+              "recognizerPreprocessMs": 0.9843000000000002,
+              "ctcMs": 4.936,
+              "mergeMs": 0.0005,
+              "cacheMs": 0.306,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "cache-only-content-changed",
+              "trackerMs": 11.6594,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 1,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997697,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99497247,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 5,
+          "requestMs": 908.5167000000001,
+          "metrics": {
+            "preprocessingMs": 35.224599999999995,
+            "inferenceMs": 864.3874,
+            "parsingMs": 7.6805,
+            "totalMs": 907.6812,
+            "detectionMs": 249.7805,
+            "recognitionMs": 614.6069,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.5246000000000002,
+              "detectorPreprocessMs": 20.298199999999998,
+              "dbMs": 3.5660000000000003,
+              "cropMs": 0.7766,
+              "recognizerPreprocessMs": 0.8335999999999999,
+              "ctcMs": 4.1137,
+              "mergeMs": 0.0007999999999999999,
+              "cacheMs": 0.2694,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "cache-only-content-changed",
+              "trackerMs": 12.045699999999998,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 1,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997713,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999715,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99380875,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "dynamic-background",
+      "variant": "rec-only",
+      "model": "ppocrv6-small",
+      "parameters": {
+        "detectionThreshold": 0.2,
+        "boxThreshold": 0.45,
+        "unclipRatio": 1.4,
+        "recognitionThreshold": 0.5,
+        "batchSize": 1,
+        "detectionResize": 960,
+        "widthBuckets": true,
+        "incremental": false,
+        "temporal": {
+          "enabled": true,
+          "strategy": "rec-only",
+          "refreshMs": 1000,
+          "maxReuse": 30,
+          "minConfidence": 0.85,
+          "edgeDelta": 12
+        }
+      },
+      "transitions": [],
+      "pathCounts": {
+        "full": 3,
+        "rec-only": 3
+      },
+      "cacheHitRate": 0,
+      "loadMs": 1052.9170000000001,
+      "firstMs": 888.514,
+      "p50Ms": 648.7939,
+      "p95Ms": 915.0321,
+      "p99Ms": 915.0321,
+      "meanMs": 739.9409499999999,
+      "detectorCalls": 3,
+      "recognizerCalls": 18,
+      "disagreements": 0,
+      "resources": {
+        "at": "2026-10-22T02:07:34.098Z",
+        "processes": {
+          "Id": 26460,
+          "ProcessName": "onnx-worker",
+          "CPU": 5.828125,
+          "WorkingSet64": 728027136,
+          "PrivateMemorySize64": 1356808192,
+          "PeakWorkingSet64": 746278912
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 33, 2736, 4096"
+      },
+      "runs": [
+        {
+          "frame": 0,
+          "requestMs": 889.3315000000002,
+          "metrics": {
+            "preprocessingMs": 25.4442,
+            "inferenceMs": 855.9304000000001,
+            "parsingMs": 6.7448999999999995,
+            "totalMs": 888.514,
+            "detectionMs": 240.0067,
+            "recognitionMs": 615.9237,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.9253,
+              "detectorPreprocessMs": 22.0849,
+              "dbMs": 2.6438,
+              "cropMs": 0.7059,
+              "recognizerPreprocessMs": 0.7153,
+              "ctcMs": 4.0988999999999995,
+              "mergeMs": 0.0022,
+              "cacheMs": 0.3069,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "trackerMs": 0.28230000000000005,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7256868390664231,
+            "meanCenterErrorPx": 2.040840031744433,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977094,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                169,
+                328,
+                215
+              ],
+              "confidence": 0.9999796,
+              "polygon": [
+                {
+                  "x": 77,
+                  "y": 169
+                },
+                {
+                  "x": 328,
+                  "y": 172
+                },
+                {
+                  "x": 325,
+                  "y": 215
+                },
+                {
+                  "x": 74,
+                  "y": 212
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9941437,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "requestMs": 849.4124000000011,
+          "metrics": {
+            "preprocessingMs": 20.861399999999996,
+            "inferenceMs": 819.5627999999999,
+            "parsingMs": 7.526000000000002,
+            "totalMs": 848.299,
+            "detectionMs": 238.52519999999998,
+            "recognitionMs": 581.0376,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.6638,
+              "detectorPreprocessMs": 17.5669,
+              "dbMs": 3.4623000000000004,
+              "cropMs": 0.7623,
+              "recognizerPreprocessMs": 0.8619000000000001,
+              "ctcMs": 4.063400000000001,
+              "mergeMs": 0.0003,
+              "cacheMs": 0.24620000000000003,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "trackerMs": 0.2412,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997753,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999704,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99453545,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 2,
+          "requestMs": 649.6624000000011,
+          "metrics": {
+            "preprocessingMs": 16.5488,
+            "inferenceMs": 627.9525,
+            "parsingMs": 4.0105,
+            "totalMs": 648.7939,
+            "detectionMs": 0,
+            "recognitionMs": 627.9525,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 2.2861000000000002,
+              "detectorPreprocessMs": 0,
+              "dbMs": 0,
+              "cropMs": 0.7898000000000001,
+              "recognizerPreprocessMs": 0.8457999999999999,
+              "ctcMs": 4.008900000000001,
+              "mergeMs": 0.0015999999999999999,
+              "cacheMs": 0.2648,
+              "detectorCalls": 0,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "rec-only",
+              "reason": "trusted-boundaries",
+              "trackerMs": 12.875000000000002,
+              "reusedLines": 0,
+              "recOnlyRegions": 3,
+              "fullDetections": 0,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977046,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949476,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 3,
+          "requestMs": 758.2746000000006,
+          "metrics": {
+            "preprocessingMs": 20.961299999999998,
+            "inferenceMs": 731.5151,
+            "parsingMs": 4.5613,
+            "totalMs": 757.3275,
+            "detectionMs": 0,
+            "recognitionMs": 731.5151,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 2.2103,
+              "detectorPreprocessMs": 0,
+              "dbMs": 0,
+              "cropMs": 0.9219,
+              "recognizerPreprocessMs": 1.0996000000000001,
+              "ctcMs": 4.5600000000000005,
+              "mergeMs": 0.0013,
+              "cacheMs": 0.2653,
+              "detectorCalls": 0,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "rec-only",
+              "reason": "trusted-boundaries",
+              "trackerMs": 16.9804,
+              "reusedLines": 0,
+              "recOnlyRegions": 3,
+              "fullDetections": 0,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997684,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999733,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949768,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 4,
+          "requestMs": 915.8402000000024,
+          "metrics": {
+            "preprocessingMs": 22.6798,
+            "inferenceMs": 884.6751,
+            "parsingMs": 7.308800000000001,
+            "totalMs": 915.0321,
+            "detectionMs": 233.9615,
+            "recognitionMs": 650.7136,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.623,
+              "detectorPreprocessMs": 19.5811,
+              "dbMs": 2.508,
+              "cropMs": 0.7787,
+              "recognizerPreprocessMs": 0.6928000000000001,
+              "ctcMs": 4.8005,
+              "mergeMs": 0.0003,
+              "cacheMs": 0.2828,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "periodic-refresh",
+              "trackerMs": 0.2751,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997697,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99497247,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 5,
+          "requestMs": 639.4233999999997,
+          "metrics": {
+            "preprocessingMs": 19.2035,
+            "inferenceMs": 615.2924,
+            "parsingMs": 3.862,
+            "totalMs": 638.6102999999999,
+            "detectionMs": 0,
+            "recognitionMs": 615.2924,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.935,
+              "detectorPreprocessMs": 0,
+              "dbMs": 0,
+              "cropMs": 0.7622,
+              "recognizerPreprocessMs": 0.8480999999999999,
+              "ctcMs": 3.8608000000000002,
+              "mergeMs": 0.0012,
+              "cacheMs": 0.2386,
+              "detectorCalls": 0,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "rec-only",
+              "reason": "trusted-boundaries",
+              "trackerMs": 15.8832,
+              "reusedLines": 0,
+              "recOnlyRegions": 3,
+              "fullDetections": 0,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997713,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999715,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99380875,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "scene": "dynamic-background",
+      "variant": "auto",
+      "model": "ppocrv6-small",
+      "parameters": {
+        "detectionThreshold": 0.2,
+        "boxThreshold": 0.45,
+        "unclipRatio": 1.4,
+        "recognitionThreshold": 0.5,
+        "batchSize": 1,
+        "detectionResize": 960,
+        "widthBuckets": true,
+        "incremental": false,
+        "temporal": {
+          "enabled": true,
+          "strategy": "auto",
+          "refreshMs": 1000,
+          "maxReuse": 30,
+          "minConfidence": 0.85,
+          "edgeDelta": 12
+        }
+      },
+      "transitions": [],
+      "pathCounts": {
+        "full": 3,
+        "rec-only": 3
+      },
+      "cacheHitRate": 0,
+      "loadMs": 1174.2875,
+      "firstMs": 890.8157,
+      "p50Ms": 607.8422,
+      "p95Ms": 967.1387,
+      "p99Ms": 967.1387,
+      "meanMs": 713.601575,
+      "detectorCalls": 3,
+      "recognizerCalls": 18,
+      "disagreements": 0,
+      "resources": {
+        "at": "2026-10-22T02:07:40.704Z",
+        "processes": {
+          "Id": 48948,
+          "ProcessName": "onnx-worker",
+          "CPU": 5.65625,
+          "WorkingSet64": 728469504,
+          "PrivateMemorySize64": 1359794176,
+          "PeakWorkingSet64": 746721280
+        },
+        "gpuDeviceWideSnapshot": "NVIDIA GeForce GTX 1650, 610.88, 24, 2737, 4096"
+      },
+      "runs": [
+        {
+          "frame": 0,
+          "requestMs": 891.4308999999994,
+          "metrics": {
+            "preprocessingMs": 20.9679,
+            "inferenceMs": 862.2417,
+            "parsingMs": 7.231300000000001,
+            "totalMs": 890.8157,
+            "detectionMs": 255.2432,
+            "recognitionMs": 606.9985,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.7471999999999999,
+              "detectorPreprocessMs": 17.5667,
+              "dbMs": 2.9455,
+              "cropMs": 0.7994999999999999,
+              "recognizerPreprocessMs": 0.8411000000000002,
+              "ctcMs": 4.2815,
+              "mergeMs": 0.0043,
+              "cacheMs": 0.2652,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "initial-or-invalidated",
+              "trackerMs": 0.24650000000000002,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7256868390664231,
+            "meanCenterErrorPx": 2.040840031744433,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977094,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                169,
+                328,
+                215
+              ],
+              "confidence": 0.9999796,
+              "polygon": [
+                {
+                  "x": 77,
+                  "y": 169
+                },
+                {
+                  "x": 328,
+                  "y": 172
+                },
+                {
+                  "x": 325,
+                  "y": 215
+                },
+                {
+                  "x": 74,
+                  "y": 212
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9941437,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 1,
+          "requestMs": 833.3191999999981,
+          "metrics": {
+            "preprocessingMs": 21.802600000000005,
+            "inferenceMs": 803.6492000000001,
+            "parsingMs": 6.428,
+            "totalMs": 832.2570000000001,
+            "detectionMs": 274.2412,
+            "recognitionMs": 529.408,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.6817,
+              "detectorPreprocessMs": 18.697100000000002,
+              "dbMs": 2.3809,
+              "cropMs": 0.6982,
+              "recognizerPreprocessMs": 0.7202000000000001,
+              "ctcMs": 4.0469,
+              "mergeMs": 0.00019999999999999998,
+              "cacheMs": 0.3031,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "untrusted-boundaries",
+              "trackerMs": 0.29810000000000003,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997753,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999704,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99453545,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 2,
+          "requestMs": 608.741399999999,
+          "metrics": {
+            "preprocessingMs": 13.891200000000001,
+            "inferenceMs": 589.1377,
+            "parsingMs": 4.465800000000001,
+            "totalMs": 607.8422,
+            "detectionMs": 0,
+            "recognitionMs": 589.1377,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.6678000000000002,
+              "detectorPreprocessMs": 0,
+              "dbMs": 0,
+              "cropMs": 0.7664,
+              "recognizerPreprocessMs": 0.8708,
+              "ctcMs": 4.4648,
+              "mergeMs": 0.001,
+              "cacheMs": 0.3175,
+              "detectorCalls": 0,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "rec-only",
+              "reason": "trusted-boundaries",
+              "trackerMs": 10.89,
+              "reusedLines": 0,
+              "recOnlyRegions": 3,
+              "fullDetections": 0,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.99977046,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949476,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 3,
+          "requestMs": 706.824700000001,
+          "metrics": {
+            "preprocessingMs": 17.6393,
+            "inferenceMs": 683.9525,
+            "parsingMs": 4.2385,
+            "totalMs": 706.0772,
+            "detectionMs": 0,
+            "recognitionMs": 683.9525,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.858,
+              "detectorPreprocessMs": 0,
+              "dbMs": 0,
+              "cropMs": 0.7498,
+              "recognizerPreprocessMs": 0.8482999999999998,
+              "ctcMs": 4.2374,
+              "mergeMs": 0.0011,
+              "cacheMs": 0.2275,
+              "detectorCalls": 0,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "rec-only",
+              "reason": "trusted-boundaries",
+              "trackerMs": 14.3975,
+              "reusedLines": 0,
+              "recOnlyRegions": 3,
+              "fullDetections": 0,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997684,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999733,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.9949768,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 4,
+          "requestMs": 967.9219000000012,
+          "metrics": {
+            "preprocessingMs": 21.7985,
+            "inferenceMs": 936.7434,
+            "parsingMs": 8.2279,
+            "totalMs": 967.1387,
+            "detectionMs": 237.4263,
+            "recognitionMs": 699.3171,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": true
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 2.3051999999999997,
+              "detectorPreprocessMs": 17.5229,
+              "dbMs": 3.6154,
+              "cropMs": 0.9375,
+              "recognizerPreprocessMs": 1.025,
+              "ctcMs": 4.6121,
+              "mergeMs": 0.00039999999999999996,
+              "cacheMs": 0.2471,
+              "detectorCalls": 1,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "full",
+              "reason": "periodic-refresh",
+              "trackerMs": 0.2417,
+              "reusedLines": 0,
+              "recOnlyRegions": 0,
+              "fullDetections": 1,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997697,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.999973,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99497247,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "frame": 5,
+          "requestMs": 574.1646000000037,
+          "metrics": {
+            "preprocessingMs": 15.062,
+            "inferenceMs": 554.0015,
+            "parsingMs": 4.0358,
+            "totalMs": 573.3482,
+            "detectionMs": 0,
+            "recognitionMs": 554.0015,
+            "detectionRegions": 1,
+            "cache": {
+              "reusedRegions": 0,
+              "reusedLines": 0,
+              "refreshed": false
+            },
+            "recognitionBatches": 3,
+            "recognitionPixels": 46080,
+            "pipeline": {
+              "decodeMs": 1.9716999999999998,
+              "detectorPreprocessMs": 0,
+              "dbMs": 0,
+              "cropMs": 0.6903999999999999,
+              "recognizerPreprocessMs": 0.6908000000000001,
+              "ctcMs": 4.0348,
+              "mergeMs": 0.001,
+              "cacheMs": 0.2342,
+              "detectorCalls": 0,
+              "recognizerCalls": 3,
+              "outputBytes": 8980800,
+              "recognitionShapes": [
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ],
+                [
+                  1,
+                  3,
+                  48,
+                  320
+                ]
+              ],
+              "compactBatches": 0,
+              "compactFallbacks": 0,
+              "compactStatus": "disabled"
+            },
+            "temporal": {
+              "path": "rec-only",
+              "reason": "trusted-boundaries",
+              "trackerMs": 11.9281,
+              "reusedLines": 0,
+              "recOnlyRegions": 3,
+              "fullDetections": 0,
+              "riskFallbacks": 0,
+              "cacheBytes": 2765151
+            }
+          },
+          "quality": {
+            "exactLineRecall": 1,
+            "characterErrorRate": 0,
+            "meanBoxIoU": 0.7431281566956343,
+            "meanCenterErrorPx": 1.9245737445504807,
+            "unexpectedBlocks": 0
+          },
+          "comparison": {
+            "firstBlocks": 3,
+            "secondBlocks": 3,
+            "missingFromSecond": 0,
+            "extraInSecond": 0,
+            "disagreement": false,
+            "interpretation": "Output disagreement is uncertainty, not evidence that either strategy is correct."
+          },
+          "blocks": [
+            {
+              "id": "block-0",
+              "text": "Health 100",
+              "label": "text",
+              "bbox": [
+                76,
+                100,
+                251,
+                139
+              ],
+              "confidence": 0.9997713,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 100
+                },
+                {
+                  "x": 251,
+                  "y": 139
+                },
+                {
+                  "x": 76,
+                  "y": 139
+                }
+              ]
+            },
+            {
+              "id": "block-1",
+              "text": "Quest complete",
+              "label": "text",
+              "bbox": [
+                74,
+                171,
+                327,
+                214
+              ],
+              "confidence": 0.9999715,
+              "polygon": [
+                {
+                  "x": 78,
+                  "y": 171
+                },
+                {
+                  "x": 327,
+                  "y": 173
+                },
+                {
+                  "x": 324,
+                  "y": 214
+                },
+                {
+                  "x": 74,
+                  "y": 211
+                }
+              ]
+            },
+            {
+              "id": "block-2",
+              "text": "游戏 OCR Test",
+              "label": "text",
+              "bbox": [
+                76,
+                243,
+                297,
+                279
+              ],
+              "confidence": 0.99380875,
+              "polygon": [
+                {
+                  "x": 76,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 243
+                },
+                {
+                  "x": 297,
+                  "y": 279
+                },
+                {
+                  "x": 76,
+                  "y": 279
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "corpusSha256": "d16bd698317c33797d30a0939bea20e1f2567693c25db1a737f416a12f072e07"
+}

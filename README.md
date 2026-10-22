@@ -182,4 +182,4 @@ GitHub Actions 自动完成同样步骤并生成完整便携 ZIP、独立 CPU ZI
 
 ## 实时时序识别（实验性）
 
-新增逐阶段延迟统计、时序文字跟踪、独立 Rec-only、可选共享内存和 CUDA 概率压缩。全部默认关闭；在设置中可启用，Manual/Adaptive 时序会限制为单 Worker。参见 [时序使用与标注](docs/temporal-ocr.md) 和 [分阶段实测、兼容性及限制](docs/latency-optimization.md)。RTX5060Ti 尚未实测；当前 GTX1650 不支持 TensorRT RTX。
+新增逐阶段延迟统计、时序文字跟踪、独立 Rec-only、可选共享内存和 CUDA 概率压缩。时序与实验加速开关默认关闭，统计始终可用；在设置中可启用相应策略，Manual/Adaptive 时序会限制为单 Worker。参见 [时序使用与标注](docs/temporal-ocr.md) 和 [分阶段实测、兼容性及限制](docs/latency-optimization.md)。RTX5060Ti 尚未实测；当前 GTX1650 不支持 TensorRT RTX。

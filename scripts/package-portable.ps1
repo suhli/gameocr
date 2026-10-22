@@ -1,8 +1,8 @@
-param([string]$Binary = 'target/release/gameocr.exe', [ValidateSet('both','cpu')][string]$Backend = 'both')
+param([string]$Binary = 'target/release/gameocr.exe', [ValidateSet('both','cpu','ondemand')][string]$Backend = 'ondemand')
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 Set-Location $repo
-$name = if ($Backend -eq 'cpu') { 'GameOCR-windows-x64-cpu-portable' } else { 'GameOCR-windows-x64-portable' }
+$name = if ($Backend -eq 'cpu') { 'GameOCR-windows-x64-cpu-portable' } elseif ($Backend -eq 'ondemand') { 'GameOCR-windows-x64-ondemand-portable' } else { 'GameOCR-windows-x64-portable' }
 $destination = Join-Path $repo "artifacts/$name"
 $archive = Join-Path $repo "artifacts/$name.zip"
 if (Test-Path -LiteralPath $destination) {
@@ -35,10 +35,11 @@ Model weights are not included. Download/import GGUF + mmproj or PP-OCRv6 ONNX i
 Settings and models: %LOCALAPPDATA%\GameOCR
 This is an unsigned build; clean Windows 11 validation is documented separately.
 '@ | Set-Content -LiteralPath (Join-Path $destination 'README.txt') -Encoding utf8
-$backendNote = if ($Backend -eq 'cpu') { 'CPU-only package: no NVIDIA libraries. Auto falls back to CPU; explicit CUDA reports a missing worker.' } else { 'CPU and CUDA workers included. CUDA requires a compatible NVIDIA driver.' }
+$backendNote = if ($Backend -eq 'cpu') { 'CPU-only package: no NVIDIA libraries. Auto falls back to CPU; explicit CUDA reports a missing worker.' } elseif ($Backend -eq 'ondemand') { 'CUDA libraries download from NVIDIA on first explicit CUDA model load (about 1.86 GiB for ONNX, 541 MiB for GGUF). Auto does not download. Downloads support cancellation/resume and SHA-256 verification. Cache: %LOCALAPPDATA%\GameOCR\runtimes\nvidia. A compatible NVIDIA driver must already be installed.' } else { 'CPU and CUDA workers and NVIDIA runtime libraries included for offline use. CUDA requires a compatible NVIDIA driver.' }
 Add-Content -LiteralPath (Join-Path $destination 'README.txt') -Value $backendNote -Encoding utf8
 $requiredFiles = @('GameOCR.exe','workers/llamacpp/cpu/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','vcruntime140.dll')
-if ($Backend -eq 'both') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll','workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll') }
+if ($Backend -ne 'cpu') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll') }
+if ($Backend -eq 'both') { $requiredFiles += @('workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll') }
 foreach ($required in $requiredFiles) {
     if (!(Test-Path -LiteralPath (Join-Path $destination $required))) { throw "Portable is incomplete: $required" }
 }

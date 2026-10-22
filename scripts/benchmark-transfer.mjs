@@ -14,7 +14,7 @@ for(const device of ['cpu','cuda'])for(const temporal of (fourK?[true]:[false,tr
     const key=device+temporal+image;if(!shared)baselines.set(key,r.blocks);else assert.equal(compareOutputs(baselines.get(key),r.blocks).disagreement,false);
     runs.push(r.metrics);
    }
-   const warm=runs.slice(2);const row={device,temporal,shared,image,p50Ms:quantile(warm.map(r=>r.execution.endToEndMs),.5),transferMs:quantile(warm.map(r=>r.execution.transferMs),.5),decodeMs:quantile(warm.map(r=>r.pipeline.decodeMs),.5),resources:resources([w.child.pid]),runs};
+   const warm=runs.slice(2);const row={device,temporal,shared,image,p50Ms:quantile(warm.map(r=>r.execution.endToEndMs),.5),transferMs:quantile(warm.map(r=>r.execution.transferMs),.5),decodeMs:quantile(warm.map(r=>r.pipeline.decodeMs),.5),resources:resources([w.child.pid,...w.ready.executor.workers.map(w=>w.pid)]),runs};
    report.results.push(row);fs.writeFileSync(destination,JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({device,temporal,shared,image,p50Ms:row.p50Ms,transferMs:row.transferMs,decodeMs:row.decodeMs}));
   }
   const cancel=await w.request({type:'cancel',image:path.resolve('tests/fixtures/small-text/dense-2560.png'),delayMs:2});assert.equal(cancel.type,'error');

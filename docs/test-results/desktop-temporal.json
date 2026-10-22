@@ -1,7 +1,7 @@
 {
-  "executedAt": "2026-10-21T07:29:58.455Z",
+  "executedAt": "2026-10-22T07:03:07.824Z",
   "app": "artifacts\\GameOCR-windows-x64-cpu-portable\\GameOCR.exe",
-  "appSha256": "03663c8789af5f3b67d84b7bf2c43b4290054c309f3b457734147b1b8eaae0a4",
+  "appSha256": "7fbcd33bda20f2cc14797d5359f5155af497215f58574016b5427339683d8ad5",
   "checks": [
     "Parallel settings hidden by default, editable through UI and persisted across reload",
     "Large real WGC frame: four tiles, one merged history entry, coordinates and JSON export, live worker statistics",

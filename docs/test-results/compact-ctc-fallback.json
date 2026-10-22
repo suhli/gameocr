@@ -1,0 +1,41 @@
+{
+  "executedAt": "2026-10-22T02:11:29.443Z",
+  "checks": [
+    {
+      "device": "cpu",
+      "mode": "off",
+      "status": "disabled",
+      "originalRecognizerRan": true
+    },
+    {
+      "device": "cpu",
+      "mode": "missing-compact",
+      "status": "requires CUDA and an imported recognizer-ctc model",
+      "originalRecognizerRan": true
+    },
+    {
+      "device": "cpu",
+      "mode": "invalid-compact",
+      "status": "requires CUDA and an imported recognizer-ctc model",
+      "originalRecognizerRan": true
+    },
+    {
+      "device": "cuda",
+      "mode": "off",
+      "status": "disabled",
+      "originalRecognizerRan": true
+    },
+    {
+      "device": "cuda",
+      "mode": "missing-compact",
+      "status": "requires CUDA and an imported recognizer-ctc model",
+      "originalRecognizerRan": true
+    },
+    {
+      "device": "cuda",
+      "mode": "invalid-compact",
+      "status": "initialization fallback: ONNX session: C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\ctc-fallback\\invalid.onnx",
+      "originalRecognizerRan": true
+    }
+  ]
+}

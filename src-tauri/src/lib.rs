@@ -1,6 +1,7 @@
 pub mod adaptive;
 mod capture;
 mod commands;
+pub mod cuda_runtime;
 pub mod executor;
 mod model;
 mod ocr;
@@ -51,6 +52,8 @@ pub fn run() {
             commands::update_settings,
             commands::get_performance,
             commands::get_model_status,
+            commands::get_cuda_runtime_status,
+            commands::cancel_cuda_runtime_download,
             commands::get_history,
             commands::get_status,
             commands::export_result,

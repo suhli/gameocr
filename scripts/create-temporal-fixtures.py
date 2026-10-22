@@ -44,7 +44,7 @@ for name in names:
             draw.text((x,y),text,font=font,fill=color)
             gt.append({'text':text,'bbox':list(draw.textbbox((x,y),text,font=font))})
         file=f'{name}-{n}.png';image.save(root/file)
-        frames.append({'image':file,'groundTruth':gt,'atMs':n*100,'generation':2 if name in ['scene-switch','generation-reset','fade','moving-shadow','textured-background'] and n>=3 else 1})
+        frames.append({'image':file,'groundTruth':gt,'atMs':n*100,'generation':2 if name in ['scene-switch','generation-reset'] and n>=3 else 1})
     scenarios.append({'name':name,'source':'synthetic','frames':frames})
 dense=json.loads(Path('tests/fixtures/small-text/corpus.json').read_text(encoding='utf-8-sig'))
 for size in [2560,3840]:

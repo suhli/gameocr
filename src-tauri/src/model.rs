@@ -191,7 +191,7 @@ impl ModelManager {
         );
         Ok(())
     }
-    async fn download_file(
+    pub(crate) async fn download_file(
         &self,
         url: &str,
         path: &Path,
@@ -262,6 +262,25 @@ impl ModelManager {
         }
         tokio::fs::rename(part, path).await?;
         Ok(())
+    }
+    pub(crate) fn official_runtime_downloader() -> Result<Self> {
+        Ok(Self {
+            busy: Arc::new(AtomicBool::new(false)),
+            client: reqwest::Client::builder()
+                .connect_timeout(std::time::Duration::from_secs(20))
+                .read_timeout(std::time::Duration::from_secs(60))
+                .user_agent("GameOCR/0.1.0")
+                .redirect(reqwest::redirect::Policy::custom(|attempt| {
+                    if attempt.previous().len() < 5
+                        && crate::cuda_runtime::official_url(attempt.url())
+                    {
+                        attempt.follow()
+                    } else {
+                        attempt.error("CUDA 运行库只允许 NVIDIA 官方 HTTPS 下载地址")
+                    }
+                }))
+                .build()?,
+        })
     }
     pub fn import(&self, dir: &Path, model: &Path, mmproj: &Path) -> Result<ModelEntry> {
         let _guard = self.guard()?;

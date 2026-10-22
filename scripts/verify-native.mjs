@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 const root=path.resolve(process.argv[2]||'artifacts/GameOCR-windows-x64-portable');
+const onDemand=process.argv.includes('--on-demand');
+const deferredNames=new Set(onDemand?JSON.parse(fs.readFileSync('src-tauri/catalog/cuda-runtime.json','utf8')).packages.flatMap(p=>p.required.map(n=>n.toLowerCase())):[]);
 function imports(file){
   const b=fs.readFileSync(file), pe=b.readUInt32LE(0x3c);
   assert.equal(b.toString('ascii',pe,pe+4),'PE\0\0');
@@ -26,6 +28,7 @@ const files=[];
 function walk(dir){for(const item of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,item.name);if(item.isDirectory())walk(p);else if(/\.(exe|dll)$/i.test(item.name))files.push(p);}}
 walk(root);
 const report=[];
+let deferredCount=0;
 for(const file of files){
   const deps=imports(file);
   if(path.basename(file).toLowerCase()==='gameocr.exe')assert(!deps.some(d=>/cuda|cublas|ggml|onnxruntime/i.test(d)),'UI must not import inference runtimes');
@@ -36,9 +39,12 @@ for(const file of files){
     const driverDependency=gpu&&dep.toLowerCase()==='nvcuda.dll';
     const directories=[path.dirname(file),root,path.join(process.env.SystemRoot,'System32'),...(gpu?[path.join(root,'workers','cuda-runtime')]:[])];
     const available=driverDependency||/^(api-ms-|ext-ms-)/i.test(dep)||directories.some(d=>fs.existsSync(path.join(d,dep)));
-    assert(available,`${path.relative(root,file)} requires missing ${dep}`);
+    const deferred=!available&&gpu&&deferredNames.has(dep.toLowerCase());
+    if(deferred)deferredCount++;
+    assert(available||deferred,`${path.relative(root,file)} requires missing ${dep}`);
   }
   report.push({file:path.relative(root,file),imports:deps});
 }
 fs.writeFileSync('artifacts/native-imports.json',JSON.stringify(report,null,2));
 console.log(`Verified imports for ${files.length} x64 binaries using package paths and system32 only.`);
+if(onDemand)console.log(`${deferredCount} NVIDIA imports are intentionally deferred to the pinned official runtime downloader; this is not a GPU execution check.`);

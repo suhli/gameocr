@@ -1,0 +1,54 @@
+{
+  "executedAt": "2026-10-22T07:09:00.818491+00:00",
+  "status": "passed",
+  "appSha256": "7fbcd33bda20f2cc14797d5359f5155af497215f58574016b5427339683d8ad5",
+  "packages": [
+    {
+      "backend": "cpu",
+      "archive": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 17002407,
+      "sha256": "ef5a06fbe2027167be159736e3761d789db41c87a4f00121b42846888ee68663",
+      "verifiedFileCount": 45,
+      "verifiedNativeImports": 35,
+      "appSha256": "7fbcd33bda20f2cc14797d5359f5155af497215f58574016b5427339683d8ad5",
+      "workerSha256": {
+        "onnx/cpu": "131637440ade63b2e2253462c00c995a0812f64de8ba6ac8469b4547efc6a75b",
+        "llamacpp/cpu": "cdb55260e5aa2e21a90a2083f15f62f2866defce88e5abfbdcdc39452fa83992"
+      },
+      "nativeWorkersMatchMeasuredBinaries": true
+    },
+    {
+      "backend": "both",
+      "archive": "artifacts/GameOCR-windows-x64-portable.zip",
+      "bytes": 1718318976,
+      "sha256": "ed86477f53a8f3b6ebd50ad48e66dfa883b8a9b12992c78ffdeaefa8655b2fa3",
+      "verifiedFileCount": 86,
+      "verifiedNativeImports": 75,
+      "appSha256": "7fbcd33bda20f2cc14797d5359f5155af497215f58574016b5427339683d8ad5",
+      "workerSha256": {
+        "onnx/cpu": "131637440ade63b2e2253462c00c995a0812f64de8ba6ac8469b4547efc6a75b",
+        "onnx/cuda": "1fd057df7f30656f34ae859845fa687e98b1c1c3371342eda32a68f8ce5c79e7",
+        "llamacpp/cpu": "cdb55260e5aa2e21a90a2083f15f62f2866defce88e5abfbdcdc39452fa83992",
+        "llamacpp/cuda": "ef3f9784ea584e96ec248cc8dd9c9bfc302edb894f57463f6216e548ecf195cd"
+      },
+      "nativeWorkersMatchMeasuredBinaries": true
+    }
+  ],
+  "desktopReports": [
+    "docs/test-results/desktop-temporal.json",
+    "docs/test-results/desktop-temporal-full-package.json",
+    "docs/test-results/temporal-desktop-runtimes.json"
+  ],
+  "checks": [
+    "Both ZIPs verified byte-for-byte against their packaged directories",
+    "Native x64 imports resolved using package paths and system32",
+    "CPU-only package passed thirteen real WGC desktop checks and twelve model/runtime checks",
+    "Full package passed fourteen real WGC desktop checks, including experimental model selection and actual compact CUDA inference",
+    "Packaged ONNX workers match the CPU/CUDA temporal benchmark binaries; all packaged workers match release resources"
+  ],
+  "limitations": [
+    "NSIS/MSI were not rebuilt; existing installers predate this upgrade",
+    "Not a clean Windows VM, RTX5060Ti or real-game accuracy validation",
+    "GPU I/O Binding/texture input is not integrated; TensorRT RTX is compatibility research and a read-only environment probe"
+  ]
+}
