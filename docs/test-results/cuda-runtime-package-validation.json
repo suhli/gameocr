@@ -1,0 +1,37 @@
+{
+  "executedAt": "2026-10-22T08:24:30.657Z",
+  "status": "passed",
+  "packages": [
+    {
+      "backend": "ondemand",
+      "archive": "artifacts/GameOCR-windows-x64-ondemand-portable.zip",
+      "bytes": 469949861,
+      "sha256": "af896905275a351f1b5d93b24c392a1ffc017d6b9c1994444f40a9a865a07805",
+      "verifiedFileCount": 71,
+      "verifiedNativeImports": 60,
+      "intentionallyDeferredNvidiaImports": 7,
+      "appSha256": "42c31b00fd0f952849b18a58b1b7daee0e9ee35e623d305c1c25e0b85ef28a0d"
+    },
+    {
+      "backend": "cpu",
+      "archive": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 17118432,
+      "sha256": "682965f8ae3d74129f42b76ebcff89b9165de571f971761be7303f0c22f3b620",
+      "verifiedFileCount": 45,
+      "verifiedNativeImports": 35,
+      "intentionallyDeferredNvidiaImports": 0,
+      "appSha256": "42c31b00fd0f952849b18a58b1b7daee0e9ee35e623d305c1c25e0b85ef28a0d"
+    }
+  ],
+  "checks": [
+    "ZIP entries verified byte-for-byte against each packaged directory",
+    "CPU package contains no GPU Worker or NVIDIA DLL",
+    "On-demand package contains both CPU/GPU workers and excludes workers/cuda-runtime",
+    "Native imports resolved or restricted to pinned deferred NVIDIA runtime DLLs"
+  ],
+  "limitations": [
+    "Archive and native import checks alone are not GPU execution evidence; separate desktop reports cover execution",
+    "NSIS/MSI configuration updated but installers were not rebuilt",
+    "No clean Windows VM or RTX 5060 Ti hardware validation"
+  ]
+}

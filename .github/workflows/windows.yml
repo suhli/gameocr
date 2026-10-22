@@ -47,7 +47,7 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cargo test -p gameocr-onnx --locked
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          New-Item -ItemType Directory -Force src-tauri/resources/workers,src-tauri/resources/runtime,src-tauri/resources/licenses | Out-Null
+          New-Item -ItemType Directory -Force src-tauri/resources/workers/onnx,src-tauri/resources/workers/llamacpp,src-tauri/resources/runtime,src-tauri/resources/licenses | Out-Null
           cargo test -p gameocr --lib --locked
       - uses: Jimver/cuda-toolkit@v0.2.36
         with:

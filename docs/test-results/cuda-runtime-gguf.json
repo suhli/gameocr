@@ -1,0 +1,82 @@
+{
+  "executedAt": "2026-10-22T08:21:42.500Z",
+  "libraries": [
+    "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\cuda-download-validation\\data\\runtimes\\nvidia\\cuda_cudart-12.8.90-4a39058fd851",
+    "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\cuda-download-validation\\data\\runtimes\\nvidia\\libcublas-12.8.4.1-57a470112cec"
+  ],
+  "modules": [
+    {
+      "ModuleName": "cudart64_12.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\cuda-download-validation\\data\\runtimes\\nvidia\\cuda_cudart-12.8.90-4a39058fd851\\cudart64_12.dll"
+    },
+    {
+      "ModuleName": "cublas64_12.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\cuda-download-validation\\data\\runtimes\\nvidia\\libcublas-12.8.4.1-57a470112cec\\cublas64_12.dll"
+    },
+    {
+      "ModuleName": "cublasLt64_12.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\.cache\\cuda-download-validation\\data\\runtimes\\nvidia\\libcublas-12.8.4.1-57a470112cec\\cublasLt64_12.dll"
+    }
+  ],
+  "result": {
+    "frameId": 1,
+    "timestamp": 1792657299970,
+    "sourceWidth": 800,
+    "sourceHeight": 320,
+    "blocks": [
+      {
+        "id": "block-0",
+        "text": "# GAME OCR TEST",
+        "label": "title",
+        "bbox": [
+          42.4,
+          29.44,
+          406.4,
+          80
+        ],
+        "confidence": null,
+        "polygon": null
+      },
+      {
+        "id": "block-1",
+        "text": "Health: 100 / 100",
+        "label": "text",
+        "bbox": [
+          44,
+          108.16,
+          376,
+          149.44
+        ],
+        "confidence": null,
+        "polygon": null
+      },
+      {
+        "id": "block-2",
+        "text": "Quest complete!",
+        "label": "text",
+        "bbox": [
+          44,
+          200,
+          363.2,
+          232.64
+        ],
+        "confidence": null,
+        "polygon": null
+      }
+    ],
+    "rawOutput": "![title](53,92,508,250) # GAME OCR TEST\n\n![text](55,338,470,467) Health: 100 / 100\n\n![text](55,625,454,727) Quest complete!",
+    "metrics": {
+      "preprocessingMs": 23.1692,
+      "inferenceMs": 1745.9871,
+      "parsingMs": 1.0433000000000001,
+      "totalMs": 1770.2001,
+      "detectionMs": null,
+      "recognitionMs": null
+    },
+    "device": "CUDA",
+    "truncated": false,
+    "runtime": "llamacpp",
+    "modelId": "Q8_0",
+    "engineId": "lightonocr"
+  }
+}

@@ -258,6 +258,12 @@ impl Service {
             "模型不支持当前识别模式"
         );
         let root = resource_root(&self.app)?;
+        if entry.runtime == "onnx"
+            && settings.selected_mode() == gameocr_core::adaptive::ExecutionMode::Adaptive
+        {
+            // Reject unsupported strategies before starting a large runtime download.
+            settings.adaptive.validate(settings.device)?;
+        }
         if settings.device == Device::Cuda {
             self.cuda_runtime
                 .ensure(&root, &entry.runtime, self.shutdown.clone(), |progress| {

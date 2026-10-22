@@ -34,10 +34,12 @@ workers/
   llamacpp/cuda/ocr-worker.exe
   onnx/cpu/onnx-worker.exe + onnxruntime.dll
   onnx/cuda/onnx-worker.exe + ORT CUDA provider DLLs
-  cuda-runtime/  CUDA / cuDNN 运行库（仅存一份）
+  cuda-runtime/  可选：开发目录和完整离线包中的 CUDA / cuDNN 运行库
 ```
 
-CPU 与 CUDA Worker 分别编译。UI 不链接 ORT、llama.cpp 或 CUDA。GPU 子进程 PATH 优先包含自己的目录和共享 cuda-runtime；CPU 子进程不添加 GPU 库目录。ORT CPU DLL 来自独立的官方 CPU 发行档，不是静默回退的 GPU DLL。
+CPU 与 CUDA Worker 分别编译。UI 不链接 ORT、llama.cpp 或 CUDA。GPU 子进程 PATH 优先包含自己的目录和共享 cuda-runtime；标准包没有后者，改用用户数据目录中已校验的 NVIDIA 组件目录。CPU 子进程不添加 GPU 库目录。ORT CPU DLL 来自独立的官方 CPU 发行档，不是静默回退的 GPU DLL。
+
+`cuda_runtime::RuntimeManager` 在显式 CUDA 的模型加载阶段准备运行库，先验证模型、Worker 是否存在及 Adaptive 模式兼容性，再按 `catalog/cuda-runtime.json` 的固定 HTTPS URL、大小、SHA-256 下载。只接受 NVIDIA `.com` / `.cn` 官方域名及 redistributable 路径，沿用模型下载器的 Range/响应/哈希检查。文件锁防止跨进程同时安装；ZIP 通过校验后仅解压所需 DLL 与许可证，拒绝越界路径、符号链接、重复文件和超限数据。完整组件通过临时目录原子发布，并记录每个文件的哈希，GPU 加载前重新检查。取消或退出保留 `.part`，不发布部分组件。UI 通过 `cuda-runtime-progress` 事件显示阶段和字节数，取消使用独立 IPC，不等待模型加载锁。Auto/CPU 路径从不调用下载器；Auto 缺库时沿用 CPU 回退。来源、缓存布局和实测见 [CUDA 运行库说明](cuda-runtime.md)。
 
 新消息使用 `{"type":"loadEngine","protocol_version":2,"config":...}`，后续 `recognize`、`unload`、`shutdown` 复用既有 NDJSON 契约。旧 GGUF `load` 消息仍由 llama.cpp Worker 支持；旧客户端不能把 ONNX 配置发给它。未知协议版本、错误配置和未加载请求返回 Error。stdout 只输出协议，诊断进入 stderr。
 
