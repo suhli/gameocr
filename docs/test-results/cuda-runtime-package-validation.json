@@ -33,5 +33,14 @@
     "Archive and native import checks alone are not GPU execution evidence; separate desktop reports cover execution",
     "NSIS/MSI configuration updated but installers were not rebuilt",
     "No clean Windows VM or RTX 5060 Ti hardware validation"
+  ],
+  "desktopReports": [
+    "docs/test-results/cuda-runtime-desktop.json",
+    "docs/test-results/cuda-runtime-cpu-desktop.json",
+    "docs/test-results/cuda-runtime-temporal-desktop.json"
+  ],
+  "additionalRuntimeReports": [
+    "docs/test-results/cuda-runtime-download.json",
+    "docs/test-results/cuda-runtime-gguf.json"
   ]
 }

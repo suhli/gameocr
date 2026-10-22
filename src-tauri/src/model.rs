@@ -272,11 +272,11 @@ impl ModelManager {
                 .user_agent("GameOCR/0.1.0")
                 .redirect(reqwest::redirect::Policy::custom(|attempt| {
                     if attempt.previous().len() < 5
-                        && crate::cuda_runtime::official_url(attempt.url())
+                        && crate::cuda_runtime::runtime_download_url(attempt.url())
                     {
                         attempt.follow()
                     } else {
-                        attempt.error("CUDA 运行库只允许 NVIDIA 官方 HTTPS 下载地址")
+                        attempt.error("GPU 组件只允许 NVIDIA、微软 ONNX Runtime 和 GameOCR 官方 HTTPS 下载地址")
                     }
                 }))
                 .build()?,

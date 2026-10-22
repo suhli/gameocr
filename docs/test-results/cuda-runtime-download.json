@@ -1,0 +1,268 @@
+{
+  "completedAt": "2026-10-22T08:06:30.181Z",
+  "method": "Development helper using the same RuntimeManager.ensure as the desktop; empty isolated data cache; actual official downloads of all six ONNX components",
+  "sources": [
+    "https://developer.download.nvidia.com/compute/cuda/redist/redistrib_12.8.1.json",
+    "https://developer.download.nvidia.com/compute/cudnn/redist/redistrib_9.8.0.json"
+  ],
+  "elapsedMs": 132579.8916,
+  "status": {
+    "component": "cuDNN",
+    "message": "CUDA 运行库已就绪",
+    "received": 1995551251,
+    "state": "complete",
+    "total": 1995551251
+  },
+  "packages": [
+    {
+      "id": "cuda_cudart",
+      "name": "CUDA Runtime",
+      "version": "12.8.90",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/windows-x86_64/cuda_cudart-windows-x86_64-12.8.90-archive.zip",
+      "sha256": "4a39058fd8519444a81cfc7ae055d136f48d1a31ffa41ae255b35b2edd61e13b",
+      "size": 3037735,
+      "runtimes": [
+        "llamacpp",
+        "onnx"
+      ],
+      "required": [
+        "cudart64_12.dll"
+      ]
+    },
+    {
+      "id": "libcublas",
+      "name": "cuBLAS",
+      "version": "12.8.4.1",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libcublas/windows-x86_64/libcublas-windows-x86_64-12.8.4.1-archive.zip",
+      "sha256": "57a470112cec7e112c95253dde8b3c7184d795dbd92b0bde77a4cb7f8c94c8aa",
+      "size": 563660944,
+      "runtimes": [
+        "llamacpp",
+        "onnx"
+      ],
+      "required": [
+        "cublas64_12.dll",
+        "cublasLt64_12.dll"
+      ]
+    },
+    {
+      "id": "libcufft",
+      "name": "cuFFT",
+      "version": "11.3.3.83",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libcufft/windows-x86_64/libcufft-windows-x86_64-11.3.3.83-archive.zip",
+      "sha256": "cc6e0ba958cf23387b462017a24464c72bd901549046133f3d1ebcc3d7444c90",
+      "size": 190568498,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "cufft64_11.dll"
+      ]
+    },
+    {
+      "id": "cuda_nvrtc",
+      "name": "NVRTC",
+      "version": "12.8.93",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvrtc/windows-x86_64/cuda_nvrtc-windows-x86_64-12.8.93-archive.zip",
+      "sha256": "a63302a077f0248a743a1a7caa7dbd80d0fac56c6cfa9c41fa05fac9b7e5eda5",
+      "size": 305588898,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "nvrtc64_120_0.dll",
+        "nvrtc-builtins64_128.dll"
+      ]
+    },
+    {
+      "id": "libnvjitlink",
+      "name": "nvJitLink",
+      "version": "12.8.93",
+      "url": "https://developer.download.nvidia.com/compute/cuda/redist/libnvjitlink/windows-x86_64/libnvjitlink-windows-x86_64-12.8.93-archive.zip",
+      "sha256": "5680b0a42ddf20f11705ca9c365d002f032ab876d3fe44382eeba633b558ccc0",
+      "size": 257345522,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "nvJitLink_120_0.dll"
+      ]
+    },
+    {
+      "id": "cudnn",
+      "name": "cuDNN",
+      "version": "9.8.0.87",
+      "url": "https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.8.0.87_cuda12-archive.zip",
+      "sha256": "d8a23705e3884b137b7e05449fb2b61bfa524e7cfc3fda80743d633f423c6ce4",
+      "size": 675349654,
+      "runtimes": [
+        "onnx"
+      ],
+      "required": [
+        "cudnn64_9.dll",
+        "cudnn_ops64_9.dll",
+        "cudnn_cnn64_9.dll",
+        "cudnn_adv64_9.dll",
+        "cudnn_graph64_9.dll",
+        "cudnn_engines_precompiled64_9.dll",
+        "cudnn_engines_runtime_compiled64_9.dll",
+        "cudnn_heuristic64_9.dll"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "directory": "cuda_cudart-12.8.90-4a39058fd851",
+      "receipt": {
+        "archive_sha256": "4a39058fd8519444a81cfc7ae055d136f48d1a31ffa41ae255b35b2edd61e13b",
+        "files": [
+          {
+            "name": "license-1.txt",
+            "size": 63021,
+            "sha256": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07"
+          },
+          {
+            "name": "cudart64_12.dll",
+            "size": 573952,
+            "sha256": "c2c9a9c22a9bcba90e261825968836787b331038047a26770cffb7a583c28344"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "libcublas-12.8.4.1-57a470112cec",
+      "receipt": {
+        "archive_sha256": "57a470112cec7e112c95253dde8b3c7184d795dbd92b0bde77a4cb7f8c94c8aa",
+        "files": [
+          {
+            "name": "license-1.txt",
+            "size": 63021,
+            "sha256": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07"
+          },
+          {
+            "name": "cublas64_12.dll",
+            "size": 113716224,
+            "sha256": "9513540e4ec4c51ee9e7304138c2cc255c29a8c181f9e80c38efa25738becd99"
+          },
+          {
+            "name": "cublasLt64_12.dll",
+            "size": 674667520,
+            "sha256": "b199d1ff892a81b7fd3d57ba1781549609b41500b36008fef326038393ad46c7"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "libcufft-11.3.3.83-cc6e0ba958cf",
+      "receipt": {
+        "archive_sha256": "cc6e0ba958cf23387b462017a24464c72bd901549046133f3d1ebcc3d7444c90",
+        "files": [
+          {
+            "name": "license-1.txt",
+            "size": 63021,
+            "sha256": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07"
+          },
+          {
+            "name": "cufft64_11.dll",
+            "size": 276121600,
+            "sha256": "f4fea9227b14843894ad5436725f9638b172171142c95291fc6ae7a493248221"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "cuda_nvrtc-12.8.93-a63302a077f0",
+      "receipt": {
+        "archive_sha256": "a63302a077f0248a743a1a7caa7dbd80d0fac56c6cfa9c41fa05fac9b7e5eda5",
+        "files": [
+          {
+            "name": "license-1.txt",
+            "size": 63021,
+            "sha256": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07"
+          },
+          {
+            "name": "nvrtc-builtins64_128.dll",
+            "size": 6356480,
+            "sha256": "a7afa2a40cbd3f922a33d8bf71c13cb26ca707c7016a9bc5fcde36759ba668f5"
+          },
+          {
+            "name": "nvrtc64_120_0.dll",
+            "size": 86728192,
+            "sha256": "02d2d7ef4690bf1a55dda1d3ac94c86ce8d16920071c87bcd3e70e94ef346e93"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "libnvjitlink-12.8.93-5680b0a42ddf",
+      "receipt": {
+        "archive_sha256": "5680b0a42ddf20f11705ca9c365d002f032ab876d3fe44382eeba633b558ccc0",
+        "files": [
+          {
+            "name": "license-1.txt",
+            "size": 63021,
+            "sha256": "e2c71babfd18a8e69542dd7e9ca018f9caa438094001a58e6bc4d8c999bf0d07"
+          },
+          {
+            "name": "nvJitLink_120_0.dll",
+            "size": 77860352,
+            "sha256": "959d3cb44527ec884db8dc20772520b584dbe7d622d11b0530e6326417078b3e"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "cudnn-9.8.0.87-d8a23705e388",
+      "receipt": {
+        "archive_sha256": "d8a23705e3884b137b7e05449fb2b61bfa524e7cfc3fda80743d633f423c6ce4",
+        "files": [
+          {
+            "name": "license-1.txt",
+            "size": 29879,
+            "sha256": "7936e1f9f2a6d9deea237aee6aa7f1abd032d34bcc1c35de1e6516b223d09487"
+          },
+          {
+            "name": "cudnn64_9.dll",
+            "size": 265760,
+            "sha256": "0edb24306db36121137a3150ac55015aee174d4582d5b807bd3220180a7a57db"
+          },
+          {
+            "name": "cudnn_adv64_9.dll",
+            "size": 253583928,
+            "sha256": "631af1130b27b4d14683c7da690dddec8e25ffe3097d498fbba7129faba1601c"
+          },
+          {
+            "name": "cudnn_cnn64_9.dll",
+            "size": 4262456,
+            "sha256": "68c9f6bf98a5620a0bb0519c3997800ef2c7cb8979f17a60afcf82d341629c73"
+          },
+          {
+            "name": "cudnn_engines_precompiled64_9.dll",
+            "size": 548927544,
+            "sha256": "59e71b3adae62186d3336ccbda6d0c8b14a3a0ef21694757e2b32e84fa840152"
+          },
+          {
+            "name": "cudnn_engines_runtime_compiled64_9.dll",
+            "size": 25217568,
+            "sha256": "8671c24fc0debbd99c3dca57bfdf657f4c9490e2a009f641cfc2fcf7a1256180"
+          },
+          {
+            "name": "cudnn_graph64_9.dll",
+            "size": 2239520,
+            "sha256": "22c21907fb2108259cb25738156f4459c12c0a001715bbb6d5aafac150060e85"
+          },
+          {
+            "name": "cudnn_heuristic64_9.dll",
+            "size": 55919648,
+            "sha256": "5378e50729665245fa5abe89c729b782de686675e9bd6319cda1a3165d9492e6"
+          },
+          {
+            "name": "cudnn_ops64_9.dll",
+            "size": 116958752,
+            "sha256": "080c2bb37e9d1fdd585cdd53fdbb23c0478b99610a19f8bba512b596b1e302fe"
+          }
+        ]
+      }
+    }
+  ]
+}

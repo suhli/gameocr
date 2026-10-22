@@ -165,3 +165,16 @@ Windows CI 加入真实 CPU 时序五策略回归和报告上传；新字延迟�
 - [真实素材标注入口](test-results/temporal-annotation.json)的绘框、编辑、逐帧确认、导出及 SHA-256 导入五项工作流通过。该工作流检查不代表已完成真实游戏准确率测试。
 
 复现完整桌面覆盖可同时设置 `GAMEOCR_TEST_ADAPTIVE=1`、`GAMEOCR_TEST_EFFICIENCY=1`、`GAMEOCR_TEST_TEMPORAL=1`，并用 `GAMEOCR_APP` 指向正式便携包。另设 `GAMEOCR_TEST_COMPACT_DIR` 指向已生成的实验模型目录，可验证模型列表发现/选择及实际 CUDA WGC 推理；需要完整 CUDA 包及兼容硬件。`GAMEOCR_TEMPORAL_DEBUG_FRAMES=1` 只用于诊断，额外写 PNG 会改变送帧间隔，不与常规性能结果混用。
+
+## CUDA 按需下载验证（2026-10-22）
+
+标准包改为首次明确选择 CUDA 并加载模型时准备 NVIDIA 运行库；启动、CPU 与 Auto 均不下载。实现、固定来源和复现步骤见 [运行库说明](cuda-runtime.md)。本轮仍为 Windows 开发机、GTX1650、ORT 1.24.3，使用从 NVIDIA 下载的 CUDA 12.8 组件和 cuDNN 9.8；本地 Worker 本身沿用 CUDA 12.1 编译版本。
+
+- Rust desktop lib 23 项通过（新增 6 项运行库测试），覆盖固定来源、分 Runtime 组件、完整安装/损坏检测、ZIP 路径与缺失文件拒绝、校验/取消/退出、CPU 专用包拒绝及文件锁释放。原断点续传的本机 HTTP 测试也通过。Svelte 检查 0 错误/警告、Vitest 2 项、格式检查及正式 Tauri Release 构建通过。
+- [完整官方下载记录](test-results/cuda-runtime-download.json)：独立下载工具使用与桌面相同的 RuntimeManager，从空缓存真实下载全部六个组件，共 1,995,551,251 字节；归档 SHA-256、必需 DLL 和许可证检查通过。记录包含固定来源及提取文件哈希。该轮耗时约 133 秒，仅表示当次网络情况。
+- [桌面六组检查](test-results/cuda-runtime-desktop.json)：首次启动/Auto 不建缓存且实际使用 CPU；明确 CUDA 后出现进度，界面取消保留 `.part`；取消后 CPU 可用；重新加载续传并使用缓存中的 DLL；Small/Medium 真实 WGC CUDA OCR；不可达 HTTP/HTTPS 代理下重启，Auto 与显式 CUDA 均离线加载成功。为避免重复下载，最终桌面轮次在取消后复用了上项已下载的五个组件，被取消的 CUDA Runtime 文件仍真实续传；报告明确列出复用项。通过进程模块路径确认实际加载的是本次隔离缓存的 NVIDIA DLL，非包内或开发机 PATH。
+- [GGUF CUDA](test-results/cuda-runtime-gguf.json)：仅将已下载 CUDA Runtime/cuBLAS 加入 GPU Worker 路径，真实 Q8_0 Grounding 识别成功，已加载 DLL 的绝对路径均指向下载缓存，正常关闭。
+- 最新 CPU 便携包通过 [模型/运行时 12 项](test-results/cuda-runtime-cpu-desktop.json)及 [并行/自适应/小字/增量/时序 13 项](test-results/cuda-runtime-temporal-desktop.json)。包含真实窗口识别、CPU 回退、失败恢复、模型切换、参数/UI、缓存失效、Worker 崩溃恢复与退出清理。应用为单实例，桌面测试依次执行。
+- [发行包校验](test-results/cuda-runtime-package-validation.json)：新的 `GameOCR-windows-x64-ondemand-portable.zip` 为 469,949,861 字节，71 个文件/60 个 x64 二进制检查通过；仅允许清单内 NVIDIA 依赖延后提供。CPU ZIP 为 17,118,432 字节，45 个文件/35 个二进制检查通过。两包及桌面报告中的 EXE SHA-256 均为 `42c31b00fd0f952849b18a58b1b7daee0e9ee35e623d305c1c25e0b85ef28a0d`。默认便携包约 470 MB，比上一轮 1.72 GB 完整包小约 73%；首次 ONNX 下载仍约 1.86 GiB，GGUF 约 541 MiB。
+
+完整离线包可继续通过 `-Backend both` 构建；本轮只重建了按需包和 CPU 包，现存旧完整 ZIP 保留上一轮版本。NSIS/MSI 的构建配置和 CI 已更新为按需布局，但安装器未在本轮重新生成，远端 CI 未执行。不将本机验证视为干净 Windows、无驱动机器或 RTX5060Ti 的硬件验收。显卡驱动仍需用户已有；程序不安装驱动或 CUDA Toolkit，不修改系统 PATH。

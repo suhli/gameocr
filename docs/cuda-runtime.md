@@ -39,11 +39,14 @@ cargo test -p gameocr --lib --locked
 cargo build -p gameocr --features test-fixture --bin capture-fixture --bin cuda-runtime-install
 # 需要可交互 Windows 桌面、NVIDIA GPU/驱动、真实模型、网络和数 GB 空间
 node scripts/desktop-cuda-runtime.mjs
+# 可选：复用此前官方完整下载验证的其他组件；被取消的组件仍必须真实续传
+$env:GAMEOCR_CUDA_SEED='<此前已下载数据目录>/runtimes/nvidia'
+node scripts/desktop-cuda-runtime.mjs
 # 已下载缓存的 GGUF CUDA 验证（另需 models/ 中的 Q8_0 和 mmproj）
 $env:GAMEOCR_CUDA_CACHE='<已下载数据目录>/runtimes/nvidia'
 node scripts/test-cuda-runtime-gguf.mjs
 ```
 
-桌面脚本使用新的隔离数据目录、仅包含 Windows 系统目录的 PATH，以及没有 `workers/cuda-runtime` 的实际 Release 包。它真实下载、取消、重试，检查子进程加载 DLL 的绝对路径，再进行 WGC OCR，最后用不可达代理验证重启后的缓存复用。测试窗口与进程由脚本自身创建。模型使用 `.cache/test-models` 中已核对的 Small/Medium，输出记录在 [cuda-runtime-desktop.json](test-results/cuda-runtime-desktop.json)。应用采用单实例运行，桌面脚本须依次执行，并先关闭其他 GameOCR 实例。此脚本有真实下载成本，不纳入普通 CI。
+桌面脚本使用新的隔离数据目录、仅包含 Windows 系统目录的 PATH，以及没有 `workers/cuda-runtime` 的实际 Release 包。它真实下载、取消、重试，检查子进程加载 DLL 的绝对路径，再进行 WGC OCR，最后用不可达代理验证重启后的缓存复用。设置 `GAMEOCR_CUDA_SEED` 时，只在首次取消后复制其他组件，保留被取消组件的真实续传；报告单独列出复用项，不将其记为本次下载。测试窗口与进程由脚本自身创建。模型使用 `.cache/test-models` 中已核对的 Small/Medium，输出记录在 [cuda-runtime-desktop.json](test-results/cuda-runtime-desktop.json)。应用采用单实例运行，桌面脚本须依次执行，并先关闭其他 GameOCR 实例。此脚本有真实下载成本，不纳入普通 CI。
 
 GGUF 的独立验证仅将两个已下载组件加入 GPU Worker 的 PATH，以真实 Q8_0 模型识别英文图片，再读取该子进程已加载模块的路径，结果见 [cuda-runtime-gguf.json](test-results/cuda-runtime-gguf.json)。不依赖开发机 CUDA Toolkit 的 PATH。

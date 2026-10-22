@@ -1,0 +1,771 @@
+{
+  "executedAt": "2026-10-22T08:28:48.112Z",
+  "app": "artifacts\\GameOCR-windows-x64-ondemand-portable\\GameOCR.exe",
+  "appSha256": "42c31b00fd0f952849b18a58b1b7daee0e9ee35e623d305c1c25e0b85ef28a0d",
+  "checks": [
+    "First launch and Auto load use CPU without starting a runtime download or creating its cache",
+    "Explicit CUDA starts the official download; visible progress cancellation preserves an incomplete .part and publishes no model",
+    "Cancelling runtime preparation leaves CPU model loading available",
+    "Retry resumes the interrupted official download, validates all six components, removes completed archives and loads CUDA with DLLs from this cache",
+    "Small and Medium perform real CUDA OCR on a WGC frame using the downloaded CUDA 12.8/cuDNN 9.8 libraries",
+    "Restart with unreachable HTTP/HTTPS proxy: Auto and explicit CUDA both load from validated local cache without downloading"
+  ],
+  "interrupted": [
+    {
+      "name": "4a39058fd8519444a81cfc7ae055d136f48d1a31ffa41ae255b35b2edd61e13b.zip.part",
+      "bytes": 1096816
+    }
+  ],
+  "seededFromPreviousOfficialDownload": [
+    "cuda_nvrtc-12.8.93-a63302a077f0",
+    "cudnn-9.8.0.87-d8a23705e388",
+    "libcublas-12.8.4.1-57a470112cec",
+    "libcufft-11.3.3.83-cc6e0ba958cf",
+    "libnvjitlink-12.8.93-5680b0a42ddf"
+  ],
+  "observed": [
+    {
+      "state": "cancelled",
+      "component": "CUDA Runtime",
+      "received": 1080432,
+      "total": 1995551251,
+      "message": "已取消下载；再次加载模型可继续下载"
+    },
+    {
+      "state": "checking",
+      "component": "",
+      "received": 0,
+      "total": 0,
+      "message": "正在检查本地 CUDA 运行库"
+    },
+    {
+      "state": "downloading",
+      "component": "CUDA Runtime",
+      "received": 0,
+      "total": 3037735,
+      "message": "首次使用 CUDA，正在从 NVIDIA 官方下载；可取消后续传"
+    },
+    {
+      "state": "extracting",
+      "component": "CUDA Runtime",
+      "received": 3037735,
+      "total": 3037735,
+      "message": "正在校验并准备运行库"
+    },
+    {
+      "state": "complete",
+      "component": "CUDA Runtime",
+      "received": 3037735,
+      "total": 3037735,
+      "message": "CUDA 运行库已就绪"
+    }
+  ],
+  "receipts": [
+    "cuda_cudart-12.8.90-4a39058fd851",
+    "cuda_nvrtc-12.8.93-a63302a077f0",
+    "cudnn-9.8.0.87-d8a23705e388",
+    "libcublas-12.8.4.1-57a470112cec",
+    "libcufft-11.3.3.83-cc6e0ba958cf",
+    "libnvjitlink-12.8.93-5680b0a42ddf"
+  ],
+  "runtimeModules": [
+    {
+      "ModuleName": "cudart64_12.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cuda_cudart-12.8.90-4a39058fd851\\cudart64_12.dll"
+    },
+    {
+      "ModuleName": "cudnn64_9.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cudnn-9.8.0.87-d8a23705e388\\cudnn64_9.dll"
+    },
+    {
+      "ModuleName": "cublas64_12.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\libcublas-12.8.4.1-57a470112cec\\cublas64_12.dll"
+    },
+    {
+      "ModuleName": "cublasLt64_12.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\libcublas-12.8.4.1-57a470112cec\\cublasLt64_12.dll"
+    },
+    {
+      "ModuleName": "cufft64_11.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\libcufft-11.3.3.83-cc6e0ba958cf\\cufft64_11.dll"
+    },
+    {
+      "ModuleName": "cudnn_graph64_9.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cudnn-9.8.0.87-d8a23705e388\\cudnn_graph64_9.dll"
+    },
+    {
+      "ModuleName": "cudnn_ops64_9.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cudnn-9.8.0.87-d8a23705e388\\cudnn_ops64_9.dll"
+    },
+    {
+      "ModuleName": "cudnn_engines_precompiled64_9.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cudnn-9.8.0.87-d8a23705e388\\cudnn_engines_precompiled64_9.dll"
+    },
+    {
+      "ModuleName": "cudnn_heuristic64_9.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cudnn-9.8.0.87-d8a23705e388\\cudnn_heuristic64_9.dll"
+    },
+    {
+      "ModuleName": "cudnn_engines_runtime_compiled64_9.dll",
+      "FileName": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\cuda-runtime\\data-1792657661788\\runtimes\\nvidia\\cudnn-9.8.0.87-d8a23705e388\\cudnn_engines_runtime_compiled64_9.dll"
+    }
+  ],
+  "results": [
+    {
+      "frameId": 1,
+      "timestamp": 1792657711109,
+      "sourceWidth": 826,
+      "sourceHeight": 393,
+      "blocks": [
+        {
+          "id": "block-0",
+          "text": "GameOCR Capture Fixture",
+          "label": "text",
+          "bbox": [
+            4,
+            2,
+            174,
+            28
+          ],
+          "confidence": 0.9583214,
+          "polygon": [
+            {
+              "x": 6,
+              "y": 2
+            },
+            {
+              "x": 174,
+              "y": 6
+            },
+            {
+              "x": 172,
+              "y": 28
+            },
+            {
+              "x": 4,
+              "y": 26
+            }
+          ]
+        },
+        {
+          "id": "block-1",
+          "text": "□",
+          "label": "text",
+          "bbox": [
+            747,
+            5,
+            765,
+            24
+          ],
+          "confidence": 0.9207012,
+          "polygon": [
+            {
+              "x": 747,
+              "y": 5
+            },
+            {
+              "x": 765,
+              "y": 5
+            },
+            {
+              "x": 765,
+              "y": 24
+            },
+            {
+              "x": 747,
+              "y": 24
+            }
+          ]
+        },
+        {
+          "id": "block-2",
+          "text": "×",
+          "label": "text",
+          "bbox": [
+            791,
+            4,
+            810,
+            26
+          ],
+          "confidence": 0.6937958,
+          "polygon": [
+            {
+              "x": 791,
+              "y": 4
+            },
+            {
+              "x": 810,
+              "y": 4
+            },
+            {
+              "x": 810,
+              "y": 26
+            },
+            {
+              "x": 791,
+              "y": 26
+            }
+          ]
+        },
+        {
+          "id": "block-3",
+          "text": "GAME OCR TEST",
+          "label": "text",
+          "bbox": [
+            32,
+            65,
+            239,
+            93
+          ],
+          "confidence": 0.9925994,
+          "polygon": [
+            {
+              "x": 32,
+              "y": 65
+            },
+            {
+              "x": 239,
+              "y": 65
+            },
+            {
+              "x": 239,
+              "y": 93
+            },
+            {
+              "x": 32,
+              "y": 93
+            }
+          ]
+        },
+        {
+          "id": "block-4",
+          "text": "Health: 100 / 100",
+          "label": "text",
+          "bbox": [
+            32,
+            129,
+            245,
+            158
+          ],
+          "confidence": 0.96368104,
+          "polygon": [
+            {
+              "x": 32,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 158
+            },
+            {
+              "x": 32,
+              "y": 158
+            }
+          ]
+        },
+        {
+          "id": "block-5",
+          "text": "Quest complete!",
+          "label": "text",
+          "bbox": [
+            32,
+            195,
+            236,
+            223
+          ],
+          "confidence": 0.99988645,
+          "polygon": [
+            {
+              "x": 32,
+              "y": 195
+            },
+            {
+              "x": 236,
+              "y": 195
+            },
+            {
+              "x": 236,
+              "y": 223
+            },
+            {
+              "x": 32,
+              "y": 223
+            }
+          ]
+        },
+        {
+          "id": "block-6",
+          "text": "你好世界・こんにちは",
+          "label": "text",
+          "bbox": [
+            32,
+            258,
+            316,
+            287
+          ],
+          "confidence": 0.99846363,
+          "polygon": [
+            {
+              "x": 32,
+              "y": 258
+            },
+            {
+              "x": 316,
+              "y": 258
+            },
+            {
+              "x": 316,
+              "y": 287
+            },
+            {
+              "x": 32,
+              "y": 287
+            }
+          ]
+        }
+      ],
+      "rawOutput": "",
+      "metrics": {
+        "preprocessingMs": 15.3504,
+        "inferenceMs": 653.4018,
+        "parsingMs": 12.773,
+        "totalMs": 681.5728,
+        "detectionMs": 223.0658,
+        "recognitionMs": 430.336,
+        "detectionRegions": 1,
+        "recognitionBatches": 2,
+        "recognitionPixels": 124848,
+        "execution": {
+          "batchId": 1,
+          "endToEndMs": 694.5155,
+          "transferMs": 1.9648,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 681.9798999999999,
+          "mergeMs": 0,
+          "cpuTasks": 0,
+          "gpuTasks": 1,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": null,
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 1.0079,
+            "detectorPreprocessMs": 11.7252,
+            "dbMs": 2.2605,
+            "cropMs": 0.7072999999999999,
+            "recognizerPreprocessMs": 1.891,
+            "ctcMs": 10.5091,
+            "mergeMs": 0.0034,
+            "cacheMs": 0.019,
+            "detectorCalls": 1,
+            "recognizerCalls": 2,
+            "outputBytes": 24173320,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                355
+              ],
+              [
+                1,
+                3,
+                48,
+                471
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 1.3468,
+            "conversionMs": 1.531,
+            "frameWaitMs": 22.5583,
+            "gateMs": 0.0058000000000000005,
+            "previewMs": 8.078800000000001,
+            "previewReused": false,
+            "captureToPublishMs": 721.322,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.4070999999999003,
+          "temporal": null,
+          "transport": "ppm",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 1.0079,
+          "detectorPreprocessMs": 11.7252,
+          "dbMs": 2.2605,
+          "cropMs": 0.7072999999999999,
+          "recognizerPreprocessMs": 1.891,
+          "ctcMs": 10.5091,
+          "mergeMs": 0.0034,
+          "cacheMs": 0.019,
+          "detectorCalls": 1,
+          "recognizerCalls": 2,
+          "outputBytes": 24173320,
+          "recognitionShapes": [
+            [
+              6,
+              3,
+              48,
+              355
+            ],
+            [
+              1,
+              3,
+              48,
+              471
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        }
+      },
+      "device": "CUDA",
+      "truncated": false,
+      "runtime": "onnx",
+      "modelId": "ppocrv6-small",
+      "engineId": "ppocrv6"
+    },
+    {
+      "frameId": 44,
+      "timestamp": 1792657716995,
+      "sourceWidth": 826,
+      "sourceHeight": 393,
+      "blocks": [
+        {
+          "id": "block-1",
+          "text": "GameOCR Capture Fixture",
+          "label": "text",
+          "bbox": [
+            22,
+            6,
+            170,
+            23
+          ],
+          "confidence": 0.9999089,
+          "polygon": [
+            {
+              "x": 22,
+              "y": 6
+            },
+            {
+              "x": 170,
+              "y": 6
+            },
+            {
+              "x": 170,
+              "y": 23
+            },
+            {
+              "x": 22,
+              "y": 23
+            }
+          ]
+        },
+        {
+          "id": "block-2",
+          "text": "□",
+          "label": "text",
+          "bbox": [
+            747,
+            5,
+            765,
+            24
+          ],
+          "confidence": 0.9854977,
+          "polygon": [
+            {
+              "x": 747,
+              "y": 5
+            },
+            {
+              "x": 765,
+              "y": 5
+            },
+            {
+              "x": 765,
+              "y": 24
+            },
+            {
+              "x": 747,
+              "y": 24
+            }
+          ]
+        },
+        {
+          "id": "block-3",
+          "text": "×",
+          "label": "text",
+          "bbox": [
+            790,
+            5,
+            811,
+            25
+          ],
+          "confidence": 0.5896738,
+          "polygon": [
+            {
+              "x": 790,
+              "y": 5
+            },
+            {
+              "x": 811,
+              "y": 5
+            },
+            {
+              "x": 811,
+              "y": 25
+            },
+            {
+              "x": 790,
+              "y": 25
+            }
+          ]
+        },
+        {
+          "id": "block-4",
+          "text": "GAME OCR TEST",
+          "label": "text",
+          "bbox": [
+            31,
+            65,
+            239,
+            91
+          ],
+          "confidence": 0.9996266,
+          "polygon": [
+            {
+              "x": 31,
+              "y": 65
+            },
+            {
+              "x": 239,
+              "y": 65
+            },
+            {
+              "x": 239,
+              "y": 91
+            },
+            {
+              "x": 31,
+              "y": 91
+            }
+          ]
+        },
+        {
+          "id": "block-5",
+          "text": "Health: 100 / 100",
+          "label": "text",
+          "bbox": [
+            31,
+            129,
+            245,
+            158
+          ],
+          "confidence": 0.9991317,
+          "polygon": [
+            {
+              "x": 31,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 129
+            },
+            {
+              "x": 245,
+              "y": 158
+            },
+            {
+              "x": 31,
+              "y": 158
+            }
+          ]
+        },
+        {
+          "id": "block-6",
+          "text": "Quest complete!",
+          "label": "text",
+          "bbox": [
+            31,
+            193,
+            237,
+            224
+          ],
+          "confidence": 0.9999859,
+          "polygon": [
+            {
+              "x": 31,
+              "y": 193
+            },
+            {
+              "x": 237,
+              "y": 193
+            },
+            {
+              "x": 237,
+              "y": 224
+            },
+            {
+              "x": 31,
+              "y": 224
+            }
+          ]
+        },
+        {
+          "id": "block-7",
+          "text": "你好世界・こんにちは",
+          "label": "text",
+          "bbox": [
+            32,
+            258,
+            315,
+            287
+          ],
+          "confidence": 0.9847538,
+          "polygon": [
+            {
+              "x": 32,
+              "y": 258
+            },
+            {
+              "x": 315,
+              "y": 258
+            },
+            {
+              "x": 315,
+              "y": 287
+            },
+            {
+              "x": 32,
+              "y": 287
+            }
+          ]
+        }
+      ],
+      "rawOutput": "",
+      "metrics": {
+        "preprocessingMs": 13.819399999999998,
+        "inferenceMs": 1567.1554999999998,
+        "parsingMs": 16.1393,
+        "totalMs": 1597.1674,
+        "detectionMs": 640.7805,
+        "recognitionMs": 926.375,
+        "detectionRegions": 1,
+        "recognitionBatches": 2,
+        "recognitionPixels": 155616,
+        "execution": {
+          "batchId": 1,
+          "endToEndMs": 1609.6187,
+          "transferMs": 1.4993999999999998,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 1597.5115,
+          "mergeMs": 0,
+          "cpuTasks": 0,
+          "gpuTasks": 1,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": null,
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 0.6494,
+            "detectorPreprocessMs": 10.1288,
+            "dbMs": 1.9029,
+            "cropMs": 0.7583,
+            "recognizerPreprocessMs": 2.2734999999999994,
+            "ctcMs": 14.2345,
+            "mergeMs": 0.0019,
+            "cacheMs": 0.0174,
+            "detectorCalls": 1,
+            "recognizerCalls": 2,
+            "outputBytes": 30385040,
+            "recognitionShapes": [
+              [
+                6,
+                3,
+                48,
+                384
+              ],
+              [
+                2,
+                3,
+                48,
+                469
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.4212,
+            "conversionMs": 0.7001000000000001,
+            "frameWaitMs": 23.5536,
+            "gateMs": 0.0031999999999999997,
+            "previewMs": 8.0008,
+            "previewReused": false,
+            "captureToPublishMs": 1635.8297,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.34410000000002583,
+          "temporal": null,
+          "transport": "ppm",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 0.6494,
+          "detectorPreprocessMs": 10.1288,
+          "dbMs": 1.9029,
+          "cropMs": 0.7583,
+          "recognizerPreprocessMs": 2.2734999999999994,
+          "ctcMs": 14.2345,
+          "mergeMs": 0.0019,
+          "cacheMs": 0.0174,
+          "detectorCalls": 1,
+          "recognizerCalls": 2,
+          "outputBytes": 30385040,
+          "recognitionShapes": [
+            [
+              6,
+              3,
+              48,
+              384
+            ],
+            [
+              2,
+              3,
+              48,
+              469
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        }
+      },
+      "device": "CUDA",
+      "truncated": false,
+      "runtime": "onnx",
+      "modelId": "ppocrv6-medium",
+      "engineId": "ppocrv6"
+    }
+  ]
+}

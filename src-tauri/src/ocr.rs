@@ -33,34 +33,60 @@ impl Worker {
         self.child.id()
     }
     pub async fn spawn(path: &Path, closing: Arc<AtomicBool>) -> Result<Self> {
+        Self::spawn_configured(path, Vec::new(), None, closing).await
+    }
+    pub async fn spawn_engine(
+        root: &Path,
+        runtime: &str,
+        device: Device,
+        closing: Arc<AtomicBool>,
+    ) -> Result<Self> {
+        if device == Device::Cuda {
+            let (root, runtime) = (root.to_owned(), runtime.to_owned());
+            let launch =
+                tokio::task::spawn_blocking(move || crate::cuda_runtime::launch(&root, &runtime))
+                    .await??;
+            Self::spawn_configured(
+                &launch.executable,
+                launch.libraries,
+                launch.ort_dylib,
+                closing,
+            )
+            .await
+        } else {
+            let executable = gameocr_core::engine::RuntimeRegistry::default()
+                .executable(runtime)?
+                .to_owned();
+            Self::spawn(
+                &root
+                    .join("workers")
+                    .join(runtime)
+                    .join("cpu")
+                    .join(executable),
+                closing,
+            )
+            .await
+        }
+    }
+    async fn spawn_configured(
+        path: &Path,
+        libraries: Vec<PathBuf>,
+        ort_dylib: Option<PathBuf>,
+        closing: Arc<AtomicBool>,
+    ) -> Result<Self> {
         let mut command = Command::new(path);
-        // CUDA libraries are shared on disk but visible only to GPU children.
-        // CPU children never add this directory to their loader search path.
-        if path
-            .parent()
-            .and_then(Path::file_name)
-            .is_some_and(|n| n == "cuda")
-        {
-            if let Some(root) = path.parent().and_then(Path::parent).and_then(Path::parent) {
-                let resource = root.parent().context("CUDA 工作程序目录错误")?.to_owned();
-                let runtime = path
-                    .parent()
-                    .and_then(Path::parent)
-                    .and_then(Path::file_name)
-                    .context("CUDA Runtime 目录错误")?
-                    .to_string_lossy()
-                    .into_owned();
-                let libraries = tokio::task::spawn_blocking(move || {
-                    crate::cuda_runtime::paths(&resource, &runtime)
-                })
-                .await??;
-                let mut paths = vec![path.parent().unwrap().to_path_buf()];
-                paths.extend(libraries);
-                paths.extend(std::env::split_paths(
-                    &std::env::var_os("PATH").unwrap_or_default(),
-                ));
-                command.env("PATH", std::env::join_paths(paths)?);
-            }
+        // Resolve the complete backend before starting the child. In particular,
+        // ORT must load its GPU core/providers together, never the bundled CPU DLL.
+        if !libraries.is_empty() {
+            let mut paths = vec![path.parent().context("无效 Worker 路径")?.to_owned()];
+            paths.extend(libraries);
+            paths.extend(std::env::split_paths(
+                &std::env::var_os("PATH").unwrap_or_default(),
+            ));
+            command.env("PATH", std::env::join_paths(paths)?);
+        }
+        if let Some(dll) = ort_dylib {
+            command.env("ORT_DYLIB_PATH", dll);
         }
         let mut child = command
             .current_dir(path.parent().context("工作程序路径错误")?)

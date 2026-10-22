@@ -17,7 +17,7 @@
     "active": true,
     "targets": ["nsis", "msi"],
     "icon": ["icons/icon.ico", "icons/32x32.png", "icons/128x128.png"],
-    "resources": {"resources/workers/llamacpp/": "workers/llamacpp/", "resources/workers/onnx/": "workers/onnx/", "resources/runtime/": "./", "resources/licenses/": "licenses/"},
+    "resources": {"resources/workers/llamacpp/cpu/": "workers/llamacpp/cpu/", "resources/workers/onnx/cpu/": "workers/onnx/cpu/", "resources/workers/onnx/cuda/onnx-worker.exe": "workers/onnx/cuda/onnx-worker.exe", "gpu-downloads.json": "gpu-downloads.json", "resources/runtime/": "./", "resources/licenses/": "licenses/"},
     "windows": {
       "webviewInstallMode": {"type":"downloadBootstrapper"},
       "nsis": {"template":"installer/nsis.nsi","installMode":"currentUser","languages":["SimpChinese","English"],"displayLanguageSelector":true},

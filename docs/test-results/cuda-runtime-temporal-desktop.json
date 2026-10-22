@@ -1,0 +1,20 @@
+{
+  "executedAt": "2026-10-22T08:30:16.155Z",
+  "app": "artifacts\\GameOCR-windows-x64-cpu-portable\\GameOCR.exe",
+  "appSha256": "42c31b00fd0f952849b18a58b1b7daee0e9ee35e623d305c1c25e0b85ef28a0d",
+  "checks": [
+    "Parallel settings hidden by default, editable through UI and persisted across reload",
+    "Large real WGC frame: four tiles, one merged history entry, coordinates and JSON export, live worker statistics",
+    "Pause, stop and capture-generation invalidation discard in-flight batch without publishing late results",
+    "Unload removes every old process; disabling parallel restores one Worker on model switch",
+    "Adaptive UI defaults and centered statistics modal, persisted selection, actual WGC OCR with measured feature/decision timings",
+    "Pause during adaptive OCR commits no learning observation",
+    "Clearing history during analysis/inference invalidates the in-flight learning event",
+    "Efficiency settings default off, full tiling disables selective control, ROI/budget/cache values persist, dialog centered",
+    "Real WGC optimized PPM path: one Worker, bounded refinement, new frame identity, identical repeated-frame output with inference skipped",
+    "Automatic OCR sees a single-number update despite maximum thumbnail change threshold; no stale text and workers cleaned on unload",
+    "Temporal settings persist; Manual uses one worker; real WGC shared-memory cache-only path reports capture-to-publish latency",
+    "Temporal pause/resume, Adaptive single-worker restriction, process crash and model reload invalidate tracking and shared-memory lifetime",
+    "Normal application exit during parallel inference removes owned workers and session files"
+  ]
+}

@@ -149,30 +149,13 @@ async fn load_worker(
     closing: Arc<AtomicBool>,
 ) -> Result<Worker> {
     RuntimeRegistry::default().validate(&config)?;
-    let kind = if config.device == Device::Cuda {
-        "cuda"
-    } else {
-        "cpu"
-    };
-    let executable = RuntimeRegistry::default()
-        .executable(&config.manifest.runtime)?
-        .to_owned();
-    let path = root
-        .join("workers")
-        .join(&config.manifest.runtime)
-        .join(kind)
-        .join(executable);
-    ensure!(
-        path.is_file(),
-        "未找到 {}/{kind} 工作程序，请运行 scripts/build-workers.ps1 或安装完整发行包",
-        config.manifest.runtime
-    );
     let expected = if config.device == Device::Cuda {
         "CUDA"
     } else {
         "CPU"
     };
-    let mut worker = Worker::spawn(&path, closing).await?;
+    let mut worker =
+        Worker::spawn_engine(root, &config.manifest.runtime, config.device, closing).await?;
     match worker
         .request(WorkerRequest::LoadEngine {
             protocol_version: 2,

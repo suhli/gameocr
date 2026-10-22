@@ -19,7 +19,7 @@
 {#if active&&progress}
   <div class="runtime-progress" role="status" aria-label="CUDA 运行库下载">
     <div><strong>{labels[progress.state]}{progress.component?` · ${progress.component}`:''}</strong><p>{progress.message}</p>
-      {#if progress.total>0}<progress aria-label="CUDA 下载进度" value={progress.received} max={progress.total}></progress><small>{(progress.received/1024/1024).toFixed(0)} / {(progress.total/1024/1024).toFixed(0)} MB · NVIDIA 官方源 · 支持续传</small>{/if}
+      {#if progress.total>0}<progress aria-label="CUDA 下载进度" value={progress.received} max={progress.total}></progress><small>{(progress.received/1024/1024).toFixed(0)} / {(progress.total/1024/1024).toFixed(0)} MiB · 组件官方源 · 支持续传</small>{/if}
     </div>
     <Button variant="outline" size="sm" disabled={cancelling} onclick={cancel}>{cancelling?'正在取消…':'取消下载'}</Button>
   </div>

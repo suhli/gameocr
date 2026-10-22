@@ -23,7 +23,7 @@
     </section>
     <section><h3>推理参数</h3><p>更改这些参数前，请先卸载模型。设置适用于当前选择的模型。</p>
       <div class="fields"><label>推理设备<select bind:value={draft.device}><option value="auto">自动 · CUDA 优先</option><option value="cuda">NVIDIA CUDA</option><option value="cpu">CPU</option></select></label><label>CPU 线程数<input type="number" min="1" max="128" bind:value={draft.threads}/></label></div>
-      <p>选择 NVIDIA CUDA 后，首次加载模型会从 NVIDIA 官方下载所需运行库，支持取消和续传；之后离线复用。Auto 仅使用已有运行库，未准备时回退 CPU。需要已安装兼容的 NVIDIA 显卡驱动。</p>
+      <p>选择 NVIDIA CUDA 后，首次加载模型会从 NVIDIA、微软或 GameOCR 官方源下载对应 GPU 后端与运行库，支持取消和续传，之后离线复用。Auto 仅使用已有组件，未准备时回退 CPU。需要已安装兼容的 NVIDIA 显卡驱动。</p>
       {#if model?.capabilities.generation??true}
       <div class="fields"><label>上下文大小<input type="number" min="2048" max="32768" step="1024" bind:value={draft.contextSize}/></label><label>最大输出 Token<input type="number" min="1" max="16000" bind:value={draft.maxTokens}/></label></div>
       <div class="fields"><label>采样温度<input type="number" min="0" max="2" step="0.1" bind:value={draft.temperature}/></label><label>图像最长边 (px)<input type="number" min="224" max="2048" step="32" bind:value={draft.maxImageEdge}/></label></div>

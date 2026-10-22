@@ -26,6 +26,16 @@ struct Package {
     size: u64,
     runtimes: Vec<String>,
     required: Vec<String>,
+    #[serde(default)]
+    kind: PackageKind,
+}
+#[derive(Clone, Copy, Default, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+enum PackageKind {
+    #[default]
+    Nvidia,
+    Onnx,
+    Llamacpp,
 }
 #[derive(Deserialize)]
 struct Catalog {
@@ -79,6 +89,62 @@ pub fn official_url(url: &reqwest::Url) -> bool {
         && (url.path().starts_with("/compute/cuda/redist/")
             || url.path().starts_with("/compute/cudnn/redist/"))
 }
+pub fn runtime_download_url(url: &reqwest::Url) -> bool {
+    if official_url(url) {
+        return true;
+    }
+    if url.scheme() != "https"
+        || url.port_or_known_default() != Some(443)
+        || !url.username().is_empty()
+        || url.password().is_some()
+    {
+        return false;
+    }
+    match url.host_str() {
+        Some("github.com") => {
+            url.path()
+                .starts_with("/microsoft/onnxruntime/releases/download/")
+                || url.path().starts_with("/suhli/gameocr/releases/download/")
+        }
+        // GitHub's official release-asset redirect destination. The archive hash
+        // still has to match the application-embedded catalog before extraction.
+        Some("release-assets.githubusercontent.com") => true,
+        _ => false,
+    }
+}
+fn validate_package(p: &Package) -> Result<()> {
+    ensure!(
+        safe_name(&p.id)
+            && safe_name(&p.version)
+            && !p.required.is_empty()
+            && p.required.iter().all(|n| safe_name(n)),
+        "无效的运行库目录"
+    );
+    let url = reqwest::Url::parse(&p.url)?;
+    let source_ok = match p.kind {
+        PackageKind::Nvidia => official_url(&url),
+        PackageKind::Onnx => {
+            runtime_download_url(&url)
+                && url.host_str() == Some("github.com")
+                && url
+                    .path()
+                    .starts_with("/microsoft/onnxruntime/releases/download/")
+        }
+        PackageKind::Llamacpp => {
+            runtime_download_url(&url)
+                && url.host_str() == Some("github.com")
+                && url.path().starts_with("/suhli/gameocr/releases/download/")
+        }
+    };
+    ensure!(
+        source_ok
+            && p.size > 0
+            && p.sha256.len() == 64
+            && p.sha256.bytes().all(|c| c.is_ascii_hexdigit()),
+        "无效的官方运行库校验信息"
+    );
+    Ok(())
+}
 fn packages(runtime: &str) -> Result<Vec<Package>> {
     ensure!(
         matches!(runtime, "onnx" | "llamacpp"),
@@ -91,16 +157,7 @@ fn packages(runtime: &str) -> Result<Vec<Package>> {
         .filter(|p| p.runtimes.iter().any(|r| r == runtime))
         .collect();
     for p in &packages {
-        ensure!(
-            safe_name(&p.id) && safe_name(&p.version) && p.required.iter().all(|n| safe_name(n)),
-            "无效的运行库目录"
-        );
-        ensure!(
-            official_url(&reqwest::Url::parse(&p.url)?)
-                && p.sha256.len() == 64
-                && p.sha256.bytes().all(|c| c.is_ascii_hexdigit()),
-            "无效的官方运行库校验信息"
-        );
+        validate_package(p)?;
     }
     Ok(packages)
 }
@@ -114,6 +171,95 @@ fn safe_name(name: &str) -> bool {
 }
 fn cache_root() -> PathBuf {
     crate::settings::data_dir().join("runtimes").join("nvidia")
+}
+fn package_cache(p: &Package) -> PathBuf {
+    if p.kind == PackageKind::Nvidia {
+        cache_root()
+    } else {
+        crate::settings::data_dir().join("runtimes/backends")
+    }
+}
+fn backend_package(runtime: &str) -> Result<Package> {
+    let p: Package = if runtime == "onnx" {
+        serde_json::from_str(include_str!("../catalog/onnx-cuda-runtime.json"))?
+    } else {
+        let catalog: Catalog =
+            serde_json::from_str(include_str!(concat!(env!("OUT_DIR"), "/gpu-backends.json")))?;
+        catalog
+            .packages
+            .into_iter()
+            .find(|p| p.kind == PackageKind::Llamacpp)
+            .context("此构建未配置 llama.cpp GPU 下载包；请使用包含配套 GPU 资源的发行版本")?
+    };
+    validate_package(&p)?;
+    ensure!(p.runtimes.iter().any(|r| r == runtime), "GPU 后端不匹配");
+    Ok(p)
+}
+fn binary_name(runtime: &str) -> Result<&'static str> {
+    match runtime {
+        "onnx" => Ok("onnx-worker.exe"),
+        "llamacpp" => Ok("ocr-worker.exe"),
+        _ => bail!("不支持的 CUDA Runtime"),
+    }
+}
+fn bundled_worker(root: &Path, runtime: &str) -> Result<PathBuf> {
+    Ok(root
+        .join("workers")
+        .join(runtime)
+        .join("cuda")
+        .join(binary_name(runtime)?))
+}
+fn needs_backend(root: &Path, runtime: &str) -> Result<bool> {
+    let worker = bundled_worker(root, runtime)?;
+    let complete = worker.is_file()
+        && (runtime != "onnx"
+            || [
+                "onnxruntime.dll",
+                "onnxruntime_providers_shared.dll",
+                "onnxruntime_providers_cuda.dll",
+            ]
+            .iter()
+            .all(|n| worker.with_file_name(n).is_file()));
+    if !complete {
+        ensure!(
+            root.join("gpu-downloads.json").is_file(),
+            "此 CPU 专用包未包含 CUDA 后端，请使用支持按需下载的标准包"
+        );
+        ensure!(
+            runtime != "onnx" || worker.is_file(),
+            "标准包缺少 ONNX 工作程序，请重新安装"
+        );
+    }
+    Ok(!complete)
+}
+/// Resolved only after all components have passed integrity checks; never downloads.
+pub struct GpuLaunch {
+    pub executable: PathBuf,
+    pub libraries: Vec<PathBuf>,
+    pub ort_dylib: Option<PathBuf>,
+}
+pub fn launch(root: &Path, runtime: &str) -> Result<GpuLaunch> {
+    let remote_backend = needs_backend(root, runtime)?;
+    let mut executable = bundled_worker(root, runtime)?;
+    let mut libraries = vec![root.to_owned(), root.join("runtime")];
+    let backend = if remote_backend {
+        let p = backend_package(runtime)?;
+        let directory = verify_installed(&package_cache(&p), &p, &AtomicBool::new(false))
+            .context("GPU 后端尚未准备好；明确选择 CUDA 并加载模型可下载")?;
+        if runtime == "llamacpp" {
+            executable = directory.join(binary_name(runtime)?);
+        }
+        directory
+    } else {
+        executable.parent().context("无效工作程序目录")?.to_owned()
+    };
+    libraries.push(backend.clone());
+    libraries.extend(paths(root, runtime)?);
+    Ok(GpuLaunch {
+        executable,
+        libraries,
+        ort_dylib: (runtime == "onnx").then(|| backend.join("onnxruntime.dll")),
+    })
 }
 fn installed_path(root: &Path, p: &Package) -> PathBuf {
     root.join(format!("{}-{}-{}", p.id, p.version, &p.sha256[..12]))
@@ -255,22 +401,13 @@ impl RuntimeManager {
         shutdown: Arc<AtomicBool>,
         emit: &(impl Fn(Progress) + Send + Sync),
     ) -> Result<()> {
-        let packages = packages(runtime)?;
-        let binary = if runtime == "onnx" {
-            "onnx-worker.exe"
-        } else {
-            "ocr-worker.exe"
-        };
-        ensure!(
-            root.join("workers")
-                .join(runtime)
-                .join("cuda")
-                .join(binary)
-                .is_file(),
-            "此 CPU 专用包未包含 CUDA Worker，请使用支持按需下载的标准包"
-        );
-        if bundled(root, &packages).is_some() {
-            return Ok(());
+        let nvidia = packages(runtime)?;
+        let mut packages = Vec::new();
+        if needs_backend(root, runtime)? {
+            packages.push(backend_package(runtime)?);
+        }
+        if bundled(root, &nvidia).is_none() {
+            packages.extend(nvidia);
         }
         self.publish(
             Progress {
@@ -280,7 +417,7 @@ impl RuntimeManager {
             },
             emit,
         );
-        let cache = cache_root();
+        let cache = crate::settings::data_dir().join("runtimes");
         std::fs::create_dir_all(&cache)?;
         let lock = std::fs::OpenOptions::new()
             .read(true)
@@ -292,7 +429,7 @@ impl RuntimeManager {
             .context("另一个 GameOCR 实例正在准备 CUDA 运行库，请稍后重试")?;
         let mut missing = Vec::new();
         for p in packages {
-            let (r, c, package) = (cache.clone(), self.cancelled.clone(), p.clone());
+            let (r, c, package) = (package_cache(&p), self.cancelled.clone(), p.clone());
             if tokio::task::spawn_blocking(move || verify_installed(&r, &package, &c))
                 .await?
                 .is_err()
@@ -318,13 +455,36 @@ impl RuntimeManager {
         let downloader = crate::model::ModelManager::official_runtime_downloader()?;
         let mut finished = 0;
         for p in missing {
-            let archive = cache.join(format!("{}.zip", p.sha256));
+            let cache = package_cache(&p);
+            std::fs::create_dir_all(&cache)?;
+            let url = reqwest::Url::parse(&p.url)?;
+            let filename = url
+                .path_segments()
+                .and_then(|mut s| s.next_back())
+                .context("无效归档地址")?;
+            ensure!(safe_name(filename), "无效归档名称");
+            // Optional offline companion assets remain outside the small base ZIP.
+            // They are subject to the exact same pinned size/hash verification.
+            let local = root.join("runtime-downloads").join(filename);
+            let from_local = local.is_file();
+            let archive = if from_local {
+                local
+            } else {
+                cache.join(format!("{}.zip", p.sha256))
+            };
             let mut progress = Progress {
                 state: "downloading".into(),
                 component: p.name.clone(),
                 total,
                 received: finished,
-                message: "首次使用 CUDA，正在从 NVIDIA 官方下载；可取消后续传".into(),
+                message: match p.kind {
+                    PackageKind::Nvidia => "正在从 NVIDIA 官方下载；可取消后续传",
+                    PackageKind::Onnx => "正在从微软官方 Release 下载 ONNX CUDA 后端；可取消后续传",
+                    PackageKind::Llamacpp => {
+                        "正在从 GameOCR Release 下载配套 GPU Worker；可取消后续传"
+                    }
+                }
+                .into(),
             };
             self.publish(progress.clone(), emit);
             let (a, c) = (archive.clone(), self.cancelled.clone());
@@ -334,6 +494,10 @@ impl RuntimeManager {
             })
             .await?;
             if !valid_archive {
+                ensure!(
+                    !from_local,
+                    "离线 GPU 组件包校验失败，请使用与此版本匹配的资源"
+                );
                 // A completed but invalid archive must not shadow the new atomic rename.
                 if archive.exists() {
                     std::fs::remove_file(&archive)?;
@@ -373,7 +537,7 @@ impl RuntimeManager {
                         }
                         Err(e) if attempt == 3 => {
                             return Err(e)
-                                .context("NVIDIA 运行库下载失败；再次加载模型可续传，或切换 CPU");
+                                .with_context(|| format!("{} 下载失败；请确认配套 Release 资源已公开发布，再次加载可续传，或切换 CPU", p.name));
                         }
                         Err(_) => {
                             progress.state = "retrying".into();
@@ -402,7 +566,9 @@ impl RuntimeManager {
             tokio::task::spawn_blocking(move || install_archive(&r, &a, &package, &c, &s))
                 .await??;
             // Keep interrupted .part downloads; remove successful archives to bound disk use.
-            std::fs::remove_file(&archive)?;
+            if !from_local {
+                std::fs::remove_file(&archive)?;
+            }
             finished += p.size;
         }
         Ok(())
@@ -425,7 +591,7 @@ fn install_archive(
     let actual = file_info(archive, cancelled)?;
     ensure!(
         actual.sha256 == p.sha256 && actual.size == p.size,
-        "NVIDIA 运行库 ZIP 校验失败"
+        "运行库 ZIP 校验失败"
     );
     let stage = Staging(root.join(format!(".install-{}", uuid::Uuid::new_v4())));
     std::fs::create_dir(&stage.0)?;
@@ -456,8 +622,9 @@ fn install_archive(
             .to_string_lossy()
             .to_string();
         let dll = p.required.iter().any(|n| n.eq_ignore_ascii_case(&name));
-        let license =
-            name.to_ascii_lowercase().contains("license") || name.eq_ignore_ascii_case("EULA.txt");
+        let license = name.to_ascii_lowercase().contains("license")
+            || name.to_ascii_lowercase().contains("notices")
+            || name.eq_ignore_ascii_case("EULA.txt");
         if !dll && !license {
             continue;
         }
@@ -505,7 +672,7 @@ fn install_archive(
             .iter()
             .all(|n| names.contains(&n.to_ascii_lowercase()))
             && names.iter().any(|n| n.starts_with("license-")),
-        "NVIDIA 运行库缺少所需 DLL 或许可文件"
+        "运行库缺少所需文件或许可证"
     );
     crate::settings::atomic_json(
         &stage.0.join("installed.json"),
@@ -549,6 +716,7 @@ mod tests {
             sha256: info.sha256,
             runtimes: vec!["onnx".into()],
             required: vec!["test.dll".into()],
+            kind: PackageKind::Nvidia,
         };
         (path, p)
     }

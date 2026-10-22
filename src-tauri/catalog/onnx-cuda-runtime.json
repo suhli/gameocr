@@ -1,0 +1,11 @@
+{
+  "id": "onnxruntime-gpu",
+  "name": "ONNX Runtime CUDA",
+  "version": "1.24.3",
+  "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.24.3/onnxruntime-win-x64-gpu-1.24.3.zip",
+  "sha256": "f2af33fea71f477027961b8027e7496ab01c6b962ae4f596bf8163192b03b326",
+  "size": 311219580,
+  "runtimes": ["onnx"],
+  "required": ["onnxruntime.dll", "onnxruntime_providers_shared.dll", "onnxruntime_providers_cuda.dll"],
+  "kind": "onnx"
+}
