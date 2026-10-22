@@ -15,10 +15,22 @@ Copy-Item -LiteralPath $Binary -Destination (Join-Path $destination 'GameOCR.exe
 foreach ($runtime in @('llamacpp','onnx')) {
     $runtimeDir = Join-Path $destination "workers/$runtime"
     New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
-    $devices = if ($Backend -eq 'cpu') { @('cpu') } else { @('cpu','cuda') }
+    $devices = if ($Backend -eq 'both') { @('cpu','cuda') } else { @('cpu') }
     foreach ($device in $devices) {
         Copy-Item -LiteralPath "src-tauri/resources/workers/$runtime/$device" -Destination (Join-Path $runtimeDir $device) -Recurse
     }
+}
+if ($Backend -eq 'ondemand') {
+    $bootstrap = Join-Path $destination 'workers/onnx/cuda'
+    New-Item -ItemType Directory -Force -Path $bootstrap | Out-Null
+    Copy-Item -LiteralPath 'src-tauri/resources/workers/onnx/cuda/onnx-worker.exe' -Destination $bootstrap
+    Copy-Item -LiteralPath 'src-tauri/gpu-downloads.json' -Destination $destination
+    if (!(Test-Path -LiteralPath 'artifacts/gpu-backends.json')) { throw 'Prepare GPU assets before building: scripts/package-gpu-backends.ps1' }
+    $embedded = & $Binary --gpu-catalog
+    if ($LASTEXITCODE) { throw 'Unable to read embedded GPU catalog' }
+    $expected = Get-Content -LiteralPath 'artifacts/gpu-backends.json' -Raw | ConvertFrom-Json
+    $actual = $embedded | ConvertFrom-Json
+    if ($actual.packages[0].sha256 -ne $expected.packages[0].sha256 -or $actual.packages[0].url -ne $expected.packages[0].url) { throw 'EXE GPU catalog does not match companion assets; rebuild with GAMEOCR_GPU_MANIFEST.' }
 }
 if ($Backend -eq 'both') {
     Copy-Item -LiteralPath 'src-tauri/resources/workers/cuda-runtime' -Destination (Join-Path $destination 'workers/cuda-runtime') -Recurse
@@ -35,10 +47,10 @@ Model weights are not included. Download/import GGUF + mmproj or PP-OCRv6 ONNX i
 Settings and models: %LOCALAPPDATA%\GameOCR
 This is an unsigned build; clean Windows 11 validation is documented separately.
 '@ | Set-Content -LiteralPath (Join-Path $destination 'README.txt') -Encoding utf8
-$backendNote = if ($Backend -eq 'cpu') { 'CPU-only package: no NVIDIA libraries. Auto falls back to CPU; explicit CUDA reports a missing worker.' } elseif ($Backend -eq 'ondemand') { 'CUDA libraries download from NVIDIA on first explicit CUDA model load (about 1.86 GiB for ONNX, 541 MiB for GGUF). Auto does not download. Downloads support cancellation/resume and SHA-256 verification. Cache: %LOCALAPPDATA%\GameOCR\runtimes\nvidia. A compatible NVIDIA driver must already be installed.' } else { 'CPU and CUDA workers and NVIDIA runtime libraries included for offline use. CUDA requires a compatible NVIDIA driver.' }
+$backendNote = if ($Backend -eq 'cpu') { 'CPU-only package: no GPU backends. Auto falls back to CPU; explicit CUDA reports a missing backend.' } elseif ($Backend -eq 'ondemand') { 'GPU backends download on first explicit CUDA model load: ONNX libraries from Microsoft, llama.cpp GPU Worker from the matching GameOCR Release, and CUDA/cuDNN from NVIDIA. Auto does not download. Downloads support cancellation/resume and SHA-256 verification. Cache: %LOCALAPPDATA%\GameOCR\runtimes. A compatible NVIDIA driver must already be installed. Optional matching offline archives may be placed in runtime-downloads beside GameOCR.exe.' } else { 'CPU and CUDA workers and NVIDIA runtime libraries included for offline use. CUDA requires a compatible NVIDIA driver.' }
 Add-Content -LiteralPath (Join-Path $destination 'README.txt') -Value $backendNote -Encoding utf8
 $requiredFiles = @('GameOCR.exe','workers/llamacpp/cpu/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','vcruntime140.dll')
-if ($Backend -ne 'cpu') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll') }
+if ($Backend -eq 'both') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll') }
 if ($Backend -eq 'both') { $requiredFiles += @('workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll') }
 foreach ($required in $requiredFiles) {
     if (!(Test-Path -LiteralPath (Join-Path $destination $required))) { throw "Portable is incomplete: $required" }

@@ -47,7 +47,7 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cargo test -p gameocr-onnx --locked
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          New-Item -ItemType Directory -Force src-tauri/resources/workers/onnx,src-tauri/resources/workers/llamacpp,src-tauri/resources/runtime,src-tauri/resources/licenses | Out-Null
+          New-Item -ItemType Directory -Force src-tauri/resources/workers/onnx/cpu,src-tauri/resources/workers/onnx/bootstrap,src-tauri/resources/workers/llamacpp/cpu,src-tauri/resources/runtime,src-tauri/resources/licenses | Out-Null
           cargo test -p gameocr --lib --locked
       - uses: Jimver/cuda-toolkit@v0.2.36
         with:
@@ -91,6 +91,8 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
       - name: Collect dependency licenses
         run: node scripts/collect-licenses.mjs
+      - name: Prepare version-matched GPU companion assets and embedded catalog
+        run: ./scripts/package-gpu-backends.ps1
       - name: Build standard installers
         run: npm run tauri -- build --bundles nsis,msi
       - name: Collect installers
@@ -128,6 +130,9 @@ jobs:
             artifacts/GameOCR-windows-x64-setup.exe
             artifacts/GameOCR-windows-x64.msi
             artifacts/SHA256SUMS-ondemand.txt
+            artifacts/GameOCR-llamacpp-cuda-windows-x64-*.zip
+            artifacts/gpu-backends.json
+            artifacts/SHA256SUMS-gpu-backends.txt
             artifacts/GameOCR-windows-x64-cpu-portable.zip
             artifacts/SHA256SUMS-cpu.txt
             artifacts/onnx-cpu-e2e.json

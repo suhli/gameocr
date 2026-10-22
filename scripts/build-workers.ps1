@@ -58,6 +58,11 @@ foreach ($kind in $backends) {
     $destination=Join-Path $repo "src-tauri/resources/workers/onnx/$kind"
     New-Item -ItemType Directory -Force -Path $destination | Out-Null
     Copy-Item -LiteralPath "target/onnx-$kind/$Profile/onnx-worker.exe" -Destination $destination
+    if ($kind -eq 'cuda') {
+        $bootstrap = Join-Path $repo 'src-tauri/resources/workers/onnx/bootstrap'
+        New-Item -ItemType Directory -Force -Path $bootstrap | Out-Null
+        Copy-Item -LiteralPath "target/onnx-$kind/$Profile/onnx-worker.exe" -Destination $bootstrap
+    }
     & (Join-Path $PSScriptRoot 'collect-onnx-runtime.ps1') -Backend $kind -CudnnPath $CudnnPath
   }
 }

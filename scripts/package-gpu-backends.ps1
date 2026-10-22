@@ -2,6 +2,9 @@ param([string]$ReleaseTag = '')
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 Set-Location $repo
+$bootstrap = Join-Path $repo 'src-tauri/resources/workers/onnx/bootstrap'
+New-Item -ItemType Directory -Force -Path $bootstrap | Out-Null
+Copy-Item -LiteralPath 'src-tauri/resources/workers/onnx/cuda/onnx-worker.exe' -Destination $bootstrap
 $worker = Join-Path $repo 'src-tauri/resources/workers/llamacpp/cuda/ocr-worker.exe'
 $workerHash = (Get-FileHash -LiteralPath $worker -Algorithm SHA256).Hash.ToLowerInvariant()
 if (!$ReleaseTag) {

@@ -4,8 +4,11 @@ if (!$Directory) { $Directory = if ($Backend -eq 'cpu') { 'artifacts/GameOCR-win
 $requiredFiles = @('GameOCR.exe','vcruntime140.dll','msvcp140.dll','workers/llamacpp/cpu/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','licenses/dependencies.txt','licenses/onnxruntime-LICENSE.txt')
 if ($Backend -eq 'both') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll','workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll','licenses/cuDNN-LICENSE.txt') }
 if ($Backend -eq 'ondemand') {
-    $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll')
+    $requiredFiles += @('workers/onnx/cuda/onnx-worker.exe','gpu-downloads.json')
     if (Test-Path -LiteralPath (Join-Path $Directory 'workers/cuda-runtime')) { throw 'On-demand package must not bundle NVIDIA runtime libraries.' }
+    if (Test-Path -LiteralPath (Join-Path $Directory 'workers/llamacpp/cuda')) { throw 'On-demand package must not bundle the llama.cpp CUDA worker.' }
+    $gpuDlls = Get-ChildItem -LiteralPath (Join-Path $Directory 'workers/onnx/cuda') -Filter '*.dll'
+    if ($gpuDlls) { throw 'On-demand package must not bundle ONNX GPU DLLs.' }
 }
 foreach ($file in $requiredFiles) {
     if (!(Test-Path -LiteralPath (Join-Path $Directory $file))) { throw "Missing runtime dependency: $file" }
@@ -13,6 +16,7 @@ foreach ($file in $requiredFiles) {
 $forbidden = Get-ChildItem -LiteralPath $Directory -Recurse -File | Where-Object { $_.Name -match '\.(gguf|onnx)$|WebView2.*Setup|msedgewebview2.exe|nvcc.exe' }
 if ($forbidden) { throw 'Portable unexpectedly contains a model, WebView installer/browser, or development tool.' }
 if ($Backend -eq 'cpu') {
+    if (Test-Path -LiteralPath (Join-Path $Directory 'gpu-downloads.json')) { throw 'CPU-only package unexpectedly enables GPU downloads.' }
     $gpuFiles = Get-ChildItem -LiteralPath $Directory -Recurse -File | Where-Object { $_.Name -match '(cuda|cublas|cudnn|cufft|nvrtc|nvJitLink).*\.dll$' -or $_.Directory.Name -eq 'cuda' }
     if ($gpuFiles) { throw 'CPU package contains GPU binaries.' }
 }
