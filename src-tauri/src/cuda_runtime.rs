@@ -36,6 +36,7 @@ enum PackageKind {
     Nvidia,
     Onnx,
     Llamacpp,
+    Translation,
 }
 #[derive(Deserialize)]
 struct Catalog {
@@ -130,7 +131,7 @@ fn validate_package(p: &Package) -> Result<()> {
                     .path()
                     .starts_with("/microsoft/onnxruntime/releases/download/")
         }
-        PackageKind::Llamacpp => {
+        PackageKind::Llamacpp | PackageKind::Translation => {
             runtime_download_url(&url)
                 && url.host_str() == Some("github.com")
                 && url.path().starts_with("/suhli/gameocr/releases/download/")
@@ -147,14 +148,14 @@ fn validate_package(p: &Package) -> Result<()> {
 }
 fn packages(runtime: &str) -> Result<Vec<Package>> {
     ensure!(
-        matches!(runtime, "onnx" | "llamacpp"),
+        matches!(runtime, "onnx" | "llamacpp" | "translation"),
         "不支持的 CUDA Runtime"
     );
     let catalog: Catalog = serde_json::from_str(include_str!("../catalog/cuda-runtime.json"))?;
     let packages: Vec<_> = catalog
         .packages
         .into_iter()
-        .filter(|p| p.runtimes.iter().any(|r| r == runtime))
+        .filter(|p| p.runtimes.iter().any(|r| r == if runtime == "translation" { "llamacpp" } else { runtime }))
         .collect();
     for p in &packages {
         validate_package(p)?;
@@ -187,8 +188,8 @@ fn backend_package(runtime: &str) -> Result<Package> {
         catalog
             .packages
             .into_iter()
-            .find(|p| p.kind == PackageKind::Llamacpp)
-            .context("此构建未配置 llama.cpp GPU 下载包；请使用包含配套 GPU 资源的发行版本")?
+            .find(|p| p.kind == if runtime == "translation" { PackageKind::Translation } else { PackageKind::Llamacpp })
+            .with_context(|| format!("此构建未配置 {runtime} GPU 下载包；请使用包含配套 GPU 资源的发行版本"))?
     };
     validate_package(&p)?;
     ensure!(p.runtimes.iter().any(|r| r == runtime), "GPU 后端不匹配");
@@ -201,6 +202,7 @@ fn binary_name(runtime: &str) -> Result<&'static str> {
     match runtime {
         "onnx" => Ok("onnx-worker.exe"),
         "llamacpp" => Ok("ocr-worker.exe"),
+        "translation" => Ok("translation-worker.exe"),
         _ => bail!("不支持的 CUDA Runtime"),
     }
 }
@@ -248,7 +250,7 @@ pub fn launch(root: &Path, runtime: &str) -> Result<GpuLaunch> {
         let p = backend_package(runtime)?;
         let directory = verify_installed(&package_cache(&p), &p, &AtomicBool::new(false))
             .context("GPU 后端尚未准备好；明确选择 CUDA 并加载模型可下载")?;
-        if runtime == "llamacpp" {
+        if runtime != "onnx" {
             executable = directory.join(binary_name(runtime)?);
         }
         directory
@@ -487,7 +489,7 @@ impl RuntimeManager {
                         PackageKind::Onnx => {
                             "正在从微软官方 Release 下载 ONNX CUDA 后端；可取消后续传"
                         }
-                        PackageKind::Llamacpp => {
+                        PackageKind::Llamacpp | PackageKind::Translation => {
                             "正在从 GameOCR Release 下载配套 GPU Worker；可取消后续传"
                         }
                     }
@@ -544,7 +546,7 @@ impl RuntimeManager {
                             break;
                         }
                         Err(e) if attempt == 3 => {
-                            let hint = if p.kind == PackageKind::Llamacpp {
+                            let hint = if matches!(p.kind, PackageKind::Llamacpp | PackageKind::Translation) {
                                 "请确认配套 Release 资源已公开发布"
                             } else {
                                 "请检查网络能否访问组件官方源"

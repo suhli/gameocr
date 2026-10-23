@@ -68,7 +68,7 @@ impl Worker {
             .await
         }
     }
-    async fn spawn_configured(
+    pub(crate) async fn spawn_configured(
         path: &Path,
         libraries: Vec<PathBuf>,
         ort_dylib: Option<PathBuf>,
@@ -136,12 +136,17 @@ impl Worker {
         })
     }
     pub async fn request(&mut self, request: WorkerRequest) -> Result<WorkerResponse> {
+        self.request_typed(request).await
+    }
+    /// Bounded transport shared by independent OCR and translation processes.
+    pub async fn request_typed<Q: serde::Serialize, R: serde::de::DeserializeOwned>(&mut self, request: Q) -> Result<R> {
         let response=tokio::time::timeout(Duration::from_secs(180),async {
             self.input.write_all(&serde_json::to_vec(&request)?).await?;self.input.write_all(b"\n").await?;self.input.flush().await?;
             let read=read_response(&mut self.output);tokio::pin!(read);
             let line=loop{tokio::select!{line=&mut read=>break line?,_=tokio::time::sleep(Duration::from_millis(50))=>{if self.closing.load(Ordering::Acquire){bail!("应用正在退出");}}}};
-            let response:WorkerResponse=serde_json::from_str(&line).context("工作程序协议错误")?;
-            match response {WorkerResponse::Error {message}=>bail!("{message}"),other=>Ok(other)}
+            let response:serde_json::Value=serde_json::from_str(&line).context("工作程序协议错误")?;
+            if response.get("type").and_then(|v|v.as_str())==Some("error") { bail!("{}",response.get("message").and_then(|v|v.as_str()).unwrap_or("工作程序错误")); }
+            Ok(serde_json::from_value::<R>(response)?)
         }).await;
         match response {
             Ok(Ok(r)) => Ok(r),

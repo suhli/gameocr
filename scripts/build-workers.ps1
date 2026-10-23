@@ -1,7 +1,7 @@
 param(
     [ValidateSet('cpu','cuda','both')][string]$Backend = 'both',
     [ValidateSet('debug','release')][string]$Profile = 'release',
-    [ValidateSet('all','llamacpp','onnx')][string]$Runtime = 'all',
+    [ValidateSet('all','llamacpp','onnx','translation')][string]$Runtime = 'all',
     [string]$CudaArchitectures = '75;80;86;89;120',
     [string]$CudnnPath = $env:CUDNN_PATH,
     [switch]$LocalCuda121Compatibility,
@@ -24,6 +24,27 @@ if ($LocalCuda121Compatibility) {
 }
 $backends = if ($Backend -eq 'both') { @('cpu','cuda') } else { @($Backend) }
 foreach ($kind in $backends) {
+  if ($Runtime -in @('all','translation')) {
+    $env:CMAKE_CUDA_ARCHITECTURES = $CudaArchitectures
+    $translationArgs = @('build','-p','gameocr-translation','--bins','--locked','--jobs',"$Jobs",'--target-dir',"target/workers-$kind")
+    if ($Profile -eq 'release') { $translationArgs += '--release' }
+    if ($kind -eq 'cuda') { $translationArgs += @('--features','cuda') }
+    & cargo @translationArgs
+    if ($LASTEXITCODE) { throw "Translation $kind worker build failed" }
+    $translationDestination = Join-Path $repo "src-tauri/resources/workers/translation/$kind"
+    New-Item -ItemType Directory -Force -Path $translationDestination | Out-Null
+    Copy-Item -LiteralPath "target/workers-$kind/$Profile/translation-worker.exe" -Destination $translationDestination
+    if ($kind -eq 'cuda') {
+        $sharedCuda = Join-Path $repo 'src-tauri/resources/workers/cuda-runtime'
+        New-Item -ItemType Directory -Force -Path $sharedCuda | Out-Null
+        if (!$env:CUDA_PATH) { throw 'CUDA_PATH must point to a CUDA 12.x Toolkit.' }
+        foreach ($name in @('cudart64_12.dll','cublas64_12.dll','cublasLt64_12.dll')) {
+            Copy-Item -LiteralPath (Join-Path $env:CUDA_PATH "bin/$name") -Destination $sharedCuda
+        }
+        $license = Join-Path $env:CUDA_PATH 'EULA.txt'
+        if (Test-Path -LiteralPath $license) { Copy-Item -LiteralPath $license -Destination (Join-Path $translationDestination 'CUDA-EULA.txt') }
+    }
+  }
   if ($Runtime -in @('all','llamacpp')) {
     $env:CMAKE_CUDA_ARCHITECTURES = $CudaArchitectures
     $buildArgs = @('build','-p','gameocr-core','--bins','--locked','--jobs',"$Jobs",'--target-dir',"target/workers-$kind")

@@ -1,0 +1,15 @@
+[
+  {"requestId":"en-npc","sourceText":"Where are you going? The northern bridge is still closed.","options":{"targetLanguage":"zh"},"reference":"你要去哪里？北边的桥还没有开放。","category":"NPC dialogue","humanReview":null},
+  {"requestId":"ja-polite","sourceText":"恐れ入りますが、こちらで少々お待ちいただけますでしょうか。","options":{"targetLanguage":"zh"},"reference":"不好意思，能请您在这里稍等片刻吗？","category":"Japanese politeness","humanReview":null},
+  {"requestId":"zh-en","sourceText":"请在日落之前找到失踪的信使，否则城门将会关闭。","options":{"targetLanguage":"en"},"reference":"Find the missing messenger before sunset, or the city gates will close.","category":"quest","humanReview":null},
+  {"requestId":"zh-ja","sourceText":"谢谢你救了我。下次见面的时候，我一定会报答你。","options":{"targetLanguage":"ja"},"reference":"助けてくれてありがとう。次に会ったときは、必ず恩返しするよ。","category":"dialogue","humanReview":null},
+  {"requestId":"terms","sourceText":"Phoenix used Limit Break against the Eikon.","options":{"targetLanguage":"zh","glossary":[{"source":"Phoenix","target":"菲尼克斯","category":"character"},{"source":"Limit Break","target":"极限技","category":"skill"},{"source":"Eikon","target":"召唤兽","category":"lore"}]},"reference":"菲尼克斯对召唤兽使用了极限技。","category":"glossary","humanReview":null},
+  {"requestId":"menu","sourceText":"New Game\nLoad Game\nSettings\nQuit","options":{"targetLanguage":"zh"},"reference":"新游戏\n读取游戏\n设置\n退出","category":"multiline menu","humanReview":null},
+  {"requestId":"item","sourceText":"Restores 200 HP over 5 seconds. Cannot be used during combat.","options":{"targetLanguage":"zh"},"reference":"在5秒内恢复200点生命值。战斗中无法使用。","category":"item and numbers","humanReview":null},
+  {"requestId":"tone","sourceText":"おい、勝手に触るなよ！それは俺の宝物なんだ！","options":{"targetLanguage":"zh","style":"保留角色随意、略带生气的语气。"},"reference":"喂，别乱碰啊！那可是我的宝贝！","category":"character tone","humanReview":null},
+  {"requestId":"mixed","sourceText":"Quest Clear! お疲れさま、勇者。Reward: 500 Gold","options":{"targetLanguage":"zh"},"reference":"任务完成！辛苦了，勇者。奖励：500金币","category":"mixed languages","humanReview":null},
+  {"requestId":"sound","sourceText":"ドカーン！……えっ、今の音は何？","options":{"targetLanguage":"zh"},"reference":"轰隆！……咦，刚才是什么声音？","category":"onomatopoeia","humanReview":null},
+  {"requestId":"incomplete","sourceText":"If you can reach the tower before","options":{"targetLanguage":"zh"},"reference":"如果你能在……之前到达塔楼","category":"incomplete OCR","humanReview":null},
+  {"requestId":"context","sourceText":"She left it by the old gate.","options":{"targetLanguage":"zh","context":["艾琳正在寻找失踪的银色钥匙。"],"contextVersion":1},"reference":"她把它留在了旧城门旁。","category":"bounded context","humanReview":null},
+  {"requestId":"isolation","sourceText":"Where are you going? The northern bridge is still closed.","options":{"targetLanguage":"zh"},"reference":"你要去哪里？北边的桥还没有开放。","category":"KV isolation repeat","humanReview":null}
+]

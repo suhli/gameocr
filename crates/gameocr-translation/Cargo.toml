@@ -1,0 +1,29 @@
+[package]
+name = "gameocr-translation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+default = ["inference"]
+inference = ["dep:llama-cpp-2"]
+cuda = ["inference", "llama-cpp-2/cuda"]
+
+[dependencies]
+anyhow = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+gameocr-core = { path = "../gameocr-core", default-features = false }
+llama-cpp-2 = { version = "=0.1.159", optional = true, default-features = false }
+clap = { version = "4", features = ["derive"] }
+
+[[bin]]
+name = "translation-worker"
+path = "src/bin/translation-worker.rs"
+required-features = ["inference"]
+
+[[bin]]
+name = "translation-test"
+path = "src/bin/translation-test.rs"
+required-features = ["inference"]

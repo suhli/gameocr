@@ -10,7 +10,7 @@ if (!$crt) { throw 'MSVC redistributable CRT directory not found.' }
 $runtime = Join-Path $repo 'src-tauri/resources/runtime'
 New-Item -ItemType Directory -Force -Path $runtime | Out-Null
 Copy-Item -Path (Join-Path $crt.FullName '*.dll') -Destination $runtime
-foreach ($kind in @('llamacpp/cpu','llamacpp/cuda','onnx/cpu','onnx/cuda')) {
+foreach ($kind in @('llamacpp/cpu','llamacpp/cuda','onnx/cpu','onnx/cuda','translation/cpu','translation/cuda')) {
     $worker = Join-Path $repo "src-tauri/resources/workers/$kind"
     if (Test-Path -LiteralPath $worker) { Copy-Item -Path (Join-Path $runtime '*.dll') -Destination $worker }
 }

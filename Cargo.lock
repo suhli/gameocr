@@ -1411,6 +1411,7 @@ dependencies = [
  "dirs 6.0.0",
  "futures-util",
  "gameocr-core",
+ "gameocr-translation",
  "hex",
  "image",
  "parking_lot",
@@ -1456,6 +1457,19 @@ dependencies = [
  "image",
  "imageproc",
  "ort",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "gameocr-translation"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "gameocr-core",
+ "llama-cpp-2",
+ "serde",
  "serde_json",
  "sha2",
 ]

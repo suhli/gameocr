@@ -63,6 +63,7 @@ pub struct Service {
     pub selected: Mutex<Option<WindowInfo>>,
     pub models: Arc<ModelManager>,
     pub cuda_runtime: crate::cuda_runtime::RuntimeManager,
+    pub translation: Arc<crate::translation::TranslationManager>,
     pub model_status: Mutex<ModelStatus>,
     executor: tokio::sync::Mutex<Option<ExecutionStrategyManager>>,
     pub adaptive_profiles: Arc<ProfileRepository>,
@@ -99,6 +100,7 @@ impl Service {
         std::fs::create_dir_all(&cache_dir)?;
         let capture = CaptureManager::new(app.clone());
         let shared = capture.shared.clone();
+        let translation = crate::translation::TranslationManager::new(app.clone());
         Ok(Arc::new(Self {
             app,
             settings: RwLock::new(settings),
@@ -108,6 +110,7 @@ impl Service {
             selected: Mutex::new(None),
             models: Arc::new(ModelManager::new()?),
             cuda_runtime: Default::default(),
+            translation,
             model_status: Mutex::new(ModelStatus {
                 status: "unloaded".into(),
                 id: None,
@@ -141,6 +144,7 @@ impl Service {
         let _gate = self.shared.transition.lock();
         self.continuous.store(false, Ordering::Release);
         self.ocr_epoch.fetch_add(1, Ordering::AcqRel);
+        self.translation.invalidate(true);
         self.set_ocr_status("idle");
     }
     fn set_ocr_status(&self, status: &str) {
@@ -505,6 +509,7 @@ impl Service {
                 }
                 let publish = Instant::now();
                 let _ = self.app.emit("ocr-result", &snapshot);
+                self.translation.submit(&snapshot.result, generation, epoch, frame.capture.arrived, false);
                 // Emission duration is available after emitting: update telemetry, not the past event.
                 if let Some(status) = self.executor_status.read().as_ref() {
                     let mut metrics = snapshot.result.metrics.execution.clone();
@@ -549,6 +554,7 @@ impl Service {
         Ok(())
     }
     pub fn launch(self: &Arc<Self>) {
+        self.translation.launch(Arc::downgrade(self));
         let service = self.clone();
         tauri::async_runtime::spawn(async move {
             let mut last = Instant::now() - Duration::from_secs(60);
@@ -631,6 +637,7 @@ impl Service {
         self.shutdown.store(true, Ordering::Release);
         self.stop_ocr();
         self.capture.lock().stop();
+        self.translation.close().await;
         if let Some(mut worker) = self.executor.lock().await.take() {
             worker.shutdown().await;
         }

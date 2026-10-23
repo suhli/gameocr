@@ -32,6 +32,57 @@ fn err(e: impl std::fmt::Display) -> String {
     e.to_string()
 }
 #[tauri::command]
+pub fn translation_settings(state:AppState<'_>)->crate::translation::config::TranslationSettings {state.translation.settings.read().clone()}
+#[tauri::command]
+pub async fn update_translation_settings(state:AppState<'_>,settings:crate::translation::config::TranslationSettings)->Reply<()> {state.translation.update(settings).await.map_err(err)}
+#[tauri::command]
+pub fn translation_status(state:AppState<'_>)->crate::translation::TranslationStatus {state.translation.status.lock().clone()}
+#[tauri::command]
+pub async fn translation_models()->Reply<Vec<gameocr_translation::types::TranslationManifest>> {tokio::task::spawn_blocking(crate::translation::models::list).await.map_err(err)?.map_err(err)}
+#[tauri::command]
+pub async fn download_translation_model(state:AppState<'_>)->Reply<()> {let mirror=state.settings.read().download_mirror.clone();state.translation.download(mirror,state.models.clone()).await.map_err(err)}
+#[tauri::command]
+pub fn cancel_translation_download(state:AppState<'_>){state.translation.download_cancel.store(true,std::sync::atomic::Ordering::Release);}
+#[tauri::command]
+pub async fn import_translation_model(state:AppState<'_>,path:PathBuf)->Reply<gameocr_translation::types::TranslationManifest>{state.translation.import(path).await.map_err(err)}
+#[tauri::command]
+pub async fn delete_translation_model(state:AppState<'_>,id:String)->Reply<()>{state.translation.delete(id).await.map_err(err)}
+#[tauri::command]
+pub async fn load_translation_model(state:AppState<'_>,id:String)->Reply<()>{state.translation.load(id).await.map_err(err)}
+#[tauri::command]
+pub async fn unload_translation_model(state:AppState<'_>)->Reply<()>{state.translation.unload().await.map_err(err)}
+#[tauri::command]
+pub fn translate_once(state:AppState<'_>,frame_id:u64)->Reply<()> {
+    let _gate=state.shared.transition.lock();let current=state.history.lock().front().cloned().ok_or("尚无 OCR 结果")?;
+    if current.result.frame_id!=frame_id || current.preview.generation!=state.shared.generation.load(std::sync::atomic::Ordering::Acquire){return Err("只能翻译当前目标的最新 OCR 结果".into())}
+    if state.translation.status.lock().model_id.is_none(){return Err("请先加载翻译模型".into())}
+    let captured=state.recognized_frame.lock().as_ref().and_then(|f|f.capture.arrived);
+    state.translation.submit(&current.result,current.preview.generation,state.ocr_epoch.load(std::sync::atomic::Ordering::Acquire),captured,true);Ok(())
+}
+#[tauri::command]
+pub fn translation_history(state:AppState<'_>)->Vec<crate::translation::TranslationEvent>{state.translation.history()}
+#[tauri::command]
+pub fn clear_translation_cache(state:AppState<'_>)->Reply<()>{state.translation.clear_cache().map_err(err)}
+#[tauri::command]
+pub fn confirm_translation_context(state:AppState<'_>,frame_id:u64)->Reply<()>{state.translation.confirm_context(frame_id).map_err(err)}
+#[tauri::command]
+pub async fn export_translation(state:AppState<'_>,frame_id:u64,path:PathBuf)->Reply<()> {
+    let entry=state.translation.history().into_iter().find(|e|e.identity.frame_id==frame_id).ok_or("译文不在历史中")?;
+    tokio::task::spawn_blocking(move||crate::settings::atomic_json(&path,&serde_json::json!({"schemaVersion":1,"translation":entry}))).await.map_err(err)?.map_err(err)
+}
+#[tauri::command]
+pub async fn import_translation_profiles(path:PathBuf)->Reply<Vec<gameocr_translation::types::GameProfile>> {
+    tokio::task::spawn_blocking(move||->anyhow::Result<_>{
+        anyhow::ensure!(std::fs::metadata(&path)?.len()<=2*1024*1024,"Profile 文件超过 2 MiB");
+        let profiles:Vec<gameocr_translation::types::GameProfile>=serde_json::from_slice(&std::fs::read(path)?)?;
+        anyhow::ensure!(profiles.len()<=100,"最多 100 个 Profile");for p in &profiles{p.validate()?;}Ok(profiles)
+    }).await.map_err(err)?.map_err(err)
+}
+#[tauri::command]
+pub async fn export_translation_profiles(state:AppState<'_>,path:PathBuf)->Reply<()> {
+    let profiles=state.translation.settings.read().profiles.clone();tokio::task::spawn_blocking(move||crate::settings::atomic_json(&path,&profiles)).await.map_err(err)?.map_err(err)
+}
+#[tauri::command]
 pub async fn list_windows(show_all: bool) -> Reply<Vec<WindowInfo>> {
     tokio::task::spawn_blocking(move || window::list(show_all))
         .await

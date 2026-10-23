@@ -514,7 +514,7 @@ pub fn hash_file(path: &Path) -> Result<String> {
     }
     Ok(hex::encode(hash.finalize()))
 }
-fn verify_file(path: &Path, size: u64, hash: &str) -> Result<()> {
+pub(crate) fn verify_file(path: &Path, size: u64, hash: &str) -> Result<()> {
     ensure!(std::fs::metadata(path)?.len() == size, "文件大小不完整");
     ensure!(hash_file(path)? == hash, "SHA-256 校验失败");
     Ok(())

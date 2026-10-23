@@ -1,11 +1,22 @@
 import { invoke,isTauri } from '@tauri-apps/api/core';
 import { listen,type UnlistenFn } from '@tauri-apps/api/event';
 import { open,save,confirm } from '@tauri-apps/plugin-dialog';
+import type {TranslationSettings,TranslationModel,TranslationStatus,TranslationEvent,GameProfile} from '../types/translation';
+export interface Events {'translation-status':TranslationStatus;'translation-result':TranslationEvent;'translation-invalidated':null;'translation-download-progress':DownloadProgress;}
 import type { WindowInfo,Preview,ModelEntry,ModelStatus,Settings,Performance,Snapshot,CaptureStatus,OcrStatus,AdbDevice,DownloadProgress,LearningSummary } from '../types';
 export const native=isTauri();
 function call<T>(command:string,args?:Record<string,unknown>):Promise<T>{if(!native)return Promise.reject(new Error('请通过 GameOCR 桌面应用运行，浏览器预览无法访问本机捕获和模型。'));return invoke<T>(command,args);}
 export interface CudaRuntimeProgress{state:string;component:string;received:number;total:number;message:string;}
 export const api={
+  translationSettings:()=>call<TranslationSettings>('translation_settings'),updateTranslationSettings:(settings:TranslationSettings)=>call<void>('update_translation_settings',{settings}),
+  translationStatus:()=>call<TranslationStatus>('translation_status'),translationModels:()=>call<TranslationModel[]>('translation_models'),
+  downloadTranslation:()=>call<void>('download_translation_model'),cancelTranslationDownload:()=>call<void>('cancel_translation_download'),
+  importTranslation:(path:string)=>call<TranslationModel>('import_translation_model',{path}),deleteTranslation:(id:string)=>call<void>('delete_translation_model',{id}),
+  loadTranslation:(id:string)=>call<void>('load_translation_model',{id}),unloadTranslation:()=>call<void>('unload_translation_model'),
+  translateOnce:(frameId:number)=>call<void>('translate_once',{frameId}),translationHistory:()=>call<TranslationEvent[]>('translation_history'),
+  clearTranslationCache:()=>call<void>('clear_translation_cache'),confirmTranslationContext:(frameId:number)=>call<void>('confirm_translation_context',{frameId}),
+  exportTranslation:(frameId:number,path:string)=>call<void>('export_translation',{frameId,path}),
+  importTranslationProfiles:(path:string)=>call<GameProfile[]>('import_translation_profiles',{path}),exportTranslationProfiles:(path:string)=>call<void>('export_translation_profiles',{path}),
   cudaRuntimeStatus:()=>call<CudaRuntimeProgress>('get_cuda_runtime_status'),cancelCudaDownload:()=>call<void>('cancel_cuda_runtime_download'),
   adaptiveStatistics:()=>call<LearningSummary>('get_adaptive_statistics'),clearAdaptiveProfiles:()=>call<void>('clear_adaptive_profiles'),
   windows:(showAll=false)=>call<WindowInfo[]>('list_windows',{showAll}),selectWindow:(id:string)=>call<WindowInfo>('select_window',{id}),
