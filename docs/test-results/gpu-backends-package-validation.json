@@ -1,0 +1,62 @@
+{
+  "executedAt": "2026-10-23T02:13:23.629Z",
+  "status": "passed",
+  "packages": [
+    {
+      "backend": "ondemand",
+      "archive": "artifacts/GameOCR-windows-x64-ondemand-portable.zip",
+      "bytes": 17847561,
+      "sha256": "867ecfd33b6bfdf61a9207021ab87cbb94db3ebbd40e0a7926cc2968ff24cf6a",
+      "verifiedFileCount": 47,
+      "verifiedNativeImports": 36,
+      "intentionallyDeferredNvidiaImports": 0,
+      "appSha256": "ab7bb5005728dd5703ffce74663608950b6a9a9f51551f60b75454810c6a81bf"
+    },
+    {
+      "backend": "cpu",
+      "archive": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 17135928,
+      "sha256": "258e82acb8e7508701a1717ecc828c66761a53474e6bd985b59a1d16ffacdd48",
+      "verifiedFileCount": 45,
+      "verifiedNativeImports": 35,
+      "intentionallyDeferredNvidiaImports": 0,
+      "appSha256": "ab7bb5005728dd5703ffce74663608950b6a9a9f51551f60b75454810c6a81bf"
+    }
+  ],
+  "companion": {
+    "required": [
+      "ocr-worker.exe"
+    ],
+    "name": "GameOCR llama.cpp CUDA",
+    "version": "ef3f9784ea58",
+    "kind": "llamacpp",
+    "id": "gameocr-llamacpp-cuda",
+    "url": "https://github.com/suhli/gameocr/releases/download/gpu-4721aac9fc3c/GameOCR-llamacpp-cuda-windows-x64-4721aac9fc3c.zip",
+    "sha256": "4721aac9fc3cccb61802fc89595edeb2cc9f1da61e6c8e1f85f4900a5355164e",
+    "size": 277372122,
+    "runtimes": [
+      "llamacpp"
+    ],
+    "archive": "artifacts/GameOCR-llamacpp-cuda-windows-x64-4721aac9fc3c.zip",
+    "publicationStatus": "prepared locally; not uploaded or publicly published"
+  },
+  "previousOndemandBytes": 469949861,
+  "reductionPercent": 96.20224145571137,
+  "checks": [
+    "ZIP entries verified byte-for-byte against each packaged directory",
+    "Standard base excludes llama.cpp CUDA Worker, ONNX GPU DLLs and all NVIDIA libraries",
+    "CPU package contains no GPU bootstrap or download marker",
+    "Native imports resolved with package paths and System32 only",
+    "Base EXE exports the same embedded GPU hash and URL as the generated companion manifest"
+  ],
+  "limitations": [
+    "GameOCR llama.cpp companion is not yet hosted at its embedded URL; official Microsoft/NVIDIA URLs are independent of GameOCR release publication",
+    "NSIS/MSI configuration updated but installers were not rebuilt",
+    "No clean Windows VM or RTX 5060 Ti hardware validation"
+  ],
+  "desktopReports": [
+    "docs/test-results/gpu-backends-desktop.json",
+    "docs/test-results/gpu-backends-cpu-desktop.json",
+    "docs/test-results/gpu-backends-temporal-desktop.json"
+  ]
+}

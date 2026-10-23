@@ -26,11 +26,14 @@ if ($Backend -eq 'ondemand') {
     Copy-Item -LiteralPath 'src-tauri/resources/workers/onnx/cuda/onnx-worker.exe' -Destination $bootstrap
     Copy-Item -LiteralPath 'src-tauri/gpu-downloads.json' -Destination $destination
     if (!(Test-Path -LiteralPath 'artifacts/gpu-backends.json')) { throw 'Prepare GPU assets before building: scripts/package-gpu-backends.ps1' }
-    $embedded = & $Binary --gpu-catalog
-    if ($LASTEXITCODE) { throw 'Unable to read embedded GPU catalog' }
-    $expected = Get-Content -LiteralPath 'artifacts/gpu-backends.json' -Raw | ConvertFrom-Json
-    $actual = $embedded | ConvertFrom-Json
-    if ($actual.packages[0].sha256 -ne $expected.packages[0].sha256 -or $actual.packages[0].url -ne $expected.packages[0].url) { throw 'EXE GPU catalog does not match companion assets; rebuild with GAMEOCR_GPU_MANIFEST.' }
+    $catalogCheck = Join-Path $repo ('.cache/gpu-catalog-check-' + [Guid]::NewGuid() + '.json')
+    try {
+        $process = Start-Process -FilePath (Resolve-Path -LiteralPath $Binary).Path -ArgumentList @('--gpu-catalog',('"' + $catalogCheck + '"')) -WindowStyle Hidden -Wait -PassThru
+        if ($process.ExitCode) { throw 'Unable to read embedded GPU catalog' }
+        $expected = Get-Content -LiteralPath 'artifacts/gpu-backends.json' -Raw | ConvertFrom-Json
+        $actual = Get-Content -LiteralPath $catalogCheck -Raw | ConvertFrom-Json
+        if (!$actual.packages.Count -or $actual.packages[0].sha256 -ne $expected.packages[0].sha256 -or $actual.packages[0].url -ne $expected.packages[0].url) { throw 'EXE GPU catalog does not match companion assets; rebuild with GAMEOCR_GPU_MANIFEST.' }
+    } finally { if (Test-Path -LiteralPath $catalogCheck) { Remove-Item -LiteralPath $catalogCheck -Force } }
 }
 if ($Backend -eq 'both') {
     Copy-Item -LiteralPath 'src-tauri/resources/workers/cuda-runtime' -Destination (Join-Path $destination 'workers/cuda-runtime') -Recurse

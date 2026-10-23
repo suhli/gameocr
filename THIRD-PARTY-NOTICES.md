@@ -30,11 +30,15 @@ Windows fonts solely for OCR validation.
 - ONNX Runtime 1.24.3: MIT, with separate third-party notices —
   https://github.com/microsoft/onnxruntime/releases/tag/v1.24.3
   Releases include the original LICENSE and ThirdPartyNotices.txt under licenses/.
-  Only the CPU or CUDA provider libraries are packaged; TensorRT is not included.
+  The standard base packages CPU libraries; GPU core/provider libraries are
+  downloaded from the pinned Microsoft Release and installed with its original
+  LICENSE and ThirdPartyNotices.txt. TensorRT is not included.
 - imageproc 0.25.0: MIT — https://github.com/image-rs/imageproc
 - CUDA12 GPU distribution also includes application-private cuFFT, NVRTC and
-  nvJitLink runtime DLLs needed by the providers. Common CUDA DLLs are stored once
-  in workers/cuda-runtime and made visible only to GPU worker processes. The
+  nvJitLink runtime DLLs needed by the providers. The standard base downloads
+  these components from NVIDIA into its private user cache, retaining their
+  licenses. Full offline builds store them once in workers/cuda-runtime. Both
+  layouts make the libraries visible only to GPU worker processes. The
   exact toolkit EULA is included as licenses/CUDA-EULA.txt; no nvcc or Toolkit
   installer is included. https://docs.nvidia.com/cuda/eula/index.html
 - cuDNN 9.8.0.87: NVIDIA proprietary software, not covered by GameOCR's MIT license.
@@ -55,3 +59,8 @@ Windows fonts solely for OCR validation.
 Build and distribution operators must preserve these notices, the NVIDIA runtime
 license texts, and the upstream attribution files when repackaging. The CPU-only
 runtime layout can be distributed without NVIDIA DLLs.
+
+The matching GameOCR llama.cpp CUDA Worker is a separate application component,
+distributed as a versioned companion ZIP with GameOCR/llama.cpp dependency notices
+and the build toolchain's CUDA EULA. Its compiled-in download hash must match the
+base application's catalog; it is not a generic upstream llama.cpp executable.

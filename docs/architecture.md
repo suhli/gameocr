@@ -31,15 +31,19 @@ WGC / ADB → Frame → 最新帧槽 / ChangeDetector → OCR Service
 ```text
 workers/
   llamacpp/cpu/ocr-worker.exe
-  llamacpp/cuda/ocr-worker.exe
   onnx/cpu/onnx-worker.exe + onnxruntime.dll
-  onnx/cuda/onnx-worker.exe + ORT CUDA provider DLLs
-  cuda-runtime/  可选：开发目录和完整离线包中的 CUDA / cuDNN 运行库
+  onnx/cuda/onnx-worker.exe  标准包只保留启动程序
+gpu-downloads.json          标准包的下载能力标记
+用户数据/runtimes/
+  backends/                校验后的 ORT GPU DLL、llama.cpp CUDA Worker
+  nvidia/                  共享 CUDA / cuDNN 组件
 ```
 
-CPU 与 CUDA Worker 分别编译。UI 不链接 ORT、llama.cpp 或 CUDA。GPU 子进程 PATH 优先包含自己的目录和共享 cuda-runtime；标准包没有后者，改用用户数据目录中已校验的 NVIDIA 组件目录。CPU 子进程不添加 GPU 库目录。ORT CPU DLL 来自独立的官方 CPU 发行档，不是静默回退的 GPU DLL。
+CPU 与 CUDA Worker 分别编译，UI 不链接推理库。`Worker::spawn_engine` 对 GPU 调用 `cuda_runtime::launch`，解析并校验缓存后再启动：ONNX 仍使用包内小型 Worker，通过绝对 `ORT_DYLIB_PATH` 加载缓存内匹配的 GPU 主库及 provider；llama.cpp 从缓存启动配套 Worker。子进程 PATH 加入应用目录、后端及 NVIDIA 组件目录，CPU 不添加这些路径。开发目录和 `-Backend both` 的完整离线包仍保留 `workers/llamacpp/cuda`、ONNX GPU DLL 和共享 `workers/cuda-runtime`，优先使用这些文件。
 
-`cuda_runtime::RuntimeManager` 在显式 CUDA 的模型加载阶段准备运行库，先验证模型、Worker 是否存在及 Adaptive 模式兼容性，再按 `catalog/cuda-runtime.json` 的固定 HTTPS URL、大小、SHA-256 下载。只接受 NVIDIA `.com` / `.cn` 官方域名及 redistributable 路径，沿用模型下载器的 Range/响应/哈希检查。文件锁防止跨进程同时安装；ZIP 通过校验后仅解压所需 DLL 与许可证，拒绝越界路径、符号链接、重复文件和超限数据。完整组件通过临时目录原子发布，并记录每个文件的哈希，GPU 加载前重新检查。取消或退出保留 `.part`，不发布部分组件。UI 通过 `cuda-runtime-progress` 事件显示阶段和字节数，取消使用独立 IPC，不等待模型加载锁。Auto/CPU 路径从不调用下载器；Auto 缺库时沿用 CPU 回退。来源、缓存布局和实测见 [CUDA 运行库说明](cuda-runtime.md)。
+`RuntimeManager` 在显式 CUDA 加载时准备组件，先验证模型、分发包能力及 Adaptive 兼容性。NVIDIA 和 Microsoft ORT 使用源码中的固定清单；GameOCR llama.cpp Worker 的 URL/大小/哈希由打包脚本生成，经 `GAMEOCR_GPU_MANIFEST` 编译嵌入 EXE。初始来源限定官方路径，仅接受官方重定向，沿用 Range/响应/哈希检查。先准备后端，再准备缺失的 NVIDIA 组件；也可安装 EXE 旁 `runtime-downloads` 中匹配的 ZIP。
+
+文件锁防止并发安装；归档通过校验后仅提取所需 EXE/DLL 与许可证，拒绝越界路径、符号链接、重复文件和超限数据。临时目录发布完整组件，记录文件哈希并在加载前复核。取消或退出保留 `.part`，不发布部分组件。UI 通过 `cuda-runtime-progress` 显示进度，取消使用独立 IPC。Auto/CPU 从不调用下载器，Auto 缺少有效组件时回退 CPU。来源、发布约束和实测见 [GPU 组件说明](cuda-runtime.md)。
 
 新消息使用 `{"type":"loadEngine","protocol_version":2,"config":...}`，后续 `recognize`、`unload`、`shutdown` 复用既有 NDJSON 契约。旧 GGUF `load` 消息仍由 llama.cpp Worker 支持；旧客户端不能把 ONNX 配置发给它。未知协议版本、错误配置和未加载请求返回 Error。stdout 只输出协议，诊断进入 stderr。
 

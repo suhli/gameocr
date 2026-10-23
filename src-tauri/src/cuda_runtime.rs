@@ -1,4 +1,4 @@
-//! Pinned NVIDIA redistributables, installed per component in user data.
+//! Pinned GPU backends and NVIDIA redistributables installed in user data.
 //! No driver, system PATH, registry, or administrator installation is involved.
 use anyhow::{Context, Result, bail, ensure};
 use parking_lot::Mutex;
@@ -183,8 +183,7 @@ fn backend_package(runtime: &str) -> Result<Package> {
     let p: Package = if runtime == "onnx" {
         serde_json::from_str(include_str!("../catalog/onnx-cuda-runtime.json"))?
     } else {
-        let catalog: Catalog =
-            serde_json::from_str(include_str!(concat!(env!("OUT_DIR"), "/gpu-backends.json")))?;
+        let catalog: Catalog = serde_json::from_str(backend_catalog())?;
         catalog
             .packages
             .into_iter()
@@ -194,6 +193,9 @@ fn backend_package(runtime: &str) -> Result<Package> {
     validate_package(&p)?;
     ensure!(p.runtimes.iter().any(|r| r == runtime), "GPU 后端不匹配");
     Ok(p)
+}
+pub fn backend_catalog() -> &'static str {
+    include_str!(concat!(env!("OUT_DIR"), "/gpu-backends.json"))
 }
 fn binary_name(runtime: &str) -> Result<&'static str> {
     match runtime {
@@ -477,11 +479,17 @@ impl RuntimeManager {
                 component: p.name.clone(),
                 total,
                 received: finished,
-                message: match p.kind {
-                    PackageKind::Nvidia => "正在从 NVIDIA 官方下载；可取消后续传",
-                    PackageKind::Onnx => "正在从微软官方 Release 下载 ONNX CUDA 后端；可取消后续传",
-                    PackageKind::Llamacpp => {
-                        "正在从 GameOCR Release 下载配套 GPU Worker；可取消后续传"
+                message: if from_local {
+                    "正在校验本地配套 GPU 组件包"
+                } else {
+                    match p.kind {
+                        PackageKind::Nvidia => "正在从 NVIDIA 官方下载；可取消后续传",
+                        PackageKind::Onnx => {
+                            "正在从微软官方 Release 下载 ONNX CUDA 后端；可取消后续传"
+                        }
+                        PackageKind::Llamacpp => {
+                            "正在从 GameOCR Release 下载配套 GPU Worker；可取消后续传"
+                        }
                     }
                 }
                 .into(),
@@ -536,8 +544,14 @@ impl RuntimeManager {
                             break;
                         }
                         Err(e) if attempt == 3 => {
-                            return Err(e)
-                                .with_context(|| format!("{} 下载失败；请确认配套 Release 资源已公开发布，再次加载可续传，或切换 CPU", p.name));
+                            let hint = if p.kind == PackageKind::Llamacpp {
+                                "请确认配套 Release 资源已公开发布"
+                            } else {
+                                "请检查网络能否访问组件官方源"
+                            };
+                            return Err(e).with_context(|| {
+                                format!("{} 下载失败；{hint}，再次加载可续传，或切换 CPU", p.name)
+                            });
                         }
                         Err(_) => {
                             progress.state = "retrying".into();
@@ -624,7 +638,7 @@ fn install_archive(
         let dll = p.required.iter().any(|n| n.eq_ignore_ascii_case(&name));
         let license = name.to_ascii_lowercase().contains("license")
             || name.to_ascii_lowercase().contains("notices")
-            || name.eq_ignore_ascii_case("EULA.txt");
+            || name.to_ascii_lowercase().ends_with("eula.txt");
         if !dll && !license {
             continue;
         }
@@ -810,6 +824,73 @@ mod tests {
         );
         assert_eq!(manager.status().state, "failed");
         assert_eq!(std::fs::read_dir(tmp.path()).unwrap().count(), 0);
+    }
+    #[test]
+    fn backend_sources_are_pinned_and_redirects_are_restricted() {
+        let onnx = backend_package("onnx").unwrap();
+        assert_eq!(onnx.size, 311_219_580);
+        assert_eq!(onnx.required.len(), 3);
+        assert!(validate_package(&onnx).is_ok());
+        for good in [
+            "https://github.com/microsoft/onnxruntime/releases/download/v1.24.3/ort.zip",
+            "https://github.com/suhli/gameocr/releases/download/v1/worker.zip",
+            "https://release-assets.githubusercontent.com/github-production-release-asset/a?sig=b",
+        ] {
+            assert!(runtime_download_url(&reqwest::Url::parse(good).unwrap()));
+        }
+        for bad in [
+            "http://github.com/suhli/gameocr/releases/download/v1/test.zip",
+            "https://github.com/untrusted/project/releases/download/v1/test.zip",
+            "https://github.com/suhli/gameocr/raw/main/test.zip",
+            "https://release-assets.githubusercontent.com.evil.example/test.zip",
+        ] {
+            assert!(!runtime_download_url(&reqwest::Url::parse(bad).unwrap()));
+        }
+        let mut wrong = onnx;
+        wrong.url = "https://github.com/suhli/gameocr/releases/download/v1/test.zip".into();
+        assert!(validate_package(&wrong).is_err());
+    }
+    #[test]
+    fn lean_layout_requires_opt_in_and_complete_bundled_ort_still_works() {
+        let tmp = tempfile::tempdir().unwrap();
+        let worker = bundled_worker(tmp.path(), "onnx").unwrap();
+        std::fs::create_dir_all(worker.parent().unwrap()).unwrap();
+        std::fs::write(&worker, b"worker").unwrap();
+        assert!(needs_backend(tmp.path(), "onnx").is_err());
+        std::fs::write(tmp.path().join("gpu-downloads.json"), b"{}").unwrap();
+        assert!(needs_backend(tmp.path(), "onnx").unwrap());
+        for name in backend_package("onnx").unwrap().required {
+            std::fs::write(worker.with_file_name(name), b"library").unwrap();
+        }
+        std::fs::remove_file(tmp.path().join("gpu-downloads.json")).unwrap();
+        assert!(!needs_backend(tmp.path(), "onnx").unwrap());
+        assert!(needs_backend(tmp.path(), "llamacpp").is_err());
+    }
+    #[test]
+    fn backend_archive_requires_matching_core_and_provider_and_keeps_notices() {
+        let tmp = tempfile::tempdir().unwrap();
+        let (zip, mut p) = archive(
+            tmp.path(),
+            &[
+                ("ort/lib/onnxruntime.dll", b"core"),
+                ("ort/lib/onnxruntime_providers_cuda.dll", b"provider"),
+                ("ort/lib/onnxruntime_providers_shared.dll", b"shared"),
+                ("ort/ThirdPartyNotices.txt", b"notices"),
+                ("ort/CUDA-EULA.txt", b"toolchain license"),
+            ],
+        );
+        p.kind = PackageKind::Onnx;
+        p.required = backend_package("onnx").unwrap().required;
+        let no = AtomicBool::new(false);
+        install_archive(tmp.path(), &zip, &p, &no, &no).unwrap();
+        let installed = verify_installed(tmp.path(), &p, &no).unwrap();
+        assert!(installed.join("license-3.txt").is_file());
+        assert_eq!(
+            std::fs::read(installed.join("license-4.txt")).unwrap(),
+            b"toolchain license"
+        );
+        std::fs::remove_file(installed.join("onnxruntime.dll")).unwrap();
+        assert!(verify_installed(tmp.path(), &p, &no).is_err());
     }
     #[test]
     fn installation_lock_is_released_on_drop() {

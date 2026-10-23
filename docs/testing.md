@@ -139,7 +139,7 @@ node scripts/desktop-runtimes.mjs
 - Q4_K_M、Q5_K_M、F16 的完整质量/性能对比；目录元数据保留，真实 GGUF 回归采用 Q8_0。
 - ONNX 数小时压力和广泛真实游戏准确率评估、任意角度/弯曲文本、竖排中日文、其他 ONNX/GGUF 架构。三分钟合成语料检查不替代这些验证。现 Adapter 只验证指定官方网络和完整字典。
 - 模型列表每次扫描文件 SHA-256，大型 GGUF 或慢盘有等待时间；后台线程不会阻塞 UI 事件循环。
-- 大型 cuDNN/CUDA 运行库仍占较多发行空间，已跨 Runtime 共享一份；完整 ZIP、NSIS、MSI 均含 CPU/CUDA，另提供不含 NVIDIA 运行库的独立 CPU ZIP。CPU 包的 Auto 模式显示回退原因后使用 CPU，显式 CUDA 报告缺少 Worker。
+- GPU 组件仍需要较多下载量和本地磁盘空间；标准 ZIP 和安装器配置已改为首次显式使用时下载，完整离线 ZIP 可选。CPU 包保留离线识别，Auto 显示回退原因后使用 CPU，显式 CUDA 提示更换支持下载的标准包。当前布局见下方 2026-10-23 验证记录。
 
 停止 OCR 立即取消结果发布，进入原生库的调用会完成或在 180 秒超时后终止。UI 显存遥测不可用；单 Worker 引擎 totalMs 不含捕获、传输前 PNG 编码、结果 JPEG 和 UI 绘制。新增 execution.endToEndMs 包含帧传输、任务调度与合并，桌面值另含结果 JPEG；并行 totalMs 使用 Executor 墙钟，不能用各 Worker 阶段之和代替。
 
@@ -178,3 +178,15 @@ Windows CI 加入真实 CPU 时序五策略回归和报告上传；新字延迟�
 - [发行包校验](test-results/cuda-runtime-package-validation.json)：新的 `GameOCR-windows-x64-ondemand-portable.zip` 为 469,949,861 字节，71 个文件/60 个 x64 二进制检查通过；仅允许清单内 NVIDIA 依赖延后提供。CPU ZIP 为 17,118,432 字节，45 个文件/35 个二进制检查通过。两包及桌面报告中的 EXE SHA-256 均为 `42c31b00fd0f952849b18a58b1b7daee0e9ee35e623d305c1c25e0b85ef28a0d`。默认便携包约 470 MB，比上一轮 1.72 GB 完整包小约 73%；首次 ONNX 下载仍约 1.86 GiB，GGUF 约 541 MiB。
 
 完整离线包可继续通过 `-Backend both` 构建；本轮只重建了按需包和 CPU 包，现存旧完整 ZIP 保留上一轮版本。NSIS/MSI 的构建配置和 CI 已更新为按需布局，但安装器未在本轮重新生成，远端 CI 未执行。不将本机验证视为干净 Windows、无驱动机器或 RTX5060Ti 的硬件验收。显卡驱动仍需用户已有；程序不安装驱动或 CUDA Toolkit，不修改系统 PATH。
+
+## GPU 后端也按需下载（2026-10-23）
+
+标准包进一步移除 ORT GPU 主库/provider 和静态链接的 llama.cpp CUDA Worker，仅保留 CPU 后端与小型 ONNX GPU 启动程序。Microsoft ORT 固定为 1.24.3 官方 ZIP，GameOCR Worker 由配套资源脚本生成并在构建时嵌入下载信息；NVIDIA 组件沿用上一轮固定来源。下载、完整性检查、取消续传、修复与离线缓存使用同一套流程，详见 [GPU 组件说明](cuda-runtime.md)。
+
+- Rust desktop lib 26 项通过，新增后端来源/重定向边界、精简包能力判定、ORT 三个库必须配套以及声明文件保留检查；包含原先的下载续传、损坏拒绝及清理测试。Svelte 0 错误/警告，Vitest 2 项通过。
+- [GPU 桌面八组](test-results/gpu-backends-desktop.json)：隔离数据目录、开发机 GPU 路径清除；启动和 Auto 不建缓存且使用 CPU；界面取消保留部分下载，CPU 仍可加载；真实完成 Microsoft ORT GPU ZIP 下载并校验；Small/Medium 均完成真实 WGC CUDA 识别。NVIDIA 六个组件复用上一轮已完成的官方缓存，报告明确列出，没有计为本轮网络下载。
+- 同一桌面检查通过配套 ZIP 的离线入口安装 llama.cpp GPU Worker，保留 GameOCR、依赖、CUDA EULA 和第三方声明；实际 GGUF Q8_0 WGC 识别通过。进程模块路径证明 ORT 主库/provider、llama.cpp 可执行文件及 NVIDIA DLL 均来自隔离缓存。移除配套 ZIP 后，使用不可达网络代理重启，ONNX Auto/显式 CUDA 及 llama.cpp CUDA 均离线加载成功。
+- 最新 CPU 包通过 [模型/运行时十二组](test-results/gpu-backends-cpu-desktop.json)和 [并行/自适应/小字/增量/时序十三组](test-results/gpu-backends-temporal-desktop.json)，包含真实 WGC、损坏恢复、Worker 崩溃及退出清理。所有 GUI 测试串行执行。
+- [发行包记录](test-results/gpu-backends-package-validation.json)给出最终字节数、SHA-256 和被测 EXE 哈希。标准 ZIP 约 17.85 MB，比上一轮约 470 MB 缩小约 96.2%；CPU ZIP 约 17.14 MB。两包分别验证 47/45 个归档文件和 36/35 个 x64 文件的原生依赖。标准包没有 GPU DLL 或 llama.cpp GPU Worker；独立 GPU ZIP 约 277 MB，按需准备，未计入基础包。
+
+这次 GGUF 配套资源仅在本地生成并通过离线安装验证，**尚未发布到 GameOCR 的公开 Release，不能声称已验证公网下载**。发布基础包前应上传并公开与 EXE 固定 URL/哈希相符的资源；本地也可放到 `runtime-downloads` 安装。CI 已生成并附带配套资源，Draft Release 必须公开后才可匿名访问。NSIS/MSI 仅更新资源配置，本轮未重建安装器，也未执行远端 CI、干净 Windows 或 RTX5060Ti 验证。

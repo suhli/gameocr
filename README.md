@@ -4,7 +4,7 @@ Windows 11 x64 本地窗口 OCR 工具，保留 Tauri 2、Svelte 5 和 Rust。Wi
 
 ## 使用
 
-1. 解压 `GameOCR-windows-x64-ondemand-portable.zip`，运行 `GameOCR.exe`；也可使用 NSIS / MSI 安装版。标准包在首次明确选择 CUDA 并加载模型时下载 NVIDIA 运行库。仅使用 CPU 时可选体积更小的 `GameOCR-windows-x64-cpu-portable.zip`，同时支持 GGUF 和 ONNX，不附带 GPU Worker。
+1. 解压 `GameOCR-windows-x64-ondemand-portable.zip`，运行 `GameOCR.exe`。标准便携包约 17.85 MB，在首次明确选择 CUDA 并加载模型时下载 GPU 后端和运行库。CPU 专用包约 17.14 MB，同时支持 GGUF 和 ONNX，不启用 GPU 下载。NSIS / MSI 构建也采用相同的精简资源配置。
 2. 在「模型管理」下载 PP-OCRv6 small / medium，或 LightOnOCR Q8_0。也可导入 GGUF + mmproj，或一组 ONNX 检测模型、识别模型与完整字典。国内下载受限时可在设置里选择 HF-Mirror；完整性仍由固定 SHA-256 校验。
 3. 在左侧选择具体窗口，点击「开始捕获」，加载模型，然后点击「单次识别」或「连续」。自动设备选择优先使用已准备好的 CUDA，否则给出原因并尝试 CPU；Auto 不会触发运行库下载。
 4. 「实时」显示当前画面；「识别帧」始终显示与 OCR 结果对应的截图。点击文字块或边界框可相互定位；可查看原图、复制文字、导出 JSON 或 PNG。
@@ -20,9 +20,9 @@ Windows 11 便携版直接使用系统现有 WebView2：不执行 WebView2 预�
 
 ### CUDA 按需下载
 
-首次启动、CPU 模式和 Auto 均不下载 NVIDIA 运行库。在设置中明确选择「NVIDIA CUDA」后加载模型，程序会从 NVIDIA 官方源下载所需组件，显示进度并支持取消、断点续传与失败重试。GGUF 首次约 541 MiB，ONNX 首次约 1.86 GiB；两者共用已下载的组件。下载后可离线复用，启动 GPU Worker 前重新校验本地文件。
+首次启动、CPU 模式和 Auto 均不下载。在设置中明确选择「NVIDIA CUDA」后加载模型，程序从 Microsoft 下载匹配的 ORT GPU 主库及 provider，从 GameOCR Release 下载配套 llama.cpp GPU Worker，从 NVIDIA 下载 CUDA/cuDNN。显示进度，支持取消、续传与校验。本机构建全部缺失时 GGUF 首次约 805 MiB，ONNX 约 2.15 GiB；不含权重，两者共用已准备的 NVIDIA 组件。缓存可离线复用，加载前重新校验。
 
-运行库保存于 `%LOCALAPPDATA%\GameOCR\runtimes\nvidia`，只加入 GPU 子进程的搜索路径，不修改系统 PATH、不安装 CUDA Toolkit，也不下载显卡驱动。使用 CUDA 前仍需安装兼容的 NVIDIA 驱动。CPU 专用包没有 GPU Worker，使用 CUDA 应换用标准包；可选的完整离线包仍可通过 `-Backend both` 构建。版本、来源和验证方式见 [CUDA 运行库说明](docs/cuda-runtime.md)。
+组件保存于 `%LOCALAPPDATA%\GameOCR\runtimes` 下的 `nvidia` / `backends`，只供 GPU 子进程使用，不修改系统 PATH、不安装 CUDA Toolkit 或显卡驱动。CPU 专用包使用 CUDA 时需换标准包；完整离线包可通过 `-Backend both` 构建。**当前本地 llama.cpp GPU 资源已生成，尚未发布到 GameOCR Release；公网下载需先发布配套资源，也可在 EXE 旁的 `runtime-downloads` 放置配套 ZIP。** 版本、来源和验证方式见 [GPU 组件说明](docs/cuda-runtime.md)。
 
 ### PP-OCRv6
 
@@ -81,7 +81,7 @@ npm run desktop
 ./scripts/build-workers.ps1 -Backend both -Profile release
 ```
 
-脚本会导入 VS 开发环境，使用 Ninja、配置 `LIBCLANG_PATH`，收集 CUDA 和 MSVC app-local DLL。可用 `-Runtime onnx` 或 `-Runtime llamacpp` 单独构建。CPU / CUDA ORT DLL 放在各自 Worker 旁；开发目录与完整离线包中的大型 CUDA/cuDNN DLL 仅在 `workers/cuda-runtime` 存一份。标准包排除此目录，首次明确使用 CUDA 时下载到用户数据目录；两种布局均只加入 GPU 子进程 PATH。仅针对本机旧 CUDA 12.1 / 较新 MSVC 的验证环境提供 `-LocalCuda121Compatibility -CudaArchitectures '75;80;86;89'`；正式 CI 不使用该开关。
+脚本会导入 VS 开发环境，使用 Ninja、配置 `LIBCLANG_PATH`，收集 CUDA 和 MSVC app-local DLL。可用 `-Runtime onnx` 或 `-Runtime llamacpp` 单独构建。开发目录与完整离线包保留四套 Worker，CUDA/cuDNN 在 `workers/cuda-runtime` 共享一份；标准包只保留 CPU 后端与小型 ONNX GPU 启动程序，其余 GPU 组件按需下载。仅针对本机旧 CUDA 12.1 / 较新 MSVC 的验证环境提供 `-LocalCuda121Compatibility -CudaArchitectures '75;80;86;89'`；正式 CI 不使用该开关。
 
 ## 独立模型验证
  
@@ -154,6 +154,8 @@ node scripts/desktop-extra.mjs
 ```powershell
 ./scripts/build-workers.ps1 -Backend both -Profile release
 node scripts/collect-licenses.mjs
+# 生成独立 GPU ZIP 和主程序内嵌清单；发布时指定实际标签 -ReleaseTag vYOUR_VERSION
+./scripts/package-gpu-backends.ps1
 npm run tauri -- build --bundles nsis,msi
 New-Item -ItemType Directory -Force artifacts | Out-Null
 Copy-Item target/release/bundle/nsis/*.exe artifacts/GameOCR-windows-x64-setup.exe
@@ -170,11 +172,11 @@ npm run tauri -- build --no-bundle --config src-tauri/tauri.portable.conf.json
 ./scripts/verify-package.ps1 -Backend both -PortableOnly
 ```
 
-只更新便携版时，使用上面的 Tauri `build --no-bundle --config src-tauri/tauri.portable.conf.json`，然后打包并运行 `./scripts/verify-package.ps1 -PortableOnly`。发布主程序必须由 Tauri CLI 构建，它会启用加载内嵌前端所需的 `custom-protocol`；之后不要用普通 `cargo build --release --bins` 覆盖 `target/release/gameocr.exe`。单独构建基准工具请指定 `--bin executor-bench`。验证便携包时设置 `GAMEOCR_APP`，运行 `node scripts/desktop-parallel.mjs`，确认没有 Vite 也能打开应用并完成实际识别。
+只更新便携版时，先在当前终端设置 `$env:GAMEOCR_GPU_MANIFEST=(Resolve-Path artifacts/gpu-backends.json).Path`，使用上面的 Tauri `build --no-bundle --config src-tauri/tauri.portable.conf.json`，然后打包并运行 `./scripts/verify-package.ps1 -PortableOnly`。发布主程序必须由 Tauri CLI 构建，它会启用加载内嵌前端所需的 `custom-protocol`；之后不要用普通 `cargo build --release --bins` 覆盖 `target/release/gameocr.exe`。单独构建基准工具请指定 `--bin executor-bench`。验证便携包时设置 `GAMEOCR_APP`，运行 `node scripts/desktop-parallel.mjs`，确认没有 Vite 也能打开应用并完成实际识别。
 
-GitHub Actions 自动完成同样步骤并生成按需下载便携 ZIP、独立 CPU ZIP、NSIS、MSI 与各自的 SHA256SUMS。标准便携包与安装器保留 CPU / GPU Worker 及 ORT provider，不附带大型 NVIDIA 运行库；CPU 专用包连 GPU Worker 也不包含。推送 `v*` 标签时创建待审阅的 Draft Release。GPU 推理和交互桌面测试不在普通 hosted runner 中伪装执行。
+GitHub Actions 生成按需便携 ZIP、独立 CPU ZIP、NSIS、MSI、独立 llama.cpp GPU ZIP、内嵌下载清单副本及 SHA256SUMS。标准包不包含 ORT GPU DLL、llama.cpp GPU Worker 或 NVIDIA 库。推送 `v*` 标签创建 Draft Release；必须发布其中的配套 GPU 资源，程序才能匿名下载。GPU 推理和交互桌面测试不在普通 hosted runner 中伪装执行。
 
-多 Runtime 的原生库超过单个压缩块容量，因此安装模板使用 NSIS 逐文件 LZMA、MSI 多个嵌入式 CAB；模板基于 lockfile 中的 Tauri CLI 2.12.2。升级 CLI 时按 [安装模板说明](src-tauri/installer/README.md) 同步检查模板。
+安装模板保留 NSIS 逐文件 LZMA、MSI 多个嵌入式 CAB，以支持包含大型原生库的布局；标准按需配置已不携带这些 GPU 文件。模板基于 lockfile 中的 Tauri CLI 2.12.2，升级 CLI 时按 [安装模板说明](src-tauri/installer/README.md) 同步检查。
 
 当前实测、未测试项和已知限制见 [测试报告](docs/testing.md)。普通游戏、模拟器及受保护画面的捕获兼容性取决于目标应用与系统，程序不绕过保护或反作弊。便携包的干净 Windows 11 验证必须与开发机实测分别记录。发行包当前未签名。
 

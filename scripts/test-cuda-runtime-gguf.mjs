@@ -1,4 +1,5 @@
-// Real GGUF CUDA OCR using only the two downloaded NVIDIA components.
+// Real GGUF CUDA OCR using a locally built Worker and two downloaded NVIDIA components.
+// The lean package no longer bundles this Worker; desktop-cuda-runtime.mjs covers its installation.
 // GAMEOCR_CUDA_CACHE must point to an already installed runtime cache.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -6,7 +7,7 @@ import assert from 'node:assert/strict';
 import {spawn,execFileSync} from 'node:child_process';
 import readline from 'node:readline';
 const cache=path.resolve(process.env.GAMEOCR_CUDA_CACHE??'.cache/cuda-download-validation/data/runtimes/nvidia');
-const root=path.resolve('artifacts/GameOCR-windows-x64-ondemand-portable');
+const root=path.resolve(process.env.GAMEOCR_WORKER_ROOT??'src-tauri/resources');
 const catalog=JSON.parse(fs.readFileSync('src-tauri/catalog/cuda-runtime.json','utf8'));
 const libraries=catalog.packages.filter(p=>p.runtimes.includes('llamacpp')).map(p=>path.join(cache,`${p.id}-${p.version}-${p.sha256.slice(0,12)}`));
 for(const directory of libraries)assert(fs.existsSync(path.join(directory,'installed.json')));

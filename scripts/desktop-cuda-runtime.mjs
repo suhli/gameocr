@@ -7,9 +7,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 
-const binary=path.resolve(process.env.GAMEOCR_APP??'artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe');
-const out=path.resolve('artifacts/validation/cuda-runtime');fs.mkdirSync(out,{recursive:true});
-const data=path.join(out,'data-'+Date.now()),cache=path.join(data,'runtimes/nvidia');
+const sourceBinary=path.resolve(process.env.GAMEOCR_APP??'artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe');
+const out=path.resolve('artifacts/validation/gpu-backends');fs.mkdirSync(out,{recursive:true});
+const stamp=Date.now(),appRoot=path.join(out,'app-'+stamp);
+fs.cpSync(path.dirname(sourceBinary),appRoot,{recursive:true});
+const binary=path.join(appRoot,'GameOCR.exe');
+const data=path.join(out,'data-'+stamp),cache=path.join(data,'runtimes/nvidia'),backends=path.join(data,'runtimes/backends');
 const checks=[],observed=[],seeded=[],modelDir=path.resolve('.cache/test-models');
 let app,browser,page,invoke,fixture,log;
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -33,18 +36,20 @@ async function close(){
   await browser?.close();browser=null;page=null;invoke=null;
   if(log!=null){fs.closeSync(log);log=null;}
 }
-function parts(){return fs.existsSync(cache)?fs.readdirSync(cache).filter(n=>n.endsWith('.part')).map(name=>({name,bytes:fs.statSync(path.join(cache,name)).size})):[];}
-function modules(){
-  const code=`$children=@(Get-CimInstance Win32_Process -Filter "ParentProcessId=${app.pid} AND Name='onnx-worker.exe'"); if($children.Count -ne 1){throw 'Expected one owned CUDA worker'}; ConvertTo-Json -Compress -InputObject @((Get-Process -Id $children[0].ProcessId).Modules | Where-Object { $_.ModuleName -match '^(cudart|cublas|cudnn|cufft|nvrtc|nvJitLink)' } | Select-Object ModuleName,FileName)`;
+function parts(){return [cache,backends].flatMap(dir=>fs.existsSync(dir)?fs.readdirSync(dir).filter(n=>n.endsWith('.part')).map(name=>({name,directory:path.basename(dir),bytes:fs.statSync(path.join(dir,name)).size})):[]);}
+function modules(worker='onnx-worker.exe'){
+  const code=`$children=@(Get-CimInstance Win32_Process -Filter "ParentProcessId=${app.pid} AND Name='${worker}'"); if($children.Count -ne 1){throw 'Expected one owned CUDA worker'}; ConvertTo-Json -Compress -InputObject @((Get-Process -Id $children[0].ProcessId).Modules | Where-Object { $_.ModuleName -match '^(cudart|cublas|cudnn|cufft|nvrtc|nvJitLink|onnxruntime|ocr-worker)' } | Select-Object ModuleName,FileName)`;
   return JSON.parse(execFileSync('powershell.exe',['-NoProfile','-Command',code],{windowsHide:true,encoding:'utf8'}));
 }
 try{
   assert(!fs.existsSync(path.join(path.dirname(binary),'workers/cuda-runtime')),'Must use the on-demand package');
+  assert(!fs.existsSync(path.join(appRoot,'workers/llamacpp/cuda')));
+  assert.deepEqual(fs.readdirSync(path.join(appRoot,'workers/onnx/cuda')),['onnx-worker.exe']);
   await launch();assert.equal(path.resolve((await invoke('get_settings')).modelDir),path.join(data,'models'));
-  assert(!fs.existsSync(cache));assert.equal((await invoke('get_cuda_runtime_status')).state,'idle');
+  assert(!fs.existsSync(path.join(data,'runtimes')));assert.equal((await invoke('get_cuda_runtime_status')).state,'idle');
   let settings={...await invoke('get_settings'),modelDir,device:'auto',executionMode:'single',enableParallelInference:false,changeDetection:false};
   await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});
-  assert.equal((await invoke('get_model_status')).device,'CPU');assert(!fs.existsSync(cache));
+  assert.equal((await invoke('get_model_status')).device,'CPU');assert(!fs.existsSync(path.join(data,'runtimes')));
   checks.push('First launch and Auto load use CPU without starting a runtime download or creating its cache');
   await invoke('unload_model');settings={...settings,device:'cuda'};await invoke('update_settings',{settings});
   await page.reload();await page.getByLabel('选择模型',{exact:true}).selectOption('ppocrv6-small');
@@ -80,8 +85,9 @@ try{
   assert.equal(await loading,null);assert.equal((await invoke('get_model_status')).device,'CUDA');assert.equal(parts().length,0);
   const receipts=fs.readdirSync(cache).filter(n=>fs.existsSync(path.join(cache,n,'installed.json')));assert.equal(receipts.length,6);
   const runtimeModules=modules();assert(runtimeModules.some(m=>m.ModuleName.toLowerCase().startsWith('cudnn')));assert(runtimeModules.some(m=>m.ModuleName.toLowerCase().startsWith('cublas')));
-  assert(runtimeModules.every(m=>path.resolve(m.FileName).toLowerCase().startsWith(cache.toLowerCase()+path.sep)));
-  checks.push('Retry resumes the interrupted official download, validates all six components, removes completed archives and loads CUDA with DLLs from this cache');
+  assert(runtimeModules.some(m=>m.ModuleName.toLowerCase()==='onnxruntime_providers_cuda.dll'));
+  assert(runtimeModules.every(m=>path.resolve(m.FileName).toLowerCase().startsWith(path.join(data,'runtimes').toLowerCase()+path.sep)));
+  checks.push('Retry completes real Microsoft ONNX GPU archive download; GPU core/providers and NVIDIA components load from validated user caches');
   const control=path.join(out,'fixture-control.txt');fs.rmSync(control,{force:true});
   fixture=spawn(path.resolve('target/debug/capture-fixture.exe'),[control],{windowsHide:true,stdio:'ignore'});
   const target=await until(async()=>(await invoke('list_windows',{showAll:false})).find(w=>w.title==='GameOCR Capture Fixture'));
@@ -91,15 +97,35 @@ try{
     if(id!=='ppocrv6-small')await invoke('load_model',{id});
     await invoke('recognize_once');const result=(await invoke('get_history'))[0].result;assert(result.blocks.some(b=>b.text.includes('Health')));assert.equal(result.device,'CUDA');results.push(result);
   }
-  await invoke('stop_capture');await invoke('unload_model');fixture.kill();fixture=null;
   checks.push('Small and Medium perform real CUDA OCR on a WGC frame using the downloaded CUDA 12.8/cuDNN 9.8 libraries');
+  await invoke('unload_model');
+  const companion=JSON.parse(fs.readFileSync('artifacts/gpu-backends.json','utf8')).packages[0];
+  const filename=new URL(companion.url).pathname.split('/').at(-1),offlineDir=path.join(appRoot,'runtime-downloads');
+  fs.mkdirSync(offlineDir);fs.copyFileSync(path.resolve('artifacts',filename),path.join(offlineDir,filename));
+  const ggufSettings={...settings,modelDir:path.join(data,'gguf-models'),threads:4,maxTokens:2048,maxImageEdge:1280};
+  await invoke('update_settings',{settings:ggufSettings});
+  const imported=await invoke('import_model',{model:path.resolve('models/LightOnOCR-3-0.8B-Q8_0.gguf'),mmproj:path.resolve('models/LightOnOCR-3-0.8B-mmproj-f16.gguf')});
+  assert(imported.installed);await invoke('load_model',{id:imported.id});
+  assert.equal((await invoke('get_model_status')).device,'CUDA');await invoke('recognize_once');
+  const gguf=(await invoke('get_history'))[0].result;assert(gguf.blocks.some(b=>b.text.includes('Health')));results.push(gguf);
+  const ggufModules=modules('ocr-worker.exe');assert(ggufModules.some(m=>m.ModuleName.toLowerCase()==='ocr-worker.exe'));
+  assert(ggufModules.every(m=>path.resolve(m.FileName).toLowerCase().startsWith(path.join(data,'runtimes').toLowerCase()+path.sep)));
+  const ggufBackend=path.dirname(ggufModules.find(m=>m.ModuleName.toLowerCase()==='ocr-worker.exe').FileName);
+  const backendReceipt=JSON.parse(fs.readFileSync(path.join(ggufBackend,'installed.json'),'utf8'));
+  assert.equal(backendReceipt.files.filter(f=>f.name.startsWith('license-')).length,4,'Retain GameOCR, dependencies, CUDA EULA and third-party notices');
+  await invoke('stop_capture');await invoke('unload_model');fixture.kill();fixture=null;
+  fs.rmSync(path.join(offlineDir,filename));
+  checks.push('Unpublished GameOCR GPU companion archive installed through the hash-verified offline path; cached llama.cpp GPU Worker performs real WGC OCR (not an online Release download test)');
+  await invoke('update_settings',{settings});
   await close();await launch(true);
   settings=await invoke('get_settings');await invoke('update_settings',{settings:{...settings,device:'auto'}});
   await invoke('load_model',{id:'ppocrv6-small'});assert.equal((await invoke('get_model_status')).device,'CUDA');assert.equal((await invoke('get_cuda_runtime_status')).state,'idle');await invoke('unload_model');
   await invoke('update_settings',{settings:{...settings,device:'cuda'}});await invoke('load_model',{id:'ppocrv6-small'});assert.equal((await invoke('get_model_status')).device,'CUDA');assert.equal((await invoke('get_cuda_runtime_status')).total,0);await invoke('unload_model');
   checks.push('Restart with unreachable HTTP/HTTPS proxy: Auto and explicit CUDA both load from validated local cache without downloading');
+  await invoke('update_settings',{settings:ggufSettings});await invoke('load_model',{id:imported.id});assert.equal((await invoke('get_model_status')).device,'CUDA');assert.equal((await invoke('get_cuda_runtime_status')).total,0);await invoke('unload_model');
+  checks.push('Cached llama.cpp CUDA backend also loads offline after removing the companion archive');
   await close();
-  fs.writeFileSync('docs/test-results/cuda-runtime-desktop.json',JSON.stringify({executedAt:new Date().toISOString(),app:path.relative(process.cwd(),binary),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks,interrupted,seededFromPreviousOfficialDownload:seeded,observed,receipts,runtimeModules,results},null,2)+'\n');
+  fs.writeFileSync('docs/test-results/gpu-backends-desktop.json',JSON.stringify({executedAt:new Date().toISOString(),app:path.relative(process.cwd(),sourceBinary),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks,interrupted,seededFromPreviousOfficialDownload:seeded,observed,receipts,runtimeModules,ggufModules,backendReceipt,companion,results},null,2)+'\n');
   console.log('Passed '+checks.length+' official runtime download / real desktop checks');
 }catch(e){await page?.screenshot({path:path.join(out,'failure.png')}).catch(()=>{});throw e;}
 finally{await invoke?.('cancel_cuda_runtime_download').catch(()=>{});await invoke?.('stop_capture').catch(()=>{});await invoke?.('unload_model').catch(()=>{});await browser?.close();fixture?.kill();app?.kill();if(log!=null)fs.closeSync(log);}
