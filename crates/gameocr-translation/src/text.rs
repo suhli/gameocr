@@ -131,6 +131,12 @@ pub fn groups(blocks: &[OcrBlock], mode: Grouping) -> Vec<TextGroup> {
 mod tests {
     use super::*;
     #[test]
+    fn output_budget_keeps_complete_unicode_but_rejects_invalid_bytes() {
+        assert_eq!(decode_output(vec![b'A', 0xe4, 0xbd], true).unwrap(), "A");
+        assert!(decode_output(vec![0xe4, 0xbd], false).is_err());
+        assert!(decode_output(vec![0xff, b'A'], true).is_err());
+    }
+    #[test]
     fn languages_do_not_guess_han_or_names() {
         assert_eq!(language("東京", "auto"), "und");
         assert_eq!(language("東京", "ja"), "ja");
@@ -166,4 +172,16 @@ mod tests {
             2
         );
     }
+}
+/// Byte-level tokenizers can end a token budget in the middle of one character.
+/// Keep complete characters and let the result's `truncated` flag explain the cut.
+pub fn decode_output(mut bytes: Vec<u8>, truncated: bool) -> anyhow::Result<String> {
+    if truncated {
+        if let Err(error) = std::str::from_utf8(&bytes) {
+            if error.error_len().is_none() {
+                bytes.truncate(error.valid_up_to());
+            }
+        }
+    }
+    Ok(String::from_utf8(bytes)?)
 }

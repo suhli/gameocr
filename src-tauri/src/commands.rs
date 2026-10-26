@@ -62,7 +62,7 @@ pub async fn download_translation_model(state: AppState<'_>) -> Reply<()> {
         .translation
         .download(mirror, state.models.clone())
         .await
-        .map_err(err)
+        .map_err(|e| format!("{e:#}"))
 }
 #[tauri::command]
 pub fn cancel_translation_download(state: AppState<'_>) {
@@ -345,7 +345,20 @@ pub async fn load_model(state: AppState<'_>, id: String) -> Reply<()> {
 }
 #[tauri::command]
 pub fn get_cuda_runtime_status(state: AppState<'_>) -> crate::cuda_runtime::Progress {
-    state.cuda_runtime.status()
+    let translation = state.translation.gpu_runtime.status();
+    if [
+        "downloading",
+        "verifying",
+        "extracting",
+        "retrying",
+        "preparing",
+    ]
+    .contains(&translation.state.as_str())
+    {
+        translation
+    } else {
+        state.cuda_runtime.status()
+    }
 }
 #[tauri::command]
 pub fn cancel_cuda_runtime_download(state: AppState<'_>) {

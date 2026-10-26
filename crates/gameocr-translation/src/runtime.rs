@@ -226,7 +226,8 @@ fn generate(
         }
     }
     let inference_ms = inference.elapsed().as_secs_f64() * 1000.;
-    let text = String::from_utf8(bytes).context("翻译结果不是完整 UTF-8；请提高 Token 上限")?;
+    let text =
+        crate::text::decode_output(bytes, stop != "eos").context("翻译结果包含无效 UTF-8")?;
     Ok(GenerationResult {
         request_id: r.request_id.clone(),
         text: text.trim().into(),

@@ -31,6 +31,8 @@ pub struct TranslationStatus {
     pub model_load_ms: f64,
     pub backend_prepare_ms: f64,
     pub calls: u64,
+    pub batch_calls: u64,
+    pub batch_fallbacks: u64,
     pub cache_hits: u64,
     pub skipped: u64,
     pub dropped: u64,
@@ -99,8 +101,8 @@ impl TranslationManager {
             .unwrap_or_default();
         let mut cache = TranslationCache::new(settings.cache_capacity);
         if settings.persistent_cache {
-            if let Ok(bytes) = std::fs::read(Self::cache_path()) {
-                if bytes.len() <= 5 * 1024 * 1024 {
+            if std::fs::metadata(Self::cache_path()).is_ok_and(|m| m.len() <= 5 * 1024 * 1024) {
+                if let Ok(bytes) = std::fs::read(Self::cache_path()) {
                     if let Ok(d) = serde_json::from_slice::<DiskCache>(&bytes) {
                         if d.version == 1 {
                             cache.restore(d.entries);
@@ -160,6 +162,13 @@ impl TranslationManager {
             q.context_version += 1;
         }
         drop(q);
+        {
+            let mut status = self.status.lock();
+            if status.status == "translating" {
+                status.status = "discarding".into();
+            }
+        }
+        self.emit();
         let _ = self.app.emit("translation-invalidated", ());
         self.notify.notify_one();
     }
@@ -252,6 +261,9 @@ impl TranslationManager {
                     if let Some(job) = next {
                         if let Some(s) = service.upgrade() {
                             manager.process(&s, job).await;
+                            // A logically cancelled task still completes safely in the worker.
+                            // Publish its idle/error state even when its text was discarded.
+                            manager.emit();
                         } else {
                             return;
                         }
@@ -283,26 +295,36 @@ impl TranslationManager {
         };
         let options = settings.options(context, version);
         let text_ms = started.elapsed().as_secs_f64() * 1000.;
+        let requests: Vec<_> = groups
+            .iter()
+            .map(|group| {
+                let mut opts = options.clone();
+                opts.source_language = text::language(&group.source_text, &options.source_language);
+                // Short labels/HUD do not carry narrative context automatically.
+                if group.source_text.chars().count() < 20 {
+                    opts.context.clear();
+                    opts.background.clear();
+                    opts.context_version = 0;
+                }
+                TranslationRequest {
+                    request_id: uuid::Uuid::new_v4().to_string(),
+                    source_text: group.source_text.clone(),
+                    options: opts,
+                }
+            })
+            .collect();
+        let mut batch = if settings.batch_translation {
+            self.try_batch(&requests).await
+        } else {
+            None
+        };
         let mut results = Vec::new();
-        for (index, group) in groups.into_iter().enumerate() {
+        for (index, (group, request)) in groups.into_iter().zip(requests).enumerate() {
             if !self.valid(s, &job) {
                 self.status.lock().dropped += 1;
                 return;
             }
-            let lang = text::language(&group.source_text, &options.source_language);
-            let mut opts = options.clone();
-            opts.source_language = lang.clone();
-            // Short labels/HUD do not carry narrative context automatically.
-            if group.source_text.chars().count() < 20 {
-                opts.context.clear();
-                opts.background.clear();
-                opts.context_version = 0;
-            }
-            let request = TranslationRequest {
-                request_id: uuid::Uuid::new_v4().to_string(),
-                source_text: group.source_text.clone(),
-                options: opts,
-            };
+            let lang = request.options.source_language.clone();
             let mut result = TranslationResult {
                 profile_id: options.profile_id.clone(),
                 request_id: request.request_id.clone(),
@@ -316,7 +338,7 @@ impl TranslationManager {
                 source_block_ids: group.blocks.iter().map(|b| b.id.clone()).collect(),
                 source_blocks: group.blocks,
                 glossary_version: options.glossary_version,
-                context_version: options.context_version,
+                context_version: request.options.context_version,
                 cache_hit: false,
                 status: "complete".into(),
                 error: None,
@@ -324,9 +346,12 @@ impl TranslationManager {
                 truncated: false,
                 metrics: Default::default(),
             };
-            let inferred = self
-                .translate_group(request, lang == "none" || lang == options.target_language)
-                .await;
+            let inferred = if let Some(batch) = &mut batch {
+                Ok(batch.remove(0))
+            } else {
+                self.translate_group(request, lang == "none" || lang == options.target_language)
+                    .await
+            };
             match inferred {
                 Ok((generated, hit, id)) => {
                     result.translation_model_id = id;
@@ -399,6 +424,77 @@ impl TranslationManager {
         drop(q);
         self.emit();
     }
+    async fn try_batch(
+        &self,
+        requests: &[TranslationRequest],
+    ) -> Option<Vec<(GenerationResult, bool, String)>> {
+        if requests.iter().any(|r| {
+            r.options.source_language == "none"
+                || r.options.source_language == r.options.target_language
+        }) {
+            return None;
+        }
+        let config = self.session.lock().await.config.clone()?;
+        let packed = gameocr_translation::batch::pack(requests, config.generation.max_tokens)?;
+        let keys: Vec<_> = requests
+            .iter()
+            .map(|r| cache::key(&config.manifest, &config.generation, r))
+            .collect();
+        // Reuse individual cached entries first; a changed label should not re-run its neighbours.
+        if keys.iter().any(|k| self.cache.lock().contains(k)) {
+            return None;
+        }
+        let cache_epoch = self.cache_epoch.load(Ordering::Acquire);
+        self.status.lock().batch_calls += 1;
+        let generated = self.translate_group(packed, false).await;
+        let Ok((output, hit, model_id)) = generated else {
+            self.status.lock().batch_fallbacks += 1;
+            return None;
+        };
+        let texts = gameocr_translation::batch::unpack(&output.text, requests.len());
+        let Ok(texts) = texts else {
+            self.status.lock().batch_fallbacks += 1;
+            return None;
+        };
+        if output.truncated {
+            self.status.lock().batch_fallbacks += 1;
+            return None;
+        }
+        let unchanged = self
+            .session
+            .lock()
+            .await
+            .config
+            .as_ref()
+            .is_some_and(|current| {
+                current.manifest.sha256 == config.manifest.sha256
+                    && current.generation == config.generation
+            });
+        let mut cache = self.cache.lock();
+        let may_cache = unchanged && self.cache_epoch.load(Ordering::Acquire) == cache_epoch;
+        Some(
+            requests
+                .iter()
+                .zip(texts)
+                .zip(keys)
+                .map(|((request, text), key)| {
+                    if may_cache {
+                        cache.insert(CachedText {
+                            key,
+                            text: text.clone(),
+                            truncated: false,
+                        });
+                    }
+                    let mut result = output.clone();
+                    result.metrics.batch_request_id = Some(output.request_id.clone());
+                    result.metrics.batch_size = requests.len();
+                    result.request_id = request.request_id.clone();
+                    result.text = text;
+                    (result, hit, model_id.clone())
+                })
+                .collect(),
+        )
+    }
     async fn translate_group(
         &self,
         request: TranslationRequest,
@@ -408,6 +504,8 @@ impl TranslationManager {
         let config = session.config.clone().context("请先加载翻译模型")?;
         let key = cache::key(&config.manifest, &config.generation, &request);
         let cache_epoch = self.cache_epoch.load(Ordering::Acquire);
+        // Structured output is cached only after the caller validates every item ID.
+        let cacheable = !request.options.batch_format;
         if skip {
             self.status.lock().skipped += 1;
             return Ok((
@@ -468,7 +566,7 @@ impl TranslationManager {
                 result.metrics.process_memory_mb = worker.memory_mb();
                 result.metrics.backend_prepare_ms = self.status.lock().backend_prepare_ms;
                 let mut cache = self.cache.lock();
-                if self.cache_epoch.load(Ordering::Acquire) == cache_epoch {
+                if cacheable && self.cache_epoch.load(Ordering::Acquire) == cache_epoch {
                     cache.insert(CachedText {
                         key,
                         text: result.text.clone(),
@@ -550,7 +648,8 @@ impl TranslationManager {
         if preferred == Device::Cuda {
             ensure!(
                 cuda_allowed,
-                "显存不足或无法读取 NVIDIA 显存：预计翻译需约 {estimate:.0} MiB，另保留 {reserve:.0} MiB。可选择 CPU/Auto"
+                "显存不足或无法读取 NVIDIA 显存：当前可用 {} MiB，预计翻译需约 {estimate:.0} MiB，另保留 {reserve:.0} MiB。可选择 CPU/Auto",
+                free.map_or("未知".into(), |v| format!("{v:.0}"))
             );
         }
         let device = if preferred == Device::Cpu || (preferred == Device::Auto && !cuda_allowed) {
@@ -585,7 +684,11 @@ impl TranslationManager {
             Ok(()) => worker::TranslationWorker::load(&root, config.clone(), cancel.clone()).await,
             Err(e) => Err(e),
         };
-        let mut fallback = None;
+        let mut fallback = if preferred == Device::Auto && !cuda_allowed {
+            Some("当前可用显存未达到翻译准入要求，Auto 已使用 CPU".into())
+        } else {
+            None
+        };
         if loaded.is_err() && preferred == Device::Auto {
             fallback = Some(format!(
                 "CUDA 未就绪，已回退 CPU：{}",

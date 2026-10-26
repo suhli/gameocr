@@ -32,6 +32,7 @@
         <label>游戏 Profile<select bind:value={settings.profileId} onchange={chooseProfile}><option value={null}>不使用</option>{#each settings.profiles as p}<option value={p.id}>{p.name}{p.windowProcess?` · ${p.windowProcess}`:''}</option>{/each}</select></label>
       </div>
       <label>翻译风格<input bind:value={settings.style} placeholder="可选，例如保留角色语气"/></label>
+      <label class="check"><input type="checkbox" bind:checked={settings.batchTranslation}/> 合批翻译独立短文本（条目不匹配时逐组重试）</label>
       <p>OCR 设备保持独立。修改设备、线程或生成参数后需重新加载翻译模型。其他语言来自模型官方列表，日英中优先验证。</p>
       <details><summary>生成参数与缓存</summary><div class="grid">
         <label>CPU 线程<input type="number" min="1" max="64" bind:value={settings.threads}/></label><label>上下文 Token 上限<input type="number" min="512" max="16384" bind:value={settings.generation.contextSize}/></label>

@@ -48,6 +48,9 @@ impl TranslationCache {
         self.entries.push_front(entry.clone());
         Some(entry)
     }
+    pub fn contains(&self, key: &str) -> bool {
+        self.entries.iter().any(|e| e.key == key)
+    }
     pub fn insert(&mut self, entry: CachedText) {
         if let Some(i) = self.entries.iter().position(|e| e.key == entry.key) {
             let old = self.entries.remove(i).unwrap();

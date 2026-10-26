@@ -12,6 +12,7 @@ pub struct TranslationSettings {
     pub stability: String,
     pub debounce_ms: u64,
     pub grouping: Grouping,
+    pub batch_translation: bool,
     pub source_language: String,
     pub target_language: String,
     pub style: String,
@@ -34,6 +35,7 @@ impl Default for TranslationSettings {
             stability: "balanced".into(),
             debounce_ms: 350,
             grouping: Grouping::Auto,
+            batch_translation: true,
             source_language: "auto".into(),
             target_language: "zh".into(),
             style: String::new(),
@@ -100,6 +102,7 @@ impl TranslationSettings {
             .as_ref()
             .and_then(|id| self.profiles.iter().find(|p| &p.id == id));
         PromptOptions {
+            batch_format: false,
             profile_id: self.profile_id.clone().unwrap_or_default(),
             source_language: self.source_language.clone(),
             target_language: self.target_language.clone(),

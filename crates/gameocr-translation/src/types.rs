@@ -166,6 +166,7 @@ impl GameProfile {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "camelCase")]
 pub struct PromptOptions {
+    pub batch_format: bool,
     pub profile_id: String,
     pub source_language: String,
     pub target_language: String,
@@ -180,6 +181,7 @@ pub struct PromptOptions {
 impl Default for PromptOptions {
     fn default() -> Self {
         Self {
+            batch_format: false,
             profile_id: String::new(),
             source_language: "auto".into(),
             target_language: "zh".into(),
@@ -203,6 +205,8 @@ pub struct TranslationRequest {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct TranslationMetrics {
+    pub batch_request_id: Option<String>,
+    pub batch_size: usize,
     pub model_load_ms: f64,
     pub backend_prepare_ms: f64,
     pub prompt_ms: f64,

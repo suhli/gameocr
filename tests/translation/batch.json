@@ -1,0 +1,10 @@
+[
+  {
+    "requestId": "menu-batch",
+    "sourceText": "[{\"id\":\"0\",\"text\":\"New Game\"},{\"id\":\"1\",\"text\":\"Load Game\"},{\"id\":\"2\",\"text\":\"Settings\"}]",
+    "options": {"sourceLanguage": "en", "targetLanguage": "zh", "batchFormat": true},
+    "reference": [{"id": "0", "text": "新游戏"}, {"id": "1", "text": "读取游戏"}, {"id": "2", "text": "设置"}],
+    "category": "independent menu items with stable IDs",
+    "humanReview": null
+  }
+]

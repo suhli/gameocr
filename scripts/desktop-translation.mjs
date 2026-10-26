@@ -18,7 +18,7 @@ if(fs.existsSync(seed))fs.cpSync(seed,path.join(data,'runtimes'),{recursive:true
 const assets=JSON.parse(fs.readFileSync('artifacts/gpu-backends.json','utf8')).packages;
 fs.mkdirSync(path.join(appRoot,'runtime-downloads'),{recursive:true});
 for(const p of assets){const asset=path.basename(new URL(p.url).pathname);fs.copyFileSync(path.resolve('artifacts',asset),path.join(appRoot,'runtime-downloads',asset));}
-const checks=[],samples=[],events=[],failures=[];
+const checks=[],samples=[],skipped=[],failures=[];
 const log=fs.openSync(path.join(out,'desktop.log'),'w');
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
 async function until(fn,timeout=60000){let last;const end=Date.now()+timeout;while(Date.now()<end){try{const v=await fn();if(v)return v;}catch(e){last=e;}await pause(100);}throw Error('Timed out: '+(last?.message??''));}
@@ -27,7 +27,7 @@ let app,fixture,browser,page,invoke,settings,tsettings;
 const modelId='hy-mt2-1.8b-q4-k-m';
 async function launch(){
   const port=await new Promise(resolve=>{const s=createServer();s.listen(0,'127.0.0.1',()=>{const port=s.address().port;s.close(()=>resolve(port));});});
-  const env={...process.env,GAMEOCR_DATA_DIR:data,WEBVIEW2_USER_DATA_FOLDER:path.join(data,'webview'),WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port='+port};
+  const env={...process.env,NO_PROXY:'localhost,127.0.0.1',GAMEOCR_DATA_DIR:data,WEBVIEW2_USER_DATA_FOLDER:path.join(data,'webview'),WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--disable-gpu --remote-debugging-port='+port};
   for(const key of Object.keys(env))if(key.toLowerCase()==='path'||key.startsWith('CUDA_PATH')||key==='ORT_DYLIB_PATH')delete env[key];
   env.Path=`${process.env.SystemRoot}\\System32;${process.env.SystemRoot}`;
   app=spawn(binary,[],{windowsHide:true,stdio:['ignore',log,log],env});
@@ -47,18 +47,20 @@ function ownedWorkers(){return JSON.parse(execFileSync('powershell.exe',['-NoPro
 try {
   await launch();tsettings=await invoke('translation_settings');assert.equal(tsettings.enabled,false);assert.equal((await invoke('translation_status')).modelId,null);
   fixture=spawn(path.resolve('target/debug/capture-fixture.exe'),[control],{windowsHide:true,stdio:['ignore',log,log]});
-  settings={...await invoke('get_settings'),modelDir:path.resolve('.cache/test-models'),device:'cpu',executionMode:'single',enableParallelInference:false,changeDetection:false,ocrIntervalMs:200};
+  settings={...await invoke('get_settings'),modelDir:path.resolve('.cache/test-models'),device:'cpu',executionMode:'single',enableParallelInference:false,changeDetection:false,ocrIntervalMs:200,downloadMirror:'https://huggingface.co'};
   await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});const window=await target();
   await show('Where are you going?');const raw=await recognize();assert(raw.result.blocks.some(b=>/Where/.test(b.text)));assert.equal((await invoke('translation_history')).length,0);pass('Pure OCR works without installed translation model');
   if(process.env.GAMEOCR_TEST_DOWNLOAD==='1') {
-    const attempt=invoke('download_translation_model').then(()=>({ok:true}),error=>({error:String(error)}));
+    let outcome;const attempt=invoke('download_translation_model').then(()=>outcome={ok:true},error=>outcome={error:String(error)});
     const model=(await invoke('translation_models')).find(m=>m.id===modelId),part=path.join(data,'translation/models',model.file+'.part');
-    await until(()=>fs.existsSync(part)&&fs.statSync(part).size>0,120000);await invoke('cancel_translation_download');const cancelled=await attempt;assert(cancelled.error);assert(fs.statSync(part).size>0);
+    await until(()=>{if(outcome?.error)throw Error(outcome.error);return fs.existsSync(part)&&fs.statSync(part).size>0;},120000);await invoke('cancel_translation_download');const cancelled=await attempt;assert(cancelled.error);assert(fs.statSync(part).size>0);
+    console.log('Download cancellation preserved',fs.statSync(part).size,'bytes');
     // Seed a verified prefix to keep this repeatable integration test small;
     // the final tail is received with a real HTTP Range request and full SHA check.
     const source=fs.openSync(path.resolve('.cache/translation/Hy-MT2-1.8B-Q4_K_M.gguf'),'r'),target=fs.openSync(part,'w');
-    const buffer=Buffer.alloc(1024*1024),prefix=model.size-8*1024*1024;
+    const buffer=Buffer.alloc(1024*1024),prefix=model.size-1024*1024;
     try {for(let offset=0;offset<prefix;){const n=fs.readSync(source,buffer,0,Math.min(buffer.length,prefix-offset),offset);assert(n>0);fs.writeSync(target,buffer,0,n);offset+=n;}}finally{fs.closeSync(source);fs.closeSync(target);}
+    console.log('Resuming final 1 MiB through official endpoint');
     await invoke('download_translation_model');assert((await invoke('translation_models')).find(m=>m.id===modelId).installed);assert(!fs.existsSync(part));pass('Real official model download cancellation, Range resume and full SHA validation');
     await invoke('delete_translation_model',{id:modelId});
   }
@@ -74,6 +76,13 @@ try {
   await page.getByRole('button',{name:'翻译',exact:true}).click();const dialog=page.getByRole('dialog');await dialog.waitFor();
   const box=await dialog.boundingBox(),viewport=await page.evaluate(()=>({w:innerWidth,h:innerHeight}));assert(Math.abs(box.x+box.width/2-viewport.w/2)<3);assert(Math.abs(box.y+box.height/2-viewport.h/2)<3);await page.screenshot({path:path.join(out,'translation-settings.png')});
   await page.getByRole('button',{name:'关闭翻译设置'}).click();pass('Separate JSON export and centered translation settings');
+  await updateT({grouping:'block',batchTranslation:true});await invoke('clear_translation_cache');await show('New Game\nLoad Game\nSettings');
+  const batchBefore=await invoke('translation_status'),batchFrame=await recognize(),batchResult=await translated(batchFrame),batchAfter=await invoke('translation_status');
+  assert(batchResult.results.length>=2);assert.equal(batchAfter.batchCalls-batchBefore.batchCalls,1);
+  assert(batchResult.results.every(r=>r.sourceBlockIds.length===1&&r.translatedText));
+  assert(batchResult.results.every(r=>r.metrics.batchSize===batchResult.results.length)||batchAfter.batchFallbacks>batchBefore.batchFallbacks);
+  samples.push({case:'structured batch',translation:batchResult,modelCalls:batchAfter.calls-batchBefore.calls,fallbacks:batchAfter.batchFallbacks-batchBefore.batchFallbacks});
+  pass('Real multi-block translation uses validated IDs or safe per-group fallback');await updateT({grouping:'paragraph'});
   await updateT({debounceMs:2000});await invoke('clear_translation_cache');const before=(await invoke('translation_status')).calls;
   const started=performance.now();for(const line of ['Where','Where are','Where are you','Where are you going?']){await show(line);await recognize();}
   const final=(await invoke('get_history'))[0];await translated(final);const after=(await invoke('translation_status')).calls;assert.equal(after-before,1);samples.push({case:'typewriter',elapsedMs:performance.now()-started,modelCalls:after-before});pass('Four real OCR typewriter updates produce one final model call');
@@ -82,11 +91,24 @@ try {
   await invoke('select_window',{id:window.id});await pause(1500);assert.equal((await invoke('get_history')).length,0);pass('Target change discards running translation');await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
   await updateT({style:'保留角色语气。'});const workers=ownedWorkers();assert.equal(workers.length,1);execFileSync('powershell.exe',['-NoProfile','-Command',`Stop-Process -Id ${workers[0].ProcessId} -Force`],{windowsHide:true});
   const failed=await recognize();await until(async()=>(await invoke('translation_status')).status==='error');await invoke('translate_once',{frameId:failed.result.frameId});await until(async()=>(await invoke('translation_history')).some(t=>t.frameId===failed.result.frameId&&t.results.every(r=>r.status==='complete')));pass('Translation worker crash is isolated and next request recovers');
-  await updateT({device:'cuda',resourcePolicy:'manual',gpuReserveMb:128,generation:{...tsettings.generation,contextSize:1024,maxTokens:128},style:''});await invoke('load_translation_model',{id:modelId});assert.equal((await invoke('translation_status')).device,'cuda');await invoke('clear_translation_cache');
+  await updateT({device:'cuda',resourcePolicy:'manual',gpuReserveMb:128,generation:{...tsettings.generation,contextSize:1024,maxTokens:128},style:''});
+  let gpuReady=true;
+  try {await invoke('load_translation_model',{id:modelId});} catch(error) {
+    const status=await invoke('translation_status');
+    if(!String(error).includes('显存不足'))throw error;
+    gpuReady=false;skipped.push({name:'Desktop CPU/GPU and GPU/GPU combinations',reason:String(error),status});
+    console.log('SKIP GPU combinations: insufficient available VRAM',status.freeVramMb);
+    assert.equal(status.device,null);pass('Explicit CUDA admission reports insufficient resources without silently using CPU');
+    await updateT({device:'auto'});await invoke('load_translation_model',{id:modelId});assert.equal((await invoke('translation_status')).device,'cpu');
+    const fallbackFrame=await recognize();assert((await translated(fallbackFrame)).results.every(r=>r.device==='cpu'));pass('Auto falls back to real CPU inference under insufficient GPU memory');
+  }
+  if(gpuReady) {
+  assert.equal((await invoke('translation_status')).device,'cuda');await invoke('clear_translation_cache');
   const gpu=await recognize(),gpuT=await translated(gpu);assert(gpuT.results.every(r=>r.device==='cuda'));samples.push({combination:'OCR CPU + translation GPU',ocr:gpu.result.metrics,translation:gpuT});pass('Independent OCR CPU + translation CUDA');
   await invoke('unload_model');settings={...settings,device:'cuda'};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});await invoke('clear_translation_cache');
   const both=await recognize(),bothT=await translated(both);assert.equal(both.result.device,'CUDA');assert(bothT.results.every(r=>r.device==='cuda'));samples.push({combination:'OCR GPU + translation GPU',ocr:both.result.metrics,translation:bothT});pass('OCR CUDA + translation CUDA coexist on actual GPU');
   await page.screenshot({path:path.join(out,'cuda-translation.png')});
+  }
   await invoke('unload_translation_model');const installed=(await invoke('translation_models')).find(m=>m.id===modelId),file=path.join(data,'translation/models',installed.file);
   const fd=fs.openSync(file,'r+'),byte=Buffer.alloc(1);fs.readSync(fd,byte,0,1,65536);const original=byte[0];byte[0]^=1;fs.writeSync(fd,byte,0,1,65536);fs.closeSync(fd);
   try {await assert.rejects(invoke('load_translation_model',{id:modelId}),/SHA|校验/);}finally{const fd=fs.openSync(file,'r+');fs.writeSync(fd,Buffer.from([original]),0,1,65536);fs.closeSync(fd);}pass('Same-size model corruption rejected before loading');
@@ -101,6 +123,6 @@ try {
   settings={...await invoke('get_settings'),device:'cpu'};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});await target();await invoke('load_translation_model',{id:modelId});
   const restoredFrame=await recognize(),restored=await translated(restoredFrame);assert(restored.results.every(r=>r.cacheHit));assert.equal((await invoke('translation_status')).calls,0);pass('Restart restores bounded cache without a neural translation call');
   await invoke('clear_translation_cache');assert(!fs.existsSync(path.join(data,'translation/cache.json')));await updateT({persistentCache:false});await close();
-  fs.writeFileSync(path.resolve('docs/test-results/translation-desktop.json'),JSON.stringify({executedAt:new Date().toISOString(),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks,samples,failures,out},null,2));
-}catch(e){fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:String(e),stack:e.stack,checks,samples,failures},null,2));throw e;}
-finally{await browser?.close().catch(()=>{});fixture?.kill();if(app?.exitCode===null)app.kill();fs.closeSync(log);}
+  fs.writeFileSync(path.resolve('docs/test-results/translation-desktop.json'),JSON.stringify({executedAt:new Date().toISOString(),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks,samples,skipped,failures,out},null,2));
+}catch(e){const status=await invoke?.('translation_status').catch(()=>null);fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:String(e),stack:e.stack,checks,samples,failures,status},null,2));throw e;}
+finally{if(app?.exitCode===null)await close().catch(()=>{});await browser?.close().catch(()=>{});fixture?.kill();if(app?.exitCode===null)app.kill();fs.closeSync(log);}
