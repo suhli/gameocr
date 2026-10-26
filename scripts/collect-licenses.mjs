@@ -24,4 +24,5 @@ fs.mkdirSync('src-tauri/resources/licenses',{recursive:true});
 fs.writeFileSync('src-tauri/resources/licenses/dependencies.txt',sections.join('\n\n'));
 fs.copyFileSync('THIRD-PARTY-NOTICES.md','src-tauri/resources/licenses/THIRD-PARTY-NOTICES.md');
 fs.copyFileSync('LICENSE','src-tauri/resources/licenses/GameOCR-LICENSE.txt');
+fs.copyFileSync('licenses/Hy-MT2-LICENSE.txt','src-tauri/resources/licenses/Hy-MT2-LICENSE.txt');
 console.log(`Collected ${sections.length} dependency license notices.`);

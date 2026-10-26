@@ -1,0 +1,53 @@
+{
+  "ggufVersion": 3,
+  "tensorCount": 354,
+  "tensorTypes": {
+    "0": 129,
+    "14": 33,
+    "12": 192
+  },
+  "metadata": {
+    "general.architecture": "hunyuan-dense",
+    "general.type": "model",
+    "general.sampling.top_k": 20,
+    "general.sampling.top_p": 0.800000011920929,
+    "general.sampling.temp": 0.699999988079071,
+    "general.name": "1.8B",
+    "general.finetune": "1.8B",
+    "general.size_label": "1.8B",
+    "hunyuan-dense.block_count": 32,
+    "hunyuan-dense.context_length": 262144,
+    "hunyuan-dense.embedding_length": 2048,
+    "hunyuan-dense.feed_forward_length": 6144,
+    "hunyuan-dense.attention.head_count": 16,
+    "hunyuan-dense.attention.head_count_kv": 4,
+    "hunyuan-dense.rope.freq_base": 11158840.0,
+    "hunyuan-dense.attention.layer_norm_rms_epsilon": 9.999999747378752e-06,
+    "hunyuan-dense.attention.key_length": 128,
+    "hunyuan-dense.attention.value_length": 128,
+    "hunyuan-dense.rope.scaling.type": "none",
+    "hunyuan-dense.rope.scaling.factor": 1.0,
+    "hunyuan-dense.rope.scaling.original_context_length": 262144,
+    "tokenizer.ggml.model": "gpt2",
+    "tokenizer.ggml.pre": "hunyuan-dense",
+    "tokenizer.ggml.tokens": {
+      "count": 120818,
+      "elementType": 8
+    },
+    "tokenizer.ggml.token_type": {
+      "count": 120818,
+      "elementType": 5
+    },
+    "tokenizer.ggml.merges": {
+      "count": 119758,
+      "elementType": 8
+    },
+    "tokenizer.ggml.bos_token_id": 120000,
+    "tokenizer.ggml.eos_token_id": 120020,
+    "tokenizer.ggml.padding_token_id": 120002,
+    "tokenizer.ggml.seperator_token_id": 120007,
+    "tokenizer.chat_template": "{% if messages[0]['role'] == 'system' %}{% set loop_messages = messages[1:] %}{% set system_message = messages[0]['content'] %}<｜hy_begin▁of▁sentence｜>{{ system_message }}<｜hy_place▁holder▁no▁3｜>{% else %}{% set loop_messages = messages %}<｜hy_begin▁of▁sentence｜>{% endif %}{% for message in loop_messages %}{% if message['role'] == 'user' %}<｜hy_User｜>{{ message['content'] }}{% elif message['role'] == 'assistant' %}<｜hy_Assistant｜>{{ message['content'] }}<｜hy_place▁holder▁no▁2｜>{% endif %}{% endfor %}{% if add_generation_prompt %}<｜hy_Assistant｜>{% else %}<｜hy_place▁holder▁no▁8｜>{% endif %}",
+    "general.quantization_version": 2,
+    "general.file_type": 15
+  }
+}

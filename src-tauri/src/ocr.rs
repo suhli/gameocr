@@ -139,7 +139,10 @@ impl Worker {
         self.request_typed(request).await
     }
     /// Bounded transport shared by independent OCR and translation processes.
-    pub async fn request_typed<Q: serde::Serialize, R: serde::de::DeserializeOwned>(&mut self, request: Q) -> Result<R> {
+    pub async fn request_typed<Q: serde::Serialize, R: serde::de::DeserializeOwned>(
+        &mut self,
+        request: Q,
+    ) -> Result<R> {
         let response=tokio::time::timeout(Duration::from_secs(180),async {
             self.input.write_all(&serde_json::to_vec(&request)?).await?;self.input.write_all(b"\n").await?;self.input.flush().await?;
             let read=read_response(&mut self.output);tokio::pin!(read);

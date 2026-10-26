@@ -45,9 +45,12 @@ jobs:
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cargo test -p gameocr-core --no-default-features --locked
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cargo test -p gameocr-translation --no-default-features --locked
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
           cargo test -p gameocr-onnx --locked
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           New-Item -ItemType Directory -Force src-tauri/resources/workers/onnx/cpu,src-tauri/resources/workers/onnx/bootstrap,src-tauri/resources/workers/llamacpp/cpu,src-tauri/resources/runtime,src-tauri/resources/licenses | Out-Null
+          New-Item -ItemType Directory -Force src-tauri/resources/workers/translation/cpu | Out-Null
           cargo test -p gameocr --lib --locked
       - uses: Jimver/cuda-toolkit@v0.2.36
         with:
@@ -131,6 +134,7 @@ jobs:
             artifacts/GameOCR-windows-x64.msi
             artifacts/SHA256SUMS-ondemand.txt
             artifacts/GameOCR-llamacpp-cuda-windows-x64-*.zip
+            artifacts/GameOCR-translation-cuda-windows-x64-*.zip
             artifacts/gpu-backends.json
             artifacts/SHA256SUMS-gpu-backends.txt
             artifacts/GameOCR-windows-x64-cpu-portable.zip

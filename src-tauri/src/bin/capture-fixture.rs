@@ -3,7 +3,7 @@
 use std::{
     path::PathBuf,
     sync::{
-        OnceLock,
+        Mutex, OnceLock,
         atomic::{AtomicBool, Ordering},
     },
 };
@@ -18,6 +18,7 @@ use windows::{
 };
 static CONTROL: OnceLock<PathBuf> = OnceLock::new();
 static NUMBER_CHANGED: AtomicBool = AtomicBool::new(false);
+static TRANSLATION_TEXT: Mutex<Option<String>> = Mutex::new(None);
 unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRESULT {
     unsafe {
         match msg {
@@ -50,7 +51,8 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                 );
                 let old = SelectObject(dc, HGDIOBJ(font.0));
                 SetBkMode(dc, TRANSPARENT);
-                for (y, line) in [
+                let custom = TRANSLATION_TEXT.lock().unwrap().clone();
+                let regular = [
                     (28, "GAME OCR TEST"),
                     (
                         92,
@@ -62,7 +64,19 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                     ),
                     (156, "Quest complete!"),
                     (220, "你好 世界 · こんにちは"),
-                ] {
+                ];
+                let custom_lines: Vec<_> = custom
+                    .as_deref()
+                    .unwrap_or("")
+                    .lines()
+                    .enumerate()
+                    .map(|(i, line)| (28 + i as i32 * 64, line))
+                    .collect();
+                for &(y, line) in if custom.is_some() {
+                    custom_lines.as_slice()
+                } else {
+                    regular.as_slice()
+                } {
                     let text: Vec<u16> = line.encode_utf16().collect();
                     let _ = TextOutW(dc, 32, y, &text);
                 }
@@ -100,6 +114,10 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                 if let Some(path) = CONTROL.get() {
                     if let Ok(action) = std::fs::read_to_string(path) {
                         let _ = std::fs::remove_file(path);
+                        if let Some(text) = action.strip_prefix("text:") {
+                            *TRANSLATION_TEXT.lock().unwrap() = Some(text.to_string());
+                            let _ = InvalidateRect(Some(hwnd), None, true);
+                        }
                         match action.trim() {
                             "number" => {
                                 NUMBER_CHANGED.store(true, Ordering::Relaxed);

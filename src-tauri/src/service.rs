@@ -509,7 +509,13 @@ impl Service {
                 }
                 let publish = Instant::now();
                 let _ = self.app.emit("ocr-result", &snapshot);
-                self.translation.submit(&snapshot.result, generation, epoch, frame.capture.arrived, false);
+                self.translation.submit(
+                    &snapshot.result,
+                    generation,
+                    epoch,
+                    frame.capture.arrived,
+                    false,
+                );
                 // Emission duration is available after emitting: update telemetry, not the past event.
                 if let Some(status) = self.executor_status.read().as_ref() {
                     let mut metrics = snapshot.result.metrics.execution.clone();

@@ -64,3 +64,13 @@ The matching GameOCR llama.cpp CUDA Worker is a separate application component,
 distributed as a versioned companion ZIP with GameOCR/llama.cpp dependency notices
 and the build toolchain's CUDA EULA. Its compiled-in download hash must match the
 base application's catalog; it is not a generic upstream llama.cpp executable.
+
+Hy-MT2-1.8B-GGUF is Copyright (C) 2026 Tencent, Apache License 2.0, as stated
+in its LICENSE.txt at pinned revision a0c709d9fac510f2c807aa3af52872340dc37a4a:
+https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF/blob/a0c709d9fac510f2c807aa3af52872340dc37a4a/LICENSE.txt
+Weights are downloaded/imported separately and are not included in any base
+installer. The independent text translation Worker uses the same pinned
+llama-cpp-2 0.1.159 / vendored llama.cpp MIT dependency; it has its own process,
+context and CUDA companion asset. Translation and visual OCR GPU executables
+must never overwrite one another. The model license is reproduced in
+licenses/Hy-MT2-LICENSE.txt (no model weights).

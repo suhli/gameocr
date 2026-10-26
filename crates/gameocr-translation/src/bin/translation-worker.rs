@@ -1,1 +1,3 @@
-fn main() -> anyhow::Result<()> { gameocr_translation::protocol::serve() }
+fn main() -> anyhow::Result<()> {
+    gameocr_translation::protocol::serve()
+}

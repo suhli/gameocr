@@ -1,7 +1,7 @@
 [
   {
     "frameId": 0,
-    "timestamp": 1791967974506,
+    "timestamp": 1792980077039,
     "sourceWidth": 800,
     "sourceHeight": 320,
     "blocks": [
@@ -98,12 +98,39 @@
     ],
     "rawOutput": "",
     "metrics": {
-      "preprocessingMs": 5.558400000000001,
-      "inferenceMs": 204.978,
-      "parsingMs": 9.517700000000001,
-      "totalMs": 221.31410000000002,
-      "detectionMs": 113.2925,
-      "recognitionMs": 91.6855
+      "preprocessingMs": 6.7924999999999995,
+      "inferenceMs": 176.7526,
+      "parsingMs": 8.2468,
+      "totalMs": 193.7525,
+      "detectionMs": 95.61970000000001,
+      "recognitionMs": 81.13289999999999,
+      "detectionRegions": 1,
+      "recognitionBatches": 1,
+      "recognitionPixels": 54864,
+      "pipeline": {
+        "decodeMs": 1.4305999999999999,
+        "detectorPreprocessMs": 2.2733,
+        "dbMs": 1.8834,
+        "cropMs": 1.3069,
+        "recognizerPreprocessMs": 1.7642,
+        "ctcMs": 6.3578,
+        "mergeMs": 0.0056,
+        "cacheMs": 0.0283,
+        "detectorCalls": 1,
+        "recognizerCalls": 1,
+        "outputBytes": 10776960,
+        "recognitionShapes": [
+          [
+            3,
+            3,
+            48,
+            381
+          ]
+        ],
+        "compactBatches": 0,
+        "compactFallbacks": 0,
+        "compactStatus": "disabled"
+      }
     },
     "device": "CPU",
     "truncated": false,
@@ -113,7 +140,7 @@
   },
   {
     "frameId": 1,
-    "timestamp": 1791967976260,
+    "timestamp": 1792980078916,
     "sourceWidth": 800,
     "sourceHeight": 320,
     "blocks": [
@@ -159,10 +186,10 @@
     ],
     "rawOutput": "![title](53,92,508,248) # GAME OCR TEST\n\n![text](55,338,469,467) Health: 100 / 100\n\n![text](55,627,454,728) Quest complete!",
     "metrics": {
-      "preprocessingMs": 38.748,
-      "inferenceMs": 6495.518599999999,
-      "parsingMs": 0.5358999999999999,
-      "totalMs": 6534.8029,
+      "preprocessingMs": 35.5146,
+      "inferenceMs": 7200.6888,
+      "parsingMs": 0.4885,
+      "totalMs": 7236.6922,
       "detectionMs": null,
       "recognitionMs": null
     },
@@ -174,7 +201,7 @@
   },
   {
     "frameId": 2,
-    "timestamp": 1791967983626,
+    "timestamp": 1792980087088,
     "sourceWidth": 800,
     "sourceHeight": 320,
     "blocks": [
@@ -271,12 +298,39 @@
     ],
     "rawOutput": "",
     "metrics": {
-      "preprocessingMs": 5.614700000000001,
-      "inferenceMs": 571.3891,
-      "parsingMs": 10.7189,
-      "totalMs": 588.3285000000001,
-      "detectionMs": 303.63259999999997,
-      "recognitionMs": 267.7565
+      "preprocessingMs": 5.0358,
+      "inferenceMs": 636.6006,
+      "parsingMs": 7.4745,
+      "totalMs": 650.4083,
+      "detectionMs": 329.463,
+      "recognitionMs": 307.1376,
+      "detectionRegions": 1,
+      "recognitionBatches": 1,
+      "recognitionPixels": 63504,
+      "pipeline": {
+        "decodeMs": 1.161,
+        "detectorPreprocessMs": 1.7109,
+        "dbMs": 1.914,
+        "cropMs": 0.8556,
+        "recognizerPreprocessMs": 1.2978,
+        "ctcMs": 5.558,
+        "mergeMs": 0.0025,
+        "cacheMs": 0.027200000000000002,
+        "detectorCalls": 1,
+        "recognizerCalls": 1,
+        "outputBytes": 12348600,
+        "recognitionShapes": [
+          [
+            3,
+            3,
+            48,
+            441
+          ]
+        ],
+        "compactBatches": 0,
+        "compactFallbacks": 0,
+        "compactStatus": "disabled"
+      }
     },
     "device": "CPU",
     "truncated": false,

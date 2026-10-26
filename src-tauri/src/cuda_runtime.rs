@@ -67,6 +67,9 @@ pub struct RuntimeManager {
     cancelled: Arc<AtomicBool>,
     progress: Mutex<Progress>,
 }
+// OCR and translation share verified NVIDIA files, so preparation must not
+// write the same partial archive or receipt concurrently.
+static PREPARE_LOCK: tokio::sync::Mutex<()> = tokio::sync::Mutex::const_new(());
 impl Default for RuntimeManager {
     fn default() -> Self {
         Self {
@@ -155,7 +158,15 @@ fn packages(runtime: &str) -> Result<Vec<Package>> {
     let packages: Vec<_> = catalog
         .packages
         .into_iter()
-        .filter(|p| p.runtimes.iter().any(|r| r == if runtime == "translation" { "llamacpp" } else { runtime }))
+        .filter(|p| {
+            p.runtimes.iter().any(|r| {
+                r == if runtime == "translation" {
+                    "llamacpp"
+                } else {
+                    runtime
+                }
+            })
+        })
         .collect();
     for p in &packages {
         validate_package(p)?;
@@ -188,8 +199,17 @@ fn backend_package(runtime: &str) -> Result<Package> {
         catalog
             .packages
             .into_iter()
-            .find(|p| p.kind == if runtime == "translation" { PackageKind::Translation } else { PackageKind::Llamacpp })
-            .with_context(|| format!("此构建未配置 {runtime} GPU 下载包；请使用包含配套 GPU 资源的发行版本"))?
+            .find(|p| {
+                p.kind
+                    == if runtime == "translation" {
+                        PackageKind::Translation
+                    } else {
+                        PackageKind::Llamacpp
+                    }
+            })
+            .with_context(|| {
+                format!("此构建未配置 {runtime} GPU 下载包；请使用包含配套 GPU 资源的发行版本")
+            })?
     };
     validate_package(&p)?;
     ensure!(p.runtimes.iter().any(|r| r == runtime), "GPU 后端不匹配");
@@ -377,6 +397,11 @@ impl RuntimeManager {
         emit: impl Fn(Progress) + Send + Sync,
     ) -> Result<()> {
         self.cancelled.store(false, Ordering::Release);
+        let _installation = PREPARE_LOCK.lock().await;
+        ensure!(
+            !self.cancelled.load(Ordering::Acquire) && !shutdown.load(Ordering::Acquire),
+            "已取消运行库准备"
+        );
         let result = self.prepare(root, runtime, shutdown, &emit).await;
         let mut progress = self.status();
         match &result {
@@ -546,7 +571,10 @@ impl RuntimeManager {
                             break;
                         }
                         Err(e) if attempt == 3 => {
-                            let hint = if matches!(p.kind, PackageKind::Llamacpp | PackageKind::Translation) {
+                            let hint = if matches!(
+                                p.kind,
+                                PackageKind::Llamacpp | PackageKind::Translation
+                            ) {
                                 "请确认配套 Release 资源已公开发布"
                             } else {
                                 "请检查网络能否访问组件官方源"

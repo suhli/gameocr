@@ -2,11 +2,14 @@ param([string]$Directory = '', [ValidateSet('both','cpu','ondemand')][string]$Ba
 $ErrorActionPreference = 'Stop'
 if (!$Directory) { $Directory = if ($Backend -eq 'cpu') { 'artifacts/GameOCR-windows-x64-cpu-portable' } elseif ($Backend -eq 'ondemand') { 'artifacts/GameOCR-windows-x64-ondemand-portable' } else { 'artifacts/GameOCR-windows-x64-portable' } }
 $requiredFiles = @('GameOCR.exe','vcruntime140.dll','msvcp140.dll','workers/llamacpp/cpu/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','licenses/dependencies.txt','licenses/onnxruntime-LICENSE.txt')
+$requiredFiles += 'workers/translation/cpu/translation-worker.exe'
+if ($Backend -eq 'both') { $requiredFiles += 'workers/translation/cuda/translation-worker.exe' }
 if ($Backend -eq 'both') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll','workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll','licenses/cuDNN-LICENSE.txt') }
 if ($Backend -eq 'ondemand') {
     $requiredFiles += @('workers/onnx/cuda/onnx-worker.exe','gpu-downloads.json')
     if (Test-Path -LiteralPath (Join-Path $Directory 'workers/cuda-runtime')) { throw 'On-demand package must not bundle NVIDIA runtime libraries.' }
     if (Test-Path -LiteralPath (Join-Path $Directory 'workers/llamacpp/cuda')) { throw 'On-demand package must not bundle the llama.cpp CUDA worker.' }
+    if (Test-Path -LiteralPath (Join-Path $Directory 'workers/translation/cuda')) { throw 'On-demand package must not bundle the translation CUDA worker.' }
     $gpuDlls = Get-ChildItem -LiteralPath (Join-Path $Directory 'workers/onnx/cuda') -Filter '*.dll'
     if ($gpuDlls) { throw 'On-demand package must not bundle ONNX GPU DLLs.' }
 }

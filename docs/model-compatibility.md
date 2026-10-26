@@ -78,3 +78,7 @@ CUDA EP 与 CPU EP 分属两个 Worker 和 ORT DLL。只有 Session 成功且两
 正式构建 CUDA12.8.1、cuDNN9.8.0.87，llama.cpp 默认 `75;80;86;89;120`。RTX5060Ti 的计算能力 12.0 对应 SM120，cuDNN9.8 矩阵将 Blackwell 列于 CUDA12.8 路径；因此不能沿用仅 CUDA12.1 的旧本机包来验证它。[NVIDIA GPU 列表](https://developer.nvidia.com/cuda/gpus)、[cuDNN9.8 支持矩阵](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.8.0/reference/support-matrix.html)。
 
 本机仅有 GTX1650 和 CUDA12.1。已实际运行 CPU/CUDA；**RTX5060Ti、CUDA12.8 CI 构建与远端 CI 执行尚未验证**。编译架构列表和官方兼容矩阵是支持准备，不能代替硬件测试。所有结果和限制见 [测试记录](testing.md)。
+# Translation 模型兼容性
+
+Hy-MT2-1.8B Q4_K_M 的固定官方文件已通过 llama-cpp-2 0.1.159 CPU/CUDA 真实加载和生成验证。GGUF 内为 hunyuan-dense + Hunyuan tokenizer/template，量化张量是 Q4_K/Q6_K/F32，不需要 STQ kernel。翻译使用独立纯文本 Worker，不更换 LightOnOCR/MTMD 或 ONNX 后端。模型 SHA、revision、限制、原始元数据和复现方式见 [translation-runtime.md](translation-runtime.md)。其他 GGUF 不因扩展名相同而自动兼容。
+

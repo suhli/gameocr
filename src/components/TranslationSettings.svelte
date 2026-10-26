@@ -35,6 +35,7 @@
       <p>OCR 设备保持独立。修改设备、线程或生成参数后需重新加载翻译模型。其他语言来自模型官方列表，日英中优先验证。</p>
       <details><summary>生成参数与缓存</summary><div class="grid">
         <label>CPU 线程<input type="number" min="1" max="64" bind:value={settings.threads}/></label><label>上下文 Token 上限<input type="number" min="512" max="16384" bind:value={settings.generation.contextSize}/></label>
+        <label>翻译显存预留（MiB）<input type="number" min="128" max="8192" bind:value={settings.gpuReserveMb}/></label><p>Balanced 至少预留 2048 MiB。预留越少，游戏与其他 GPU 程序的剩余空间越小。</p>
         <label>输出 Token 上限<input type="number" min="1" max="4096" bind:value={settings.generation.maxTokens}/></label><label>温度<input type="number" min="0" max="2" step="0.1" bind:value={settings.generation.temperature}/></label>
         <label>Top P<input type="number" min="0.01" max="1" step="0.01" bind:value={settings.generation.topP}/></label><label>Top K<input type="number" min="1" max="200" bind:value={settings.generation.topK}/></label>
         <label>重复惩罚<input type="number" min="1" max="2" step="0.01" bind:value={settings.generation.repetitionPenalty}/></label><label>缓存条数<input type="number" min="0" max="4096" bind:value={settings.cacheCapacity}/></label>

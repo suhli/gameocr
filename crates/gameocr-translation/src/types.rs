@@ -30,15 +30,30 @@ pub struct TranslationManifest {
     pub installed: bool,
 }
 pub fn safe_name(value: &str) -> bool {
-    !value.is_empty() && value != "." && value != ".."
-        && value.bytes().all(|c| c.is_ascii_alphanumeric() || b"._-".contains(&c))
+    !value.is_empty()
+        && value != "."
+        && value != ".."
+        && value
+            .bytes()
+            .all(|c| c.is_ascii_alphanumeric() || b"._-".contains(&c))
 }
 impl TranslationManifest {
     pub fn validate(&self) -> Result<()> {
         ensure!(self.schema_version == 1, "不支持的翻译清单版本");
-        ensure!(safe_name(&self.id) && safe_name(&self.file) && self.file.ends_with(".gguf"), "无效翻译模型路径");
-        ensure!(self.size > 32 && self.sha256.len() == 64 && self.sha256.bytes().all(|c| c.is_ascii_hexdigit()), "翻译模型缺少完整校验信息");
-        ensure!(!self.revision.is_empty() && !self.license.is_empty(), "翻译模型缺少版本或许可证");
+        ensure!(
+            safe_name(&self.id) && safe_name(&self.file) && self.file.ends_with(".gguf"),
+            "无效翻译模型路径"
+        );
+        ensure!(
+            self.size > 32
+                && self.sha256.len() == 64
+                && self.sha256.bytes().all(|c| c.is_ascii_hexdigit()),
+            "翻译模型缺少完整校验信息"
+        );
+        ensure!(
+            !self.revision.is_empty() && !self.license.is_empty(),
+            "翻译模型缺少版本或许可证"
+        );
         Ok(())
     }
 }
@@ -54,14 +69,40 @@ pub struct GenerationConfig {
     pub seed: u32,
 }
 impl Default for GenerationConfig {
-    fn default() -> Self { Self { context_size: 4096, max_tokens: 512, temperature: 0.7, top_p: 0.6, top_k: 20, repetition_penalty: 1.05, seed: 42 } }
+    fn default() -> Self {
+        Self {
+            context_size: 4096,
+            max_tokens: 512,
+            temperature: 0.7,
+            top_p: 0.6,
+            top_k: 20,
+            repetition_penalty: 1.05,
+            seed: 42,
+        }
+    }
 }
 impl GenerationConfig {
     pub fn validate(&self) -> Result<()> {
-        ensure!((512..=16384).contains(&self.context_size) && (1..=4096).contains(&self.max_tokens) && self.max_tokens < self.context_size, "翻译 Token 预算无效");
-        ensure!(self.temperature.is_finite() && (0.0..=2.0).contains(&self.temperature), "翻译温度无效");
-        ensure!(self.top_p.is_finite() && (0.01..=1.0).contains(&self.top_p) && (1..=200).contains(&self.top_k), "翻译采样参数无效");
-        ensure!(self.repetition_penalty.is_finite() && (1.0..=2.0).contains(&self.repetition_penalty), "翻译重复惩罚无效");
+        ensure!(
+            (512..=16384).contains(&self.context_size)
+                && (1..=4096).contains(&self.max_tokens)
+                && self.max_tokens < self.context_size,
+            "翻译 Token 预算无效"
+        );
+        ensure!(
+            self.temperature.is_finite() && (0.0..=2.0).contains(&self.temperature),
+            "翻译温度无效"
+        );
+        ensure!(
+            self.top_p.is_finite()
+                && (0.01..=1.0).contains(&self.top_p)
+                && (1..=200).contains(&self.top_k),
+            "翻译采样参数无效"
+        );
+        ensure!(
+            self.repetition_penalty.is_finite() && (1.0..=2.0).contains(&self.repetition_penalty),
+            "翻译重复惩罚无效"
+        );
         Ok(())
     }
 }
@@ -76,7 +117,12 @@ pub struct TranslationLoad {
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
-pub struct Term { pub source: String, pub target: String, #[serde(default)] pub category: String }
+pub struct Term {
+    pub source: String,
+    pub target: String,
+    #[serde(default)]
+    pub category: String,
+}
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "camelCase")]
 pub struct GameProfile {
@@ -93,16 +139,34 @@ pub struct GameProfile {
 }
 impl GameProfile {
     pub fn validate(&self) -> Result<()> {
-        ensure!(safe_name(&self.id) && self.name.len() <= 256, "游戏 Profile 标识无效");
-        ensure!(self.background.len() <= 8192 && self.style.len() <= 1024 && self.glossary.len() <= 200, "Profile 内容超出上限");
-        ensure!(self.glossary.iter().all(|t| !t.source.trim().is_empty() && !t.target.trim().is_empty() && t.source.len() <= 256 && t.target.len() <= 256), "术语必须包含原文和译文，且不超过 256 字节");
-        for l in [&self.source_language, &self.target_language] { ensure!(l.is_empty() || l == "auto" || crate::prompt::language_name(l).is_some(), "Profile 语言不受支持"); }
+        ensure!(
+            safe_name(&self.id) && self.name.len() <= 256,
+            "游戏 Profile 标识无效"
+        );
+        ensure!(
+            self.background.len() <= 8192 && self.style.len() <= 1024 && self.glossary.len() <= 200,
+            "Profile 内容超出上限"
+        );
+        ensure!(
+            self.glossary.iter().all(|t| !t.source.trim().is_empty()
+                && !t.target.trim().is_empty()
+                && t.source.len() <= 256
+                && t.target.len() <= 256),
+            "术语必须包含原文和译文，且不超过 256 字节"
+        );
+        for l in [&self.source_language, &self.target_language] {
+            ensure!(
+                l.is_empty() || l == "auto" || crate::prompt::language_name(l).is_some(),
+                "Profile 语言不受支持"
+            );
+        }
         Ok(())
     }
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "camelCase")]
 pub struct PromptOptions {
+    pub profile_id: String,
     pub source_language: String,
     pub target_language: String,
     pub style: String,
@@ -114,11 +178,28 @@ pub struct PromptOptions {
     pub context_version: u64,
 }
 impl Default for PromptOptions {
-    fn default() -> Self { Self { source_language:"auto".into(), target_language:"zh".into(), style:String::new(), glossary:Vec::new(), background:String::new(), context:Vec::new(), preserve_format:true, glossary_version:0, context_version:0 } }
+    fn default() -> Self {
+        Self {
+            profile_id: String::new(),
+            source_language: "auto".into(),
+            target_language: "zh".into(),
+            style: String::new(),
+            glossary: Vec::new(),
+            background: String::new(),
+            context: Vec::new(),
+            preserve_format: true,
+            glossary_version: 0,
+            context_version: 0,
+        }
+    }
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct TranslationRequest { pub request_id: String, pub source_text: String, pub options: PromptOptions }
+pub struct TranslationRequest {
+    pub request_id: String,
+    pub source_text: String,
+    pub options: PromptOptions,
+}
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct TranslationMetrics {
@@ -152,15 +233,25 @@ pub struct GenerationResult {
 }
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
-pub struct Identity { pub frame_id: u64, pub generation: u64, pub epoch: u64, pub revision: u64 }
+pub struct Identity {
+    pub frame_id: u64,
+    pub generation: u64,
+    pub epoch: u64,
+    pub revision: u64,
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct TextGroup { pub source_text: String, pub blocks: Vec<OcrBlock> }
+pub struct TextGroup {
+    pub source_text: String,
+    pub blocks: Vec<OcrBlock>,
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TranslationResult {
+    pub profile_id: String,
     pub request_id: String,
-    #[serde(flatten)] pub identity: Identity,
+    #[serde(flatten)]
+    pub identity: Identity,
     pub source_model_id: String,
     pub translation_model_id: String,
     pub source_language: String,

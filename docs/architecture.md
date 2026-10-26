@@ -135,3 +135,7 @@ Metrics 的 preprocessingMs 包括图像解码、缩放、裁剪、识别张量�
 沿用 OnnxConfig / Factory / Worker / Executor，时序元数据归属现有 FrameCache。`temporal::assess` 决定 Full 或可信边界路径；`recognizer::recognize_regions` 与 Full 共用识别和 CTC。新字段 serde 默认保持旧配置、历史和 GGUF 兼容。Manual/Adaptive 检测到 temporal.enabled 时仅单 Worker；服务绕过旧缩略图门控。
 
 `RecognizeShared` 是可选 NDJSON 请求，Windows mapping 每 Worker 独占，头部验证尺寸、容量、frameId 和 context，子进程自有 RGB 防止缓存被复写；原 PPM 和瓦片协议保留。实验 compact CTC 模型是附加 manifest 角色，原识别 Session 始终保留作回退。实现边界、默认参数和安全刷新规则见 [temporal-ocr.md](temporal-ocr.md)，计时口径见 [latency-optimization.md](latency-optimization.md)。
+# Translation 增量模块
+
+OCR 发布原始结果后，仅向独立 TranslationManager 提交最新文本任务。翻译 Worker、设备配置、模型清单、上下文与缓存完全独立，复用底层下载校验和有界进程传输；旧 OcrResult 与导出语义不变。详见 [Translation 架构](translation-architecture.md)。
+

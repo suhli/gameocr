@@ -1,10 +1,10 @@
 # GameOCR
 
-Windows 11 x64 本地窗口 OCR 工具，保留 Tauri 2、Svelte 5 和 Rust。Windows Graphics Capture / ADB 共用捕获与调度流程；独立 Worker 通过 Factory + Adapter 接入 llama.cpp（LightOnOCR-3 GGUF）与 ONNX Runtime（PP-OCRv6 small / medium）。两种 Runtime 均支持真实 CPU / CUDA 推理，保留 Grounding、模型下载与导入、历史、坐标联动和导出。当前没有翻译和游戏内覆盖层。
+Windows 11 x64 本地窗口 OCR 与离线翻译工具，使用 Tauri 2、Svelte 5 和 Rust。Windows Graphics Capture / ADB 共用捕获与调度流程；独立 Worker 接入 llama.cpp（LightOnOCR-3 GGUF）、ONNX Runtime（PP-OCRv6 small / medium）和 Hy-MT2 翻译。OCR 与翻译分别设置 CPU / CUDA / Auto，保留 Grounding、模型管理、历史、坐标联动和原始导出。翻译默认关闭，当前没有游戏内覆盖层或 TTS。
 
 ## 使用
 
-1. 解压 `GameOCR-windows-x64-ondemand-portable.zip`，运行 `GameOCR.exe`。标准便携包约 17.85 MB，在首次明确选择 CUDA 并加载模型时下载 GPU 后端和运行库。CPU 专用包约 17.14 MB，同时支持 GGUF 和 ONNX，不启用 GPU 下载。NSIS / MSI 构建也采用相同的精简资源配置。
+1. 解压 `GameOCR-windows-x64-ondemand-portable.zip`，运行 `GameOCR.exe`。标准便携包在首次明确选择 CUDA 并加载模型时下载 GPU 后端和运行库。CPU 专用包不启用 GPU 下载；两种包均包含独立 CPU 翻译 Worker，模型权重另行下载。NSIS / MSI 构建采用相同的精简资源配置。
 2. 在「模型管理」下载 PP-OCRv6 small / medium，或 LightOnOCR Q8_0。也可导入 GGUF + mmproj，或一组 ONNX 检测模型、识别模型与完整字典。国内下载受限时可在设置里选择 HF-Mirror；完整性仍由固定 SHA-256 校验。
 3. 在左侧选择具体窗口，点击「开始捕获」，加载模型，然后点击「单次识别」或「连续」。自动设备选择优先使用已准备好的 CUDA，否则给出原因并尝试 CPU；Auto 不会触发运行库下载。
 4. 「实时」显示当前画面；「识别帧」始终显示与 OCR 结果对应的截图。点击文字块或边界框可相互定位；可查看原图、复制文字、导出 JSON 或 PNG。
@@ -61,6 +61,20 @@ GPU 最多 2 个实例，共用同一张显卡；CPU 最多 4 个且不超过逻
 切换到 Android，设置已有的 `adb.exe` 路径，刷新设备并选择序列号。可输入模拟器提供的 `host:port` 地址连接；没有硬编码端口。设备断开会停止捕获并显示错误，恢复连接后刷新设备并重新开始。ADB 不随发行包携带。WGC 与 ADB 最终都产生同一种 RGB 帧。
 
 ## 本地开发
+
+本地开发沿用 `main`。翻译核心、运行时与桌面集成是增量模块，不改写现有 OCR Engine。
+
+### 本地翻译
+
+1. 点击顶部「翻译」，在「翻译模型」下载或导入官方 Hy-MT2-1.8B Q4_K_M（约 1.06 GiB）。模型管理也有独立「OCR 模型 / 翻译模型」分类。
+2. 保存翻译设备、源/目标语言和稳定等待设置，再加载翻译模型；启用「OCR 完成后自动翻译」。默认目标为简体中文。
+3. 加载原 OCR 模型并捕获窗口，启动单次或连续 OCR。结果面板可选原文、译文、两者，并独立复制/导出译文。
+4. 逐字对白可调整 Fast/Balanced/Accurate 的等待窗口。重复文字复用有界缓存；暂停和切换目标会使旧任务失效。
+5. 可建立游戏 Profile、编辑/导入/导出术语 JSON，并手动绑定稳定进程名称。上下文默认关闭，开启后需手动确认对白才加入有限上下文。
+
+显式 CUDA 失败不会悄悄回退。Auto 只使用已经准备好的 GPU 组件，可回退 CPU。4GB 显卡同时运行游戏可能无法通过准入；CPU 始终可选。Balanced 至少保留 2GiB 显存，其他策略的预留可调整，预估不等于真实占用。GPU 下载包必须与应用嵌入的版本一致，发布前需将两个 Worker 组件公开上传到配套 Release。
+
+详见 [翻译架构](docs/translation-architecture.md)、[Runtime 与模型校验](docs/translation-runtime.md)、[性能](docs/translation-performance.md)、[质量与已知边界](docs/translation-quality.md)。其他 GGUF/ONNX 翻译模型尚未注册；首批本地导入仅接受已验证的 Hy-MT2 Q4_K_M。
 
 构建机需要 Windows、Node.js 24、Rust stable MSVC 工具链、VS 2022 C++ 桌面开发、Windows SDK、CMake、Ninja、LLVM/libclang。CUDA 发布构建需要 CUDA 12.8.1 和 cuDNN 9.8.0.87。关键依赖固定 `llama-cpp-2 0.1.159`、`windows-capture 2.0.1`、`ort 2.0.0-rc.12`（API 24 / 动态加载）、ORT 1.24.3、`imageproc 0.25.0`；完整版本见 lockfile。ort 最低 Rust 1.88，项目以 Rust 1.97.1 实测。
 

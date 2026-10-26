@@ -12,7 +12,7 @@ if (Test-Path -LiteralPath $destination) {
 }
 New-Item -ItemType Directory -Force -Path $destination | Out-Null
 Copy-Item -LiteralPath $Binary -Destination (Join-Path $destination 'GameOCR.exe')
-foreach ($runtime in @('llamacpp','onnx')) {
+foreach ($runtime in @('llamacpp','onnx','translation')) {
     $runtimeDir = Join-Path $destination "workers/$runtime"
     New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
     $devices = if ($Backend -eq 'both') { @('cpu','cuda') } else { @('cpu') }
@@ -32,7 +32,11 @@ if ($Backend -eq 'ondemand') {
         if ($process.ExitCode) { throw 'Unable to read embedded GPU catalog' }
         $expected = Get-Content -LiteralPath 'artifacts/gpu-backends.json' -Raw | ConvertFrom-Json
         $actual = Get-Content -LiteralPath $catalogCheck -Raw | ConvertFrom-Json
-        if (!$actual.packages.Count -or $actual.packages[0].sha256 -ne $expected.packages[0].sha256 -or $actual.packages[0].url -ne $expected.packages[0].url) { throw 'EXE GPU catalog does not match companion assets; rebuild with GAMEOCR_GPU_MANIFEST.' }
+        if ($actual.packages.Count -ne $expected.packages.Count) { throw 'EXE GPU catalog count differs; rebuild with GAMEOCR_GPU_MANIFEST.' }
+        foreach ($package in $expected.packages) {
+            $match = @($actual.packages | Where-Object id -eq $package.id)
+            if ($match.Count -ne 1 -or $match[0].sha256 -ne $package.sha256 -or $match[0].url -ne $package.url) { throw 'EXE GPU catalog does not match companion assets; rebuild with GAMEOCR_GPU_MANIFEST.' }
+        }
     } finally { if (Test-Path -LiteralPath $catalogCheck) { Remove-Item -LiteralPath $catalogCheck -Force } }
 }
 if ($Backend -eq 'both') {
@@ -53,6 +57,8 @@ This is an unsigned build; clean Windows 11 validation is documented separately.
 $backendNote = if ($Backend -eq 'cpu') { 'CPU-only package: no GPU backends. Auto falls back to CPU; explicit CUDA reports a missing backend.' } elseif ($Backend -eq 'ondemand') { 'GPU backends download on first explicit CUDA model load: ONNX libraries from Microsoft, llama.cpp GPU Worker from the matching GameOCR Release, and CUDA/cuDNN from NVIDIA. Auto does not download. Downloads support cancellation/resume and SHA-256 verification. Cache: %LOCALAPPDATA%\GameOCR\runtimes. A compatible NVIDIA driver must already be installed. Optional matching offline archives may be placed in runtime-downloads beside GameOCR.exe.' } else { 'CPU and CUDA workers and NVIDIA runtime libraries included for offline use. CUDA requires a compatible NVIDIA driver.' }
 Add-Content -LiteralPath (Join-Path $destination 'README.txt') -Value $backendNote -Encoding utf8
 $requiredFiles = @('GameOCR.exe','workers/llamacpp/cpu/ocr-worker.exe','workers/onnx/cpu/onnx-worker.exe','workers/onnx/cpu/onnxruntime.dll','vcruntime140.dll')
+$requiredFiles += 'workers/translation/cpu/translation-worker.exe'
+if ($Backend -eq 'both') { $requiredFiles += 'workers/translation/cuda/translation-worker.exe' }
 if ($Backend -eq 'both') { $requiredFiles += @('workers/llamacpp/cuda/ocr-worker.exe','workers/onnx/cuda/onnx-worker.exe','workers/onnx/cuda/onnxruntime_providers_cuda.dll') }
 if ($Backend -eq 'both') { $requiredFiles += @('workers/cuda-runtime/cudart64_12.dll','workers/cuda-runtime/cublas64_12.dll','workers/cuda-runtime/cublasLt64_12.dll','workers/cuda-runtime/cudnn64_9.dll') }
 foreach ($required in $requiredFiles) {

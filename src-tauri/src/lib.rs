@@ -59,13 +59,24 @@ pub fn run() {
             commands::get_status,
             commands::export_result,
             commands::save_screenshot,
-            commands::get_original_screenshot
-            ,commands::translation_settings,commands::update_translation_settings,commands::translation_status,
-            commands::translation_models,commands::download_translation_model,commands::cancel_translation_download,
-            commands::import_translation_model,commands::delete_translation_model,commands::load_translation_model,
-            commands::unload_translation_model,commands::translate_once,commands::translation_history,
-            commands::clear_translation_cache,commands::confirm_translation_context,commands::export_translation
-            ,commands::import_translation_profiles,commands::export_translation_profiles
+            commands::get_original_screenshot,
+            commands::translation_settings,
+            commands::update_translation_settings,
+            commands::translation_status,
+            commands::translation_models,
+            commands::download_translation_model,
+            commands::cancel_translation_download,
+            commands::import_translation_model,
+            commands::delete_translation_model,
+            commands::load_translation_model,
+            commands::unload_translation_model,
+            commands::translate_once,
+            commands::translation_history,
+            commands::clear_translation_cache,
+            commands::confirm_translation_context,
+            commands::export_translation,
+            commands::import_translation_profiles,
+            commands::export_translation_profiles
         ])
         .build(tauri::generate_context!())
         .expect("GameOCR 无法启动；需要 Windows 11 和系统 WebView2 Runtime");
