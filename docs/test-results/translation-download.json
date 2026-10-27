@@ -1,0 +1,10 @@
+{
+  "executedAt": "2026-10-26T07:01:34.759Z",
+  "status": "failed",
+  "scope": "Real desktop official model download through configured proxy",
+  "error": "Error: Timed out: Error: page.evaluate: error sending request for url (https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF/resolve/a0c709d9fac510f2c807aa3af52872340dc37a4a/Hy-MT2-1.8B-Q4_K_M.gguf): client error (Connect): tunnel error: unexpected end of file",
+  "downloadCancellationVerified": false,
+  "rangeResumeVerified": false,
+  "fullModelShaVerifiedByImport": true,
+  "evidence": "artifacts\\validation\\translation-1792997964205\\failure.json"
+}

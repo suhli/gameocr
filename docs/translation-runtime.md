@@ -31,6 +31,10 @@ Prompt 支持目标语言、风格、术语、背景、已确认对白、换行�
 
 CPU Worker 加入基础发行包，权重和 CUDA Worker 不加入。`package-gpu-backends.ps1` 生成 OCR 与翻译两个独立 ZIP 和嵌入式校验清单。需先公开发布对应 Release 资源，用户才能联网获取自有 Worker；本地验证可放置匹配 ZIP 到 `runtime-downloads`。Microsoft/NVIDIA 组件仍走原官方来源与校验流程。
 
+本轮已构建 NSIS、MSI、标准按需下载便携包和 CPU 专用便携包。对应大小约为 12.45、17.21、19.85、19.18 MiB，精确字节数与 SHA 见 `test-results/translation-packaging.json`。两种便携包逐文件校验 ZIP，分别检查了 47/46 个原生二进制的导入依赖；均不含模型权重或 NVIDIA DLL。没有执行干净 Windows 安装验证，也没有发布 GPU 配套 Release。
+
+真实桌面模型下载测试在当前代理连接中返回 `tunnel error: unexpected end of file`，尚未完成取消/续传验收，失败证据保存在 `test-results/translation-download.json`。共享下载组件的本地 HTTP 中断恢复/哈希损坏测试通过；这不能替代真实官方端点的成功记录。本地导入、加载前完整 SHA 校验及同大小损坏拒绝已通过桌面测试。
+
 ## 复现
 
 ```powershell

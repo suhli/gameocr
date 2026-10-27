@@ -11,5 +11,6 @@
   {"requestId":"sound","sourceText":"ドカーン！……えっ、今の音は何？","options":{"targetLanguage":"zh"},"reference":"轰隆！……咦，刚才是什么声音？","category":"onomatopoeia","humanReview":null},
   {"requestId":"incomplete","sourceText":"If you can reach the tower before","options":{"targetLanguage":"zh"},"reference":"如果你能在……之前到达塔楼","category":"incomplete OCR","humanReview":null},
   {"requestId":"context","sourceText":"She left it by the old gate.","options":{"targetLanguage":"zh","context":["艾琳正在寻找失踪的银色钥匙。"],"contextVersion":1},"reference":"她把它留在了旧城门旁。","category":"bounded context","humanReview":null},
+  {"requestId":"long-quest","sourceText":"Before you leave for the northern fortress, speak to Captain Rowan, collect the sealed letter from the innkeeper, and make sure that {player} has at least 200 gold; if the bridge is still closed at sunset, follow the river to the old watchtower instead of returning to the city.","options":{"targetLanguage":"zh"},"reference":"前往北方要塞之前，请先与罗文队长交谈，从旅店老板那里取走密封的信，并确保{player}至少有200金币；如果日落时桥仍未开放，就沿河前往旧瞭望塔，不要返回城里。","category":"long conditional quest and placeholder","humanReview":null},
   {"requestId":"isolation","sourceText":"Where are you going? The northern bridge is still closed.","options":{"targetLanguage":"zh"},"reference":"你要去哪里？北边的桥还没有开放。","category":"KV isolation repeat","humanReview":null}
 ]

@@ -1,0 +1,18 @@
+{
+  "executedAt": "2026-10-26T06:59:01.6923816+00:00",
+  "cpu": {
+    "Name": "AMD Ryzen 5 5600G with Radeon Graphics         ",
+    "NumberOfCores": 6,
+    "NumberOfLogicalProcessors": 12
+  },
+  "gpu": "NVIDIA GeForce GTX 1650, 4096 MiB, 610.88",
+  "os": {
+    "Caption": "Microsoft Windows 11 专业版",
+    "Version": "10.0.26200",
+    "BuildNumber": "26200"
+  },
+  "cudaBuildToolkit": "12.1",
+  "threads": 4,
+  "corpus": "synthetic game text",
+  "cleanVm": false
+}

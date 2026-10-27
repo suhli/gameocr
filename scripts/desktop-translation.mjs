@@ -35,6 +35,13 @@ async function launch(){
   page=await until(()=>browser.contexts()[0]?.pages().find(p=>/tauri.localhost|tauri:\/\//.test(p.url())));
   page.on('pageerror',e=>failures.push(e.message));await page.getByRole('heading',{name:/窗口列表/}).waitFor();
   invoke=(command,args={})=>page.evaluate(({command,args})=>window.__TAURI_INTERNALS__.invoke(command,args),{command,args});
+  await page.evaluate(async()=>{
+    window.__translationEvents=[];
+    for(const event of ['translation-invalidated','translation-result']) {
+      const handler=window.__TAURI_INTERNALS__.transformCallback(value=>window.__translationEvents.push({event,payload:value.payload}));
+      await window.__TAURI_INTERNALS__.invoke('plugin:event|listen',{event,target:{kind:'Any'},handler});
+    }
+  });
   if(!settings)assert.equal(path.resolve((await invoke('get_settings')).modelDir),path.join(data,'models'));
 }
 async function close(){if(invoke)await invoke('plugin:window|close',{label:'main'}).catch(()=>{});await until(()=>app.exitCode!==null,10000);await browser?.close();browser=null;invoke=null;}
@@ -48,6 +55,8 @@ try {
   await launch();tsettings=await invoke('translation_settings');assert.equal(tsettings.enabled,false);assert.equal((await invoke('translation_status')).modelId,null);
   fixture=spawn(path.resolve('target/debug/capture-fixture.exe'),[control],{windowsHide:true,stdio:['ignore',log,log]});
   settings={...await invoke('get_settings'),modelDir:path.resolve('.cache/test-models'),device:'cpu',executionMode:'single',enableParallelInference:false,changeDetection:false,ocrIntervalMs:200,downloadMirror:'https://huggingface.co'};
+  // Exercise the actual game-content ROI, excluding the fixture's Windows title bar/buttons.
+  settings.onnx={...settings.onnx,detectionRegion:[0,0.12,1,0.88]};
   await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});const window=await target();
   await show('Where are you going?');const raw=await recognize();assert(raw.result.blocks.some(b=>/Where/.test(b.text)));assert.equal((await invoke('translation_history')).length,0);pass('Pure OCR works without installed translation model');
   if(process.env.GAMEOCR_TEST_DOWNLOAD==='1') {
@@ -72,6 +81,7 @@ try {
   await page.getByLabel('翻译结果',{exact:true}).waitFor();await page.screenshot({path:path.join(out,'cpu-translation.png')});pass('WGC OCR CPU -> real translation CPU -> visible Chinese UI; OCR result unchanged');
   const pid=ownedWorkers()[0].ProcessId,calls=(await invoke('translation_status')).calls;
   const next=await recognize(),cached=await translated(next);assert(cached.results.every(r=>r.cacheHit));assert.equal((await invoke('translation_status')).calls,calls);assert.equal(ownedWorkers()[0].ProcessId,pid);assert.equal(cached.frameId,next.result.frameId);pass('Repeated OCR uses cache with current identity and same worker');
+  samples.push({case:'repeated OCR cache',translation:cached,additionalModelCalls:0});
   const exportPath=path.join(out,'translation-export.json');await invoke('export_translation',{frameId:next.result.frameId,path:exportPath});assert.equal(JSON.parse(fs.readFileSync(exportPath,'utf8')).schemaVersion,1);
   await page.getByRole('button',{name:'翻译',exact:true}).click();const dialog=page.getByRole('dialog');await dialog.waitFor();
   const box=await dialog.boundingBox(),viewport=await page.evaluate(()=>({w:innerWidth,h:innerHeight}));assert(Math.abs(box.x+box.width/2-viewport.w/2)<3);assert(Math.abs(box.y+box.height/2-viewport.h/2)<3);await page.screenshot({path:path.join(out,'translation-settings.png')});
@@ -87,8 +97,15 @@ try {
   const started=performance.now();for(const line of ['Where','Where are','Where are you','Where are you going?']){await show(line);await recognize();}
   const final=(await invoke('get_history'))[0];await translated(final);const after=(await invoke('translation_status')).calls;assert.equal(after-before,1);samples.push({case:'typewriter',elapsedMs:performance.now()-started,modelCalls:after-before});pass('Four real OCR typewriter updates produce one final model call');
   await show('The northern bridge is still closed.');const cancelled=await recognize();await invoke('pause_capture');await pause(2200);assert(!(await invoke('translation_history')).some(t=>t.frameId===cancelled.result.frameId));pass('Pause invalidates pending translation');await invoke('resume_capture');
-  await updateT({debounceMs:0});await invoke('clear_translation_cache');await show('Please find the missing messenger before sunset.');await recognize();await until(async()=>(await invoke('translation_status')).status==='translating');
-  await invoke('select_window',{id:window.id});await pause(1500);assert.equal((await invoke('get_history')).length,0);pass('Target change discards running translation');await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
+  await updateT({debounceMs:0});await invoke('clear_translation_cache');await show('Before you leave for the fortress,\nspeak to Captain Rowan at the gate.\nBring the sealed letter and return\nbefore the bridge closes at sunset.');const obsolete=await recognize();await until(async()=>(await invoke('translation_status')).status==='translating');
+  await page.evaluate(()=>window.__translationEvents=[]);
+  await invoke('select_window',{id:window.id});await pause(1500);assert.equal((await invoke('get_history')).length,0);
+  await until(async()=>!['translating','discarding'].includes((await invoke('translation_status')).status));
+  const transitionEvents=await page.evaluate(()=>window.__translationEvents),invalidated=transitionEvents.findIndex(e=>e.event==='translation-invalidated');
+  assert(invalidated>=0);assert(!transitionEvents.slice(invalidated+1).some(e=>e.event==='translation-result'&&e.payload.frameId===obsolete.result.frameId&&e.payload.generation===obsolete.preview.generation));
+  samples.push({case:'target invalidation event order',events:transitionEvents});
+  pass('Target change discards running translation');await invoke('start_capture');await until(()=>invoke('get_capture_preview'));
+  await until(async()=>!['translating','discarding'].includes((await invoke('translation_status')).status));
   await updateT({style:'保留角色语气。'});const workers=ownedWorkers();assert.equal(workers.length,1);execFileSync('powershell.exe',['-NoProfile','-Command',`Stop-Process -Id ${workers[0].ProcessId} -Force`],{windowsHide:true});
   const failed=await recognize();await until(async()=>(await invoke('translation_status')).status==='error');await invoke('translate_once',{frameId:failed.result.frameId});await until(async()=>(await invoke('translation_history')).some(t=>t.frameId===failed.result.frameId&&t.results.every(r=>r.status==='complete')));pass('Translation worker crash is isolated and next request recovers');
   await updateT({device:'cuda',resourcePolicy:'manual',gpuReserveMb:128,generation:{...tsettings.generation,contextSize:1024,maxTokens:128},style:''});
@@ -115,6 +132,11 @@ try {
   const profile={id:'fixture-game',name:'Fixture Game',sourceLanguage:'en',targetLanguage:'zh',style:'',background:'',glossary:[{source:'messenger',target:'信使',category:'character'}],version:1,windowProcess:window.processName};
   await updateT({device:'cpu',persistentCache:true,contextEnabled:true,profiles:[profile],profileId:profile.id});await invoke('load_translation_model',{id:modelId});
   const contextFrame=await recognize();await translated(contextFrame);await invoke('confirm_translation_context',{frameId:contextFrame.result.frameId});
+  const withContextFrame=await recognize(),withContext=await translated(withContextFrame);
+  assert(withContext.results.every(r=>!r.cacheHit&&r.contextVersion>0));samples.push({case:'explicit confirmed context',translation:withContext});
+  const otherProfile={...profile,id:'other-fixture-game'};await updateT({profiles:[profile,otherProfile],profileId:otherProfile.id});
+  await assert.rejects(invoke('confirm_translation_context',{frameId:contextFrame.result.frameId}),/其他游戏/);
+  await updateT({profiles:[profile],profileId:profile.id});pass('Confirmed context is translated explicitly and cannot cross game profiles');
   const profilePath=path.join(out,'profiles.json');await invoke('export_translation_profiles',{path:profilePath});assert.deepEqual(await invoke('import_translation_profiles',{path:profilePath}),[profile]);
   await updateT({contextEnabled:false});const persistedFrame=await recognize();await translated(persistedFrame);pass('Profile JSON roundtrip, manual context confirmation and bounded cache opt-in');
   assert.deepEqual(failures,[]);await invoke('unload_model');await invoke('stop_capture');
@@ -123,6 +145,6 @@ try {
   settings={...await invoke('get_settings'),device:'cpu'};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});await target();await invoke('load_translation_model',{id:modelId});
   const restoredFrame=await recognize(),restored=await translated(restoredFrame);assert(restored.results.every(r=>r.cacheHit));assert.equal((await invoke('translation_status')).calls,0);pass('Restart restores bounded cache without a neural translation call');
   await invoke('clear_translation_cache');assert(!fs.existsSync(path.join(data,'translation/cache.json')));await updateT({persistentCache:false});await close();
-  fs.writeFileSync(path.resolve('docs/test-results/translation-desktop.json'),JSON.stringify({executedAt:new Date().toISOString(),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),checks,samples,skipped,failures,out},null,2));
+  fs.writeFileSync(path.resolve('docs/test-results/translation-desktop.json'),JSON.stringify({executedAt:new Date().toISOString(),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),downloadRequested:process.env.GAMEOCR_TEST_DOWNLOAD==='1',checks,samples,skipped,failures,out},null,2));
 }catch(e){const status=await invoke?.('translation_status').catch(()=>null);fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:String(e),stack:e.stack,checks,samples,failures,status},null,2));throw e;}
 finally{if(app?.exitCode===null)await close().catch(()=>{});await browser?.close().catch(()=>{});fixture?.kill();if(app?.exitCode===null)app.kill();fs.closeSync(log);}

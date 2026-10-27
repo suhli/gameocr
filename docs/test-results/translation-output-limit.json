@@ -1,0 +1,792 @@
+{
+  "generation": {
+    "contextSize": 4096,
+    "maxTokens": 1,
+    "repetitionPenalty": 1.0499999523162842,
+    "seed": 42,
+    "temperature": 0.699999988079071,
+    "topK": 20,
+    "topP": 0.6000000238418579
+  },
+  "model": {
+    "adapter": "hy-mt2",
+    "file": "Hy-MT2-1.8B-Q4_K_M.gguf",
+    "id": "hy-mt2-1.8b-q4-k-m",
+    "imported": false,
+    "installed": false,
+    "languages": [
+      "zh",
+      "ja",
+      "en",
+      "zh-Hant",
+      "fr",
+      "pt",
+      "es",
+      "tr",
+      "ru",
+      "ar",
+      "ko",
+      "th",
+      "it",
+      "de",
+      "vi",
+      "ms",
+      "id",
+      "tl",
+      "hi",
+      "pl",
+      "cs",
+      "nl",
+      "km",
+      "my",
+      "fa",
+      "gu",
+      "ur",
+      "te",
+      "mr",
+      "he",
+      "bn",
+      "ta",
+      "uk",
+      "bo",
+      "kk",
+      "mn",
+      "ug",
+      "yue"
+    ],
+    "license": "Apache-2.0",
+    "name": "Hy-MT2 1.8B Q4_K_M",
+    "quantization": "Q4_K_M",
+    "revision": "a0c709d9fac510f2c807aa3af52872340dc37a4a",
+    "runtime": "llamacpp-translation",
+    "schemaVersion": 1,
+    "sha256": "dc5f44fcf1fa496ee7ad725982c0c8c553a4de00259b53af84c4b89fb0c06699",
+    "size": 1133080448,
+    "source": "https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF",
+    "url": "https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF/resolve/a0c709d9fac510f2c807aa3af52872340dc37a4a/Hy-MT2-1.8B-Q4_K_M.gguf"
+  },
+  "results": [
+    {
+      "category": "NPC dialogue",
+      "humanReview": null,
+      "reference": "你要去哪里？北边的桥还没有开放。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "en-npc",
+        "sourceText": "Where are you going? The northern bridge is still closed."
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 434.2751,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.936100000000001,
+          "promptTokens": 46,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 443.2128,
+          "ttftMs": 434.27369999999996
+        },
+        "requestId": "en-npc",
+        "stopReason": "maxTokens",
+        "text": "你要",
+        "truncated": true
+      }
+    },
+    {
+      "category": "Japanese politeness",
+      "humanReview": null,
+      "reference": "不好意思，能请您在这里稍等片刻吗？",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "ja-polite",
+        "sourceText": "恐れ入りますが、こちらで少々お待ちいただけますでしょうか。"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 541.0110999999999,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.966999999999999,
+          "promptTokens": 58,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 549.9796,
+          "ttftMs": 541.0098
+        },
+        "requestId": "ja-polite",
+        "stopReason": "maxTokens",
+        "text": "非常",
+        "truncated": true
+      }
+    },
+    {
+      "category": "quest",
+      "humanReview": null,
+      "reference": "Find the missing messenger before sunset, or the city gates will close.",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "en"
+        },
+        "requestId": "zh-en",
+        "sourceText": "请在日落之前找到失踪的信使，否则城门将会关闭。"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 412.34549999999996,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.651499999999999,
+          "promptTokens": 45,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 420.9986,
+          "ttftMs": 412.34409999999997
+        },
+        "requestId": "zh-en",
+        "stopReason": "maxTokens",
+        "text": "Please",
+        "truncated": true
+      }
+    },
+    {
+      "category": "dialogue",
+      "humanReview": null,
+      "reference": "助けてくれてありがとう。次に会ったときは、必ず恩返しするよ。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "ja"
+        },
+        "requestId": "zh-ja",
+        "sourceText": "谢谢你救了我。下次见面的时候，我一定会报答你。"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 455.6487,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 9.0091,
+          "promptTokens": 46,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 464.65909999999997,
+          "ttftMs": 455.6475
+        },
+        "requestId": "zh-ja",
+        "stopReason": "maxTokens",
+        "text": "助",
+        "truncated": true
+      }
+    },
+    {
+      "category": "glossary",
+      "humanReview": null,
+      "reference": "菲尼克斯对召唤兽使用了极限技。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [
+            {
+              "category": "character",
+              "source": "Phoenix",
+              "target": "菲尼克斯"
+            },
+            {
+              "category": "skill",
+              "source": "Limit Break",
+              "target": "极限技"
+            },
+            {
+              "category": "lore",
+              "source": "Eikon",
+              "target": "召唤兽"
+            }
+          ],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "terms",
+        "sourceText": "Phoenix used Limit Break against the Eikon."
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 737.2524000000001,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.7702,
+          "promptTokens": 83,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 746.0238999999999,
+          "ttftMs": 737.2506
+        },
+        "requestId": "terms",
+        "stopReason": "maxTokens",
+        "text": "菲",
+        "truncated": true
+      }
+    },
+    {
+      "category": "multiline menu",
+      "humanReview": null,
+      "reference": "新游戏\n读取游戏\n设置\n退出",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "menu",
+        "sourceText": "New Game\nLoad Game\nSettings\nQuit"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 401.19719999999995,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.1146,
+          "promptTokens": 43,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 409.3132,
+          "ttftMs": 401.1953
+        },
+        "requestId": "menu",
+        "stopReason": "maxTokens",
+        "text": "新",
+        "truncated": true
+      }
+    },
+    {
+      "category": "item and numbers",
+      "humanReview": null,
+      "reference": "在5秒内恢复200点生命值。战斗中无法使用。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "item",
+        "sourceText": "Restores 200 HP over 5 seconds. Cannot be used during combat."
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 456.9629,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 10.2034,
+          "promptTokens": 50,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 467.1676,
+          "ttftMs": 456.961
+        },
+        "requestId": "item",
+        "stopReason": "maxTokens",
+        "text": "在",
+        "truncated": true
+      }
+    },
+    {
+      "category": "character tone",
+      "humanReview": null,
+      "reference": "喂，别乱碰啊！那可是我的宝贝！",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "保留角色随意、略带生气的语气。",
+          "targetLanguage": "zh"
+        },
+        "requestId": "tone",
+        "sourceText": "おい、勝手に触るなよ！それは俺の宝物なんだ！"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 637.8503,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.9853,
+          "promptTokens": 72,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 646.8371000000001,
+          "ttftMs": 637.8488
+        },
+        "requestId": "tone",
+        "stopReason": "maxTokens",
+        "text": "喂",
+        "truncated": true
+      }
+    },
+    {
+      "category": "mixed languages",
+      "humanReview": null,
+      "reference": "任务完成！辛苦了，勇者。奖励：500金币",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "mixed",
+        "sourceText": "Quest Clear! お疲れさま、勇者。Reward: 500 Gold"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 457.51950000000005,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 10.305,
+          "promptTokens": 52,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 467.82689999999997,
+          "ttftMs": 457.5183
+        },
+        "requestId": "mixed",
+        "stopReason": "maxTokens",
+        "text": "任务",
+        "truncated": true
+      }
+    },
+    {
+      "category": "onomatopoeia",
+      "humanReview": null,
+      "reference": "轰隆！……咦，刚才是什么声音？",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "sound",
+        "sourceText": "ドカーン！……えっ、今の音は何？"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 374.4461,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.9176,
+          "promptTokens": 48,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 383.36510000000004,
+          "ttftMs": 374.4447
+        },
+        "requestId": "sound",
+        "stopReason": "maxTokens",
+        "text": "咚",
+        "truncated": true
+      }
+    },
+    {
+      "category": "incomplete OCR",
+      "humanReview": null,
+      "reference": "如果你能在……之前到达塔楼",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "incomplete",
+        "sourceText": "If you can reach the tower before"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 378.2442,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 9.2209,
+          "promptTokens": 41,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 387.4679,
+          "ttftMs": 378.2418
+        },
+        "requestId": "incomplete",
+        "stopReason": "maxTokens",
+        "text": "如果你",
+        "truncated": true
+      }
+    },
+    {
+      "category": "bounded context",
+      "humanReview": null,
+      "reference": "她把它留在了旧城门旁。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [
+            "艾琳正在寻找失踪的银色钥匙。"
+          ],
+          "contextVersion": 1,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "context",
+        "sourceText": "She left it by the old gate."
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 541.2844,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 8.8354,
+          "promptTokens": 65,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 550.1214,
+          "ttftMs": 541.2816
+        },
+        "requestId": "context",
+        "stopReason": "maxTokens",
+        "text": "她",
+        "truncated": true
+      }
+    },
+    {
+      "category": "long conditional quest and placeholder",
+      "humanReview": null,
+      "reference": "前往北方要塞之前，请先与罗文队长交谈，从旅店老板那里取走密封的信，并确保{player}至少有200金币；如果日落时桥仍未开放，就沿河前往旧瞭望塔，不要返回城里。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "long-quest",
+        "sourceText": "Before you leave for the northern fortress, speak to Captain Rowan, collect the sealed letter from the innkeeper, and make sure that {player} has at least 200 gold; if the bridge is still closed at sunset, follow the river to the old watchtower instead of returning to the city."
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 813.7402999999999,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 9.7006,
+          "promptTokens": 96,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 823.4422999999999,
+          "ttftMs": 813.7389000000001
+        },
+        "requestId": "long-quest",
+        "stopReason": "maxTokens",
+        "text": "在",
+        "truncated": true
+      }
+    },
+    {
+      "category": "KV isolation repeat",
+      "humanReview": null,
+      "reference": "你要去哪里？北边的桥还没有开放。",
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": false,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "auto",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "isolation",
+        "sourceText": "Where are you going? The northern bridge is still closed."
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 1,
+          "inferenceMs": 401.4317,
+          "modelLoadMs": 1398.8799000000001,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 9.4291,
+          "promptTokens": 46,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": null,
+          "totalMs": 410.8623,
+          "ttftMs": 401.4279
+        },
+        "requestId": "isolation",
+        "stopReason": "maxTokens",
+        "text": "你要",
+        "truncated": true
+      }
+    }
+  ],
+  "schemaVersion": 1,
+  "executedAt": "2026-10-26T06:59:11.529Z",
+  "testBinarySha256": "49f17471e360a733ceac4a1511146966dc6f3e998c7ed250d1b82e523d356375",
+  "scope": "Real model, synthetic game text; 4 CPU threads; no cache; one sequential pass, no other GameOCR build or benchmark running."
+}

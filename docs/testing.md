@@ -190,9 +190,13 @@ Windows CI 加入真实 CPU 时序五策略回归和报告上传；新字延迟�
 - [发行包记录](test-results/gpu-backends-package-validation.json)给出最终字节数、SHA-256 和被测 EXE 哈希。标准 ZIP 约 17.85 MB，比上一轮约 470 MB 缩小约 96.2%；CPU ZIP 约 17.14 MB。两包分别验证 47/45 个归档文件和 36/35 个 x64 文件的原生依赖。标准包没有 GPU DLL 或 llama.cpp GPU Worker；独立 GPU ZIP 约 277 MB，按需准备，未计入基础包。
 
 这次 GGUF 配套资源仅在本地生成并通过离线安装验证，**尚未发布到 GameOCR 的公开 Release，不能声称已验证公网下载**。发布基础包前应上传并公开与 EXE 固定 URL/哈希相符的资源；本地也可放到 `runtime-downloads` 安装。CI 已生成并附带配套资源，Draft Release 必须公开后才可匿名访问。NSIS/MSI 仅更新资源配置，本轮未重建安装器，也未执行远端 CI、干净 Windows 或 RTX5060Ti 验证。
-# Translation 验证入口
+## Translation 验证入口
 
 翻译核心：`cargo test -p gameocr-translation --no-default-features`；桌面配置及生命周期：`cargo test -p gameocr --lib`。真实模型 CLI、固定权重哈希和环境说明见 [translation-runtime.md](translation-runtime.md)。语料为 `tests/translation/corpus.json`，实际 CPU/CUDA 输出在 `docs/test-results/translation-*.json`。
 
 `node scripts/desktop-translation.mjs` 使用独立数据目录、实际 WGC/PP-OCR/Hy-MT2 和桌面 UI。`GAMEOCR_APP` 指定标准便携包，`GAMEOCR_GPU_CACHE` 可指定以前从官方源获取并有完整收据的缓存；Worker 配套 ZIP 来自本地 `artifacts/gpu-backends.json`。`GAMEOCR_TEST_DOWNLOAD=1` 加测真实官方下载取消及 Range 尾段续传，网络受限时配置代理。测试没有 mock 推理耗时，与其他 GUI 测试串行执行。截图、失败详情和中间日志在 `artifacts/validation/translation-*`；只有完整通过才生成 `docs/test-results/translation-desktop.json`。
+
+2026-10-27 翻译验收：60 项 Rust 测试（核心 24、翻译 9、桌面 27）和 2 项前端测试通过；真实翻译桌面检查 16 项通过、显存不足导致的 GPU 组合明确跳过；最终 CPU 包的原 OCR 桌面回归 12 项通过。原生 CPU/CUDA 各 14 条语料、低温度对照、结构合批及输出截断均有原始报告。NSIS/MSI 本轮已重新构建，更新了上方旧 GPU 精简阶段“未重建安装器”的状态。官方下载仍受代理连接失败影响，不计为通过；详见 [交付记录](translation-delivery.md)。
+
+原生测试可运行 `node scripts/test-translation.mjs`，须在构建完成后串行执行。Windows 显存与驱动、CPU 和 OS 见 `test-results/translation-environment.json`；干净虚拟机、真实游戏负载和其他显卡仍未验证。
 

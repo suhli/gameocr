@@ -1,0 +1,77 @@
+{
+  "verifiedAt": "2026-10-27T02:08:18.715Z",
+  "files": [
+    {
+      "name": "GameOCR-windows-x64-ondemand-portable.zip",
+      "bytes": 20818859,
+      "sha256": "dee053687953e3c50c3bc66d5c361d3f2d0a4e61b3466dd56d46c14a231f9c94",
+      "builtAt": "2026-10-26T06:57:48.825Z"
+    },
+    {
+      "name": "GameOCR-windows-x64-cpu-portable.zip",
+      "bytes": 20107222,
+      "sha256": "9dd9b7ca9ec52051bf3fdbf0c3de96794df3d7ef0c7845425f79e29176412538",
+      "builtAt": "2026-10-26T06:57:50.577Z"
+    },
+    {
+      "name": "GameOCR-windows-x64-setup.exe",
+      "bytes": 13053980,
+      "sha256": "c807d2884bf228617d63a73e64c512f3afca32b07a89f9c658cc5a4873b26f16",
+      "builtAt": "2026-10-26T06:52:19.616Z"
+    },
+    {
+      "name": "GameOCR-windows-x64.msi",
+      "bytes": 18042880,
+      "sha256": "5fc9dcc5d5e8d5b20b8a7582191f16c6ab430865d60bf9a2d5689869345da407",
+      "builtAt": "2026-10-26T06:52:27.898Z"
+    }
+  ],
+  "ondemandZipEntries": 59,
+  "ondemandNativeBinaries": 47,
+  "cpuZipEntries": 57,
+  "cpuNativeBinaries": 46,
+  "modelWeightsBundled": false,
+  "cudaWorkerBundledInBase": false,
+  "nvidiaDllsBundledInBase": false,
+  "nsisAndMsiBuilt": true,
+  "cleanWindowsTested": false,
+  "publicGpuAssetDownloadVerified": false,
+  "evidence": [
+    ".cache/translation/verify-ondemand.log",
+    ".cache/translation/verify-cpu.log"
+  ],
+  "gpuCatalog": {
+    "packages": [
+      {
+        "name": "GameOCR llamacpp CUDA",
+        "required": [
+          "ocr-worker.exe"
+        ],
+        "url": "https://github.com/suhli/gameocr/releases/download/gpu-4714416072f0/GameOCR-llamacpp-cuda-windows-x64-4714416072f0.zip",
+        "kind": "llamacpp",
+        "sha256": "4714416072f0fa6fc764690ee849f1d218fd86c2ac0cfceb0874ed19c7350bb7",
+        "size": 277372421,
+        "runtimes": [
+          "llamacpp"
+        ],
+        "version": "ef3f9784ea58",
+        "id": "gameocr-llamacpp-cuda"
+      },
+      {
+        "name": "GameOCR translation CUDA",
+        "required": [
+          "translation-worker.exe"
+        ],
+        "url": "https://github.com/suhli/gameocr/releases/download/gpu-4714416072f0/GameOCR-translation-cuda-windows-x64-b9f6a64cfec8.zip",
+        "kind": "translation",
+        "sha256": "b9f6a64cfec8ff34bed7165f64d3656cc5ca8a14582db00d170e273cee80c9e4",
+        "size": 276165005,
+        "runtimes": [
+          "translation"
+        ],
+        "version": "344b7ec1b99d",
+        "id": "gameocr-translation-cuda"
+      }
+    ]
+  }
+}

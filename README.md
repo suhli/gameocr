@@ -76,6 +76,8 @@ GPU 最多 2 个实例，共用同一张显卡；CPU 最多 4 个且不超过逻
 
 详见 [翻译架构](docs/translation-architecture.md)、[Runtime 与模型校验](docs/translation-runtime.md)、[性能](docs/translation-performance.md)、[质量与已知边界](docs/translation-quality.md)。其他 GGUF/ONNX 翻译模型尚未注册；首批本地导入仅接受已验证的 Hy-MT2 Q4_K_M。
 
+当前构建与验收汇总见 [翻译交付记录](docs/translation-delivery.md)：真实 CPU/CUDA 原生推理通过，桌面 CPU 管线、缓存与取消恢复通过；桌面双 GPU 组合因显存不足跳过，当前代理下的模型下载尚未完成真实续传验收。
+
 构建机需要 Windows、Node.js 24、Rust stable MSVC 工具链、VS 2022 C++ 桌面开发、Windows SDK、CMake、Ninja、LLVM/libclang。CUDA 发布构建需要 CUDA 12.8.1 和 cuDNN 9.8.0.87。关键依赖固定 `llama-cpp-2 0.1.159`、`windows-capture 2.0.1`、`ort 2.0.0-rc.12`（API 24 / 动态加载）、ORT 1.24.3、`imageproc 0.25.0`；完整版本见 lockfile。ort 最低 Rust 1.88，项目以 Rust 1.97.1 实测。
 
 ```powershell

@@ -1,0 +1,993 @@
+{
+  "executedAt": "2026-10-27T02:06:00.462Z",
+  "appSha256": "d68c36bee71778f61ab3b1e7f3ff918374ce5c248532ea31b05dd6d7aba883cf",
+  "checks": [
+    {
+      "name": "Pure OCR works without installed translation model"
+    },
+    {
+      "name": "WGC OCR CPU -> real translation CPU -> visible Chinese UI; OCR result unchanged"
+    },
+    {
+      "name": "Repeated OCR uses cache with current identity and same worker"
+    },
+    {
+      "name": "Separate JSON export and centered translation settings"
+    },
+    {
+      "name": "Real multi-block translation uses validated IDs or safe per-group fallback"
+    },
+    {
+      "name": "Four real OCR typewriter updates produce one final model call"
+    },
+    {
+      "name": "Pause invalidates pending translation"
+    },
+    {
+      "name": "Target change discards running translation"
+    },
+    {
+      "name": "Translation worker crash is isolated and next request recovers"
+    },
+    {
+      "name": "Explicit CUDA admission reports insufficient resources without silently using CPU"
+    },
+    {
+      "name": "Auto falls back to real CPU inference under insufficient GPU memory"
+    },
+    {
+      "name": "Same-size model corruption rejected before loading"
+    },
+    {
+      "name": "Confirmed context is translated explicitly and cannot cross game profiles"
+    },
+    {
+      "name": "Profile JSON roundtrip, manual context confirmation and bounded cache opt-in"
+    },
+    {
+      "name": "Application exit cleans up translation child"
+    },
+    {
+      "name": "Restart restores bounded cache without a neural translation call"
+    }
+  ],
+  "samples": [
+    {
+      "combination": "OCR CPU + translation CPU",
+      "ocr": {
+        "preprocessingMs": 15.6276,
+        "inferenceMs": 91.2584,
+        "parsingMs": 3.8974,
+        "totalMs": 111.3533,
+        "detectionMs": 74.0971,
+        "recognitionMs": 17.1613,
+        "detectionRegions": 1,
+        "recognitionBatches": 1,
+        "recognitionPixels": 20112,
+        "execution": {
+          "batchId": 2,
+          "endToEndMs": 125.70609999999999,
+          "transferMs": 2.0000999999999998,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 112.1987,
+          "mergeMs": 0,
+          "cpuTasks": 1,
+          "gpuTasks": 0,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": null,
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 1.0099,
+            "detectorPreprocessMs": 13.673,
+            "dbMs": 1.7378,
+            "cropMs": 0.35,
+            "recognizerPreprocessMs": 0.5885,
+            "ctcMs": 2.1592,
+            "mergeMs": 0.0004,
+            "cacheMs": 0.0043,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 3891680,
+            "recognitionShapes": [
+              [
+                1,
+                3,
+                48,
+                419
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 1.3428,
+            "conversionMs": 1.5167,
+            "frameWaitMs": 9.5596,
+            "gateMs": 0.0070999999999999995,
+            "previewMs": 7.981800000000001,
+            "previewReused": false,
+            "captureToPublishMs": 140.2783,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.8453999999999979,
+          "temporal": null,
+          "transport": "ppm",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 1.0099,
+          "detectorPreprocessMs": 13.673,
+          "dbMs": 1.7378,
+          "cropMs": 0.35,
+          "recognizerPreprocessMs": 0.5885,
+          "ctcMs": 2.1592,
+          "mergeMs": 0.0004,
+          "cacheMs": 0.0043,
+          "detectorCalls": 1,
+          "recognizerCalls": 1,
+          "outputBytes": 3891680,
+          "recognitionShapes": [
+            [
+              1,
+              3,
+              48,
+              419
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        }
+      },
+      "translation": {
+        "frameId": 54,
+        "generation": 3,
+        "epoch": 4,
+        "revision": 8,
+        "results": [
+          {
+            "profileId": "",
+            "requestId": "6a2f04ca-4ffe-4091-adb1-065a9c277858",
+            "frameId": 54,
+            "generation": 3,
+            "epoch": 4,
+            "revision": 8,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "Where are you going?",
+            "translatedText": "你要去哪里？",
+            "sourceBlockIds": [
+              "block-0"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-0",
+                "text": "Where are you going?",
+                "label": "text",
+                "bbox": [
+                  29,
+                  64,
+                  310,
+                  98
+                ],
+                "confidence": 0.99795425,
+                "polygon": [
+                  {
+                    "x": 31,
+                    "y": 64
+                  },
+                  {
+                    "x": 310,
+                    "y": 66
+                  },
+                  {
+                    "x": 307,
+                    "y": 98
+                  },
+                  {
+                    "x": 29,
+                    "y": 96
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 0,
+            "contextVersion": 0,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cpu",
+            "truncated": false,
+            "metrics": {
+              "batchRequestId": null,
+              "batchSize": 0,
+              "modelLoadMs": 1566.1089000000002,
+              "backendPrepareMs": 0.00009999999999999999,
+              "promptMs": 11.8616,
+              "queueMs": 86.4337,
+              "ttftMs": 416.4137,
+              "promptTokens": 39,
+              "generatedTokens": 4,
+              "tokensPerSecond": 18.265574141792,
+              "inferenceMs": 580.6571,
+              "totalMs": 592.5219000000001,
+              "textProcessingMs": 0.024,
+              "publishMs": 0,
+              "ocrMs": 111.3533,
+              "ocrToTranslationMs": 689.7047,
+              "captureToTranslationMs": 830.1496999999999,
+              "processMemoryMb": 2099.02734375,
+              "freeVramMb": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": "structured batch",
+      "translation": {
+        "frameId": 79,
+        "generation": 3,
+        "epoch": 4,
+        "revision": 12,
+        "results": [
+          {
+            "profileId": "",
+            "requestId": "45ae7729-2c27-4bd2-9025-4bed496d607c",
+            "frameId": 79,
+            "generation": 3,
+            "epoch": 4,
+            "revision": 12,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "New Game",
+            "translatedText": "新游戏",
+            "sourceBlockIds": [
+              "block-0"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-0",
+                "text": "New Game",
+                "label": "text",
+                "bbox": [
+                  30,
+                  65,
+                  170,
+                  96
+                ],
+                "confidence": 0.99993706,
+                "polygon": [
+                  {
+                    "x": 30,
+                    "y": 65
+                  },
+                  {
+                    "x": 170,
+                    "y": 65
+                  },
+                  {
+                    "x": 170,
+                    "y": 96
+                  },
+                  {
+                    "x": 30,
+                    "y": 96
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 0,
+            "contextVersion": 0,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cpu",
+            "truncated": false,
+            "metrics": {
+              "batchRequestId": "batch-45ae7729-2c27-4bd2-9025-4bed496d607c",
+              "batchSize": 3,
+              "modelLoadMs": 1566.1089000000002,
+              "backendPrepareMs": 0.00009999999999999999,
+              "promptMs": 9.7945,
+              "queueMs": 88.7928,
+              "ttftMs": 994.8354,
+              "promptTokens": 109,
+              "generatedTokens": 30,
+              "tokensPerSecond": 22.093112106621657,
+              "inferenceMs": 2307.4617000000003,
+              "totalMs": 2317.2594000000004,
+              "textProcessingMs": 0.10450000000000001,
+              "publishMs": 0,
+              "ocrMs": 123.7047,
+              "ocrToTranslationMs": 2415.7054000000003,
+              "captureToTranslationMs": 2744.8034,
+              "processMemoryMb": 2107.203125,
+              "freeVramMb": null
+            }
+          },
+          {
+            "profileId": "",
+            "requestId": "6c42ae84-e7d4-4c47-b638-649f55101361",
+            "frameId": 79,
+            "generation": 3,
+            "epoch": 4,
+            "revision": 12,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "Load Game",
+            "translatedText": "加载游戏",
+            "sourceBlockIds": [
+              "block-1"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-1",
+                "text": "Load Game",
+                "label": "text",
+                "bbox": [
+                  28,
+                  127,
+                  175,
+                  163
+                ],
+                "confidence": 0.99993324,
+                "polygon": [
+                  {
+                    "x": 30,
+                    "y": 127
+                  },
+                  {
+                    "x": 175,
+                    "y": 129
+                  },
+                  {
+                    "x": 173,
+                    "y": 163
+                  },
+                  {
+                    "x": 28,
+                    "y": 162
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 0,
+            "contextVersion": 0,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cpu",
+            "truncated": false,
+            "metrics": {
+              "batchRequestId": "batch-45ae7729-2c27-4bd2-9025-4bed496d607c",
+              "batchSize": 3,
+              "modelLoadMs": 1566.1089000000002,
+              "backendPrepareMs": 0.00009999999999999999,
+              "promptMs": 9.7945,
+              "queueMs": 88.7928,
+              "ttftMs": 994.8354,
+              "promptTokens": 109,
+              "generatedTokens": 30,
+              "tokensPerSecond": 22.093112106621657,
+              "inferenceMs": 2307.4617000000003,
+              "totalMs": 2317.2594000000004,
+              "textProcessingMs": 0.10450000000000001,
+              "publishMs": 0,
+              "ocrMs": 123.7047,
+              "ocrToTranslationMs": 2415.7073,
+              "captureToTranslationMs": 2744.8053,
+              "processMemoryMb": 2107.203125,
+              "freeVramMb": null
+            }
+          },
+          {
+            "profileId": "",
+            "requestId": "7e1379d5-bc17-40fc-9038-89456138d642",
+            "frameId": 79,
+            "generation": 3,
+            "epoch": 4,
+            "revision": 12,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "Settings",
+            "translatedText": "设置",
+            "sourceBlockIds": [
+              "block-2"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-2",
+                "text": "Settings",
+                "label": "text",
+                "bbox": [
+                  29,
+                  193,
+                  135,
+                  229
+                ],
+                "confidence": 0.9999608,
+                "polygon": [
+                  {
+                    "x": 29,
+                    "y": 193
+                  },
+                  {
+                    "x": 135,
+                    "y": 193
+                  },
+                  {
+                    "x": 135,
+                    "y": 229
+                  },
+                  {
+                    "x": 29,
+                    "y": 229
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 0,
+            "contextVersion": 0,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cpu",
+            "truncated": false,
+            "metrics": {
+              "batchRequestId": "batch-45ae7729-2c27-4bd2-9025-4bed496d607c",
+              "batchSize": 3,
+              "modelLoadMs": 1566.1089000000002,
+              "backendPrepareMs": 0.00009999999999999999,
+              "promptMs": 9.7945,
+              "queueMs": 88.7928,
+              "ttftMs": 994.8354,
+              "promptTokens": 109,
+              "generatedTokens": 30,
+              "tokensPerSecond": 22.093112106621657,
+              "inferenceMs": 2307.4617000000003,
+              "totalMs": 2317.2594000000004,
+              "textProcessingMs": 0.10450000000000001,
+              "publishMs": 0,
+              "ocrMs": 123.7047,
+              "ocrToTranslationMs": 2415.7085,
+              "captureToTranslationMs": 2744.8065,
+              "processMemoryMb": 2107.203125,
+              "freeVramMb": null
+            }
+          }
+        ]
+      },
+      "modelCalls": 1,
+      "fallbacks": 0
+    },
+    {
+      "case": "typewriter",
+      "elapsedMs": 4296.993200000001,
+      "modelCalls": 1
+    },
+    {
+      "case": "target invalidation event order",
+      "events": [
+        {
+          "event": "translation-result",
+          "payload": {
+            "frameId": 135,
+            "generation": 3,
+            "epoch": 5,
+            "revision": 27,
+            "results": [
+              {
+                "profileId": "",
+                "requestId": "711ce7fd-19a0-48d7-b8b2-8b261d906aab",
+                "frameId": 135,
+                "generation": 3,
+                "epoch": 5,
+                "revision": 27,
+                "sourceModelId": "ppocrv6-small",
+                "translationModelId": "hy-mt2-1.8b-q4-k-m",
+                "sourceLanguage": "en",
+                "targetLanguage": "zh",
+                "sourceText": "Before you leave for the fortress,\nspeak to Captain Rowan at the gate.\nBring the sealed letter and return\nbefore the bridge closes at sunset.",
+                "translatedText": "在前往堡垒之前，\n请在门口与罗文船长交谈。\n带上那封密封的信件，\n在日落时桥关上之前回来。",
+                "sourceBlockIds": [
+                  "block-0",
+                  "block-1",
+                  "block-2",
+                  "block-3"
+                ],
+                "sourceBlocks": [
+                  {
+                    "id": "block-0",
+                    "text": "Before you leave for the fortress,",
+                    "label": "text",
+                    "bbox": [
+                      31,
+                      66,
+                      439,
+                      98
+                    ],
+                    "confidence": 0.97589606,
+                    "polygon": [
+                      {
+                        "x": 34,
+                        "y": 66
+                      },
+                      {
+                        "x": 439,
+                        "y": 67
+                      },
+                      {
+                        "x": 437,
+                        "y": 98
+                      },
+                      {
+                        "x": 31,
+                        "y": 96
+                      }
+                    ]
+                  },
+                  {
+                    "id": "block-1",
+                    "text": "speak to Captain Rowan at the gate.",
+                    "label": "text",
+                    "bbox": [
+                      32,
+                      132,
+                      475,
+                      162
+                    ],
+                    "confidence": 0.9961624,
+                    "polygon": [
+                      {
+                        "x": 32,
+                        "y": 132
+                      },
+                      {
+                        "x": 475,
+                        "y": 132
+                      },
+                      {
+                        "x": 475,
+                        "y": 162
+                      },
+                      {
+                        "x": 32,
+                        "y": 162
+                      }
+                    ]
+                  },
+                  {
+                    "id": "block-2",
+                    "text": "Bring the sealed letter and return",
+                    "label": "text",
+                    "bbox": [
+                      34,
+                      196,
+                      444,
+                      224
+                    ],
+                    "confidence": 0.99967754,
+                    "polygon": [
+                      {
+                        "x": 34,
+                        "y": 196
+                      },
+                      {
+                        "x": 444,
+                        "y": 196
+                      },
+                      {
+                        "x": 444,
+                        "y": 224
+                      },
+                      {
+                        "x": 34,
+                        "y": 224
+                      }
+                    ]
+                  },
+                  {
+                    "id": "block-3",
+                    "text": "before the bridge closes at sunset.",
+                    "label": "text",
+                    "bbox": [
+                      29,
+                      258,
+                      459,
+                      291
+                    ],
+                    "confidence": 0.99949425,
+                    "polygon": [
+                      {
+                        "x": 32,
+                        "y": 258
+                      },
+                      {
+                        "x": 459,
+                        "y": 260
+                      },
+                      {
+                        "x": 457,
+                        "y": 291
+                      },
+                      {
+                        "x": 29,
+                        "y": 289
+                      }
+                    ]
+                  }
+                ],
+                "glossaryVersion": 0,
+                "contextVersion": 0,
+                "cacheHit": false,
+                "status": "complete",
+                "error": null,
+                "device": "cpu",
+                "truncated": false,
+                "metrics": {
+                  "batchRequestId": null,
+                  "batchSize": 0,
+                  "modelLoadMs": 1566.1089000000002,
+                  "backendPrepareMs": 0.00009999999999999999,
+                  "promptMs": 10.6321,
+                  "queueMs": 0.06380000000000001,
+                  "ttftMs": 580.0822,
+                  "promptTokens": 65,
+                  "generatedTokens": 32,
+                  "tokensPerSecond": 21.401649238705367,
+                  "inferenceMs": 2028.5687,
+                  "totalMs": 2039.2043,
+                  "textProcessingMs": 0.0134,
+                  "publishMs": 0,
+                  "ocrMs": 253.3231,
+                  "ocrToTranslationMs": 2049.3444,
+                  "captureToTranslationMs": 2518.3125,
+                  "processMemoryMb": 2107.2109375,
+                  "freeVramMb": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "event": "translation-invalidated",
+          "payload": null
+        }
+      ]
+    },
+    {
+      "case": "explicit confirmed context",
+      "translation": {
+        "frameId": 307,
+        "generation": 5,
+        "epoch": 7,
+        "revision": 45,
+        "results": [
+          {
+            "profileId": "fixture-game",
+            "requestId": "1add18c0-dd14-4765-b253-024cd64cdcda",
+            "frameId": 307,
+            "generation": 5,
+            "epoch": 7,
+            "revision": 45,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "Before you leave for the fortress,\nspeak to Captain Rowan at the gate.\nBring the sealed letter and return\nbefore the bridge closes at sunset.",
+            "translatedText": "在前往堡垒之前，  \n请在门口与罗文队长交谈。  \n带上那封密封的信使，并在日落前桥关闭之前回来。",
+            "sourceBlockIds": [
+              "block-0",
+              "block-1",
+              "block-2",
+              "block-3"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-0",
+                "text": "Before you leave for the fortress,",
+                "label": "text",
+                "bbox": [
+                  31,
+                  66,
+                  439,
+                  98
+                ],
+                "confidence": 0.97589606,
+                "polygon": [
+                  {
+                    "x": 34,
+                    "y": 66
+                  },
+                  {
+                    "x": 439,
+                    "y": 67
+                  },
+                  {
+                    "x": 437,
+                    "y": 98
+                  },
+                  {
+                    "x": 31,
+                    "y": 96
+                  }
+                ]
+              },
+              {
+                "id": "block-1",
+                "text": "speak to Captain Rowan at the gate.",
+                "label": "text",
+                "bbox": [
+                  32,
+                  132,
+                  475,
+                  162
+                ],
+                "confidence": 0.9961624,
+                "polygon": [
+                  {
+                    "x": 32,
+                    "y": 132
+                  },
+                  {
+                    "x": 475,
+                    "y": 132
+                  },
+                  {
+                    "x": 475,
+                    "y": 162
+                  },
+                  {
+                    "x": 32,
+                    "y": 162
+                  }
+                ]
+              },
+              {
+                "id": "block-2",
+                "text": "Bring the sealed letter and return",
+                "label": "text",
+                "bbox": [
+                  34,
+                  196,
+                  444,
+                  224
+                ],
+                "confidence": 0.99967754,
+                "polygon": [
+                  {
+                    "x": 34,
+                    "y": 196
+                  },
+                  {
+                    "x": 444,
+                    "y": 196
+                  },
+                  {
+                    "x": 444,
+                    "y": 224
+                  },
+                  {
+                    "x": 34,
+                    "y": 224
+                  }
+                ]
+              },
+              {
+                "id": "block-3",
+                "text": "before the bridge closes at sunset.",
+                "label": "text",
+                "bbox": [
+                  29,
+                  258,
+                  459,
+                  291
+                ],
+                "confidence": 0.99949425,
+                "polygon": [
+                  {
+                    "x": 32,
+                    "y": 258
+                  },
+                  {
+                    "x": 459,
+                    "y": 260
+                  },
+                  {
+                    "x": 457,
+                    "y": 291
+                  },
+                  {
+                    "x": 29,
+                    "y": 289
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 1,
+            "contextVersion": 32,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cpu",
+            "truncated": false,
+            "metrics": {
+              "batchRequestId": null,
+              "batchSize": 0,
+              "modelLoadMs": 1316.7459,
+              "backendPrepareMs": 0.00019999999999999998,
+              "promptMs": 3.5193,
+              "queueMs": 0.0553,
+              "ttftMs": 1569.9106000000002,
+              "promptTokens": 164,
+              "generatedTokens": 31,
+              "tokensPerSecond": 20.508599597621284,
+              "inferenceMs": 3032.7115999999996,
+              "totalMs": 3036.235,
+              "textProcessingMs": 0.016900000000000002,
+              "publishMs": 0,
+              "ocrMs": 198.1661,
+              "ocrToTranslationMs": 3039.7623,
+              "captureToTranslationMs": 3278.2464999999997,
+              "processMemoryMb": 1920.33984375,
+              "freeVramMb": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "case": "repeated OCR cache",
+      "translation": {
+        "epoch": 4,
+        "frameId": 68,
+        "generation": 3,
+        "results": [
+          {
+            "cacheHit": true,
+            "contextVersion": 0,
+            "device": "cache",
+            "epoch": 4,
+            "error": null,
+            "frameId": 68,
+            "generation": 3,
+            "glossaryVersion": 0,
+            "metrics": {
+              "backendPrepareMs": 0,
+              "batchRequestId": null,
+              "batchSize": 0,
+              "captureToTranslationMs": 103.53469999999999,
+              "freeVramMb": null,
+              "generatedTokens": 0,
+              "inferenceMs": 0,
+              "modelLoadMs": 0,
+              "ocrMs": 77.6061,
+              "ocrToTranslationMs": 0.0843,
+              "processMemoryMb": null,
+              "promptMs": 0,
+              "promptTokens": 0,
+              "publishMs": 0,
+              "queueMs": 0.0562,
+              "textProcessingMs": 0.0042,
+              "tokensPerSecond": null,
+              "totalMs": 0,
+              "ttftMs": null
+            },
+            "profileId": "",
+            "requestId": "84da84ff-b22f-4415-9021-b73e158c3769",
+            "revision": 8,
+            "sourceBlockIds": [
+              "block-0"
+            ],
+            "sourceBlocks": [
+              {
+                "bbox": [
+                  29,
+                  64,
+                  310,
+                  98
+                ],
+                "confidence": 0.997954249382019,
+                "id": "block-0",
+                "label": "text",
+                "polygon": [
+                  {
+                    "x": 31,
+                    "y": 64
+                  },
+                  {
+                    "x": 310,
+                    "y": 66
+                  },
+                  {
+                    "x": 307,
+                    "y": 98
+                  },
+                  {
+                    "x": 29,
+                    "y": 96
+                  }
+                ],
+                "text": "Where are you going?"
+              }
+            ],
+            "sourceLanguage": "en",
+            "sourceModelId": "ppocrv6-small",
+            "sourceText": "Where are you going?",
+            "status": "complete",
+            "targetLanguage": "zh",
+            "translatedText": "你要去哪里？",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "truncated": false
+          }
+        ],
+        "revision": 8
+      },
+      "additionalModelCalls": 0,
+      "evidence": "translation-export.json from the same test run"
+    }
+  ],
+  "skipped": [
+    {
+      "name": "Desktop CPU/GPU and GPU/GPU combinations",
+      "reason": "Error: page.evaluate: 显存不足或无法读取 NVIDIA 显存：当前可用 1711 MiB，预计翻译需约 1657 MiB，另保留 128 MiB。可选择 CPU/Auto",
+      "status": {
+        "status": "error",
+        "modelId": null,
+        "device": null,
+        "message": "显存不足或无法读取 NVIDIA 显存：当前可用 1711 MiB，预计翻译需约 1657 MiB，另保留 128 MiB。可选择 CPU/Auto",
+        "modelLoadMs": 2458.697,
+        "backendPrepareMs": 0.00009999999999999999,
+        "calls": 6,
+        "batchCalls": 1,
+        "batchFallbacks": 0,
+        "cacheHits": 1,
+        "skipped": 0,
+        "dropped": 4,
+        "submitted": 11,
+        "freeVramMb": 1711,
+        "estimatedVramMb": 1656.5897216796875,
+        "last": {
+          "batchRequestId": null,
+          "batchSize": 0,
+          "modelLoadMs": 1313.8971,
+          "backendPrepareMs": 0.00009999999999999999,
+          "promptMs": 12.1076,
+          "queueMs": 0.0609,
+          "ttftMs": 852.7112,
+          "promptTokens": 77,
+          "generatedTokens": 33,
+          "tokensPerSecond": 19.83460050604264,
+          "inferenceMs": 2466.0535,
+          "totalMs": 2478.1653,
+          "textProcessingMs": 0.0171,
+          "publishMs": 0.0554,
+          "ocrMs": 219.4929,
+          "ocrToTranslationMs": 4641.4915,
+          "captureToTranslationMs": 5074.0689999999995,
+          "processMemoryMb": 2103.04296875,
+          "freeVramMb": null
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "out": "C:\\Users\\shuhangli\\repos\\gameocr\\artifacts\\validation\\translation-1793066684366",
+  "downloadRequested": false
+}
