@@ -66,6 +66,79 @@ struct Queue {
     context_version: u64,
     history: VecDeque<TranslationEvent>,
 }
+impl Queue {
+    fn submit(
+        &mut self,
+        ocr: &OcrResult,
+        generation: u64,
+        epoch: u64,
+        capture: Option<Instant>,
+        force: bool,
+        debounce_ms: u64,
+    ) -> bool {
+        let signature = serde_json::to_string(
+            &ocr.blocks
+                .iter()
+                .map(|b| text::normalize(&b.text))
+                .collect::<Vec<_>>(),
+        )
+        .unwrap_or_default();
+        let now = Instant::now();
+        let same = self.latest.as_ref().is_some_and(|j| {
+            j.signature == signature
+                && j.identity.generation == generation
+                && j.identity.epoch == epoch
+        });
+        if !same {
+            if let Some(job) = &self.latest {
+                job.cancel.store(true, Ordering::Release);
+            }
+            self.revision += 1;
+        }
+        let deadline = if same {
+            self.latest.as_ref().unwrap().deadline
+        } else {
+            now + Duration::from_millis(if force { 0 } else { debounce_ms })
+        };
+        let job = Job {
+            cancel: if same {
+                self.latest
+                    .as_ref()
+                    .map(|j| j.cancel.clone())
+                    .unwrap_or_default()
+            } else {
+                Arc::new(AtomicBool::new(false))
+            },
+            identity: Identity {
+                frame_id: ocr.frame_id,
+                generation,
+                epoch,
+                revision: self.revision,
+            },
+            ocr: ocr.clone(),
+            available: now,
+            capture,
+            deadline,
+            signature,
+        };
+        self.latest = Some(job.clone());
+        // At most one pending OCR snapshot. Identical text does not reset stability.
+        self.pending.replace(job).is_some() && !same
+    }
+    fn invalidate(&mut self, clear_context: bool) -> bool {
+        if let Some(job) = &self.latest {
+            job.cancel.store(true, Ordering::Release);
+        }
+        self.revision += 1;
+        let dropped = self.pending.take().is_some();
+        self.latest = None;
+        if clear_context {
+            self.context.clear();
+            self.context_version += 1;
+        }
+        dropped
+    }
+}
 struct Session {
     worker: Option<worker::TranslationWorker>,
     config: Option<TranslationLoad>,
@@ -154,20 +227,9 @@ impl TranslationManager {
             .emit("translation-status", self.status.lock().clone());
     }
     pub fn invalidate(&self, clear_context: bool) {
-        let mut q = self.queue.lock();
-        if let Some(job) = &q.latest {
-            job.cancel.store(true, Ordering::Release);
-        }
-        q.revision += 1;
-        if q.pending.take().is_some() {
+        if self.queue.lock().invalidate(clear_context) {
             self.status.lock().dropped += 1;
         }
-        q.latest = None;
-        if clear_context {
-            q.context.clear();
-            q.context_version += 1;
-        }
-        drop(q);
         {
             let mut status = self.status.lock();
             if status.status == "translating" {
@@ -193,59 +255,14 @@ impl TranslationManager {
         if self.status.lock().model_id.is_none() {
             return;
         }
-        let signature = serde_json::to_string(
-            &ocr.blocks
-                .iter()
-                .map(|b| text::normalize(&b.text))
-                .collect::<Vec<_>>(),
-        )
-        .unwrap_or_default();
-        let now = Instant::now();
-        let mut q = self.queue.lock();
-        let same = q.latest.as_ref().is_some_and(|j| {
-            j.signature == signature
-                && j.identity.generation == generation
-                && j.identity.epoch == epoch
-        });
-        if !same {
-            if let Some(job) = &q.latest {
-                job.cancel.store(true, Ordering::Release);
-            }
-            q.revision += 1;
-        }
-        let deadline = if same {
-            q.latest.as_ref().unwrap().deadline
-        } else {
-            now + Duration::from_millis(if force { 0 } else { settings.debounce_ms })
-        };
-        let job = Job {
-            cancel: if same {
-                q.latest
-                    .as_ref()
-                    .map(|j| j.cancel.clone())
-                    .unwrap_or_default()
-            } else {
-                Arc::new(AtomicBool::new(false))
-            },
-            identity: Identity {
-                frame_id: ocr.frame_id,
-                generation,
-                epoch,
-                revision: q.revision,
-            },
-            ocr: ocr.clone(),
-            available: now,
-            capture,
-            deadline,
-            signature,
-        };
-        q.latest = Some(job.clone());
-        // At most one pending OCR snapshot. Identical text does not reset stability.
-        if q.pending.replace(job).is_some() && !same {
-            self.status.lock().dropped += 1;
-        }
-        self.status.lock().submitted += 1;
-        drop(q);
+        let dropped =
+            self.queue
+                .lock()
+                .submit(ocr, generation, epoch, capture, force, settings.debounce_ms);
+        let mut status = self.status.lock();
+        status.dropped += u64::from(dropped);
+        status.submitted += 1;
+        drop(status);
         drop(settings);
         self.notify.notify_one();
     }
@@ -363,8 +380,8 @@ impl TranslationManager {
                 stop_reason: String::new(),
                 metrics: Default::default(),
             };
-            let inferred = if let Some(batch) = &mut batch {
-                Ok(batch.remove(0))
+            let inferred = if let Some(prepared) = batch.as_mut().and_then(|b| b[index].take()) {
+                Ok(prepared)
             } else {
                 self.translate_group(
                     request,
@@ -453,39 +470,45 @@ impl TranslationManager {
         &self,
         requests: &[TranslationRequest],
         cancel: Arc<AtomicBool>,
-    ) -> Option<Vec<(GenerationResult, bool, String)>> {
-        if requests.iter().any(|r| {
-            r.options.source_language == "none"
-                || r.options.source_language == r.options.target_language
-        }) {
-            return None;
-        }
+    ) -> Option<Vec<Option<(GenerationResult, bool, String)>>> {
         let config = self.session.lock().await.config.clone()?;
-        let packed = gameocr_translation::batch::pack(requests, config.generation.max_tokens)?;
-        let keys: Vec<_> = requests
-            .iter()
-            .map(|r| cache::key(&config.manifest, &config.generation, r))
+        let plan = gameocr_translation::batch::plan(requests, &config, &mut self.cache.lock());
+        let mut ready: Vec<_> = plan
+            .ready
+            .into_iter()
+            .map(|result| {
+                result.map(|r| {
+                    let hit = r.device == "cache";
+                    let mut status = self.status.lock();
+                    if hit {
+                        status.cache_hits += 1;
+                    } else {
+                        status.skipped += 1;
+                    }
+                    (r, hit, config.manifest.id.clone())
+                })
+            })
             .collect();
-        // Reuse individual cached entries first; a changed label should not re-run its neighbours.
-        if keys.iter().any(|k| self.cache.lock().contains(k)) {
-            return None;
+        let misses: Vec<_> = plan.missing.iter().map(|&i| requests[i].clone()).collect();
+        let Some(packed) = gameocr_translation::batch::pack(&misses, config.generation.max_tokens)
+        else {
+            return Some(ready);
+        };
+        if cancel.load(Ordering::Acquire) {
+            return Some(ready);
         }
         let cache_epoch = self.cache_epoch.load(Ordering::Acquire);
         self.status.lock().batch_calls += 1;
-        let generated = self.translate_group(packed, false, cancel).await;
-        let Ok((output, hit, model_id)) = generated else {
-            self.status.lock().batch_fallbacks += 1;
-            return None;
+        let generated = self.translate_group(packed, false, cancel.clone()).await;
+        let output = generated.and_then(|(output, _, _)| {
+            gameocr_translation::batch::validate_output(&misses, &output)
+        });
+        let Ok(outputs) = output else {
+            if !cancel.load(Ordering::Acquire) {
+                self.status.lock().batch_fallbacks += 1;
+            }
+            return Some(ready);
         };
-        let texts = gameocr_translation::batch::unpack(&output.text, requests.len());
-        let Ok(texts) = texts else {
-            self.status.lock().batch_fallbacks += 1;
-            return None;
-        };
-        if output.truncated {
-            self.status.lock().batch_fallbacks += 1;
-            return None;
-        }
         let unchanged = self
             .session
             .lock()
@@ -497,29 +520,20 @@ impl TranslationManager {
                     && current.generation == config.generation
             });
         let mut cache = self.cache.lock();
-        let may_cache = unchanged && self.cache_epoch.load(Ordering::Acquire) == cache_epoch;
-        Some(
-            requests
-                .iter()
-                .zip(texts)
-                .zip(keys)
-                .map(|((request, text), key)| {
-                    if may_cache {
-                        cache.insert(CachedText {
-                            key,
-                            text: text.clone(),
-                            truncated: false,
-                        });
-                    }
-                    let mut result = output.clone();
-                    result.metrics.batch_request_id = Some(output.request_id.clone());
-                    result.metrics.batch_size = requests.len();
-                    result.request_id = request.request_id.clone();
-                    result.text = text;
-                    (result, hit, model_id.clone())
-                })
-                .collect(),
-        )
+        let may_cache = unchanged
+            && !cancel.load(Ordering::Acquire)
+            && self.cache_epoch.load(Ordering::Acquire) == cache_epoch;
+        for ((index, request), result) in plan.missing.into_iter().zip(misses).zip(outputs) {
+            if may_cache {
+                cache.insert(CachedText {
+                    key: cache::key(&config.manifest, &config.generation, &request),
+                    text: result.text.clone(),
+                    truncated: false,
+                });
+            }
+            ready[index] = Some((result, false, config.manifest.id.clone()));
+        }
+        Some(ready)
     }
     async fn translate_group(
         &self,
@@ -921,4 +935,60 @@ impl TranslationManager {
 }
 fn id_of(m: &TranslationManifest) -> String {
     m.id.clone()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn queue() -> Queue {
+        Queue {
+            revision: 1,
+            latest: None,
+            pending: None,
+            context: VecDeque::new(),
+            context_version: 1,
+            history: VecDeque::new(),
+        }
+    }
+    fn ocr(frame: u64, text: &str) -> OcrResult {
+        serde_json::from_value(serde_json::json!({"frameId":frame,"timestamp":0,"sourceWidth":800,"sourceHeight":600,"blocks":[{"id":"original","text":text,"bbox":[1,2,30,40],"confidence":0.9,"polygon":[{"x":1,"y":2}]}],"rawOutput":"raw","metrics":gameocr_core::types::Metrics::default(),"device":"cpu","truncated":false})).unwrap()
+    }
+    #[test]
+    fn latest_only_cancels_running_a_and_pending_b_but_identical_frames_keep_deadline() {
+        let mut q = queue();
+        q.submit(&ocr(1, "A"), 1, 1, None, false, 350);
+        let running = q.pending.take().unwrap();
+        q.submit(&ocr(2, "A"), 1, 1, None, false, 350);
+        assert!(!running.cancel.load(Ordering::Acquire));
+        assert_eq!(q.latest.as_ref().unwrap().deadline, running.deadline);
+        assert_eq!(q.revision, running.identity.revision);
+        q.submit(&ocr(3, "B"), 1, 1, None, false, 350);
+        let b = q.pending.clone().unwrap();
+        assert!(running.cancel.load(Ordering::Acquire));
+        q.submit(&ocr(4, "C"), 1, 1, None, false, 350);
+        assert!(b.cancel.load(Ordering::Acquire));
+        assert_ne!(q.revision, running.identity.revision);
+        let c = q.pending.take().unwrap();
+        assert_eq!(c.identity.frame_id, 4);
+        assert_eq!(c.ocr.blocks[0].bbox, Some([1., 2., 30., 40.]));
+        assert_eq!(c.ocr.blocks[0].id, "original");
+        assert!(q.pending.is_none());
+        q.invalidate(true); // pause, target/model change and shutdown share this path
+        assert!(c.cancel.load(Ordering::Acquire));
+        assert!(q.latest.is_none());
+        q.submit(&ocr(5, "C"), 2, 2, None, true, 350);
+        assert!(!q.latest.as_ref().unwrap().cancel.load(Ordering::Acquire));
+        assert!(q.latest.as_ref().unwrap().deadline <= Instant::now());
+    }
+    #[test]
+    fn same_text_with_new_epoch_or_generation_cancels_old_work() {
+        let mut q = queue();
+        for (generation, epoch) in [(1, 1), (2, 1), (2, 2)] {
+            let previous = q.latest.clone();
+            q.submit(&ocr(1, "same"), generation, epoch, None, false, 100);
+            if let Some(previous) = previous {
+                assert!(previous.cancel.load(Ordering::Acquire));
+            }
+        }
+    }
 }

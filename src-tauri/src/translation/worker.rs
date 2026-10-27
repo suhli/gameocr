@@ -158,3 +158,87 @@ pub async fn free_vram() -> Result<f64> {
         .parse()
         .context("无法读取可用显存")
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[tokio::test]
+    async fn recovery_is_bounded_sticky_and_respects_explicit_device() {
+        for (preferred, actual, fail, expected) in [
+            (Device::Auto, Device::Cuda, false, vec![Device::Cuda]),
+            (
+                Device::Auto,
+                Device::Cuda,
+                true,
+                vec![Device::Cuda, Device::Cpu],
+            ),
+            (Device::Cpu, Device::Cpu, true, vec![Device::Cpu]),
+            (Device::Cuda, Device::Cuda, true, vec![Device::Cuda]),
+        ] {
+            let mut config = TranslationLoad {
+                manifest: gameocr_translation::catalog::hy_mt2(),
+                path: "unused".into(),
+                device: actual,
+                threads: 1,
+                generation: Default::default(),
+            };
+            let mut calls = Vec::new();
+            let result = load_with_fallback(
+                preferred,
+                &mut config,
+                Arc::new(AtomicBool::new(false)),
+                |c, _| {
+                    calls.push(c.device);
+                    std::future::ready(if fail && calls.len() == 1 {
+                        Err(anyhow::anyhow!("injected load failure"))
+                    } else {
+                        Ok(c.device)
+                    })
+                },
+            )
+            .await;
+            assert_eq!(calls, expected);
+            assert_eq!(result.is_ok(), !fail || expected.len() == 2);
+            if let Ok((device, _)) = result {
+                assert_eq!(device, config.device);
+            }
+            // A running GPU crash chooses CPU only for Auto. Once CPU, no GPU retry.
+            let recovered = recovery_device(preferred, actual);
+            assert_eq!(
+                recovered,
+                if preferred == Device::Auto {
+                    Device::Cpu
+                } else {
+                    actual
+                }
+            );
+            assert_eq!(recovery_device(preferred, recovered), recovered);
+        }
+    }
+    #[tokio::test]
+    async fn cancelled_load_and_double_failure_never_retry_indefinitely() {
+        let mut config = TranslationLoad {
+            manifest: gameocr_translation::catalog::hy_mt2(),
+            path: "unused".into(),
+            device: Device::Cuda,
+            threads: 1,
+            generation: Default::default(),
+        };
+        for cancelled in [true, false] {
+            config.device = Device::Cuda;
+            let mut calls = 0;
+            let result: Result<((), _)> = load_with_fallback(
+                Device::Auto,
+                &mut config,
+                Arc::new(AtomicBool::new(cancelled)),
+                |_, _| {
+                    calls += 1;
+                    std::future::ready(Err(anyhow::anyhow!("injected failure")))
+                },
+            )
+            .await;
+            assert!(result.is_err());
+            assert_eq!(calls, if cancelled { 1 } else { 2 });
+        }
+    }
+}

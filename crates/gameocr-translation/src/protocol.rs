@@ -185,3 +185,190 @@ pub fn serve_with(
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::{
+        io::BufReader,
+        net::{TcpListener, TcpStream},
+        sync::atomic::AtomicUsize,
+        time::Duration,
+    };
+    struct DelayedEngine {
+        started: mpsc::Sender<String>,
+        steps: Arc<AtomicUsize>,
+    }
+    impl crate::engine::TranslationEngine for DelayedEngine {
+        fn device(&self) -> &str {
+            "cpu"
+        }
+        fn translate_cancellable(
+            &mut self,
+            r: TranslationRequest,
+            cancel: Arc<AtomicBool>,
+        ) -> Result<GenerationResult> {
+            self.started.send(r.request_id.clone())?;
+            if r.source_text == "slow" {
+                for _ in 0..2000 {
+                    if cancel.load(Ordering::Acquire) {
+                        return Ok(GenerationResult::cancelled(r.request_id, "cpu".into()));
+                    }
+                    self.steps.fetch_add(1, Ordering::Relaxed);
+                    std::thread::sleep(Duration::from_millis(1));
+                }
+            }
+            Ok(GenerationResult {
+                request_id: r.request_id,
+                text: "complete".into(),
+                device: "cpu".into(),
+                truncated: false,
+                stop_reason: "eos".into(),
+                metrics: Default::default(),
+            })
+        }
+    }
+    fn send(stream: &mut TcpStream, request: WorkerRequest) {
+        writeln!(stream, "{}", serde_json::to_string(&request).unwrap()).unwrap();
+    }
+    fn receive(reader: &mut BufReader<TcpStream>) -> WorkerResponse {
+        let mut line = String::new();
+        reader.read_line(&mut line).unwrap();
+        serde_json::from_str(&line).unwrap()
+    }
+    fn translate(id: &str, text: &str) -> WorkerRequest {
+        WorkerRequest::Translate {
+            request: TranslationRequest {
+                request_id: id.into(),
+                source_text: text.into(),
+                options: Default::default(),
+            },
+        }
+    }
+    #[test]
+    fn running_generation_stops_and_next_request_reuses_engine_without_stale_controls() {
+        for ending in ["cancel", "unload", "shutdown"] {
+            let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+            let mut client = TcpStream::connect(listener.local_addr().unwrap()).unwrap();
+            client
+                .set_read_timeout(Some(Duration::from_secs(3)))
+                .unwrap();
+            let (server, _) = listener.accept().unwrap();
+            let mut reader = BufReader::new(client.try_clone().unwrap());
+            let (started, rx) = mpsc::channel();
+            let steps = Arc::new(AtomicUsize::new(0));
+            let steps_copy = steps.clone();
+            let loads = Arc::new(AtomicUsize::new(0));
+            let loads_copy = loads.clone();
+            let join = std::thread::spawn(move || {
+                serve_with(BufReader::new(server.try_clone().unwrap()), server, |_| {
+                    loads_copy.fetch_add(1, Ordering::Relaxed);
+                    Ok(Box::new(DelayedEngine {
+                        started: started.clone(),
+                        steps: steps_copy.clone(),
+                    }))
+                })
+            });
+            send(
+                &mut client,
+                WorkerRequest::Load {
+                    protocol_version: PROTOCOL_VERSION,
+                    config: TranslationLoad {
+                        manifest: crate::catalog::hy_mt2(),
+                        path: "test-double".into(),
+                        device: gameocr_core::types::Device::Cpu,
+                        threads: 1,
+                        generation: Default::default(),
+                    },
+                },
+            );
+            assert!(matches!(
+                receive(&mut reader),
+                WorkerResponse::Ready {
+                    supports_cancellation: true,
+                    ..
+                }
+            ));
+            send(&mut client, translate("A", "slow"));
+            assert_eq!(rx.recv_timeout(Duration::from_secs(1)).unwrap(), "A");
+            send(
+                &mut client,
+                match ending {
+                    "cancel" => WorkerRequest::Cancel {
+                        request_id: "A".into(),
+                    },
+                    "unload" => WorkerRequest::Unload,
+                    _ => WorkerRequest::Shutdown,
+                },
+            );
+            let WorkerResponse::Result { result } = receive(&mut reader) else {
+                panic!("expected cancellation response")
+            };
+            assert_eq!(result.stop_reason, "cancelled");
+            assert!(
+                steps.load(Ordering::Relaxed) < 2000,
+                "old generation ran to its budget"
+            );
+            if ending == "cancel" {
+                send(
+                    &mut client,
+                    WorkerRequest::Cancel {
+                        request_id: "A".into(),
+                    },
+                );
+                send(&mut client, translate("C", "latest"));
+                let WorkerResponse::Result { result } = receive(&mut reader) else {
+                    panic!("expected latest result")
+                };
+                assert_eq!(result.request_id, "C");
+                assert_eq!(result.stop_reason, "eos");
+                assert_eq!(loads.load(Ordering::Relaxed), 1);
+            } else {
+                assert!(matches!(receive(&mut reader), WorkerResponse::Unloaded));
+            }
+            if ending != "shutdown" {
+                send(&mut client, WorkerRequest::Shutdown);
+                assert!(matches!(receive(&mut reader), WorkerResponse::Unloaded));
+            }
+            join.join().unwrap().unwrap();
+        }
+    }
+    #[test]
+    fn controls_match_identity_and_input_and_queue_remain_bounded() {
+        let token = Arc::new(AtomicBool::new(false));
+        let active = Arc::new(Mutex::new(Some(("active".into(), token.clone()))));
+        let (tx, _rx) = mpsc::sync_channel(1);
+        read_commands(
+            &b"{\"type\":\"cancel\",\"request_id\":\"stale\"}\n"[..],
+            &tx,
+            &active,
+        )
+        .unwrap();
+        assert!(!token.load(Ordering::Acquire));
+        read_commands(
+            &b"{\"type\":\"cancel\",\"request_id\":\"active\"}\n"[..],
+            &tx,
+            &active,
+        )
+        .unwrap();
+        assert!(token.load(Ordering::Acquire));
+        assert!(read_commands(&vec![b'x'; 262145][..], &tx, &active).is_err());
+        assert!(
+            read_commands(
+                &b"{\"type\":\"unload\"}\n{\"type\":\"unload\"}\n"[..],
+                &tx,
+                &active
+            )
+            .is_err()
+        );
+        let old: WorkerResponse =
+            serde_json::from_str(r#"{"type":"ready","device":"cpu","load_ms":1}"#).unwrap();
+        assert!(matches!(
+            old,
+            WorkerResponse::Ready {
+                supports_cancellation: false,
+                ..
+            }
+        ));
+    }
+}

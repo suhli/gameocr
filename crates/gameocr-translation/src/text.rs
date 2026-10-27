@@ -26,22 +26,15 @@ pub fn language(s: &str, hint: &str) -> String {
     if !s.chars().any(char::is_alphabetic) {
         return "none".into();
     }
+    if hint != "auto" && !hint.is_empty() {
+        return hint.into();
+    }
     if kana {
         return if latin >= 8 { "mixed" } else { "ja" }.into();
     }
     // Han alone is ambiguous (Japanese names and Chinese share the script).
     if han {
-        return if hint != "auto" && !hint.is_empty() {
-            hint
-        } else if latin > 3 {
-            "mixed"
-        } else {
-            "und"
-        }
-        .into();
-    }
-    if hint != "auto" && !hint.is_empty() {
-        return hint.into();
+        return if latin > 3 { "mixed" } else { "und" }.into();
     }
     let words = s
         .split_whitespace()
@@ -146,6 +139,9 @@ mod tests {
         assert_eq!(language("Where are you going?", "auto"), "en");
         assert_eq!(language("Bonjour mon ami", "auto"), "und");
         assert_eq!(language("Quest Clear! お疲れさま", "auto"), "mixed");
+        assert_eq!(language("任务 Quest Clear お疲れさま", "auto"), "mixed");
+        assert_eq!(language("東京へ行こう", "en"), "en");
+        assert_eq!(language("100 / 200", "ja"), "none");
     }
     fn block(text: &str, y: f64) -> OcrBlock {
         OcrBlock {
