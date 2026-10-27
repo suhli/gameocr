@@ -1,8 +1,16 @@
 use crate::types::*;
 use anyhow::{Result, ensure};
+use std::sync::{Arc, atomic::AtomicBool};
 
 pub trait TranslationEngine {
-    fn translate(&mut self, request: TranslationRequest) -> Result<GenerationResult>;
+    fn translate(&mut self, request: TranslationRequest) -> Result<GenerationResult> {
+        self.translate_cancellable(request, Arc::new(AtomicBool::new(false)))
+    }
+    fn translate_cancellable(
+        &mut self,
+        request: TranslationRequest,
+        cancel: Arc<AtomicBool>,
+    ) -> Result<GenerationResult>;
     fn device(&self) -> &str;
 }
 pub struct TranslationFactory;

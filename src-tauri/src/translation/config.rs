@@ -1,4 +1,4 @@
-use anyhow::{Result, ensure};
+use anyhow::{Context, Result, ensure};
 use gameocr_core::types::Device;
 use gameocr_translation::{text::Grouping, types::*};
 use serde::{Deserialize, Serialize};
@@ -15,6 +15,9 @@ pub struct TranslationSettings {
     pub batch_translation: bool,
     pub source_language: String,
     pub target_language: String,
+    // None inherits the selected Profile, or the global language without a Profile.
+    pub source_language_override: Option<String>,
+    pub target_language_override: Option<String>,
     pub style: String,
     pub threads: u32,
     pub generation: GenerationConfig,
@@ -38,6 +41,8 @@ impl Default for TranslationSettings {
             batch_translation: true,
             source_language: "auto".into(),
             target_language: "zh".into(),
+            source_language_override: None,
+            target_language_override: None,
             style: String::new(),
             threads: 4,
             generation: Default::default(),
@@ -51,6 +56,52 @@ impl Default for TranslationSettings {
     }
 }
 impl TranslationSettings {
+    pub fn from_saved(bytes: &[u8]) -> Result<Self> {
+        let value: serde_json::Value = serde_json::from_slice(bytes)?;
+        let mut s: Self = serde_json::from_value(value.clone())?;
+        // Old UI copied Profile languages into global fields. Preserve a later manual
+        // edit, but let copied defaults follow subsequent Profile edits.
+        if let Some(p) = s.selected_profile() {
+            let source = s.source_language.clone();
+            let target = s.target_language.clone();
+            let source_changed =
+                source != p.source_language && !(p.source_language.is_empty() && source == "auto");
+            let target_changed =
+                target != p.target_language && !(p.target_language.is_empty() && target == "zh");
+            if value.get("sourceLanguageOverride").is_none() && source_changed {
+                s.source_language_override = Some(source);
+            }
+            if value.get("targetLanguageOverride").is_none() && target_changed {
+                s.target_language_override = Some(target);
+            }
+        }
+        Ok(s)
+    }
+    fn selected_profile(&self) -> Option<&GameProfile> {
+        self.profile_id
+            .as_ref()
+            .and_then(|id| self.profiles.iter().find(|p| &p.id == id))
+    }
+    pub fn update_profile_versions(&mut self, previous: &Self) -> Result<()> {
+        for profile in &mut self.profiles {
+            if let Some(old) = previous.profiles.iter().find(|p| p.id == profile.id) {
+                let changed = profile.source_language != old.source_language
+                    || profile.target_language != old.target_language
+                    || profile.style != old.style
+                    || profile.background != old.background
+                    || profile.glossary != old.glossary;
+                let minimum = if changed {
+                    old.version.checked_add(1).context("Profile 版本已达上限")?
+                } else {
+                    old.version
+                };
+                profile.version = profile.version.max(minimum);
+            } else {
+                profile.version = profile.version.max(1);
+            }
+        }
+        Ok(())
+    }
     pub fn validate(&self) -> Result<()> {
         self.generation.validate()?;
         ensure!(
@@ -82,6 +133,18 @@ impl TranslationSettings {
             "翻译目标语言无效"
         );
         ensure!(
+            self.source_language_override.as_ref().is_none_or(
+                |l| l == "auto" || gameocr_translation::prompt::language_name(l).is_some()
+            ),
+            "翻译源语言覆盖无效"
+        );
+        ensure!(
+            self.target_language_override
+                .as_ref()
+                .is_none_or(|l| gameocr_translation::prompt::language_name(l).is_some()),
+            "翻译目标语言覆盖无效"
+        );
+        ensure!(
             self.style.len() <= 1024 && self.profiles.len() <= 100,
             "翻译配置超出容量"
         );
@@ -97,15 +160,25 @@ impl TranslationSettings {
         Ok(())
     }
     pub fn options(&self, context: Vec<String>, context_version: u64) -> PromptOptions {
-        let p = self
-            .profile_id
-            .as_ref()
-            .and_then(|id| self.profiles.iter().find(|p| &p.id == id));
+        let p = self.selected_profile();
         PromptOptions {
             batch_format: false,
             profile_id: self.profile_id.clone().unwrap_or_default(),
-            source_language: self.source_language.clone(),
-            target_language: self.target_language.clone(),
+            source_language: self
+                .source_language_override
+                .as_ref()
+                .or_else(|| p.map(|p| &p.source_language).filter(|l| !l.is_empty()))
+                .unwrap_or(&self.source_language)
+                .clone(),
+            target_language: self
+                .target_language_override
+                .as_ref()
+                .or_else(|| {
+                    p.map(|p| &p.target_language)
+                        .filter(|l| !l.is_empty() && *l != "auto")
+                })
+                .unwrap_or(&self.target_language)
+                .clone(),
             style: if self.style.is_empty() {
                 p.map_or(String::new(), |p| p.style.clone())
             } else {
@@ -135,6 +208,125 @@ impl TranslationSettings {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn overrides_migrate_and_effective_languages_change_prompt_and_cache() {
+        let bytes = br#"{"profileId":"a","profiles":[{"id":"a","sourceLanguage":"ja","targetLanguage":"en"}],"sourceLanguage":"ja","targetLanguage":"zh"}"#;
+        let mut s = TranslationSettings::from_saved(bytes).unwrap();
+        assert_eq!(s.source_language_override, None);
+        assert_eq!(s.target_language_override.as_deref(), Some("zh"));
+        s.profiles[0].source_language = "en".into();
+        assert_eq!(s.options(vec![], 0).source_language, "en");
+        s.source_language_override = Some("ja".into());
+        let s = TranslationSettings::from_saved(&serde_json::to_vec(&s).unwrap()).unwrap();
+        let r = TranslationRequest {
+            request_id: "id".into(),
+            source_text: "東京".into(),
+            options: s.options(vec![], 0),
+        };
+        assert_eq!(r.options.source_language, "ja");
+        assert!(
+            gameocr_translation::prompt::build(&r)
+                .unwrap()
+                .contains("源语言为日语")
+        );
+        let key = gameocr_translation::cache::key(
+            &gameocr_translation::catalog::hy_mt2(),
+            &s.generation,
+            &r,
+        );
+        let mut changed = r.clone();
+        changed.options.target_language = "en".into();
+        assert_ne!(
+            key,
+            gameocr_translation::cache::key(
+                &gameocr_translation::catalog::hy_mt2(),
+                &s.generation,
+                &changed
+            )
+        );
+    }
+    #[test]
+    fn profile_versions_only_track_semantics_and_never_decrease() {
+        let mut old = TranslationSettings::default();
+        old.profiles = vec![
+            GameProfile {
+                id: "a".into(),
+                version: 7,
+                ..Default::default()
+            },
+            GameProfile {
+                id: "b".into(),
+                version: 3,
+                ..Default::default()
+            },
+        ];
+        let mut next = old.clone();
+        next.device = Device::Cuda;
+        next.debounce_ms = 99;
+        next.update_profile_versions(&old).unwrap();
+        assert_eq!(next.profiles, old.profiles);
+        for field in [
+            "glossary",
+            "background",
+            "style",
+            "sourceLanguage",
+            "targetLanguage",
+        ] {
+            let mut value = serde_json::to_value(&old).unwrap();
+            value["profiles"][0][field] = if field == "glossary" {
+                serde_json::json!([{"source":"a", "target":"b"}])
+            } else {
+                serde_json::json!("en")
+            };
+            let mut next: TranslationSettings = serde_json::from_value(value).unwrap();
+            next.update_profile_versions(&old).unwrap();
+            assert_eq!(next.profiles[0].version, 8);
+            assert_eq!(next.profiles[1].version, 3);
+            let saved = next.clone();
+            next.update_profile_versions(&saved).unwrap();
+            assert_eq!(next.profiles, saved.profiles);
+        }
+        next.profiles[0].version = 99;
+        next.profiles[0].style = "new".into();
+        next.update_profile_versions(&old).unwrap();
+        assert_eq!(next.profiles[0].version, 99);
+        let saved = next.clone();
+        next.update_profile_versions(&saved).unwrap();
+        assert_eq!(next.profiles[0].version, 99);
+        next.profiles[0].version = 1;
+        next.update_profile_versions(&saved).unwrap();
+        assert_eq!(next.profiles[0].version, 99);
+    }
+    #[test]
+    fn selected_profile_languages_survive_edit_save_and_reload() {
+        let mut s = TranslationSettings::default();
+        assert_eq!(s.options(vec![], 0).source_language, "auto");
+        assert_eq!(s.options(vec![], 0).target_language, "zh");
+        s.profiles = vec![
+            GameProfile {
+                id: "a".into(),
+                source_language: "ja".into(),
+                target_language: "en".into(),
+                ..Default::default()
+            },
+            GameProfile {
+                id: "b".into(),
+                source_language: "en".into(),
+                target_language: "ja".into(),
+                ..Default::default()
+            },
+        ];
+        for (id, source, target) in [("a", "ja", "en"), ("b", "en", "ja")] {
+            s.profile_id = Some(id.into());
+            let options = s.options(vec![], 0);
+            assert_eq!(options.source_language, source);
+            assert_eq!(options.target_language, target);
+        }
+        s.profiles[1].target_language = "zh".into();
+        let loaded: TranslationSettings =
+            serde_json::from_slice(&serde_json::to_vec(&s).unwrap()).unwrap();
+        assert_eq!(loaded.options(vec![], 0).target_language, "zh");
+    }
     #[test]
     fn migration_disabled_and_context_profile_isolation() {
         let mut s: TranslationSettings = serde_json::from_str("{}").unwrap();

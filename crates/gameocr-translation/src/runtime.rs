@@ -11,6 +11,10 @@ use llama_cpp_2::{
     sampling::LlamaSampler,
 };
 use sha2::{Digest, Sha256};
+use std::sync::{
+    Arc,
+    atomic::{AtomicBool, Ordering},
+};
 use std::{io::Read, num::NonZeroU32, sync::mpsc, thread, time::Instant};
 
 pub fn verify(path: &str, manifest: &TranslationManifest) -> Result<()> {
@@ -33,6 +37,7 @@ pub fn verify(path: &str, manifest: &TranslationManifest) -> Result<()> {
 }
 type Job = (
     TranslationRequest,
+    Arc<AtomicBool>,
     mpsc::SyncSender<Result<GenerationResult>>,
 );
 pub struct HyMtAdapter {
@@ -97,7 +102,7 @@ impl HyMtAdapter {
                     ctx.clear_kv_cache();
                     let load_ms = started.elapsed().as_secs_f64() * 1000.;
                     let _ = ready.send(Ok(()));
-                    while let Ok((request, reply)) = rx.recv() {
+                    while let Ok((request, cancel, reply)) = rx.recv() {
                         let result = generate(
                             &model,
                             &mut ctx,
@@ -105,6 +110,7 @@ impl HyMtAdapter {
                             &request,
                             &actual,
                             load_ms,
+                            &cancel,
                         );
                         ctx.clear_kv_cache();
                         let _ = reply.send(result);
@@ -129,12 +135,16 @@ impl HyMtAdapter {
     }
 }
 impl TranslationEngine for HyMtAdapter {
-    fn translate(&mut self, request: TranslationRequest) -> Result<GenerationResult> {
+    fn translate_cancellable(
+        &mut self,
+        request: TranslationRequest,
+        cancel: Arc<AtomicBool>,
+    ) -> Result<GenerationResult> {
         let (reply, rx) = mpsc::sync_channel(1);
         self.jobs
             .as_ref()
             .context("翻译 Worker 已停止")?
-            .send((request, reply))
+            .send((request, cancel, reply))
             .context("翻译线程已停止")?;
         rx.recv().context("翻译线程异常退出")?
     }
@@ -158,6 +168,7 @@ fn generate(
     r: &TranslationRequest,
     device: &str,
     load_ms: f64,
+    cancel: &AtomicBool,
 ) -> Result<GenerationResult> {
     let total = Instant::now();
     ctx.clear_kv_cache();
@@ -178,6 +189,12 @@ fn generate(
     let inference = Instant::now();
     let mut batch = LlamaBatch::new(512, 1);
     for (offset, chunk) in tokens.chunks(512).enumerate() {
+        if cancel.load(Ordering::Acquire) {
+            return Ok(GenerationResult::cancelled(
+                r.request_id.clone(),
+                device.into(),
+            ));
+        }
         batch.clear();
         for (i, &token) in chunk.iter().enumerate() {
             let pos = offset * 512 + i;
@@ -208,6 +225,12 @@ fn generate(
     let mut ttft = None;
     let mut stop = "maxTokens";
     for i in 0..g.max_tokens as usize {
+        if cancel.load(Ordering::Acquire) {
+            return Ok(GenerationResult::cancelled(
+                r.request_id.clone(),
+                device.into(),
+            ));
+        }
         let token = sampler.sample(ctx, -1);
         sampler.accept(token);
         if vocab.is_eog(token) {

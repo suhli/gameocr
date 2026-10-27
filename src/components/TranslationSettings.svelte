@@ -6,9 +6,11 @@
   let dialog:HTMLDialogElement;let settings=$state<TranslationSettings|null>(null),profileJson=$state('[]'),error=$state(''),notice=$state(''),busy=$state(false),tab=$state('settings');
   async function run(fn:()=>Promise<unknown>){busy=true;error='';notice='';try{await fn();}catch(e){error=String(e);}finally{busy=false;}}
   async function save(){if(!settings)return;const profiles:GameProfile[]=JSON.parse(profileJson);if(!Array.isArray(profiles))throw new Error('Profile JSON 必须是数组');
-    const previous=settings.profiles;settings.profiles=profiles.map(p=>({...p,version:Math.max(p.version||0,(previous.find(old=>old.id===p.id)?.version??0)+1)}));
+    settings.profiles=profiles;
     await api.updateTranslationSettings($state.snapshot(settings));settings=await api.translationSettings();profileJson=JSON.stringify(settings.profiles,null,2);notice='翻译设置已保存';}
-  function chooseProfile(){if(!settings)return;const p=settings.profiles.find(p=>p.id===settings!.profileId);if(p){settings.sourceLanguage=p.sourceLanguage||'auto';settings.targetLanguage=p.targetLanguage||'zh';settings.style=p.style;}}
+  function chooseProfile(){if(!settings)return;settings.sourceLanguageOverride=null;settings.targetLanguageOverride=null;settings.style='';}
+  function setLanguage(field:'source'|'target',value:string){if(!settings)return;if(settings.profileId){settings[`${field}LanguageOverride`]=value||null;}else{settings[`${field}Language`]=value;settings[`${field}LanguageOverride`]=null;}}
+  function profileLanguage(field:'source'|'target'){const p=settings?.profiles.find(p=>p.id===settings?.profileId);return p?.[`${field}Language`]||(field==='source'?'auto':'zh');}
   function addProfile(){const p:GameProfile={id:`game-${Date.now()}`,name:'新游戏',sourceLanguage:'auto',targetLanguage:'zh',style:'',background:'',glossary:[],version:1,windowProcess:processName};const all=JSON.parse(profileJson);all.push(p);profileJson=JSON.stringify(all,null,2);}
   async function importProfiles(){const path=await api.pickOnnxFile('导入游戏 Profile JSON','json');if(typeof path==='string')profileJson=JSON.stringify(await api.importTranslationProfiles(path),null,2);}
   async function exportProfiles(){await save();const path=await api.saveJson();if(path)await api.exportTranslationProfiles(path);}
@@ -22,8 +24,8 @@
     {#if tab==='settings'}
       <label class="check"><input type="checkbox" bind:checked={settings.enabled}/> OCR 完成后自动翻译</label>
       <div class="grid">
-        <label>源语言<select bind:value={settings.sourceLanguage}><option value="auto">Auto · 自动判断</option>{#each translationLanguages as [id,name]}<option value={id}>{name}</option>{/each}</select></label>
-        <label>目标语言<select bind:value={settings.targetLanguage}>{#each translationLanguages as [id,name]}<option value={id}>{name}</option>{/each}</select></label>
+        <label>源语言<select value={settings.profileId?settings.sourceLanguageOverride??'':settings.sourceLanguage} onchange={e=>setLanguage('source',e.currentTarget.value)}>{#if settings.profileId}<option value="">跟随 Profile · {profileLanguage('source')}</option>{/if}<option value="auto">Auto · 自动判断</option>{#each translationLanguages as [id,name]}<option value={id}>{name}</option>{/each}</select></label>
+        <label>目标语言<select value={settings.profileId?settings.targetLanguageOverride??'':settings.targetLanguage} onchange={e=>setLanguage('target',e.currentTarget.value)}>{#if settings.profileId}<option value="">跟随 Profile · {profileLanguage('target')}</option>{/if}{#each translationLanguages as [id,name]}<option value={id}>{name}</option>{/each}</select></label>
         <label>翻译设备<select bind:value={settings.device}><option value="auto">Auto · 允许回退 CPU</option><option value="cpu">CPU</option><option value="cuda">CUDA · 失败时提示</option></select></label>
         <label>资源策略<select bind:value={settings.resourcePolicy}><option value="balanced">Balanced · 保留游戏显存</option><option value="fast">Fast · 较少显存预留</option><option value="cpuOnly">CPU Only</option><option value="manual">Manual</option></select></label>
         <label>对白稳定性<select bind:value={settings.stability} onchange={()=>{if(settings)settings.debounceMs=({fast:80,balanced:350,accurate:700} as Record<string,number>)[settings.stability];}}><option value="fast">Fast</option><option value="balanced">Balanced</option><option value="accurate">Accurate</option></select></label>
@@ -33,7 +35,7 @@
       </div>
       <label>翻译风格<input bind:value={settings.style} placeholder="可选，例如保留角色语气"/></label>
       <label class="check"><input type="checkbox" bind:checked={settings.batchTranslation}/> 合批翻译独立短文本（条目不匹配时逐组重试）</label>
-      <p>OCR 设备保持独立。修改设备、线程或生成参数后需重新加载翻译模型。其他语言来自模型官方列表，日英中优先验证。</p>
+      <p>选择 Profile 时使用其语言默认值；语言下拉框可覆盖当前 Profile，选择“跟随 Profile”恢复默认。切换 Profile 会清除语言覆盖。OCR 设备保持独立。修改设备、线程或生成参数后需重新加载翻译模型。</p>
       <details><summary>生成参数与缓存</summary><div class="grid">
         <label>CPU 线程<input type="number" min="1" max="64" bind:value={settings.threads}/></label><label>上下文 Token 上限<input type="number" min="512" max="16384" bind:value={settings.generation.contextSize}/></label>
         <label>翻译显存预留（MiB）<input type="number" min="128" max="8192" bind:value={settings.gpuReserveMb}/></label><p>Balanced 至少预留 2048 MiB。预留越少，游戏与其他 GPU 程序的剩余空间越小。</p>

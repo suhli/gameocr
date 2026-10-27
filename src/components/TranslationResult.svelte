@@ -9,7 +9,7 @@
   <div class="row spread"><strong>译文</strong><div class="row"><button disabled={!status?.modelId} onclick={()=>api.translateOnce(frameId).catch(onError)}>翻译当前帧</button><button disabled={!entry} onclick={()=>copy().catch(onError)}>复制译文</button></div></div>
   {#if !entry}<p class="muted">{status?.status==='translating'?'正在翻译…':status?.status==='discarding'?'旧译文已取消，正在结束推理…':status?.modelId?'等待稳定文字或点击翻译当前帧':'请在翻译设置中加载模型'}</p>{/if}
   {#each entry?.results??[] as r}
-    <article><p>{r.translatedText}</p>{#if r.error}<pre role="alert">{r.error}</pre>{/if}{#if r.truncated}<small>译文已达到输出上限</small>{/if}
+    <article><p>{r.translatedText}</p>{#if r.error}<pre role="alert">{r.error}</pre>{/if}{#if r.truncated}<small>译文不完整 · {r.stopReason==='maxTokens'?'已达到输出上限':r.stopReason}</small>{/if}
       <small>{r.cacheHit?'缓存命中':r.device==='skipped'?'无需翻译':`${r.device} · 推理 ${ms(r.metrics.inferenceMs)} · ${r.metrics.tokensPerSecond?.toFixed(1)??'—'} token/s`}</small>
       {#if r.metrics.batchSize>1}<small>共 {r.metrics.batchSize} 组共享一次推理；耗时和 Token 为整批总数。</small>{/if}
       <details><summary>延迟详情</summary><small>OCR {ms(r.metrics.ocrMs)} · 文本处理 {ms(r.metrics.textProcessingMs)} · 排队 {ms(r.metrics.queueMs)}<br/>TTFT {ms(r.metrics.ttftMs)} · OCR→译文 {ms(r.metrics.ocrToTranslationMs)}<br/>截图→译文 {ms(r.metrics.captureToTranslationMs)} · Token {r.metrics.generatedTokens}<br/>Worker 内存 {r.metrics.processMemoryMb?.toFixed(0)??'—'} MiB</small></details>

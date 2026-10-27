@@ -8,10 +8,46 @@ use std::{
     path::Path,
     sync::{Arc, atomic::AtomicBool},
 };
+// No runtime preparation here: Auto only uses an existing GPU installation and
+// makes at most one CPU fallback attempt. A recovered CPU session stays on CPU.
+pub(super) async fn load_with_fallback<T, F, Fut>(
+    preferred: Device,
+    config: &mut TranslationLoad,
+    cancel: Arc<AtomicBool>,
+    mut load: F,
+) -> Result<(T, Option<String>)>
+where
+    F: FnMut(TranslationLoad, Arc<AtomicBool>) -> Fut,
+    Fut: std::future::Future<Output = Result<T>>,
+{
+    match load(config.clone(), cancel.clone()).await {
+        Ok(worker) => Ok((worker, None)),
+        Err(error)
+            if preferred == Device::Auto
+                && config.device == Device::Cuda
+                && !cancel.load(std::sync::atomic::Ordering::Acquire) =>
+        {
+            config.device = Device::Cpu;
+            let worker = load(config.clone(), cancel)
+                .await
+                .context("Auto 的 CPU 回退也失败")?;
+            Ok((worker, Some(format!("CUDA 未就绪，已回退 CPU：{error:#}"))))
+        }
+        Err(error) => Err(error),
+    }
+}
+pub(super) fn recovery_device(preferred: Device, actual: Device) -> Device {
+    if preferred == Device::Auto && actual == Device::Cuda {
+        Device::Cpu
+    } else {
+        actual
+    }
+}
 pub struct TranslationWorker {
     inner: crate::ocr::Worker,
     pub device: String,
     pub load_ms: f64,
+    supports_cancellation: bool,
 }
 impl TranslationWorker {
     pub async fn load(
@@ -41,19 +77,38 @@ impl TranslationWorker {
             })
             .await?;
         match response {
-            WorkerResponse::Ready { device, load_ms } => Ok(Self {
+            WorkerResponse::Ready {
+                device,
+                load_ms,
+                supports_cancellation,
+            } => Ok(Self {
                 inner,
                 device,
                 load_ms,
+                supports_cancellation,
             }),
             _ => bail!("翻译 Worker 未就绪"),
         }
     }
-    pub async fn translate(&mut self, request: TranslationRequest) -> Result<GenerationResult> {
+    pub async fn translate(
+        &mut self,
+        request: TranslationRequest,
+        cancel: Arc<AtomicBool>,
+    ) -> Result<GenerationResult> {
         let id = request.request_id.clone();
+        let cancellation = if self.supports_cancellation {
+            Some((
+                cancel,
+                serde_json::to_value(WorkerRequest::Cancel {
+                    request_id: id.clone(),
+                })?,
+            ))
+        } else {
+            None
+        };
         let response: WorkerResponse = self
             .inner
-            .request_typed(WorkerRequest::Translate { request })
+            .request_cancellable(WorkerRequest::Translate { request }, cancellation)
             .await?;
         match response {
             WorkerResponse::Result { result } if result.request_id == id => Ok(result),

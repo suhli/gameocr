@@ -52,6 +52,10 @@ impl TranslationCache {
         self.entries.iter().any(|e| e.key == key)
     }
     pub fn insert(&mut self, entry: CachedText) {
+        // Also filters old persisted entries through restore(), preserving good entries.
+        if entry.truncated || entry.text.trim().is_empty() {
+            return;
+        }
         if let Some(i) = self.entries.iter().position(|e| e.key == entry.key) {
             let old = self.entries.remove(i).unwrap();
             self.bytes -= old.text.len() + old.key.len();
@@ -83,6 +87,25 @@ impl TranslationCache {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn invalid_results_and_legacy_entries_never_replace_complete_cache() {
+        let entry = |key: &str, text: &str, truncated| CachedText {
+            key: key.into(),
+            text: text.into(),
+            truncated,
+        };
+        let mut cache = TranslationCache::new(10);
+        cache.restore(vec![
+            entry("good", "完整", false),
+            entry("old", "残", true),
+            entry("empty", "  ", false),
+        ]);
+        assert!(cache.get("old").is_none());
+        assert!(cache.get("empty").is_none());
+        cache.insert(entry("good", "截", true));
+        assert_eq!(cache.get("good").unwrap().text, "完整");
+        assert_eq!(cache.export().len(), 1);
+    }
     #[test]
     fn cache_keys_cover_model_parameters_profile_and_prompt_content() {
         let m = crate::catalog::hy_mt2();

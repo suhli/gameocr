@@ -143,10 +143,30 @@ impl Worker {
         &mut self,
         request: Q,
     ) -> Result<R> {
+        self.request_cancellable(request, None).await
+    }
+    /// Only opted-in translation workers receive out-of-band cancel messages.
+    /// Keep reading the original response so the next request stays synchronized.
+    pub async fn request_cancellable<Q: serde::Serialize, R: serde::de::DeserializeOwned>(
+        &mut self,
+        request: Q,
+        cancellation: Option<(Arc<AtomicBool>, serde_json::Value)>,
+    ) -> Result<R> {
         let response=tokio::time::timeout(Duration::from_secs(180),async {
             self.input.write_all(&serde_json::to_vec(&request)?).await?;self.input.write_all(b"\n").await?;self.input.flush().await?;
             let read=read_response(&mut self.output);tokio::pin!(read);
-            let line=loop{tokio::select!{line=&mut read=>break line?,_=tokio::time::sleep(Duration::from_millis(50))=>{if self.closing.load(Ordering::Acquire){bail!("应用正在退出");}}}};
+            let mut sent_cancel = false;
+            let line=loop{tokio::select!{line=&mut read=>break line?,_=tokio::time::sleep(Duration::from_millis(25))=>{
+                if self.closing.load(Ordering::Acquire){bail!("应用正在退出");}
+                if let Some((flag, message)) = &cancellation {
+                    if !sent_cancel && flag.load(Ordering::Acquire) {
+                        self.input.write_all(&serde_json::to_vec(message)?).await?;
+                        self.input.write_all(b"\n").await?;
+                        self.input.flush().await?;
+                        sent_cancel = true;
+                    }
+                }
+            }}};
             let response:serde_json::Value=serde_json::from_str(&line).context("工作程序协议错误")?;
             if response.get("type").and_then(|v|v.as_str())==Some("error") { bail!("{}",response.get("message").and_then(|v|v.as_str()).unwrap_or("工作程序错误")); }
             Ok(serde_json::from_value::<R>(response)?)

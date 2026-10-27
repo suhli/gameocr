@@ -96,6 +96,14 @@ pub fn build(request: &TranslationRequest) -> Result<String> {
     if o.batch_format {
         prompt.push_str("下文是 JSON 数组。只翻译每个对象的 text 值，id 和键名保持原样。每项独立翻译，不能合并或遗漏。只输出完整 JSON 数组，不要 Markdown 代码块。\n");
     }
+    if let Some(source) = language_name(&o.source_language) {
+        prompt.push_str(&format!("原文源语言为{source}。\n"));
+    } else {
+        ensure!(
+            ["auto", "mixed", "und", "none", ""].contains(&o.source_language.as_str()),
+            "不支持的源语言"
+        );
+    }
     prompt.push_str(&format!(
         "将以下文本翻译为{target}，注意只需要输出翻译后的结果，不要额外解释：\n\n{}",
         request.source_text
@@ -105,6 +113,21 @@ pub fn build(request: &TranslationRequest) -> Result<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn known_source_language_is_a_prompt_constraint() {
+        let r = TranslationRequest {
+            request_id: "source".into(),
+            source_text: "東京".into(),
+            options: PromptOptions {
+                source_language: "ja".into(),
+                target_language: "en".into(),
+                ..Default::default()
+            },
+        };
+        let prompt = build(&r).unwrap();
+        assert!(prompt.contains("源语言为日语"));
+        assert!(prompt.contains("英语"));
+    }
     #[test]
     fn no_default_system_or_glossary() {
         let p = build(&TranslationRequest {

@@ -50,6 +50,7 @@ pub struct TranslationEvent {
 }
 #[derive(Clone)]
 struct Job {
+    cancel: Arc<AtomicBool>,
     identity: Identity,
     ocr: OcrResult,
     available: Instant,
@@ -69,6 +70,7 @@ struct Session {
     worker: Option<worker::TranslationWorker>,
     config: Option<TranslationLoad>,
     cancel: Arc<AtomicBool>,
+    preferred: Device,
 }
 #[derive(Serialize, Deserialize)]
 struct DiskCache {
@@ -96,7 +98,7 @@ impl TranslationManager {
         let path = crate::settings::data_dir().join("translation/settings.json");
         let settings = std::fs::read(path)
             .ok()
-            .and_then(|b| serde_json::from_slice::<TranslationSettings>(&b).ok())
+            .and_then(|b| TranslationSettings::from_saved(&b).ok())
             .filter(|s| s.validate().is_ok())
             .unwrap_or_default();
         let mut cache = TranslationCache::new(settings.cache_capacity);
@@ -131,6 +133,7 @@ impl TranslationManager {
                 worker: None,
                 config: None,
                 cancel: Arc::new(AtomicBool::new(false)),
+                preferred: Device::Auto,
             }),
             lifecycle: tokio::sync::Mutex::new(()),
             operation: tokio::sync::Mutex::new(()),
@@ -152,6 +155,9 @@ impl TranslationManager {
     }
     pub fn invalidate(&self, clear_context: bool) {
         let mut q = self.queue.lock();
+        if let Some(job) = &q.latest {
+            job.cancel.store(true, Ordering::Release);
+        }
         q.revision += 1;
         if q.pending.take().is_some() {
             self.status.lock().dropped += 1;
@@ -202,6 +208,9 @@ impl TranslationManager {
                 && j.identity.epoch == epoch
         });
         if !same {
+            if let Some(job) = &q.latest {
+                job.cancel.store(true, Ordering::Release);
+            }
             q.revision += 1;
         }
         let deadline = if same {
@@ -210,6 +219,14 @@ impl TranslationManager {
             now + Duration::from_millis(if force { 0 } else { settings.debounce_ms })
         };
         let job = Job {
+            cancel: if same {
+                q.latest
+                    .as_ref()
+                    .map(|j| j.cancel.clone())
+                    .unwrap_or_default()
+            } else {
+                Arc::new(AtomicBool::new(false))
+            },
             identity: Identity {
                 frame_id: ocr.frame_id,
                 generation,
@@ -261,8 +278,7 @@ impl TranslationManager {
                     if let Some(job) = next {
                         if let Some(s) = service.upgrade() {
                             manager.process(&s, job).await;
-                            // A logically cancelled task still completes safely in the worker.
-                            // Publish its idle/error state even when its text was discarded.
+                            // Publish idle/error state even when obsolete text was discarded.
                             manager.emit();
                         } else {
                             return;
@@ -314,7 +330,7 @@ impl TranslationManager {
             })
             .collect();
         let mut batch = if settings.batch_translation {
-            self.try_batch(&requests).await
+            self.try_batch(&requests, job.cancel.clone()).await
         } else {
             None
         };
@@ -344,13 +360,18 @@ impl TranslationManager {
                 error: None,
                 device: String::new(),
                 truncated: false,
+                stop_reason: String::new(),
                 metrics: Default::default(),
             };
             let inferred = if let Some(batch) = &mut batch {
                 Ok(batch.remove(0))
             } else {
-                self.translate_group(request, lang == "none" || lang == options.target_language)
-                    .await
+                self.translate_group(
+                    request,
+                    lang == "none" || lang == options.target_language,
+                    job.cancel.clone(),
+                )
+                .await
             };
             match inferred {
                 Ok((generated, hit, id)) => {
@@ -358,6 +379,10 @@ impl TranslationManager {
                     result.translated_text = generated.text;
                     result.device = generated.device;
                     result.truncated = generated.truncated;
+                    result.stop_reason = generated.stop_reason;
+                    if result.truncated {
+                        result.status = "incomplete".into();
+                    }
                     result.metrics = generated.metrics;
                     result.cache_hit = hit;
                 }
@@ -427,6 +452,7 @@ impl TranslationManager {
     async fn try_batch(
         &self,
         requests: &[TranslationRequest],
+        cancel: Arc<AtomicBool>,
     ) -> Option<Vec<(GenerationResult, bool, String)>> {
         if requests.iter().any(|r| {
             r.options.source_language == "none"
@@ -446,7 +472,7 @@ impl TranslationManager {
         }
         let cache_epoch = self.cache_epoch.load(Ordering::Acquire);
         self.status.lock().batch_calls += 1;
-        let generated = self.translate_group(packed, false).await;
+        let generated = self.translate_group(packed, false, cancel).await;
         let Ok((output, hit, model_id)) = generated else {
             self.status.lock().batch_fallbacks += 1;
             return None;
@@ -499,9 +525,17 @@ impl TranslationManager {
         &self,
         request: TranslationRequest,
         skip: bool,
+        cancel: Arc<AtomicBool>,
     ) -> Result<(GenerationResult, bool, String)> {
         let mut session = self.session.lock().await;
-        let config = session.config.clone().context("请先加载翻译模型")?;
+        let mut config = session.config.clone().context("请先加载翻译模型")?;
+        if cancel.load(Ordering::Acquire) {
+            return Ok((
+                GenerationResult::cancelled(request.request_id, String::new()),
+                false,
+                config.manifest.id,
+            ));
+        }
         let key = cache::key(&config.manifest, &config.generation, &request);
         let cache_epoch = self.cache_epoch.load(Ordering::Acquire);
         // Structured output is cached only after the caller validates every item ID.
@@ -544,14 +578,34 @@ impl TranslationManager {
         if session.worker.is_none() {
             session.cancel = Arc::new(AtomicBool::new(false));
             *self.active_cancel.lock() = session.cancel.clone();
-            session.worker = Some(
-                worker::TranslationWorker::load(
-                    &crate::ocr::resource_root(&self.app)?,
-                    config.clone(),
-                    session.cancel.clone(),
-                )
-                .await?,
-            );
+            let root = crate::ocr::resource_root(&self.app)?;
+            let loaded = worker::load_with_fallback(
+                session.preferred,
+                &mut config,
+                session.cancel.clone(),
+                |config, cancel| worker::TranslationWorker::load(&root, config, cancel),
+            )
+            .await;
+            // Retain CPU selection even if its first recovery load fails.
+            session.config = Some(config.clone());
+            match loaded {
+                Ok((worker, fallback)) => {
+                    let mut st = self.status.lock();
+                    st.device = Some(worker.device.clone());
+                    st.model_load_ms = worker.load_ms;
+                    if fallback.is_some() {
+                        st.message = fallback;
+                    }
+                    session.worker = Some(worker);
+                }
+                Err(error) => {
+                    let mut st = self.status.lock();
+                    st.status = "error".into();
+                    st.device = None;
+                    st.message = Some(format!("翻译 Worker 恢复失败：{error:#}"));
+                    return Err(error);
+                }
+            }
         }
         {
             let mut status = self.status.lock();
@@ -559,14 +613,18 @@ impl TranslationManager {
             status.calls += 1;
         }
         self.emit();
-        let worker = session.worker.as_mut().unwrap();
-        let output = worker.translate(request).await;
+        let worker = session.worker.as_mut().context("翻译 Worker 未加载")?;
+        let output = worker.translate(request, cancel.clone()).await;
         match output {
             Ok(mut result) => {
                 result.metrics.process_memory_mb = worker.memory_mb();
                 result.metrics.backend_prepare_ms = self.status.lock().backend_prepare_ms;
                 let mut cache = self.cache.lock();
-                if cacheable && self.cache_epoch.load(Ordering::Acquire) == cache_epoch {
+                if cacheable
+                    && result.cacheable()
+                    && !cancel.load(Ordering::Acquire)
+                    && self.cache_epoch.load(Ordering::Acquire) == cache_epoch
+                {
                     cache.insert(CachedText {
                         key,
                         text: result.text.clone(),
@@ -577,7 +635,6 @@ impl TranslationManager {
                 {
                     let mut status = self.status.lock();
                     status.status = "ready".into();
-                    status.message = None;
                 }
                 Ok((result, false, config.manifest.id))
             }
@@ -585,9 +642,18 @@ impl TranslationManager {
                 if let Some(mut w) = session.worker.take() {
                     w.shutdown().await;
                 }
+                let recovery = worker::recovery_device(session.preferred, config.device);
+                if let Some(config) = &mut session.config {
+                    config.device = recovery;
+                }
                 let mut status = self.status.lock();
                 status.status = "error".into();
-                status.message = Some(format!("{e:#}；下一次请求可重建 Worker"));
+                status.device = None;
+                status.message = Some(if recovery != config.device {
+                    format!("{e:#}；Auto 下一次请求将使用 CPU 恢复")
+                } else {
+                    format!("{e:#}；下一次请求可重建 Worker")
+                });
                 Err(e)
             }
         }
@@ -680,24 +746,20 @@ impl TranslationManager {
             Ok(())
         };
         let prepare_ms = preparation.elapsed().as_secs_f64() * 1000.;
-        let mut loaded = match gpu {
-            Ok(()) => worker::TranslationWorker::load(&root, config.clone(), cancel.clone()).await,
-            Err(e) => Err(e),
-        };
+        gpu?;
+        let (worker, recovered) =
+            worker::load_with_fallback(preferred, &mut config, cancel.clone(), |config, cancel| {
+                worker::TranslationWorker::load(&root, config, cancel)
+            })
+            .await?;
         let mut fallback = if preferred == Device::Auto && !cuda_allowed {
             Some("当前可用显存未达到翻译准入要求，Auto 已使用 CPU".into())
         } else {
             None
         };
-        if loaded.is_err() && preferred == Device::Auto {
-            fallback = Some(format!(
-                "CUDA 未就绪，已回退 CPU：{}",
-                loaded.as_ref().err().unwrap()
-            ));
-            config.device = Device::Cpu;
-            loaded = worker::TranslationWorker::load(&root, config.clone(), cancel.clone()).await;
+        if recovered.is_some() {
+            fallback = recovered;
         }
-        let worker = loaded?;
         ensure!(!self.stopping.load(Ordering::Acquire), "应用正在退出");
         {
             let mut st = self.status.lock();
@@ -712,6 +774,7 @@ impl TranslationManager {
         session.worker = Some(worker);
         session.config = Some(config);
         session.cancel = cancel;
+        session.preferred = preferred;
         Ok(())
     }
     async fn unload_inner(&self) {
@@ -733,10 +796,11 @@ impl TranslationManager {
         self.emit();
         Ok(())
     }
-    pub async fn update(&self, settings: TranslationSettings) -> Result<()> {
+    pub async fn update(&self, mut settings: TranslationSettings) -> Result<()> {
         settings.validate()?;
         let _g = self.lifecycle.try_lock().context("翻译模型正在切换")?;
         let old = self.settings.read().clone();
+        settings.update_profile_versions(&old)?;
         self.invalidate(true);
         if old.device != settings.device
             || old.resource_policy != settings.resource_policy

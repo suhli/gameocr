@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 pub const RUNTIME: &str = "llamacpp-translation";
 pub const ADAPTER: &str = "hy-mt2";
-pub const PROMPT_VERSION: u32 = 1;
+pub const PROMPT_VERSION: u32 = 2;
 pub const PROTOCOL_VERSION: u32 = 1;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -235,6 +235,21 @@ pub struct GenerationResult {
     pub stop_reason: String,
     pub metrics: TranslationMetrics,
 }
+impl GenerationResult {
+    pub fn cancelled(request_id: String, device: String) -> Self {
+        Self {
+            request_id,
+            device,
+            text: String::new(),
+            truncated: true,
+            stop_reason: "cancelled".into(),
+            metrics: Default::default(),
+        }
+    }
+    pub fn cacheable(&self) -> bool {
+        !self.truncated && self.stop_reason == "eos" && !self.text.trim().is_empty()
+    }
+}
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Identity {
@@ -271,5 +286,7 @@ pub struct TranslationResult {
     pub error: Option<String>,
     pub device: String,
     pub truncated: bool,
+    #[serde(default)]
+    pub stop_reason: String,
     pub metrics: TranslationMetrics,
 }

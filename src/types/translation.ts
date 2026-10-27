@@ -1,8 +1,8 @@
 import type {OcrBlock} from './index';
-export interface TranslationSettings {gpuReserveMb:number;batchTranslation:boolean;}
+export interface TranslationSettings {gpuReserveMb:number;batchTranslation:boolean;sourceLanguageOverride:string|null;targetLanguageOverride:string|null;}
 export interface TranslationMetrics {batchRequestId:string|null;batchSize:number;}
 export interface TranslationStatus {batchCalls:number;batchFallbacks:number;}
-export interface TranslationResult {profileId:string;}
+export interface TranslationResult {profileId:string;stopReason:string;}
 export interface TranslationModel {id:string;name:string;runtime:string;adapter:string;revision:string;quantization:string;license:string;source:string;file:string;size:number;sha256:string;installed:boolean;imported:boolean;languages:string[];}
 export interface Term {source:string;target:string;category:string;}
 export interface GameProfile {id:string;name:string;sourceLanguage:string;targetLanguage:string;style:string;background:string;glossary:Term[];version:number;windowProcess:string;}
