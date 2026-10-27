@@ -842,6 +842,23 @@ mod tests {
         assert!(!installed_path(tmp.path(), &p).exists());
         assert_eq!(std::fs::read_dir(tmp.path()).unwrap().count(), 1);
     }
+    #[test]
+    fn corrupt_zip_with_matching_digest_never_becomes_ready() {
+        let tmp = tempfile::tempdir().unwrap();
+        let (zip, mut p) = archive(
+            tmp.path(),
+            &[("test.dll", b"library"), ("LICENSE.txt", b"license")],
+        );
+        std::fs::write(&zip, b"corrupt zip, even if its catalog digest matches").unwrap();
+        let flag = AtomicBool::new(false);
+        let info = file_info(&zip, &flag).unwrap();
+        p.size = info.size;
+        p.sha256 = info.sha256;
+        assert!(install_archive(tmp.path(), &zip, &p, &flag, &flag).is_err());
+        assert!(verify_installed(tmp.path(), &p, &flag).is_err());
+        assert!(!installed_path(tmp.path(), &p).exists());
+        assert_eq!(std::fs::read_dir(tmp.path()).unwrap().count(), 1);
+    }
     #[tokio::test]
     async fn cpu_only_distribution_fails_before_any_download() {
         let tmp = tempfile::tempdir().unwrap();

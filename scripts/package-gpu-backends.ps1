@@ -31,7 +31,6 @@ foreach ($runtime in @('llamacpp','translation')) {
     $asset = "GameOCR-$runtime-cuda-windows-x64-$($archiveHash.Substring(0,12)).zip"
     $assetPath = Join-Path $repo "artifacts/$asset"
     Move-Item -LiteralPath $archive -Destination $assetPath -Force
-    if (!$ReleaseTag) { $ReleaseTag = 'gpu-' + $archiveHash.Substring(0,12) }
     $package = @{
         id="gameocr-$runtime-cuda"; name="GameOCR $runtime CUDA"; kind=$runtime;
         version=$workerHash.Substring(0,12); runtimes=@($runtime); required=@($binary);
@@ -42,9 +41,20 @@ foreach ($runtime in @('llamacpp','translation')) {
     $checksums += "$archiveHash  $asset"
     Write-Output "Prepared $asset ($($package.size) bytes)."
 }
+if (!$ReleaseTag) {
+    # Both independent components determine the release identity. Updating only
+    # translation must not reuse an older OCR-only companion tag.
+    $digest = [Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes(($packages.sha256 -join ':')))
+    $ReleaseTag = 'gpu-' + [Convert]::ToHexString($digest).ToLowerInvariant().Substring(0,12)
+}
+foreach ($package in $packages) {
+    $asset = [IO.Path]::GetFileName(([Uri]$package.url).AbsolutePath)
+    $package.url = "https://github.com/suhli/gameocr/releases/download/$ReleaseTag/$asset"
+}
 $manifest = Join-Path $repo 'artifacts/gpu-backends.json'
 @{packages=$packages} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $manifest -Encoding utf8NoBOM
 $env:GAMEOCR_GPU_MANIFEST = $manifest
 if ($env:GITHUB_ENV) { "GAMEOCR_GPU_MANIFEST=$manifest" | Add-Content -LiteralPath $env:GITHUB_ENV }
 $checksums | Set-Content -LiteralPath 'artifacts/SHA256SUMS-gpu-backends.txt' -Encoding utf8NoBOM
 Write-Output "Manifest: $manifest. Publish both assets with release $ReleaseTag before distributing this base package."
+& (Join-Path $PSScriptRoot 'verify-gpu-backends.ps1') -Manifest $manifest

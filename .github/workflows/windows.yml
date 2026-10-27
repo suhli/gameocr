@@ -96,6 +96,8 @@ jobs:
         run: node scripts/collect-licenses.mjs
       - name: Prepare version-matched GPU companion assets and embedded catalog
         run: ./scripts/package-gpu-backends.ps1
+      - name: Verify local GPU ZIPs against the pinned catalog (not publication acceptance)
+        run: ./scripts/test-gpu-backends.ps1
       - name: Build standard installers
         run: npm run tauri -- build --bundles nsis,msi
       - name: Collect installers

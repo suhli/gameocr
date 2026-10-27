@@ -32,11 +32,7 @@ if ($Backend -eq 'ondemand') {
         if ($process.ExitCode) { throw 'Unable to read embedded GPU catalog' }
         $expected = Get-Content -LiteralPath 'artifacts/gpu-backends.json' -Raw | ConvertFrom-Json
         $actual = Get-Content -LiteralPath $catalogCheck -Raw | ConvertFrom-Json
-        if ($actual.packages.Count -ne $expected.packages.Count) { throw 'EXE GPU catalog count differs; rebuild with GAMEOCR_GPU_MANIFEST.' }
-        foreach ($package in $expected.packages) {
-            $match = @($actual.packages | Where-Object id -eq $package.id)
-            if ($match.Count -ne 1 -or $match[0].sha256 -ne $package.sha256 -or $match[0].url -ne $package.url) { throw 'EXE GPU catalog does not match companion assets; rebuild with GAMEOCR_GPU_MANIFEST.' }
-        }
+        & (Join-Path $PSScriptRoot 'verify-gpu-backends.ps1') -EmbeddedManifest $catalogCheck
     } finally { if (Test-Path -LiteralPath $catalogCheck) { Remove-Item -LiteralPath $catalogCheck -Force } }
 }
 if ($Backend -eq 'both') {
