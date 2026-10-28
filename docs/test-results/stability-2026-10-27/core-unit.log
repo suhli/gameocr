@@ -1,0 +1,36 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.40s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_core-d044309b7b084ea1.exe)
+
+running 24 tests
+test engine::tests::explicit_cuda_never_silently_falls_back ... ok
+test engine::tests::onnx_coordinates_do_not_require_generation ... ok
+test engine::tests::roi_validation_and_legacy_defaults ... ok
+test engine::tests::custom_adapter_registry_can_be_used_by_factory ... ok
+test engine::tests::factory_validates_then_dispatches_only_the_registered_constructor ... ok
+test engine::tests::invalid_thresholds_and_memory_limits_rejected ... ok
+test grounding::tests::clamp_and_reject ... ok
+test latest::tests::overload_only_keeps_latest ... ok
+test parallel::tests::configuration_semantics_and_legacy_defaults ... ok
+test manifest::tests::migrates_existing_files_without_renaming ... ok
+test parallel::tests::coordinates_deduplication_and_border_repair ... ok
+test grounding::tests::empty_and_image_regions ... ok
+test grounding::tests::plain_and_missing_coordinates_survive ... ok
+test shared_frame::tests::exact_bytes_identity_bounds_and_cleanup ... ok
+test grounding::tests::official_multilingual_multiline ... ok
+test types::tests::old_history_json_remains_readable ... ok
+test change::tests::duplicate_threshold_and_resize ... ok
+test parallel::tests::tiling_preserves_coverage_and_detector_budget ... ok
+test adaptive::features::tests::blank_tiny_and_noise_are_bounded ... ok
+test adaptive::scheduler::tests::exploration_rate_resource_and_cooldown_guards ... ok
+test adaptive::scheduler::tests::concentrated_layout_returns_to_single_during_switch_cooldown ... ok
+test adaptive::scheduler::tests::learns_only_stable_comparable_evidence_and_isolates_fingerprints ... ok
+test adaptive::scheduler::tests::bounded_profiles_and_unknown_layouts ... ok
+test adaptive::features::tests::stable_scaled_and_spatial_features ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.99s
+
+   Doc-tests gameocr_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

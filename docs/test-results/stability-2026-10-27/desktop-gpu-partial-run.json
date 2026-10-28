@@ -1,0 +1,565 @@
+{
+  "executedAt": "2026-10-27T08:00:13.709Z",
+  "overall": "FAIL: a later UI test used an exact label that included option text; fixed in the subsequent full run",
+  "error": "TimeoutError: locator.inputValue: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('源语言', { exact: true })\u001b[22m\n",
+  "appSha256": "1a38dcb00284490234a48c7c3b0405b9505a4123b1ddb88a929650cab26e8b8b",
+  "checks": [
+    {
+      "name": "Independent OCR CPU + translation CUDA"
+    },
+    {
+      "name": "OCR CUDA + translation CUDA coexist on actual GPU"
+    }
+  ],
+  "samples": [
+    {
+      "combination": "OCR CPU + translation GPU",
+      "ocr": {
+        "preprocessingMs": 19.2534,
+        "inferenceMs": 226.86850000000004,
+        "parsingMs": 17.943,
+        "totalMs": 265.18629999999996,
+        "detectionMs": 98.0786,
+        "recognitionMs": 128.78990000000002,
+        "detectionRegions": 1,
+        "recognitionBatches": 1,
+        "recognitionPixels": 145920,
+        "execution": {
+          "batchId": 10,
+          "endToEndMs": 280.0475,
+          "transferMs": 2.0542,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 265.7582,
+          "mergeMs": 0,
+          "cpuTasks": 1,
+          "gpuTasks": 0,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": null,
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 0.7623000000000001,
+            "detectorPreprocessMs": 14.1509,
+            "dbMs": 2.3839,
+            "cropMs": 1.5684,
+            "recognizerPreprocessMs": 2.7679000000000005,
+            "ctcMs": 15.5589,
+            "mergeMs": 0.0002,
+            "cacheMs": 0.0097,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 28439200,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                760
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.4567,
+            "conversionMs": 1.1359,
+            "frameWaitMs": 33.182,
+            "gateMs": 0.0038,
+            "previewMs": 9.5632,
+            "previewReused": false,
+            "captureToPublishMs": 316.7456,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.5719000000000278,
+          "temporal": null,
+          "transport": "ppm",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 0.7623000000000001,
+          "detectorPreprocessMs": 14.1509,
+          "dbMs": 2.3839,
+          "cropMs": 1.5684,
+          "recognizerPreprocessMs": 2.7679000000000005,
+          "ctcMs": 15.5589,
+          "mergeMs": 0.0002,
+          "cacheMs": 0.0097,
+          "detectorCalls": 1,
+          "recognizerCalls": 1,
+          "outputBytes": 28439200,
+          "recognitionShapes": [
+            [
+              4,
+              3,
+              48,
+              760
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        }
+      },
+      "translation": {
+        "frameId": 367,
+        "generation": 5,
+        "epoch": 9,
+        "revision": 49,
+        "results": [
+          {
+            "profileId": "",
+            "requestId": "e2e3be86-78cc-4d4e-a2a8-9c3d7c1ec73d",
+            "frameId": 367,
+            "generation": 5,
+            "epoch": 9,
+            "revision": 49,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "Before you leave for the fortress,\nspeak to Captain Rowan at the gate.\nBring the sealed letter and return\nbefore the bridge closes at sunset.",
+            "translatedText": "在你们前往堡垒之前，  \n请在门口与罗文船长交谈。  \n带上那封密封的信件，并在日落时桥关闭之前回来。",
+            "sourceBlockIds": [
+              "block-0",
+              "block-1",
+              "block-2",
+              "block-3"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-0",
+                "text": "Before you leave for the fortress,",
+                "label": "text",
+                "bbox": [
+                  34,
+                  67,
+                  437,
+                  97
+                ],
+                "confidence": 0.99818295,
+                "polygon": [
+                  {
+                    "x": 34,
+                    "y": 67
+                  },
+                  {
+                    "x": 437,
+                    "y": 67
+                  },
+                  {
+                    "x": 437,
+                    "y": 97
+                  },
+                  {
+                    "x": 34,
+                    "y": 97
+                  }
+                ]
+              },
+              {
+                "id": "block-1",
+                "text": "speak to Captain Rowan at the gate.",
+                "label": "text",
+                "bbox": [
+                  32,
+                  132,
+                  475,
+                  160
+                ],
+                "confidence": 0.99988633,
+                "polygon": [
+                  {
+                    "x": 32,
+                    "y": 132
+                  },
+                  {
+                    "x": 475,
+                    "y": 132
+                  },
+                  {
+                    "x": 475,
+                    "y": 160
+                  },
+                  {
+                    "x": 32,
+                    "y": 160
+                  }
+                ]
+              },
+              {
+                "id": "block-2",
+                "text": "Bring the sealed letter and return",
+                "label": "text",
+                "bbox": [
+                  34,
+                  195,
+                  444,
+                  225
+                ],
+                "confidence": 0.9998647,
+                "polygon": [
+                  {
+                    "x": 34,
+                    "y": 195
+                  },
+                  {
+                    "x": 444,
+                    "y": 195
+                  },
+                  {
+                    "x": 444,
+                    "y": 225
+                  },
+                  {
+                    "x": 34,
+                    "y": 225
+                  }
+                ]
+              },
+              {
+                "id": "block-3",
+                "text": "before the bridge closes at sunset.",
+                "label": "text",
+                "bbox": [
+                  30,
+                  257,
+                  459,
+                  290
+                ],
+                "confidence": 0.9998265,
+                "polygon": [
+                  {
+                    "x": 32,
+                    "y": 257
+                  },
+                  {
+                    "x": 459,
+                    "y": 259
+                  },
+                  {
+                    "x": 456,
+                    "y": 290
+                  },
+                  {
+                    "x": 30,
+                    "y": 288
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 0,
+            "contextVersion": 0,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cuda",
+            "truncated": false,
+            "stopReason": "eos",
+            "metrics": {
+              "batchRequestId": null,
+              "batchSize": 0,
+              "modelLoadMs": 1043.7256,
+              "backendPrepareMs": 6863.3473,
+              "promptMs": 1.9205,
+              "queueMs": 0.0999,
+              "ttftMs": 247.3683,
+              "promptTokens": 71,
+              "generatedTokens": 32,
+              "tokensPerSecond": 84.8066203877851,
+              "inferenceMs": 612.9058,
+              "totalMs": 614.8311,
+              "textProcessingMs": 0.0153,
+              "publishMs": 0,
+              "ocrMs": 265.18629999999996,
+              "ocrToTranslationMs": 616.0869,
+              "captureToTranslationMs": 932.9644999999999,
+              "processMemoryMb": 1467.91796875,
+              "freeVramMb": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "combination": "OCR GPU + translation GPU",
+      "ocr": {
+        "preprocessingMs": 21.1264,
+        "inferenceMs": 510.9456,
+        "parsingMs": 16.9009,
+        "totalMs": 549.132,
+        "detectionMs": 231.7343,
+        "recognitionMs": 279.2113,
+        "detectionRegions": 1,
+        "recognitionBatches": 1,
+        "recognitionPixels": 145920,
+        "execution": {
+          "batchId": 1,
+          "endToEndMs": 564.7539,
+          "transferMs": 2.1197999999999997,
+          "splitMs": 0,
+          "queueWaitMs": 0,
+          "workerWallMs": 549.7547000000001,
+          "mergeMs": 0,
+          "cpuTasks": 0,
+          "gpuTasks": 1,
+          "failedTasks": 0,
+          "retriedTasks": 0,
+          "tileCount": 1,
+          "wholeFrameFallback": false,
+          "speedup": null,
+          "adaptive": null,
+          "cache": null,
+          "detectionRegions": 1,
+          "pipeline": {
+            "decodeMs": 1.4308,
+            "detectorPreprocessMs": 15.8299,
+            "dbMs": 2.6549,
+            "cropMs": 1.0871,
+            "recognizerPreprocessMs": 2.7635,
+            "ctcMs": 14.2349,
+            "mergeMs": 0.0111,
+            "cacheMs": 0.0209,
+            "detectorCalls": 1,
+            "recognizerCalls": 1,
+            "outputBytes": 28439200,
+            "recognitionShapes": [
+              [
+                4,
+                3,
+                48,
+                760
+              ]
+            ],
+            "compactBatches": 0,
+            "compactFallbacks": 0,
+            "compactStatus": "disabled"
+          },
+          "appLatency": {
+            "captureReadbackMs": 0.5067,
+            "conversionMs": 1.4033,
+            "frameWaitMs": 36.5661,
+            "gateMs": 0.0040999999999999995,
+            "previewMs": 9.6027,
+            "previewReused": false,
+            "captureToPublishMs": 604.9389,
+            "publishMs": null
+          },
+          "ipcOverheadMs": 0.6227000000001226,
+          "temporal": null,
+          "transport": "ppm",
+          "transportFallback": null
+        },
+        "pipeline": {
+          "decodeMs": 1.4308,
+          "detectorPreprocessMs": 15.8299,
+          "dbMs": 2.6549,
+          "cropMs": 1.0871,
+          "recognizerPreprocessMs": 2.7635,
+          "ctcMs": 14.2349,
+          "mergeMs": 0.0111,
+          "cacheMs": 0.0209,
+          "detectorCalls": 1,
+          "recognizerCalls": 1,
+          "outputBytes": 28439200,
+          "recognitionShapes": [
+            [
+              4,
+              3,
+              48,
+              760
+            ]
+          ],
+          "compactBatches": 0,
+          "compactFallbacks": 0,
+          "compactStatus": "disabled"
+        }
+      },
+      "translation": {
+        "frameId": 405,
+        "generation": 5,
+        "epoch": 11,
+        "revision": 53,
+        "results": [
+          {
+            "profileId": "",
+            "requestId": "1eeac88d-9909-4c88-92c7-5bce8867a15a",
+            "frameId": 405,
+            "generation": 5,
+            "epoch": 11,
+            "revision": 53,
+            "sourceModelId": "ppocrv6-small",
+            "translationModelId": "hy-mt2-1.8b-q4-k-m",
+            "sourceLanguage": "en",
+            "targetLanguage": "zh",
+            "sourceText": "Before you leave for the fortress,\nspeak to Captain Rowan at the gate.\nBring the sealed letter and return\nbefore the bridge closes at sunset.",
+            "translatedText": "在你们前往堡垒之前，  \n请在门口与罗文船长交谈。  \n带上那封密封的信件，并在日落时桥关闭之前回来。",
+            "sourceBlockIds": [
+              "block-0",
+              "block-1",
+              "block-2",
+              "block-3"
+            ],
+            "sourceBlocks": [
+              {
+                "id": "block-0",
+                "text": "Before you leave for the fortress,",
+                "label": "text",
+                "bbox": [
+                  34,
+                  67,
+                  437,
+                  97
+                ],
+                "confidence": 0.99818295,
+                "polygon": [
+                  {
+                    "x": 34,
+                    "y": 67
+                  },
+                  {
+                    "x": 437,
+                    "y": 67
+                  },
+                  {
+                    "x": 437,
+                    "y": 97
+                  },
+                  {
+                    "x": 34,
+                    "y": 97
+                  }
+                ]
+              },
+              {
+                "id": "block-1",
+                "text": "speak to Captain Rowan at the gate.",
+                "label": "text",
+                "bbox": [
+                  32,
+                  132,
+                  475,
+                  160
+                ],
+                "confidence": 0.9998862,
+                "polygon": [
+                  {
+                    "x": 32,
+                    "y": 132
+                  },
+                  {
+                    "x": 475,
+                    "y": 132
+                  },
+                  {
+                    "x": 475,
+                    "y": 160
+                  },
+                  {
+                    "x": 32,
+                    "y": 160
+                  }
+                ]
+              },
+              {
+                "id": "block-2",
+                "text": "Bring the sealed letter and return",
+                "label": "text",
+                "bbox": [
+                  34,
+                  195,
+                  444,
+                  225
+                ],
+                "confidence": 0.9998647,
+                "polygon": [
+                  {
+                    "x": 34,
+                    "y": 195
+                  },
+                  {
+                    "x": 444,
+                    "y": 195
+                  },
+                  {
+                    "x": 444,
+                    "y": 225
+                  },
+                  {
+                    "x": 34,
+                    "y": 225
+                  }
+                ]
+              },
+              {
+                "id": "block-3",
+                "text": "before the bridge closes at sunset.",
+                "label": "text",
+                "bbox": [
+                  30,
+                  257,
+                  459,
+                  290
+                ],
+                "confidence": 0.9998265,
+                "polygon": [
+                  {
+                    "x": 32,
+                    "y": 257
+                  },
+                  {
+                    "x": 459,
+                    "y": 259
+                  },
+                  {
+                    "x": 456,
+                    "y": 290
+                  },
+                  {
+                    "x": 30,
+                    "y": 288
+                  }
+                ]
+              }
+            ],
+            "glossaryVersion": 0,
+            "contextVersion": 0,
+            "cacheHit": false,
+            "status": "complete",
+            "error": null,
+            "device": "cuda",
+            "truncated": false,
+            "stopReason": "eos",
+            "metrics": {
+              "batchRequestId": null,
+              "batchSize": 0,
+              "modelLoadMs": 1043.7256,
+              "backendPrepareMs": 6863.3473,
+              "promptMs": 1.2791,
+              "queueMs": 0.0846,
+              "ttftMs": 192.2899,
+              "promptTokens": 71,
+              "generatedTokens": 32,
+              "tokensPerSecond": 82.07839439833494,
+              "inferenceMs": 569.9775999999999,
+              "totalMs": 571.2625,
+              "textProcessingMs": 0.0163,
+              "publishMs": 0,
+              "ocrMs": 549.132,
+              "ocrToTranslationMs": 572.6025,
+              "captureToTranslationMs": 1177.6481999999999,
+              "processMemoryMb": 1469.953125,
+              "freeVramMb": null
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "scope": "Only these real GPU cases passed in this partial run; not a complete desktop pass. The later complete run skipped GPU because of VRAM admission."
+}

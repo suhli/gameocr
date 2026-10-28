@@ -1,0 +1,137 @@
+{
+  "generation": {
+    "contextSize": 4096,
+    "maxTokens": 512,
+    "repetitionPenalty": 1.0499999523162842,
+    "seed": 42,
+    "temperature": 0.699999988079071,
+    "topK": 20,
+    "topP": 0.6000000238418579
+  },
+  "model": {
+    "adapter": "hy-mt2",
+    "file": "Hy-MT2-1.8B-Q4_K_M.gguf",
+    "id": "hy-mt2-1.8b-q4-k-m",
+    "imported": false,
+    "installed": false,
+    "languages": [
+      "zh",
+      "ja",
+      "en",
+      "zh-Hant",
+      "fr",
+      "pt",
+      "es",
+      "tr",
+      "ru",
+      "ar",
+      "ko",
+      "th",
+      "it",
+      "de",
+      "vi",
+      "ms",
+      "id",
+      "tl",
+      "hi",
+      "pl",
+      "cs",
+      "nl",
+      "km",
+      "my",
+      "fa",
+      "gu",
+      "ur",
+      "te",
+      "mr",
+      "he",
+      "bn",
+      "ta",
+      "uk",
+      "bo",
+      "kk",
+      "mn",
+      "ug",
+      "yue"
+    ],
+    "license": "Apache-2.0",
+    "name": "Hy-MT2 1.8B Q4_K_M",
+    "quantization": "Q4_K_M",
+    "revision": "a0c709d9fac510f2c807aa3af52872340dc37a4a",
+    "runtime": "llamacpp-translation",
+    "schemaVersion": 1,
+    "sha256": "dc5f44fcf1fa496ee7ad725982c0c8c553a4de00259b53af84c4b89fb0c06699",
+    "size": 1133080448,
+    "source": "https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF",
+    "url": "https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF/resolve/a0c709d9fac510f2c807aa3af52872340dc37a4a/Hy-MT2-1.8B-Q4_K_M.gguf"
+  },
+  "results": [
+    {
+      "category": "independent menu items with stable IDs",
+      "humanReview": null,
+      "reference": [
+        {
+          "id": "0",
+          "text": "新游戏"
+        },
+        {
+          "id": "1",
+          "text": "读取游戏"
+        },
+        {
+          "id": "2",
+          "text": "设置"
+        }
+      ],
+      "request": {
+        "options": {
+          "background": "",
+          "batchFormat": true,
+          "context": [],
+          "contextVersion": 0,
+          "glossary": [],
+          "glossaryVersion": 0,
+          "preserveFormat": true,
+          "profileId": "",
+          "sourceLanguage": "en",
+          "style": "",
+          "targetLanguage": "zh"
+        },
+        "requestId": "menu-batch",
+        "sourceText": "[{\"id\":\"0\",\"text\":\"New Game\"},{\"id\":\"1\",\"text\":\"Load Game\"},{\"id\":\"2\",\"text\":\"Settings\"}]"
+      },
+      "result": {
+        "device": "cpu",
+        "metrics": {
+          "backendPrepareMs": 0,
+          "batchRequestId": null,
+          "batchSize": 0,
+          "captureToTranslationMs": null,
+          "freeVramMb": null,
+          "generatedTokens": 30,
+          "inferenceMs": 2257.5886,
+          "modelLoadMs": 1323.4049,
+          "ocrMs": 0,
+          "ocrToTranslationMs": 0,
+          "processMemoryMb": null,
+          "promptMs": 9.2151,
+          "promptTokens": 115,
+          "publishMs": 0,
+          "queueMs": 0,
+          "textProcessingMs": 0,
+          "tokensPerSecond": 23.41073595361897,
+          "totalMs": 2266.8064,
+          "ttftMs": 1018.8407
+        },
+        "requestId": "menu-batch",
+        "stopReason": "eos",
+        "text": "[{\"id\":\"0\",\"text\":\"新游戏\"},{\"id\":\"1\",\"text\":\"加载游戏\"},{\"id\":\"2\",\"text\":\"设置\"}]",
+        "truncated": false
+      }
+    }
+  ],
+  "schemaVersion": 1,
+  "executedAt": "2026-10-27T07:56:50.467Z",
+  "testBinarySha256": "73a8cd1b6aa4909fed05aa135711ea690ae6f4075fb99f6678e781db62794c97",
+  "scope": "Real model, synthetic game text; 4 CPU threads; no cache; one sequential pass, no other GameOCR build or benchmark running."
+}

@@ -1,0 +1,37 @@
+
+> gameocr@0.1.0 tauri
+> tauri build --bundles nsis,msi
+
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `npm run build`
+
+> gameocr@0.1.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 3650 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.40 kB │ gzip:  0.28 kB
+dist/assets/index-D8n-oiHs.css   47.63 kB │ gzip:  9.72 kB
+dist/assets/index-ufiB1qXD.js   236.85 kB │ gzip: 72.16 kB
+✓ built in 29.32s
+   Compiling gameocr v0.1.0 (C:\Users\shuhangli\repos\gameocr\src-tauri)
+warning: linker stdout: 正在创建库 C:\Users\shuhangli\repos\gameocr\target\release\deps\gameocr_app.dll.lib 和对象 C:\Users\shuhangli\repos\gameocr\target\release\deps\gameocr_app.dll.exp
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `gameocr` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 5m 10s
+       Built application at: C:\Users\shuhangli\repos\gameocr\target\release\gameocr.exe
+        Info Patching C:\Users\shuhangli\repos\gameocr\target\release\gameocr.exe with bundle type information: nsis
+        Info Target: x64
+     Running makensis to produce C:\Users\shuhangli\repos\gameocr\target\release\bundle\nsis\GameOCR_0.1.0_x64-setup.exe
+        Info Patching C:\Users\shuhangli\repos\gameocr\target\release\gameocr.exe with bundle type information: msi
+        Info Target: x64
+     Running candle for "C:\\Users\\shuhangli\\repos\\gameocr\\target\\release\\wix\\x64\\main.wxs"
+     Running light to produce C:\Users\shuhangli\repos\gameocr\target\release\bundle\msi\GameOCR_0.1.0_x64_zh-CN.msi
+    Finished 2 bundles at:
+        C:\Users\shuhangli\repos\gameocr\target\release\bundle\nsis\GameOCR_0.1.0_x64-setup.exe (12.48 MiB)
+        C:\Users\shuhangli\repos\gameocr\target\release\bundle\msi\GameOCR_0.1.0_x64_zh-CN.msi (17.25 MiB)

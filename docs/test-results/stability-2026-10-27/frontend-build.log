@@ -1,0 +1,13 @@
+
+> gameocr@0.1.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 3650 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.40 kB │ gzip:  0.28 kB
+dist/assets/index-C6LcNp0X.css   47.61 kB │ gzip:  9.71 kB
+dist/assets/index-h7vHGLVI.js   236.85 kB │ gzip: 72.16 kB
+✓ built in 22.56s

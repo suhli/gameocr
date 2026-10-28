@@ -200,3 +200,11 @@ Windows CI 加入真实 CPU 时序五策略回归和报告上传；新字延迟�
 
 原生测试可运行 `node scripts/test-translation.mjs`，须在构建完成后串行执行。Windows 显存与驱动、CPU 和 OS 见 `test-results/translation-environment.json`；干净虚拟机、真实游戏负载和其他显卡仍未验证。
 
+## main 稳定性回归（2026-10-27—28）
+
+七项缺陷、兼容性与执行证据见 [稳定性修复记录](main-stability-regressions.md)。本轮报告在 `docs/test-results/stability-2026-10-27/`，原有基准文件保留。
+
+避免覆盖旧报告的环境变量：`GAMEOCR_TRANSLATION_REPORT_DIR`（原生翻译）、`GAMEOCR_RUNTIME_SWITCH_REPORT`（OCR Runtime 切换）、`GAMEOCR_ONNX_REPORT`、`GAMEOCR_TRANSLATION_DESKTOP_REPORT`、`GAMEOCR_TEST_REPORT`（desktop-runtimes）。目录须预先存在。原生翻译脚本也验证真实 Worker 取消及同模型后续请求；桌面脚本增加截断重试、3 条缓存 + 3 条新菜单、UI 语言覆盖与 Profile 版本稳定性。
+
+离线 GPU 校验：`pwsh -File scripts/test-gpu-backends.ps1`，先生成匹配 ZIP/清单；该测试检查正例及篡改负例。`verify-gpu-backends.ps1 -EmbeddedManifest <导出的清单>` 同时核对 EXE 清单。可额外使用 `-CheckPublished` 检查公开 URL，但 HTTP 200 仍不能替代完整下载、SHA 和模型加载测试。Draft/未发布资源不得计作已完成公网分发。
+

@@ -1,0 +1,108 @@
+{
+  "checkedAt": "2026-10-28T01:59:51.6576673Z",
+  "implementationHead": "394eeb7b33255a5fbb227b0d95ca1bac47ac483e",
+  "files": [
+    {
+      "kind": "ondemand-portable",
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable.zip",
+      "size": 20869646,
+      "sha256": "e8b4fb06bcb7b58da5fbe9b442a810f3a9b7efaf0567b42b283a1384ab090b64",
+      "lastWriteTimeUtc": "2026-10-27T07:54:28.3405843Z"
+    },
+    {
+      "kind": "cpu-portable",
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "size": 20158009,
+      "sha256": "ba63fd0877d2a3a7b8a15d9972aa3d112a394af188595b90a49d75e4c4b0fa51",
+      "lastWriteTimeUtc": "2026-10-27T07:54:32.3355316Z"
+    },
+    {
+      "kind": "nsis-installer",
+      "path": "artifacts/GameOCR-windows-x64-setup.exe",
+      "size": 13085402,
+      "sha256": "5f938d018626111f7b8b1a7d952c7a08e74f04e4f8cf0827a9fb667e791e32de",
+      "lastWriteTimeUtc": "2026-10-28T01:58:01.1553625Z"
+    },
+    {
+      "kind": "msi-installer",
+      "path": "artifacts/GameOCR-windows-x64.msi",
+      "size": 18083840,
+      "sha256": "8cb7003b9b5780d87ef51c10b0dfdfdb7595aa621e0cb337d5481adbbcdf0ae0",
+      "lastWriteTimeUtc": "2026-10-28T01:58:09.9130000Z"
+    },
+    {
+      "kind": "desktop-e2e-ondemand-executable",
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe",
+      "size": 16220672,
+      "sha256": "1a38dcb00284490234a48c7c3b0405b9505a4123b1ddb88a929650cab26e8b8b",
+      "lastWriteTimeUtc": "2026-10-27T07:54:19.1012689Z"
+    },
+    {
+      "kind": "desktop-e2e-cpu-executable",
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+      "size": 16220672,
+      "sha256": "1a38dcb00284490234a48c7c3b0405b9505a4123b1ddb88a929650cab26e8b8b",
+      "lastWriteTimeUtc": "2026-10-27T07:54:19.1012689Z"
+    },
+    {
+      "kind": "installer-build-executable",
+      "path": "target/release/gameocr.exe",
+      "size": 16220672,
+      "sha256": "c959b5ee93bf334a2779f04fe961204c502616261588b0db927be3a843914293",
+      "lastWriteTimeUtc": "2026-10-28T01:58:13.7785880Z"
+    },
+    {
+      "kind": "gpu-catalog",
+      "path": "artifacts/gpu-backends.json",
+      "size": 1066,
+      "sha256": "edfd8e421c63ae598e0fbb8405eef41364c2eac216c28ad49b29e6fe0e63e92a",
+      "lastWriteTimeUtc": "2026-10-27T07:40:18.9102899Z"
+    }
+  ],
+  "checks": [
+    {
+      "name": "NSIS and MSI build",
+      "evidence": "build-installers-verified.log",
+      "result": "PASS"
+    },
+    {
+      "name": "Installer executable embedded GPU catalog versus local archives",
+      "evidence": "installer-catalog-validation.log",
+      "result": "PASS"
+    },
+    {
+      "name": "On-demand portable layout, 59 ZIP entries and 47 x64 imports",
+      "evidence": "verify-ondemand-final.log",
+      "result": "PASS"
+    },
+    {
+      "name": "CPU-only portable layout, 57 ZIP entries and 46 x64 imports",
+      "evidence": "verify-cpu.log",
+      "result": "PASS"
+    },
+    {
+      "name": "On-demand portable real desktop translation",
+      "checks": 19,
+      "evidence": "translation-desktop.json",
+      "result": "PASS"
+    },
+    {
+      "name": "CPU-only portable real desktop OCR",
+      "checks": 12,
+      "evidence": "desktop-runtimes.json",
+      "result": "PASS"
+    },
+    {
+      "name": "Clean Windows NSIS/MSI installation and launch",
+      "reason": "No clean Windows environment used. Build and archive verification do not prove installation execution.",
+      "result": "SKIPPED"
+    },
+    {
+      "name": "Anonymous GPU archive download, installation and load",
+      "reason": "Both pinned GitHub Release asset URLs return HTTP 404.",
+      "evidence": "resources.json",
+      "result": "SKIPPED"
+    }
+  ],
+  "scope": "The tested portable executables and rebuilt installer executable are recorded separately. Bundle metadata and rebuilt frontend assets can change executable hashes. Desktop evidence applies to the portable SHA; no clean-machine installer execution is claimed. No public Release, tag or binary upload was performed."
+}

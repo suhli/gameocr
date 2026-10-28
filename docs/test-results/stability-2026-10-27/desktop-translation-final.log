@@ -1,0 +1,20 @@
+PASS Pure OCR works without installed translation model {}
+PASS WGC OCR CPU -> real translation CPU -> visible Chinese UI; OCR result unchanged {}
+PASS Repeated OCR uses cache with current identity and same worker {}
+PASS Truncated real model output remains incomplete and never hits cache {}
+PASS Separate JSON export and centered translation settings {}
+PASS Real multi-block translation uses validated IDs or safe per-group fallback {}
+PASS Three cache hits plus three new menus use one model call for only the three misses {}
+PASS Four real OCR typewriter updates produce one final model call {}
+PASS Pause invalidates pending translation {}
+PASS Target change discards running translation {}
+PASS Translation worker crash is isolated and next request recovers {}
+SKIP GPU combinations: insufficient available VRAM 1716
+PASS Explicit CUDA admission reports insufficient resources without silently using CPU {}
+PASS Auto falls back to real CPU inference under insufficient GPU memory {}
+PASS Same-size model corruption rejected before loading {}
+PASS UI manual language override and return to Profile defaults persist without version churn {}
+PASS Confirmed context is translated explicitly and cannot cross game profiles {}
+PASS Profile JSON roundtrip, manual context confirmation and bounded cache opt-in {}
+PASS Application exit cleans up translation child {}
+PASS Restart restores bounded cache without a neural translation call {}

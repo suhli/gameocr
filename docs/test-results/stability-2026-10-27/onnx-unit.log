@@ -1,0 +1,46 @@
+   Compiling gameocr-core v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-core)
+   Compiling gameocr-onnx v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-onnx)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.91s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_onnx-a3ac5d6664efab64.exe)
+
+running 14 tests
+test cache::tests::bounded_age_and_resize ... ok
+test cache::tests::one_pixel_changes_and_outside_regions ... ok
+test batching::tests::long_lines_do_not_inflate_short_batches_and_pixel_budget_holds ... ok
+test recognizer::tests::compact_preserves_blank_repeat_confidence_and_rejects_invalid_nonmax ... ok
+test pipeline::tests::ctc_blank_repeats_and_multilingual ... ok
+test regions::tests::coarse_partial_words_and_double_height_boxes_do_not_duplicate_fine_lines ... ok
+test regions::tests::seam_duplicates_and_neighboring_rows ... ok
+test regions::tests::tilted_seam_and_different_padding_do_not_leave_fragments ... ok
+test pipeline::tests::empty_detector_and_coordinate_restore ... ok
+test temporal::tests::boundaries_timeout_and_low_confidence_are_not_trusted ... ok
+test pipeline::tests::perspective_keeps_color_and_rotates_vertical ... ok
+test regions::tests::four_k_coverage_and_budget ... ok
+test temporal::tests::changes_never_reuse_changed_glyphs_and_new_edges_force_detection ... ok
+test refinement::tests::flat_background_has_no_proposals_and_text_strokes_obey_budget ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s
+
+     Running unittests src\bin\onnx-probe.rs (target\debug\deps\onnx_probe-7a4c7001e1c8b26d.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\bin\onnx-test.rs (target\debug\deps\onnx_test-6106275dae0e4097.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src\bin\onnx-worker.rs (target\debug\deps\onnx_worker-382494b0261a393b.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests gameocr_onnx
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

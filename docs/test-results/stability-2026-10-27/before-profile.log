@@ -1,0 +1,31 @@
+   Compiling gameocr-translation v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-translation)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\gameocr_translation-3gujpp1aboyns\s-hnl94xkq30-0s4yewx-working`
+
+warning: `gameocr-translation` (lib) generated 1 warning
+   Compiling gameocr v0.1.0 (C:\Users\shuhangli\repos\gameocr\src-tauri)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\gameocr_app-1lsnudf6um9lh\s-hnl94yia3x-0ypukxz-working`
+
+warning: `gameocr` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.85s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_app-5bb59f633456973c.exe)
+
+running 1 test
+test translation::config::tests::selected_profile_languages_survive_edit_save_and_reload ... FAILED
+
+failures:
+
+---- translation::config::tests::selected_profile_languages_survive_edit_save_and_reload stdout ----
+
+thread 'translation::config::tests::selected_profile_languages_survive_edit_save_and_reload' (51304) panicked at src-tauri\src\translation\config.rs:147:13:
+assertion `left == right` failed
+  left: "auto"
+ right: "ja"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    translation::config::tests::selected_profile_languages_survive_edit_save_and_reload
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 27 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p gameocr --lib`

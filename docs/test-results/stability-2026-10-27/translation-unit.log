@@ -1,0 +1,28 @@
+   Compiling gameocr-translation v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-translation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.27s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_translation-a695a09e258f9f98.exe)
+
+running 15 tests
+test cache::tests::invalid_results_and_legacy_entries_never_replace_complete_cache ... ok
+test prompt::tests::unknown_language_is_rejected ... ok
+test batch::tests::reordered_ids_are_safe_but_missing_duplicate_and_malformed_output_is_rejected ... ok
+test prompt::tests::known_source_language_is_a_prompt_constraint ... ok
+test prompt::tests::no_default_system_or_glossary ... ok
+test protocol::tests::controls_match_identity_and_input_and_queue_remain_bounded ... ok
+test cache::tests::cache_keys_cover_model_parameters_profile_and_prompt_content ... ok
+test engine::tests::factory_checks_runtime_not_file_extension ... ok
+test cache::tests::lru_and_prompt_isolation ... ok
+test batch::tests::skips_budgets_and_partial_failure_keep_cache_safe_and_totals_unique ... ok
+test text::tests::grouping_preserves_blocks_and_separates_menu ... ok
+test text::tests::languages_do_not_guess_han_or_names ... ok
+test text::tests::output_budget_keeps_complete_unicode_but_rejects_invalid_bytes ... ok
+test batch::tests::only_misses_are_batched_and_hits_survive_lru_eviction ... ok
+test protocol::tests::running_generation_stops_and_next_request_reuses_engine_without_stale_controls ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+   Doc-tests gameocr_translation
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

@@ -1,0 +1,3 @@
+Verified 57 ZIP entries byte-for-byte against the portable directory.
+Runtime layout and release artifact hashes verified; this is not a clean-VM execution test.
+Verified imports for 46 x64 binaries using package paths and system32 only.

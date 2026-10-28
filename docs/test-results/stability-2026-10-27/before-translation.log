@@ -1,0 +1,44 @@
+   Compiling gameocr-translation v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-translation)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\gameocr_translation-3ftgou52rsgob\s-hnl94pn3ov-0dc0riq-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\gameocr_translation-2rcu4eecw8oly\s-hnl94pn1p0-10a4hrs-working`
+
+warning: `gameocr-translation` (lib) generated 1 warning
+warning: `gameocr-translation` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.18s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_translation-a695a09e258f9f98.exe)
+
+running 11 tests
+test prompt::tests::no_default_system_or_glossary ... ok
+test text::tests::languages_do_not_guess_han_or_names ... ok
+test prompt::tests::known_source_language_is_a_prompt_constraint ... FAILED
+test text::tests::output_budget_keeps_complete_unicode_but_rejects_invalid_bytes ... ok
+test cache::tests::invalid_results_and_legacy_entries_never_replace_complete_cache ... FAILED
+test engine::tests::factory_checks_runtime_not_file_extension ... ok
+test batch::tests::reordered_ids_are_safe_but_missing_duplicate_and_malformed_output_is_rejected ... ok
+test cache::tests::lru_and_prompt_isolation ... ok
+test prompt::tests::unknown_language_is_rejected ... ok
+test cache::tests::cache_keys_cover_model_parameters_profile_and_prompt_content ... ok
+test text::tests::grouping_preserves_blocks_and_separates_menu ... ok
+
+failures:
+
+---- prompt::tests::known_source_language_is_a_prompt_constraint stdout ----
+
+thread 'prompt::tests::known_source_language_is_a_prompt_constraint' (23484) panicked at crates\gameocr-translation\src\prompt.rs:112:9:
+assertion failed: prompt.contains("源语言为日语")
+
+---- cache::tests::invalid_results_and_legacy_entries_never_replace_complete_cache stdout ----
+
+thread 'cache::tests::invalid_results_and_legacy_entries_never_replace_complete_cache' (3112) panicked at crates\gameocr-translation\src\cache.rs:93:9:
+assertion failed: cache.get("old").is_none()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    cache::tests::invalid_results_and_legacy_entries_never_replace_complete_cache
+    prompt::tests::known_source_language_is_a_prompt_constraint
+
+test result: FAILED. 9 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p gameocr-translation --lib`

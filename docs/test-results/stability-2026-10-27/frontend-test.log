@@ -1,0 +1,13 @@
+
+> gameocr@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/shuhangli/repos/gameocr
+
+ ✓ src/lib/geometry.test.ts (2 tests) 4ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  15:32:58
+   Duration  1.40s (transform 59ms, setup 0ms, collect 67ms, tests 4ms, environment 0ms, prepare 207ms)

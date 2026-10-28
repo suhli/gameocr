@@ -1,0 +1,64 @@
+{
+  "checkedAt": "2026-10-27T07:51:35.560Z",
+  "initialMain": "b5f82e53c2091981cc6729ba1c73f8304f44024d",
+  "ci": [
+    {
+      "sha": "b5f82e53c2091981cc6729ba1c73f8304f44024d",
+      "status": "cancelled",
+      "url": "https://github.com/suhli/gameocr/actions/runs/40437072626"
+    },
+    {
+      "sha": "2ea5614007d368be78af65f611ec24dd45667cc2",
+      "status": "cancelled",
+      "url": "https://github.com/suhli/gameocr/actions/runs/40443392824"
+    }
+  ],
+  "publicReleases": [],
+  "gpu": [
+    {
+      "required": [
+        "ocr-worker.exe"
+      ],
+      "runtimes": [
+        "llamacpp"
+      ],
+      "name": "GameOCR llamacpp CUDA",
+      "kind": "llamacpp",
+      "size": 277372421,
+      "version": "ef3f9784ea58",
+      "sha256": "4714416072f0fa6fc764690ee849f1d218fd86c2ac0cfceb0874ed19c7350bb7",
+      "id": "gameocr-llamacpp-cuda",
+      "url": "https://github.com/suhli/gameocr/releases/download/gpu-e51f20325a78/GameOCR-llamacpp-cuda-windows-x64-4714416072f0.zip",
+      "localZipValidation": "PASS",
+      "publicUrlHttpStatus": 404,
+      "publicDownloadAndLoad": "SKIPPED: matching assets not published",
+      "publicUrlCheckedAt": "2026-10-28T01:53:06.409Z"
+    },
+    {
+      "required": [
+        "translation-worker.exe"
+      ],
+      "runtimes": [
+        "translation"
+      ],
+      "name": "GameOCR translation CUDA",
+      "kind": "translation",
+      "size": 276186634,
+      "version": "394d31f875da",
+      "sha256": "1f9ba3c308a6db10b266925cb742ad9b46b9215c3a8169fadf5360c47b7b9ce0",
+      "id": "gameocr-translation-cuda",
+      "url": "https://github.com/suhli/gameocr/releases/download/gpu-e51f20325a78/GameOCR-translation-cuda-windows-x64-1f9ba3c308a6.zip",
+      "localZipValidation": "PASS",
+      "publicUrlHttpStatus": 404,
+      "publicDownloadAndLoad": "SKIPPED: matching assets not published",
+      "publicUrlCheckedAt": "2026-10-28T01:53:06.409Z"
+    }
+  ],
+  "model": {
+    "url": "https://huggingface.co/tencent/Hy-MT2-1.8B-GGUF/resolve/a0c709d9fac510f2c807aa3af52872340dc37a4a/Hy-MT2-1.8B-Q4_K_M.gguf",
+    "httpStatus": 200,
+    "size": 1133080448,
+    "scope": "HEAD availability only; real inference separately verifies installed model SHA. No full network download/resume acceptance."
+  },
+  "publicReleasesRecheckedAt": "2026-10-28T01:53:06.408Z"
+}

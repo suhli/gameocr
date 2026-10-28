@@ -1,0 +1,4 @@
+Verified 59 ZIP entries byte-for-byte against the portable directory.
+Runtime layout and release artifact hashes verified; this is not a clean-VM execution test.
+Verified imports for 47 x64 binaries using package paths and system32 only.
+0 NVIDIA imports are intentionally deferred to the pinned official runtime downloader; this is not a GPU execution check.

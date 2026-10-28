@@ -1,0 +1,62 @@
+{
+  "executedAt": "2026-10-27T07:57:07.180Z",
+  "scope": "Real CPU Hy-MT2 native worker; cancellation between decode calls; same process/model reused",
+  "workerSha256": "4c34060588952439132990e18b75a4276a3c6b2eedfc27e58391e0fcbb728c27",
+  "elapsedMs": 4452.580299999994,
+  "cancelled": {
+    "requestId": "obsolete",
+    "text": "",
+    "device": "cpu",
+    "truncated": true,
+    "stopReason": "cancelled",
+    "metrics": {
+      "batchRequestId": null,
+      "batchSize": 0,
+      "modelLoadMs": 0,
+      "backendPrepareMs": 0,
+      "promptMs": 0,
+      "queueMs": 0,
+      "ttftMs": null,
+      "promptTokens": 0,
+      "generatedTokens": 0,
+      "tokensPerSecond": null,
+      "inferenceMs": 0,
+      "totalMs": 0,
+      "textProcessingMs": 0,
+      "publishMs": 0,
+      "ocrMs": 0,
+      "ocrToTranslationMs": 0,
+      "captureToTranslationMs": null,
+      "processMemoryMb": null,
+      "freeVramMb": null
+    }
+  },
+  "next": {
+    "requestId": "latest",
+    "text": "你要去哪里？",
+    "device": "cpu",
+    "truncated": false,
+    "stopReason": "eos",
+    "metrics": {
+      "batchRequestId": null,
+      "batchSize": 0,
+      "modelLoadMs": 1330.9111,
+      "backendPrepareMs": 0,
+      "promptMs": 8.0128,
+      "queueMs": 0,
+      "ttftMs": 394.06600000000003,
+      "promptTokens": 45,
+      "generatedTokens": 4,
+      "tokensPerSecond": 18.598688048545057,
+      "inferenceMs": 555.3677,
+      "totalMs": 563.3825999999999,
+      "textProcessingMs": 0,
+      "publishMs": 0,
+      "ocrMs": 0,
+      "ocrToTranslationMs": 0,
+      "captureToTranslationMs": null,
+      "processMemoryMb": null,
+      "freeVramMb": null
+    }
+  }
+}
