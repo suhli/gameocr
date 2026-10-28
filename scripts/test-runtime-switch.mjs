@@ -23,5 +23,5 @@ const gguf={schemaVersion:2,id:'Q8_0',name:'LightOnOCR-3 Q8_0',runtime:'llamacpp
 await run('onnx',catalog[0],directory,onnx);
 await run('llamacpp',gguf,path.resolve('models'),{runtime:'llamacpp',parameters:{model:'',mmproj:'',device:'cpu',threads:4,contextSize:8192,maxTokens:2048,temperature:0.1,maxImageEdge:1280}});
 await run('onnx',catalog[1],directory,onnx);
-fs.writeFileSync('docs/test-results/runtime-switch.json',JSON.stringify(reports,null,2)+'\n');
+fs.writeFileSync(process.env.GAMEOCR_RUNTIME_SWITCH_REPORT??'docs/test-results/runtime-switch.json',JSON.stringify(reports,null,2)+'\n');
 console.log('Passed actual ONNX small → GGUF Q8_0 → ONNX medium worker lifecycle and identity checks.');

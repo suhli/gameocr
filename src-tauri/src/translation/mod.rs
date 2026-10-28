@@ -607,9 +607,10 @@ impl TranslationManager {
                     let mut st = self.status.lock();
                     st.device = Some(worker.device.clone());
                     st.model_load_ms = worker.load_ms;
-                    if fallback.is_some() {
-                        st.message = fallback;
-                    }
+                    st.message = fallback.or_else(|| {
+                        (session.preferred == Device::Auto && config.device == Device::Cpu)
+                            .then(|| "Auto 已使用 CPU 恢复翻译 Worker".into())
+                    });
                     session.worker = Some(worker);
                 }
                 Err(error) => {

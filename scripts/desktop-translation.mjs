@@ -37,7 +37,7 @@ async function launch(){
   invoke=(command,args={})=>page.evaluate(({command,args})=>window.__TAURI_INTERNALS__.invoke(command,args),{command,args});
   await page.evaluate(async()=>{
     window.__translationEvents=[];
-    for(const event of ['translation-invalidated','translation-result']) {
+    for(const event of ['translation-invalidated','translation-result','cuda-runtime-progress']) {
       const handler=window.__TAURI_INTERNALS__.transformCallback(value=>window.__translationEvents.push({event,payload:value.payload}));
       await window.__TAURI_INTERNALS__.invoke('plugin:event|listen',{event,target:{kind:'Any'},handler});
     }
@@ -48,7 +48,7 @@ async function close(){if(invoke)await invoke('plugin:window|close',{label:'main
 async function show(text){fs.writeFileSync(control+'.tmp','text:'+text);fs.renameSync(control+'.tmp',control);await until(()=>!fs.existsSync(control));await pause(180);}
 async function recognize(){await invoke('recognize_once');return (await invoke('get_history'))[0];}
 async function translated(snapshot,timeout=60000){return until(async()=>{const event=(await invoke('translation_history')).find(t=>t.frameId===snapshot.result.frameId&&t.generation===snapshot.preview.generation);if(event?.results.some(r=>r.status==='error'))throw Error(JSON.stringify(event));return event;},timeout);}
-async function updateT(patch){tsettings={...tsettings,...patch};await invoke('update_translation_settings',{settings:tsettings});}
+async function updateT(patch){tsettings={...tsettings,...patch};await invoke('update_translation_settings',{settings:tsettings});tsettings=await invoke('translation_settings');}
 async function target(){const w=await until(async()=>(await invoke('list_windows',{showAll:false})).find(w=>w.title==='GameOCR Capture Fixture'));await invoke('select_window',{id:w.id});await invoke('start_capture');await until(()=>invoke('get_capture_preview'));return w;}
 function ownedWorkers(){return JSON.parse(execFileSync('powershell.exe',['-NoProfile','-Command',`ConvertTo-Json -Compress -InputObject @(Get-CimInstance Win32_Process -Filter "ParentProcessId=${app.pid} AND Name='translation-worker.exe'" | Select-Object ProcessId,ExecutablePath)`],{encoding:'utf8',windowsHide:true}));}
 try {
@@ -82,6 +82,15 @@ try {
   const pid=ownedWorkers()[0].ProcessId,calls=(await invoke('translation_status')).calls;
   const next=await recognize(),cached=await translated(next);assert(cached.results.every(r=>r.cacheHit));assert.equal((await invoke('translation_status')).calls,calls);assert.equal(ownedWorkers()[0].ProcessId,pid);assert.equal(cached.frameId,next.result.frameId);pass('Repeated OCR uses cache with current identity and same worker');
   samples.push({case:'repeated OCR cache',translation:cached,additionalModelCalls:0});
+  const normalGeneration={...tsettings.generation};
+  await updateT({generation:{...normalGeneration,maxTokens:1}});await invoke('load_translation_model',{id:modelId});
+  const limitedFrame=await recognize(),limited=await translated(limitedFrame);
+  assert(limited.results.every(r=>r.truncated&&r.stopReason==='maxTokens'&&r.status==='incomplete'));
+  const limitedCalls=(await invoke('translation_status')).calls;
+  const retryLimited=await recognize(),retryLimitedResult=await translated(retryLimited);
+  assert(retryLimitedResult.results.every(r=>!r.cacheHit&&r.truncated));assert.equal((await invoke('translation_status')).calls,limitedCalls+1);
+  pass('Truncated real model output remains incomplete and never hits cache');
+  await updateT({generation:normalGeneration});await invoke('load_translation_model',{id:modelId});
   const exportPath=path.join(out,'translation-export.json');await invoke('export_translation',{frameId:next.result.frameId,path:exportPath});assert.equal(JSON.parse(fs.readFileSync(exportPath,'utf8')).schemaVersion,1);
   await page.getByRole('button',{name:'翻译',exact:true}).click();const dialog=page.getByRole('dialog');await dialog.waitFor();
   const box=await dialog.boundingBox(),viewport=await page.evaluate(()=>({w:innerWidth,h:innerHeight}));assert(Math.abs(box.x+box.width/2-viewport.w/2)<3);assert(Math.abs(box.y+box.height/2-viewport.h/2)<3);await page.screenshot({path:path.join(out,'translation-settings.png')});
@@ -92,7 +101,20 @@ try {
   assert(batchResult.results.every(r=>r.sourceBlockIds.length===1&&r.translatedText));
   assert(batchResult.results.every(r=>r.metrics.batchSize===batchResult.results.length)||batchAfter.batchFallbacks>batchBefore.batchFallbacks);
   samples.push({case:'structured batch',translation:batchResult,modelCalls:batchAfter.calls-batchBefore.calls,fallbacks:batchAfter.batchFallbacks-batchBefore.batchFallbacks});
-  pass('Real multi-block translation uses validated IDs or safe per-group fallback');await updateT({grouping:'paragraph'});
+  pass('Real multi-block translation uses validated IDs or safe per-group fallback');
+  fs.writeFileSync(control,'resize');await until(()=>!fs.existsSync(control));await pause(250);
+  await invoke('unload_model');settings={...settings,onnx:{...settings.onnx,detectionRegion:[0,0.08,1,0.92]}};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});
+  await invoke('clear_translation_cache');await show('New Game\nLoad Game\nSettings');await translated(await recognize());
+  await show('New Game\nLoad Game\nSettings\nInventory\nContinue\nExit Game');
+  const partialBefore=await invoke('translation_status'),partialFrame=await recognize(),partial=await translated(partialFrame),partialAfter=await invoke('translation_status');
+  assert.equal(partial.results.length,6);assert.equal(partial.results.filter(r=>r.cacheHit).length,3);
+  assert.equal(partialAfter.batchCalls-partialBefore.batchCalls,1);assert.equal(partialAfter.calls-partialBefore.calls,1);
+  assert.equal(partialAfter.cacheHits-partialBefore.cacheHits,3);
+  assert.equal(partialAfter.batchFallbacks,partialBefore.batchFallbacks);
+  assert(partial.results.filter(r=>!r.cacheHit).every(r=>r.metrics.batchSize===3));
+  assert.equal(partial.results.filter(r=>r.metrics.generatedTokens>0).length,1);
+  samples.push({case:'three cached plus three new',translation:partial,modelCalls:1});pass('Three cache hits plus three new menus use one model call for only the three misses');
+  await updateT({grouping:'paragraph'});
   await updateT({debounceMs:2000});await invoke('clear_translation_cache');const before=(await invoke('translation_status')).calls;
   const started=performance.now();for(const line of ['Where','Where are','Where are you','Where are you going?']){await show(line);await recognize();}
   const final=(await invoke('get_history'))[0];await translated(final);const after=(await invoke('translation_status')).calls;assert.equal(after-before,1);samples.push({case:'typewriter',elapsedMs:performance.now()-started,modelCalls:after-before});pass('Four real OCR typewriter updates produce one final model call');
@@ -122,6 +144,21 @@ try {
   if(gpuReady) {
   assert.equal((await invoke('translation_status')).device,'cuda');await invoke('clear_translation_cache');
   const gpu=await recognize(),gpuT=await translated(gpu);assert(gpuT.results.every(r=>r.device==='cuda'));samples.push({combination:'OCR CPU + translation GPU',ocr:gpu.result.metrics,translation:gpuT});pass('Independent OCR CPU + translation CUDA');
+  const runtimeEventsBefore=await page.evaluate(()=>window.__translationEvents.filter(e=>e.event==='cuda-runtime-progress').length);
+  await updateT({device:'auto'});await invoke('load_translation_model',{id:modelId});
+  assert.equal((await invoke('translation_status')).device,'cuda');await invoke('clear_translation_cache');
+  const autoWorker=ownedWorkers();assert.equal(autoWorker.length,1);
+  const crashing=await recognize();await until(async()=>(await invoke('translation_status')).status==='translating');
+  process.kill(autoWorker[0].ProcessId);
+  await until(async()=>(await invoke('translation_status')).status==='error');
+  await invoke('translate_once',{frameId:crashing.result.frameId});
+  const recovered=await until(async()=>(await invoke('translation_history')).find(e=>e.frameId===crashing.result.frameId&&e.results.every(r=>r.status==='complete'&&r.device==='cpu')));
+  const recoveredStatus=await invoke('translation_status');assert.equal(recoveredStatus.device,'cpu');assert.equal(recoveredStatus.status,'ready');
+  const cpuRecoveryPid=ownedWorkers()[0].ProcessId;
+  await invoke('clear_translation_cache');const sticky=await recognize();assert((await translated(sticky)).results.every(r=>r.device==='cpu'));assert.equal(ownedWorkers()[0].ProcessId,cpuRecoveryPid);
+  assert.equal(await page.evaluate(()=>window.__translationEvents.filter(e=>e.event==='cuda-runtime-progress').length),runtimeEventsBefore);
+  samples.push({case:'Auto CUDA crash recovers to CPU',translation:recovered,status:recoveredStatus});pass('Real Auto CUDA worker crash recovers to CPU and stays there without runtime downloads');
+  await updateT({device:'cuda'});await invoke('load_translation_model',{id:modelId});
   await invoke('unload_model');settings={...settings,device:'cuda'};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});await invoke('clear_translation_cache');
   const both=await recognize(),bothT=await translated(both);assert.equal(both.result.device,'CUDA');assert(bothT.results.every(r=>r.device==='cuda'));samples.push({combination:'OCR GPU + translation GPU',ocr:both.result.metrics,translation:bothT});pass('OCR CUDA + translation CUDA coexist on actual GPU');
   await page.screenshot({path:path.join(out,'cuda-translation.png')});
@@ -131,6 +168,17 @@ try {
   try {await assert.rejects(invoke('load_translation_model',{id:modelId}),/SHA|校验/);}finally{const fd=fs.openSync(file,'r+');fs.writeSync(fd,Buffer.from([original]),0,1,65536);fs.closeSync(fd);}pass('Same-size model corruption rejected before loading');
   const profile={id:'fixture-game',name:'Fixture Game',sourceLanguage:'en',targetLanguage:'zh',style:'',background:'',glossary:[{source:'messenger',target:'信使',category:'character'}],version:1,windowProcess:window.processName};
   await updateT({device:'cpu',persistentCache:true,contextEnabled:true,profiles:[profile],profileId:profile.id});await invoke('load_translation_model',{id:modelId});
+  await page.getByRole('button',{name:'翻译',exact:true}).click();await page.getByRole('dialog').waitFor();
+  const sourceLanguage=page.getByRole('combobox',{name:/^源语言/});
+  assert.equal(await sourceLanguage.inputValue(),'');
+  await sourceLanguage.selectOption('auto');await page.getByRole('button',{name:'保存翻译设置',exact:true}).click();
+  await until(async()=>(await invoke('translation_settings')).sourceLanguageOverride==='auto');
+  assert.equal((await invoke('translation_settings')).profiles[0].version,1);
+  await sourceLanguage.selectOption('');await page.getByRole('button',{name:'保存翻译设置',exact:true}).click();
+  await until(async()=>(await invoke('translation_settings')).sourceLanguageOverride===null);
+  assert.equal((await invoke('translation_settings')).profiles[0].version,1);
+  await page.getByRole('button',{name:'关闭翻译设置'}).click();tsettings=await invoke('translation_settings');
+  pass('UI manual language override and return to Profile defaults persist without version churn');
   const contextFrame=await recognize();await translated(contextFrame);await invoke('confirm_translation_context',{frameId:contextFrame.result.frameId});
   const withContextFrame=await recognize(),withContext=await translated(withContextFrame);
   assert(withContext.results.every(r=>!r.cacheHit&&r.contextVersion>0));samples.push({case:'explicit confirmed context',translation:withContext});
@@ -145,6 +193,6 @@ try {
   settings={...await invoke('get_settings'),device:'cpu'};await invoke('update_settings',{settings});await invoke('load_model',{id:'ppocrv6-small'});await target();await invoke('load_translation_model',{id:modelId});
   const restoredFrame=await recognize(),restored=await translated(restoredFrame);assert(restored.results.every(r=>r.cacheHit));assert.equal((await invoke('translation_status')).calls,0);pass('Restart restores bounded cache without a neural translation call');
   await invoke('clear_translation_cache');assert(!fs.existsSync(path.join(data,'translation/cache.json')));await updateT({persistentCache:false});await close();
-  fs.writeFileSync(path.resolve('docs/test-results/translation-desktop.json'),JSON.stringify({executedAt:new Date().toISOString(),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),downloadRequested:process.env.GAMEOCR_TEST_DOWNLOAD==='1',checks,samples,skipped,failures,out},null,2));
+  fs.writeFileSync(path.resolve(process.env.GAMEOCR_TRANSLATION_DESKTOP_REPORT??'docs/test-results/translation-desktop.json'),JSON.stringify({executedAt:new Date().toISOString(),appSha256:createHash('sha256').update(fs.readFileSync(binary)).digest('hex'),downloadRequested:process.env.GAMEOCR_TEST_DOWNLOAD==='1',checks,samples,skipped,failures,out},null,2));
 }catch(e){const status=await invoke?.('translation_status').catch(()=>null);fs.writeFileSync(path.join(out,'failure.json'),JSON.stringify({error:String(e),stack:e.stack,checks,samples,failures,status},null,2));throw e;}
 finally{if(app?.exitCode===null)await close().catch(()=>{});await browser?.close().catch(()=>{});fixture?.kill();if(app?.exitCode===null)app.kill();fs.closeSync(log);}
