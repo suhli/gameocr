@@ -4,6 +4,33 @@ use gameocr_translation::{text::normalize, types::Identity};
 use serde::{Deserialize, Serialize};
 use std::time::{Duration, Instant};
 
+/// The fixed-position option belongs to a particular target, never to the
+/// desktop globally. Following updates the anchor so turning it off freezes the
+/// latest position rather than the position at application startup.
+#[derive(Default)]
+pub struct WindowAnchor(Option<(String, [i32; 4])>);
+impl WindowAnchor {
+    pub fn clear(&mut self) {
+        self.0 = None;
+    }
+    pub fn allows(
+        &mut self,
+        target: &str,
+        geometry: &crate::window::OverlayGeometry,
+        follow: bool,
+    ) -> bool {
+        if !geometry.foreground || !geometry.visible {
+            return false;
+        }
+        if follow || self.0.as_ref().is_none_or(|(id, _)| id != target) {
+            self.0 = Some((target.into(), geometry.rect));
+        }
+        self.0
+            .as_ref()
+            .is_some_and(|(_, rect)| *rect == geometry.rect)
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
 pub struct OverlaySettings {
@@ -24,6 +51,38 @@ mod tests {
     use super::*;
     use crate::translation::TranslationEvent;
     use gameocr_translation::types::TranslationResult;
+    #[test]
+    fn window_anchor_handles_focus_visibility_target_changes_and_enable_cycles() {
+        let mut anchor = WindowAnchor::default();
+        let mut g = crate::window::OverlayGeometry {
+            rect: [-800, 0, 0, 600],
+            client_rect: [-800, 0, 0, 600],
+            dpi: 144,
+            mapping: "client".into(),
+            foreground: true,
+            visible: true,
+        };
+        assert!(anchor.allows("a", &g, false));
+        g.foreground = false;
+        assert!(!anchor.allows("a", &g, true));
+        g.foreground = true;
+        g.visible = false; // minimized/cloaked windows are not eligible
+        assert!(!anchor.allows("a", &g, true));
+        g.visible = true;
+        g.rect = [50, 50, 850, 650];
+        assert!(!anchor.allows("a", &g, false));
+        // A target switch may occur entirely between two manager polls.
+        assert!(anchor.allows("b", &g, false));
+        g.rect = [100, 100, 900, 700];
+        assert!(anchor.allows("b", &g, true));
+        assert!(anchor.allows("b", &g, false));
+        g.rect = [100, 100, 1000, 800];
+        assert!(!anchor.allows("b", &g, false));
+        for _ in 0..3 {
+            anchor.clear(); // close/disable/invalid current identity
+            assert!(anchor.allows("b", &g, false));
+        }
+    }
     fn block(id: &str, bbox: [f64; 4]) -> OcrBlock {
         OcrBlock {
             id: id.into(),

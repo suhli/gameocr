@@ -3,7 +3,7 @@ use crate::{service::Service, window::OverlayGeometry};
 use anyhow::{Context, Result, ensure};
 use parking_lot::{Mutex, RwLock};
 use serde::Serialize;
-use state::{LiveState, OverlaySettings, Subtitle};
+use state::{LiveState, OverlaySettings, Subtitle, WindowAnchor};
 use std::{
     sync::{Arc, Weak, atomic::Ordering},
     time::{Duration, Instant},
@@ -196,12 +196,7 @@ impl OverlayManager {
         }
         setup
     }
-    fn sync(
-        self: &Arc<Self>,
-        service: &Service,
-        error: Option<&str>,
-        anchor: &mut Option<[i32; 4]>,
-    ) {
+    fn sync(self: &Arc<Self>, service: &Service, error: Option<&str>, anchor: &mut WindowAnchor) {
         let settings = self.settings.read().clone();
         let source = service.settings.read().capture_source.clone();
         let selected = service.selected.lock().clone();
@@ -243,12 +238,7 @@ impl OverlayManager {
                     live.source_height,
                 ) {
                     Ok(g) => {
-                        if anchor.is_none() {
-                            *anchor = Some(g.rect);
-                        }
-                        eligible = g.foreground
-                            && g.visible
-                            && (settings.overlay_follow_window || *anchor == Some(g.rect));
+                        eligible = anchor.allows(&target.id, &g, settings.overlay_follow_window);
                         reason = if eligible {
                             "半透明磨砂视觉；仅 WebView 内部 blur"
                         } else {
@@ -267,7 +257,7 @@ impl OverlayManager {
             }
         }
         if !settings.overlay_enabled || !current {
-            *anchor = None;
+            anchor.clear();
         }
         let mut next = OverlaySnapshot {
             serial: 0,
@@ -340,7 +330,7 @@ impl OverlayManager {
         tauri::async_runtime::spawn(async move {
             let mut attempted = false;
             let mut error = None;
-            let mut anchor = None;
+            let mut anchor = WindowAnchor::default();
             loop {
                 let Some(service) = service.upgrade() else {
                     break;
