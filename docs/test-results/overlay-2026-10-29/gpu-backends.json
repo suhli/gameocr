@@ -1,0 +1,34 @@
+{
+  "packages": [
+    {
+      "url": "https://github.com/suhli/gameocr/releases/download/gpu-e51f20325a78/GameOCR-llamacpp-cuda-windows-x64-4714416072f0.zip",
+      "id": "gameocr-llamacpp-cuda",
+      "version": "ef3f9784ea58",
+      "kind": "llamacpp",
+      "runtimes": [
+        "llamacpp"
+      ],
+      "size": 277372421,
+      "name": "GameOCR llamacpp CUDA",
+      "sha256": "4714416072f0fa6fc764690ee849f1d218fd86c2ac0cfceb0874ed19c7350bb7",
+      "required": [
+        "ocr-worker.exe"
+      ]
+    },
+    {
+      "url": "https://github.com/suhli/gameocr/releases/download/gpu-e51f20325a78/GameOCR-translation-cuda-windows-x64-1f9ba3c308a6.zip",
+      "id": "gameocr-translation-cuda",
+      "version": "394d31f875da",
+      "kind": "translation",
+      "runtimes": [
+        "translation"
+      ],
+      "size": 276186634,
+      "name": "GameOCR translation CUDA",
+      "sha256": "1f9ba3c308a6db10b266925cb742ad9b46b9215c3a8169fadf5360c47b7b9ce0",
+      "required": [
+        "translation-worker.exe"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+   Compiling gameocr v0.1.0 (C:\Users\shuhangli\repos\gameocr\src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 10.06s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_app-a8ee67f838a122b2.exe)
+
+running 43 tests
+test capture::preview_tests::reuse_keeps_current_identity_and_rejects_one_pixel_or_generation_change ... ok
+test cuda_runtime::tests::backend_sources_are_pinned_and_redirects_are_restricted ... ok
+test cuda_runtime::tests::official_catalog_is_pinned_and_runtime_specific ... ok
+test executor::tests::imported_models_keep_their_memory_guard ... ok
+test model::tests::catalog_is_valid_and_has_real_download_metadata ... ok
+test cuda_runtime::tests::cpu_only_distribution_fails_before_any_download ... ok
+test cuda_runtime::tests::installation_lock_is_released_on_drop ... ok
+test cuda_runtime::tests::corrupt_zip_with_matching_digest_never_becomes_ready ... ok
+test cuda_runtime::tests::checksum_cancellation_and_shutdown_leave_no_installation ... ok
+test model::tests::path_safety ... ok
+test model::tests::resume_safety ... ok
+test model::tests::import_failure_does_not_leave_copies ... ok
+test overlay::state::tests::expiry_is_bounded_even_when_early_auto_hide_is_disabled ... ok
+test overlay::state::tests::geometry_rejects_invalid_and_distant_groups_clips_and_uses_polygon ... ok
+test overlay::state::tests::lifecycle_invalidations_never_replay_history ... ok
+test overlay::state::tests::only_complete_current_translations_are_visible ... ok
+test overlay::state::tests::same_text_relocates_without_flicker_and_old_frame_cannot_replace_it ... ok
+test model::tests::unfinished_is_never_ready ... ok
+test overlay::state::tests::window_anchor_handles_focus_visibility_target_changes_and_enable_cycles ... ok
+test model::tests::interrupted_download_resumes_and_verifies_before_publish ... ok
+test settings::tests::execution_mode_migration_is_opt_in ... ok
+test settings::tests::old_settings_default_to_sequential_and_parallel_fields_persist ... ok
+test cuda_runtime::tests::lean_layout_requires_opt_in_and_complete_bundled_ort_still_works ... ok
+test translation::config::tests::migration_disabled_and_context_profile_isolation ... ok
+test translation::config::tests::profile_versions_only_track_semantics_and_never_decrease ... ok
+test translation::config::tests::overrides_migrate_and_effective_languages_change_prompt_and_cache ... ok
+test translation::config::tests::selected_profile_languages_survive_edit_save_and_reload ... ok
+test model::tests::ignored_range_restarts_and_corruption_is_rejected ... ok
+test translation::worker::tests::cancelled_load_and_double_failure_never_retry_indefinitely ... ok
+test translation::tests::same_text_with_new_epoch_or_generation_cancels_old_work ... ok
+test translation::tests::latest_only_cancels_running_a_and_pending_b_but_identical_frames_keep_deadline ... ok
+test window::tests::capture_mapping_uses_matching_surface_and_negative_physical_coordinates ... ok
+test window::tests::identity_rejects_reused_handle ... ok
+test translation::worker::tests::recovery_is_bounded_sticky_and_respects_explicit_device ... ok
+test overlay::state::tests::settings_legacy_defaults_persistence_and_validation ... ok
+test settings::tests::persist_and_validate ... ok
+test cuda_runtime::tests::invalid_archive_never_publishes_partial_installation ... ok
+test model::tests::import_verify_and_delete_lifecycle ... ok
+test cuda_runtime::tests::backend_archive_requires_matching_core_and_provider_and_keeps_notices ... ok
+test cuda_runtime::tests::install_is_complete_and_detects_corruption ... ok
+test model::tests::multi_file_integrity_and_shared_file_deletion ... ok
+test ocr::tests::responses_are_bounded_and_cannot_be_partial ... ok
+test adaptive::persistence::tests::persistence_clear_barrier_and_corrupt_recovery ... ok
+
+test result: ok. 43 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.31s
+
+     Running unittests src\lib.rs (target\debug\deps\gameocr_core-8ac1a818ac40f8eb.exe)
+
+running 24 tests
+test engine::tests::onnx_coordinates_do_not_require_generation ... ok
+test engine::tests::explicit_cuda_never_silently_falls_back ... ok
+test engine::tests::invalid_thresholds_and_memory_limits_rejected ... ok
+test engine::tests::factory_validates_then_dispatches_only_the_registered_constructor ... ok
+test engine::tests::custom_adapter_registry_can_be_used_by_factory ... ok
+test engine::tests::roi_validation_and_legacy_defaults ... ok
+test grounding::tests::clamp_and_reject ... ok
+test latest::tests::overload_only_keeps_latest ... ok
+test parallel::tests::configuration_semantics_and_legacy_defaults ... ok
+test manifest::tests::migrates_existing_files_without_renaming ... ok
+test parallel::tests::coordinates_deduplication_and_border_repair ... ok
+test shared_frame::tests::exact_bytes_identity_bounds_and_cleanup ... ok
+test types::tests::old_history_json_remains_readable ... ok
+test grounding::tests::empty_and_image_regions ... ok
+test grounding::tests::plain_and_missing_coordinates_survive ... ok
+test grounding::tests::official_multilingual_multiline ... ok
+test change::tests::duplicate_threshold_and_resize ... ok
+test adaptive::features::tests::blank_tiny_and_noise_are_bounded ... ok
+test parallel::tests::tiling_preserves_coverage_and_detector_budget ... ok
+test adaptive::scheduler::tests::exploration_rate_resource_and_cooldown_guards ... ok
+test adaptive::scheduler::tests::learns_only_stable_comparable_evidence_and_isolates_fingerprints ... ok
+test adaptive::scheduler::tests::concentrated_layout_returns_to_single_during_switch_cooldown ... ok
+test adaptive::scheduler::tests::bounded_profiles_and_unknown_layouts ... ok
+test adaptive::features::tests::stable_scaled_and_spatial_features ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.05s
+
+     Running unittests src\lib.rs (target\debug\deps\gameocr_onnx-7a6d46429740477f.exe)
+
+running 14 tests
+test cache::tests::bounded_age_and_resize ... ok
+test cache::tests::one_pixel_changes_and_outside_regions ... ok
+test recognizer::tests::compact_preserves_blank_repeat_confidence_and_rejects_invalid_nonmax ... ok
+test batching::tests::long_lines_do_not_inflate_short_batches_and_pixel_budget_holds ... ok
+test pipeline::tests::ctc_blank_repeats_and_multilingual ... ok
+test regions::tests::seam_duplicates_and_neighboring_rows ... ok
+test regions::tests::tilted_seam_and_different_padding_do_not_leave_fragments ... ok
+test regions::tests::coarse_partial_words_and_double_height_boxes_do_not_duplicate_fine_lines ... ok
+test pipeline::tests::empty_detector_and_coordinate_restore ... ok
+test temporal::tests::boundaries_timeout_and_low_confidence_are_not_trusted ... ok
+test temporal::tests::changes_never_reuse_changed_glyphs_and_new_edges_force_detection ... ok
+test pipeline::tests::perspective_keeps_color_and_rotates_vertical ... ok
+test regions::tests::four_k_coverage_and_budget ... ok
+test refinement::tests::flat_background_has_no_proposals_and_text_strokes_obey_budget ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+     Running unittests src\lib.rs (target\debug\deps\gameocr_translation-26ee88c7f1d1faec.exe)
+
+running 15 tests
+test cache::tests::invalid_results_and_legacy_entries_never_replace_complete_cache ... ok
+test prompt::tests::no_default_system_or_glossary ... ok
+test prompt::tests::known_source_language_is_a_prompt_constraint ... ok
+test prompt::tests::unknown_language_is_rejected ... ok
+test engine::tests::factory_checks_runtime_not_file_extension ... ok
+test batch::tests::reordered_ids_are_safe_but_missing_duplicate_and_malformed_output_is_rejected ... ok
+test cache::tests::lru_and_prompt_isolation ... ok
+test text::tests::output_budget_keeps_complete_unicode_but_rejects_invalid_bytes ... ok
+test batch::tests::skips_budgets_and_partial_failure_keep_cache_safe_and_totals_unique ... ok
+test text::tests::languages_do_not_guess_han_or_names ... ok
+test protocol::tests::controls_match_identity_and_input_and_queue_remain_bounded ... ok
+test text::tests::grouping_preserves_blocks_and_separates_menu ... ok
+test cache::tests::cache_keys_cover_model_parameters_profile_and_prompt_content ... ok
+test batch::tests::only_misses_are_batched_and_hits_survive_lru_eviction ... ok
+test protocol::tests::running_generation_stops_and_next_request_reuses_engine_without_stale_controls ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s

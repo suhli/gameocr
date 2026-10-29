@@ -8,7 +8,7 @@
 
 每 50 ms 在启用状态检查目标，关闭时退到 500 ms；新 OCR、译文、失效和设置事件会提前唤醒检查。只有显示数据或窗口几何发生变化才发出新快照、调整窗口。目标必须同时匹配 HWND、PID、进程创建时间、窗口销毁 epoch 和窗口类，且是当前前台可见窗口。移入后台、最小化、关闭或映射不确定时隐藏。重新获得焦点只恢复仍在有效期内的当前译文。
 
-关闭「跟随游戏窗口」后保留首次定位基准，目标移出该位置时隐藏字幕，防止字幕停在桌面其他应用之上。关闭字幕可重复开启同一个窗口；退出主程序会显式关闭字幕窗口和 Worker。
+关闭「跟随游戏窗口」后保留当前目标最近的定位基准，目标移出该位置时隐藏字幕，防止字幕停在桌面其他应用之上。切换捕获目标会建立新基准，不沿用旧目标的位置。关闭字幕可重复开启同一个窗口；退出主程序会显式关闭字幕窗口和 Worker。
 
 ## 坐标与排版
 
@@ -48,3 +48,5 @@ Microsoft 对 [SetWindowDisplayAffinity](https://learn.microsoft.com/en-us/windo
 可重复检查：`npm run check`、`npm test`、`npm run build`、`cargo test -p gameocr --lib --locked`。`node scripts/desktop-overlay.mjs` 默认运行 debug 应用与 Vite，需要先构建 `gameocr` 和启用 `test-fixture` 的 `capture-fixture`，并准备 `.cache/test-models`、`.cache/translation/Hy-MT2-1.8B-Q4_K_M.gguf`。设置 `GAMEOCR_APP` 可验证发行包。设置 `GAMEOCR_OVERLAY_OUTPUT` / `GAMEOCR_OVERLAY_REPORT` 可选择新的证据路径，不覆盖原基准。
 
 桌面测试使用真实 Win32 测试窗口、WGC、PP-OCR、Hy-MT2，包含系统鼠标点击/滚轮及前台切换。需要可交互桌面；辅助脚本只操作已核对 PID 的本次测试窗口。测试窗口证据不能替代真实游戏、高 DPI 多显示器或干净 Windows 安装验收。
+
+纯坐标与混合文字布局计时：`node scripts/benchmark-overlay-layout.mjs artifacts/overlay-layout.json`，使用支持直接加载 TypeScript 的 Node 运行；不打开桌面窗口，也不代表 WebView 绘制或端到端延迟。本轮完成情况与未验收项目见 [验证记录](translation-overlay-validation.md)。

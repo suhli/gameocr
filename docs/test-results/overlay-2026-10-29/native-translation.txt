@@ -1,0 +1,5 @@
+PASS cpu 14 real translations
+PASS cpu-low-temperature 14 real translations
+PASS batch 1 real translations
+PASS output-limit 14 real translations
+PASS real running cancellation and subsequent translation with same loaded worker

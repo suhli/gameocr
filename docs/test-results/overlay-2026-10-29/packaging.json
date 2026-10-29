@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-10-29T03:56:20.5807255+00:00",
+  "implementationHead": "be7edea3dbbdd15d0130f97f9386200b85682aa9",
+  "files": [
+    {
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable.zip",
+      "size": 20937509,
+      "sha256": "843c1cec304339d309e9c401d78d095ccd3de6aa67d4fde2aea87317907bcebb"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "size": 20225872,
+      "sha256": "0873ae9351506eee7752bc95ec8027a1f3181b79ec3dce3b0eb75b9f4571d19e"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-setup.exe",
+      "size": 13132013,
+      "sha256": "8722e75a9b8dc906c3a3aeb7f5a81f2dc250c46d42f2c88775350f3613a1cc8c"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64.msi",
+      "size": 18153472,
+      "sha256": "50814c5a4ce2603a04edf4859423d507f1350e07ef77ca1930736e929eff11da"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe",
+      "size": 16397312,
+      "sha256": "169f67641a22a0f6b2dfa3a0a9ee84f893a05f40f95e82e5ab601b2917d219dd"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+      "size": 16397312,
+      "sha256": "169f67641a22a0f6b2dfa3a0a9ee84f893a05f40f95e82e5ab601b2917d219dd"
+    },
+    {
+      "path": "target/release/gameocr.exe",
+      "size": 16397312,
+      "sha256": "169f67641a22a0f6b2dfa3a0a9ee84f893a05f40f95e82e5ab601b2917d219dd"
+    },
+    {
+      "path": "artifacts/gpu-backends.json",
+      "size": 1066,
+      "sha256": "44d5824b0fa6ad32587cd8b8ca29c00a5afff96dd74fe5826267f7f798fd0b40"
+    },
+    {
+      "path": "src-tauri/resources/workers/onnx/cpu/onnx-worker.exe",
+      "size": 1544704,
+      "sha256": "131637440ade63b2e2253462c00c995a0812f64de8ba6ac8469b4547efc6a75b"
+    },
+    {
+      "path": "src-tauri/resources/workers/llamacpp/cpu/ocr-worker.exe",
+      "size": 7391232,
+      "sha256": "cdb55260e5aa2e21a90a2083f15f62f2866defce88e5abfbdcdc39452fa83992"
+    },
+    {
+      "path": "src-tauri/resources/workers/translation/cpu/translation-worker.exe",
+      "size": 4540928,
+      "sha256": "bf7854cf363ba71eae31afdecd0c779d7ce63822a6db057bdc6b208359e083c8"
+    },
+    {
+      "path": "target/workers-cpu/release/translation-test.exe",
+      "size": 4970496,
+      "sha256": "4aafb43be8bd881db521c0e0944bdf173e5e204550a8753b34130f763c507b91"
+    }
+  ],
+  "checks": [
+    {
+      "name": "NSIS and MSI build",
+      "result": "PASS",
+      "evidence": "installers-build.txt"
+    },
+    {
+      "name": "CPU and on-demand ZIP contents and native dependencies",
+      "result": "PASS",
+      "evidence": [
+        "verify-cpu.txt",
+        "verify-ondemand.txt"
+      ]
+    },
+    {
+      "name": "Embedded GPU catalog versus local archives",
+      "result": "PASS",
+      "evidence": "package-ondemand.txt"
+    },
+    {
+      "name": "Clean Windows installation and runtime desktop validation",
+      "result": "SKIPPED",
+      "reason": "Desktop validation deferred by user; no installers run"
+    },
+    {
+      "name": "Public GPU companion download",
+      "result": "SKIPPED",
+      "reason": "Offline assets verified only; no release published in this task"
+    }
+  ],
+  "notes": [
+    "Tauri patches bundle-type metadata separately for NSIS and MSI; portable EXE comes from the final build output, not an extracted installer.",
+    "Unsigned artifacts; system WebView2 required.",
+    "New CPU translation worker was rebuilt; native tests and both packages use the same recorded worker SHA256."
+  ]
+}

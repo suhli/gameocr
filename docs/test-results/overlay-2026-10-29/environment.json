@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-29T11:48:35.4691838+08:00",
+  "os": "Windows 11 Pro",
+  "osBuild": "10.0.26200",
+  "cpu": "AMD Ryzen 5 5600G with Radeon Graphics         ",
+  "logicalProcessors": 12,
+  "node": "v24.22.0",
+  "rust": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "implementationHead": "be7edea3dbbdd15d0130f97f9386200b85682aa9",
+  "desktopValidation": "Deferred by user; no interactive tests run in this continuation"
+}

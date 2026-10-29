@@ -208,3 +208,9 @@ Windows CI 加入真实 CPU 时序五策略回归和报告上传；新字延迟�
 
 离线 GPU 校验：`pwsh -File scripts/test-gpu-backends.ps1`，先生成匹配 ZIP/清单；该测试检查正例及篡改负例。`verify-gpu-backends.ps1 -EmbeddedManifest <导出的清单>` 同时核对 EXE 清单。可额外使用 `-CheckPublished` 检查公开 URL，但 HTTP 200 仍不能替代完整下载、SHA 和模型加载测试。Draft/未发布资源不得计作已完成公网分发。
 
+## Windows 翻译 Overlay（2026-10-29）
+
+实现和使用见 [Overlay 说明](translation-overlay.md)，本轮 PASS / SKIPPED 与原始证据见 [验证记录](translation-overlay-validation.md)。当前按用户选择延后交互桌面验收，不将旧版桌面测试算作当前通过。
+
+基础回归：`cargo test -p gameocr -p gameocr-core -p gameocr-translation -p gameocr-onnx --no-default-features --lib --locked`，以及原有前端检查和测试。`node scripts/benchmark-overlay-layout.mjs` 仅测纯布局，不打开窗口。`node scripts/desktop-overlay.mjs` 使用真实测试窗口、WGC 和模型，包含前台切换与鼠标输入，需要可交互桌面；支持 `GAMEOCR_APP`、`GAMEOCR_OVERLAY_OUTPUT`、`GAMEOCR_OVERLAY_REPORT` 指定应用及独立证据目录。
+

@@ -38,4 +38,4 @@ Profile 版本由后端保存时维护，仅术语、风格、背景、源/目�
 
 初次加载和重建 Worker 共用有界回退 Helper。Auto 在 CUDA 加载失败时最多尝试一次 CPU；运行中 CUDA Worker 崩溃后下一次请求按 CPU 恢复，后续保持 CPU，直到用户重新加载模型。显式 CUDA 不静默回退，恢复流程不调用 Runtime 下载。
 
-未来 Overlay 可直接消费 TranslationResult 的块关联和原始几何，但须继续携带并校验 generation/epoch/revision。当前只在桌面结果面板展示，不做游戏内绘制、文字替换或 TTS。
+Windows Overlay 已独立消费当前 TranslationResult 的块关联和原始几何，继续校验 generation/epoch/revision 与目标窗口身份；历史面板不驱动实时字幕。窗口、失效与磨砂视觉的实现边界见 [Overlay 说明](translation-overlay.md)。不修改游戏渲染、不替换原文，不实现 TTS。

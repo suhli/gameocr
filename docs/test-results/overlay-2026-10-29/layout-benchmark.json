@@ -1,0 +1,70 @@
+{
+  "executedAt": "2026-10-29T03:54:22.760Z",
+  "scope": "Node pure source-coordinate mapping and mixed-text layout only; synthetic input. No desktop, paint, end-to-end latency, idle CPU/memory, or flicker measurements.",
+  "node": "v24.22.0",
+  "platform": "win32",
+  "cpu": "AMD Ryzen 5 5600G with Radeon Graphics         ",
+  "sourceSha256": "d321af60f91012975c1855e011e4842b1b2d426a0ce0af67a870f921fed4e708",
+  "samples": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "sourceItems": 3,
+      "visibleItems": 3,
+      "iterations": 10000,
+      "meanMs": 0.0025008800000000447,
+      "p50Ms": 0.002200000000001978,
+      "p95Ms": 0.004300000000000637
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "sourceItems": 32,
+      "visibleItems": 32,
+      "iterations": 10000,
+      "meanMs": 0.01113212999999991,
+      "p50Ms": 0.009200000000021191,
+      "p95Ms": 0.017099999999999227
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "sourceItems": 64,
+      "visibleItems": 64,
+      "iterations": 10000,
+      "meanMs": 0.0257610900000002,
+      "p50Ms": 0.021200000000021646,
+      "p95Ms": 0.04290000000003147
+    },
+    {
+      "width": 3840,
+      "height": 2160,
+      "sourceItems": 3,
+      "visibleItems": 3,
+      "iterations": 10000,
+      "meanMs": 0.0012167700000001672,
+      "p50Ms": 0.0009000000000014552,
+      "p95Ms": 0.0017000000000280124
+    },
+    {
+      "width": 3840,
+      "height": 2160,
+      "sourceItems": 32,
+      "visibleItems": 32,
+      "iterations": 10000,
+      "meanMs": 0.011673339999999564,
+      "p50Ms": 0.00940000000002783,
+      "p95Ms": 0.018699999999967076
+    },
+    {
+      "width": 3840,
+      "height": 2160,
+      "sourceItems": 64,
+      "visibleItems": 64,
+      "iterations": 10000,
+      "meanMs": 0.026546760000000235,
+      "p50Ms": 0.021399999999971442,
+      "p95Ms": 0.044899999999984175
+    }
+  ]
+}

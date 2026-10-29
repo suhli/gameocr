@@ -1,0 +1,22 @@
+   Compiling num-traits v0.2.19
+   Compiling getrandom v0.2.17
+   Compiling either v1.19.0
+   Compiling gameocr v0.1.0 (C:\Users\shuhangli\repos\gameocr\src-tauri)
+   Compiling ring v0.17.14
+   Compiling rayon v1.12.0
+   Compiling rustls-webpki v0.103.15
+   Compiling moxcms v0.8.1
+   Compiling windows-capture v2.0.1
+   Compiling rustls v0.23.45
+   Compiling image v0.25.10
+   Compiling tokio-rustls v0.26.6
+   Compiling hyper-rustls v0.27.10
+   Compiling gameocr-core v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-core)
+   Compiling gameocr-translation v0.1.0 (C:\Users\shuhangli\repos\gameocr\crates\gameocr-translation)
+   Compiling reqwest v0.12.28
+warning: linker stdout: 正在创建库 C:\Users\shuhangli\repos\gameocr\target\debug\deps\gameocr_app.dll.lib 和对象 C:\Users\shuhangli\repos\gameocr\target\debug\deps\gameocr_app.dll.exp
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `gameocr` (lib) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1m 27s

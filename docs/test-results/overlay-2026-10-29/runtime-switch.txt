@@ -1,0 +1,1 @@
+Passed actual ONNX small → GGUF Q8_0 → ONNX medium worker lifecycle and identity checks.

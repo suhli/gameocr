@@ -1,0 +1,1 @@
+PASS Node syntax: desktop-overlay.mjs, benchmark-overlay-layout.mjs; PowerShell parser: overlay-native.ps1. Desktop scripts not executed.

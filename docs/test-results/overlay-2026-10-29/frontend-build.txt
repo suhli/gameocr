@@ -1,0 +1,18 @@
+
+> gameocr@0.1.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 3658 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                        0.40 kB │ gzip:  0.28 kB
+dist/assets/OverlayApp-D3gDB4BR.css    0.76 kB │ gzip:  0.45 kB
+dist/assets/App-DDrAIMDg.css          49.90 kB │ gzip:  9.94 kB
+dist/assets/index-lP8PmG5G.js          2.49 kB │ gzip:  1.21 kB
+dist/assets/OverlayApp-Bc70z2gC.js     4.32 kB │ gzip:  2.12 kB
+dist/assets/event-B7PeOD_2.js         14.24 kB │ gzip:  6.26 kB
+dist/assets/render-COO9Pwwq.js        30.79 kB │ gzip: 11.88 kB
+dist/assets/App-CdoP2C1f.js          196.96 kB │ gzip: 56.80 kB
+✓ built in 1m 20s

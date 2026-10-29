@@ -1,0 +1,7 @@
+PASS local GPU ZIP/catalog: GameOCR-llamacpp-cuda-windows-x64-4714416072f0.zip SHA256=4714416072f0fa6fc764690ee849f1d218fd86c2ac0cfceb0874ed19c7350bb7 size=277372421
+PASS local GPU ZIP/catalog: GameOCR-translation-cuda-windows-x64-1f9ba3c308a6.zip SHA256=1f9ba3c308a6db10b266925cb742ad9b46b9215c3a8169fadf5360c47b7b9ce0 size=276186634
+SKIPPED public Release/download/load validation (offline verification only).
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          843C1CEC304339D309E9C401D78D095CCD3DE6AA67D4FDE2AEA87317907BCEBB       C:\Users\shuhangli\repos\gameoc…

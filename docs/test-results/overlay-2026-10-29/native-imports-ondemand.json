@@ -1,0 +1,664 @@
+[
+  {
+    "file": "concrt140.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "GameOCR.exe",
+    "imports": [
+      "bcryptprimitives.dll",
+      "ntdll.dll",
+      "kernel32.dll",
+      "shell32.dll",
+      "combase.dll",
+      "user32.dll",
+      "ole32.dll",
+      "oleaut32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "gdi32.dll",
+      "dwmapi.dll",
+      "coremessaging.dll",
+      "d3d11.dll",
+      "imm32.dll",
+      "shlwapi.dll",
+      "psapi.dll",
+      "comctl32.dll",
+      "advapi32.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "ws2_32.dll",
+      "bcrypt.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "msvcp140.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "msvcp140_1.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "msvcp140_2.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "msvcp140_atomic_wait.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "msvcp140_codecvt_ids.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "vccorlib140.dll",
+    "imports": [
+      "KERNEL32.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "MSVCP140.dll",
+      "ole32.dll",
+      "OLEAUT32.dll",
+      "api-ms-win-core-winrt-string-l1-1-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "vcruntime140.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "vcruntime140_1.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "vcruntime140_threads.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\concrt140.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\msvcp140.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\msvcp140_1.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\msvcp140_2.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\msvcp140_atomic_wait.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\msvcp140_codecvt_ids.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\ocr-worker.exe",
+    "imports": [
+      "kernel32.dll",
+      "ntdll.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "bcryptprimitives.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll",
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\vccorlib140.dll",
+    "imports": [
+      "KERNEL32.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "MSVCP140.dll",
+      "ole32.dll",
+      "OLEAUT32.dll",
+      "api-ms-win-core-winrt-string-l1-1-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\vcruntime140.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\vcruntime140_1.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\llamacpp\\cpu\\vcruntime140_threads.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\concrt140.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\msvcp140.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\msvcp140_1.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\msvcp140_2.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\msvcp140_atomic_wait.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\msvcp140_codecvt_ids.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\onnx-worker.exe",
+    "imports": [
+      "kernel32.dll",
+      "KERNEL32.DLL",
+      "ntdll.dll",
+      "bcryptprimitives.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\onnxruntime.dll",
+    "imports": [
+      "KERNEL32.dll",
+      "ADVAPI32.dll",
+      "MSVCP140.dll",
+      "MSVCP140_1.dll",
+      "api-ms-win-core-path-l1-1-0.dll",
+      "dbghelp.dll",
+      "SETUPAPI.dll",
+      "dxgi.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\onnxruntime_providers_shared.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\vccorlib140.dll",
+    "imports": [
+      "KERNEL32.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "MSVCP140.dll",
+      "ole32.dll",
+      "OLEAUT32.dll",
+      "api-ms-win-core-winrt-string-l1-1-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\vcruntime140.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\vcruntime140_1.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cpu\\vcruntime140_threads.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\onnx\\cuda\\onnx-worker.exe",
+    "imports": [
+      "kernel32.dll",
+      "KERNEL32.DLL",
+      "ntdll.dll",
+      "bcryptprimitives.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\concrt140.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\msvcp140.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\msvcp140_1.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\msvcp140_2.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\msvcp140_atomic_wait.dll",
+    "imports": [
+      "MSVCP140.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\msvcp140_codecvt_ids.dll",
+    "imports": [
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\translation-worker.exe",
+    "imports": [
+      "kernel32.dll",
+      "ntdll.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "ADVAPI32.dll",
+      "KERNEL32.dll",
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-utility-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\vccorlib140.dll",
+    "imports": [
+      "KERNEL32.dll",
+      "VCRUNTIME140_1.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "MSVCP140.dll",
+      "ole32.dll",
+      "OLEAUT32.dll",
+      "api-ms-win-core-winrt-string-l1-1-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\vcruntime140.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\vcruntime140_1.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  },
+  {
+    "file": "workers\\translation\\cpu\\vcruntime140_threads.dll",
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-time-l1-1-0.dll",
+      "VCRUNTIME140.dll",
+      "KERNEL32.dll"
+    ]
+  }
+]

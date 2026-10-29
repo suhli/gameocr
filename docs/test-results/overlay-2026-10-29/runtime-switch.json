@@ -1,0 +1,341 @@
+[
+  {
+    "frameId": 0,
+    "timestamp": 1793246068986,
+    "sourceWidth": 800,
+    "sourceHeight": 320,
+    "blocks": [
+      {
+        "id": "block-0",
+        "text": "GAME OCR TEST",
+        "label": "text",
+        "bbox": [
+          46,
+          35,
+          403,
+          80
+        ],
+        "confidence": 0.9835874,
+        "polygon": [
+          {
+            "x": 46,
+            "y": 35
+          },
+          {
+            "x": 403,
+            "y": 35
+          },
+          {
+            "x": 403,
+            "y": 80
+          },
+          {
+            "x": 46,
+            "y": 80
+          }
+        ]
+      },
+      {
+        "id": "block-1",
+        "text": "Health: 100 / 100",
+        "label": "text",
+        "bbox": [
+          45,
+          110,
+          376,
+          156
+        ],
+        "confidence": 0.9699856,
+        "polygon": [
+          {
+            "x": 45,
+            "y": 110
+          },
+          {
+            "x": 376,
+            "y": 110
+          },
+          {
+            "x": 376,
+            "y": 156
+          },
+          {
+            "x": 45,
+            "y": 156
+          }
+        ]
+      },
+      {
+        "id": "block-2",
+        "text": "Quest complete!",
+        "label": "text",
+        "bbox": [
+          45,
+          185,
+          363,
+          234
+        ],
+        "confidence": 0.99996907,
+        "polygon": [
+          {
+            "x": 45,
+            "y": 185
+          },
+          {
+            "x": 363,
+            "y": 185
+          },
+          {
+            "x": 363,
+            "y": 234
+          },
+          {
+            "x": 45,
+            "y": 234
+          }
+        ]
+      }
+    ],
+    "rawOutput": "",
+    "metrics": {
+      "preprocessingMs": 5.1099,
+      "inferenceMs": 135.26850000000002,
+      "parsingMs": 7.8034,
+      "totalMs": 149.4116,
+      "detectionMs": 70.4719,
+      "recognitionMs": 64.7966,
+      "detectionRegions": 1,
+      "recognitionBatches": 1,
+      "recognitionPixels": 54864,
+      "pipeline": {
+        "decodeMs": 1.109,
+        "detectorPreprocessMs": 1.8394,
+        "dbMs": 1.6079,
+        "cropMs": 0.9783999999999999,
+        "recognizerPreprocessMs": 1.1735,
+        "ctcMs": 6.1915,
+        "mergeMs": 0.004,
+        "cacheMs": 0.0269,
+        "detectorCalls": 1,
+        "recognizerCalls": 1,
+        "outputBytes": 10776960,
+        "recognitionShapes": [
+          [
+            3,
+            3,
+            48,
+            381
+          ]
+        ],
+        "compactBatches": 0,
+        "compactFallbacks": 0,
+        "compactStatus": "disabled"
+      }
+    },
+    "device": "CPU",
+    "truncated": false,
+    "runtime": "onnx",
+    "modelId": "ppocrv6-small",
+    "engineId": "ppocrv6"
+  },
+  {
+    "frameId": 1,
+    "timestamp": 1793246070654,
+    "sourceWidth": 800,
+    "sourceHeight": 320,
+    "blocks": [
+      {
+        "id": "block-0",
+        "text": "# GAME OCR TEST",
+        "label": "title",
+        "bbox": [
+          42.4,
+          29.44,
+          406.4,
+          79.36
+        ],
+        "confidence": null,
+        "polygon": null
+      },
+      {
+        "id": "block-1",
+        "text": "Health: 100 / 100",
+        "label": "text",
+        "bbox": [
+          44,
+          108.16,
+          375.2,
+          149.44
+        ],
+        "confidence": null,
+        "polygon": null
+      },
+      {
+        "id": "block-2",
+        "text": "Quest complete!",
+        "label": "text",
+        "bbox": [
+          44,
+          200.64,
+          363.2,
+          232.96
+        ],
+        "confidence": null,
+        "polygon": null
+      }
+    ],
+    "rawOutput": "![title](53,92,508,248) # GAME OCR TEST\n\n![text](55,338,469,467) Health: 100 / 100\n\n![text](55,627,454,728) Quest complete!",
+    "metrics": {
+      "preprocessingMs": 44.1397,
+      "inferenceMs": 6143.4287,
+      "parsingMs": 0.5117,
+      "totalMs": 6188.0807,
+      "detectionMs": null,
+      "recognitionMs": null
+    },
+    "device": "CPU",
+    "truncated": false,
+    "runtime": "llamacpp",
+    "modelId": "Q8_0",
+    "engineId": "lightonocr"
+  },
+  {
+    "frameId": 2,
+    "timestamp": 1793246077517,
+    "sourceWidth": 800,
+    "sourceHeight": 320,
+    "blocks": [
+      {
+        "id": "block-0",
+        "text": "GAME OCR TEST",
+        "label": "text",
+        "bbox": [
+          46,
+          37,
+          404,
+          76
+        ],
+        "confidence": 0.99939436,
+        "polygon": [
+          {
+            "x": 46,
+            "y": 37
+          },
+          {
+            "x": 404,
+            "y": 37
+          },
+          {
+            "x": 404,
+            "y": 76
+          },
+          {
+            "x": 46,
+            "y": 76
+          }
+        ]
+      },
+      {
+        "id": "block-1",
+        "text": "Health: 100 / 100",
+        "label": "text",
+        "bbox": [
+          46,
+          113,
+          376,
+          152
+        ],
+        "confidence": 0.99755716,
+        "polygon": [
+          {
+            "x": 46,
+            "y": 113
+          },
+          {
+            "x": 376,
+            "y": 113
+          },
+          {
+            "x": 376,
+            "y": 152
+          },
+          {
+            "x": 46,
+            "y": 152
+          }
+        ]
+      },
+      {
+        "id": "block-2",
+        "text": "Quest complete!",
+        "label": "text",
+        "bbox": [
+          46,
+          188,
+          363,
+          231
+        ],
+        "confidence": 0.9999897,
+        "polygon": [
+          {
+            "x": 46,
+            "y": 188
+          },
+          {
+            "x": 363,
+            "y": 188
+          },
+          {
+            "x": 363,
+            "y": 231
+          },
+          {
+            "x": 46,
+            "y": 231
+          }
+        ]
+      }
+    ],
+    "rawOutput": "",
+    "metrics": {
+      "preprocessingMs": 5.0298,
+      "inferenceMs": 504.21540000000005,
+      "parsingMs": 6.6395,
+      "totalMs": 517.2293,
+      "detectionMs": 256.9934,
+      "recognitionMs": 247.222,
+      "detectionRegions": 1,
+      "recognitionBatches": 1,
+      "recognitionPixels": 63504,
+      "pipeline": {
+        "decodeMs": 1.0897999999999999,
+        "detectorPreprocessMs": 1.6302,
+        "dbMs": 1.2247,
+        "cropMs": 0.9029,
+        "recognizerPreprocessMs": 1.3947,
+        "ctcMs": 5.409800000000001,
+        "mergeMs": 0.005,
+        "cacheMs": 0.0212,
+        "detectorCalls": 1,
+        "recognizerCalls": 1,
+        "outputBytes": 12348600,
+        "recognitionShapes": [
+          [
+            3,
+            3,
+            48,
+            441
+          ]
+        ],
+        "compactBatches": 0,
+        "compactFallbacks": 0,
+        "compactStatus": "disabled"
+      }
+    },
+    "device": "CPU",
+    "truncated": false,
+    "runtime": "onnx",
+    "modelId": "ppocrv6-medium",
+    "engineId": "ppocrv6"
+  }
+]
