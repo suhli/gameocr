@@ -5,6 +5,7 @@ pub mod cuda_runtime;
 pub mod executor;
 mod model;
 mod ocr;
+pub mod overlay;
 mod service;
 mod settings;
 pub mod translation;
@@ -20,6 +21,21 @@ pub fn run() {
             }
         }))
         .plugin(tauri_plugin_dialog::init())
+        .on_window_event(|window, event| {
+            if window.label() == "main" {
+                if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                    api.prevent_close();
+                    if let Some(state) = window.app_handle().try_state::<Arc<service::Service>>() {
+                        let state = state.inner().clone();
+                        let app = window.app_handle().clone();
+                        tauri::async_runtime::spawn(async move {
+                            state.close().await;
+                            app.exit(0);
+                        });
+                    }
+                }
+            }
+        })
         .setup(|app| {
             window::start_identity_monitor()?;
             let state = service::Service::new(app.handle().clone())?;
@@ -28,6 +44,10 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            commands::overlay_settings,
+            commands::update_overlay_settings,
+            commands::overlay_snapshot,
+            commands::overlay_rendered,
             commands::list_windows,
             commands::select_window,
             commands::list_adb_devices,

@@ -152,6 +152,7 @@ struct DiskCache {
 }
 pub struct TranslationManager {
     app: tauri::AppHandle,
+    overlay: Arc<crate::overlay::OverlayManager>,
     pub settings: RwLock<TranslationSettings>,
     pub status: Mutex<TranslationStatus>,
     queue: Mutex<Queue>,
@@ -167,7 +168,7 @@ pub struct TranslationManager {
     cache_epoch: AtomicU64,
 }
 impl TranslationManager {
-    pub fn new(app: tauri::AppHandle) -> Arc<Self> {
+    pub fn new(app: tauri::AppHandle, overlay: Arc<crate::overlay::OverlayManager>) -> Arc<Self> {
         let path = crate::settings::data_dir().join("translation/settings.json");
         let settings = std::fs::read(path)
             .ok()
@@ -188,6 +189,7 @@ impl TranslationManager {
         }
         Arc::new(Self {
             app,
+            overlay,
             cache: Mutex::new(cache),
             settings: RwLock::new(settings),
             status: Mutex::new(TranslationStatus {
@@ -227,7 +229,13 @@ impl TranslationManager {
             .emit("translation-status", self.status.lock().clone());
     }
     pub fn invalidate(&self, clear_context: bool) {
-        if self.queue.lock().invalidate(clear_context) {
+        let dropped = {
+            let mut queue = self.queue.lock();
+            let dropped = queue.invalidate(clear_context);
+            self.overlay.clear();
+            dropped
+        };
+        if dropped {
             self.status.lock().dropped += 1;
         }
         {
@@ -250,15 +258,22 @@ impl TranslationManager {
     ) {
         let settings = self.settings.read();
         if !force && !settings.enabled {
+            self.overlay.clear();
             return;
         }
         if self.status.lock().model_id.is_none() {
+            self.overlay.clear();
             return;
         }
-        let dropped =
-            self.queue
-                .lock()
-                .submit(ocr, generation, epoch, capture, force, settings.debounce_ms);
+        let dropped = {
+            let mut queue = self.queue.lock();
+            let dropped =
+                queue.submit(ocr, generation, epoch, capture, force, settings.debounce_ms);
+            if let Some(job) = &queue.latest {
+                self.overlay.observe(ocr, &job.identity);
+            }
+            dropped
+        };
         let mut status = self.status.lock();
         status.dropped += u64::from(dropped);
         status.submitted += 1;
@@ -457,6 +472,7 @@ impl TranslationManager {
         while q.history.len() > 100 {
             q.history.pop_back();
         }
+        self.overlay.accept(&event);
         let _ = self.app.emit("translation-result", &event);
         if let Some(last) = event.results.last() {
             let mut metrics = last.metrics.clone();

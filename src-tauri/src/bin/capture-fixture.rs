@@ -19,9 +19,27 @@ use windows::{
 static CONTROL: OnceLock<PathBuf> = OnceLock::new();
 static NUMBER_CHANGED: AtomicBool = AtomicBool::new(false);
 static TRANSLATION_TEXT: Mutex<Option<String>> = Mutex::new(None);
+static TEXT_OFFSET: Mutex<(i32, i32)> = Mutex::new((0, 0));
+static INPUT_COUNTS: Mutex<[u32; 4]> = Mutex::new([0; 4]);
 unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRESULT {
     unsafe {
         match msg {
+            WM_LBUTTONDOWN | WM_LBUTTONUP | WM_MOUSEWHEEL | WM_KEYDOWN => {
+                let mut counts = INPUT_COUNTS.lock().unwrap();
+                counts[match msg {
+                    WM_LBUTTONDOWN => 0,
+                    WM_LBUTTONUP => 1,
+                    WM_MOUSEWHEEL => 2,
+                    _ => 3,
+                }] += 1;
+                if let Some(path) = CONTROL.get() {
+                    let _ = std::fs::write(
+                        path.with_extension("input.json"),
+                        serde_json::to_vec(&*counts).unwrap(),
+                    );
+                }
+                DefWindowProcW(hwnd, msg, wp, lp)
+            }
             WM_PAINT => {
                 let mut paint = PAINTSTRUCT::default();
                 let window_dc = BeginPaint(hwnd, &mut paint);
@@ -72,13 +90,14 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                     .enumerate()
                     .map(|(i, line)| (28 + i as i32 * 64, line))
                     .collect();
+                let offset = *TEXT_OFFSET.lock().unwrap();
                 for &(y, line) in if custom.is_some() {
                     custom_lines.as_slice()
                 } else {
                     regular.as_slice()
                 } {
                     let text: Vec<u16> = line.encode_utf16().collect();
-                    let _ = TextOutW(dc, 32, y, &text);
+                    let _ = TextOutW(dc, 32 + offset.0, y + offset.1, &text);
                 }
                 if rect.right >= 1280 {
                     for (x, y, line) in [
@@ -119,6 +138,29 @@ unsafe extern "system" fn procedure(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM
                             let _ = InvalidateRect(Some(hwnd), None, true);
                         }
                         match action.trim() {
+                            "front" => {
+                                let _ = ShowWindow(hwnd, SW_RESTORE);
+                                let _ = SetForegroundWindow(hwnd);
+                            }
+                            "move" => {
+                                let _ = SetWindowPos(
+                                    hwnd,
+                                    None,
+                                    300,
+                                    180,
+                                    0,
+                                    0,
+                                    SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+                                );
+                            }
+                            "offset" => {
+                                *TEXT_OFFSET.lock().unwrap() = (260, 100);
+                                let _ = InvalidateRect(Some(hwnd), None, true);
+                            }
+                            "reset-offset" => {
+                                *TEXT_OFFSET.lock().unwrap() = (0, 0);
+                                let _ = InvalidateRect(Some(hwnd), None, true);
+                            }
                             "number" => {
                                 NUMBER_CHANGED.store(true, Ordering::Relaxed);
                                 let _ = InvalidateRect(Some(hwnd), None, true);

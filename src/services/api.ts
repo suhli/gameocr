@@ -1,6 +1,7 @@
 import { invoke,isTauri } from '@tauri-apps/api/core';
 import { listen,type UnlistenFn } from '@tauri-apps/api/event';
 import { open,save,confirm } from '@tauri-apps/plugin-dialog';
+import type {OverlaySettings,OverlaySnapshot} from '../types/overlay';
 import type {TranslationSettings,TranslationModel,TranslationStatus,TranslationEvent,GameProfile} from '../types/translation';
 export interface Events {'translation-status':TranslationStatus;'translation-result':TranslationEvent;'translation-invalidated':null;'translation-download-progress':DownloadProgress;}
 import type { WindowInfo,Preview,ModelEntry,ModelStatus,Settings,Performance,Snapshot,CaptureStatus,OcrStatus,AdbDevice,DownloadProgress,LearningSummary } from '../types';
@@ -8,6 +9,7 @@ export const native=isTauri();
 function call<T>(command:string,args?:Record<string,unknown>):Promise<T>{if(!native)return Promise.reject(new Error('请通过 GameOCR 桌面应用运行，浏览器预览无法访问本机捕获和模型。'));return invoke<T>(command,args);}
 export interface CudaRuntimeProgress{state:string;component:string;received:number;total:number;message:string;}
 export const api={
+  overlaySettings:()=>call<OverlaySettings>('overlay_settings'),updateOverlaySettings:(settings:OverlaySettings)=>call<void>('update_overlay_settings',{settings}),overlaySnapshot:()=>call<OverlaySnapshot>('overlay_snapshot'),
   translationSettings:()=>call<TranslationSettings>('translation_settings'),updateTranslationSettings:(settings:TranslationSettings)=>call<void>('update_translation_settings',{settings}),
   translationStatus:()=>call<TranslationStatus>('translation_status'),translationModels:()=>call<TranslationModel[]>('translation_models'),
   downloadTranslation:()=>call<void>('download_translation_model'),cancelTranslationDownload:()=>call<void>('cancel_translation_download'),

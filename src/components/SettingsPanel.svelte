@@ -4,6 +4,7 @@
   import { Button } from '$lib/components/ui/button';
   import type { Settings,ModelEntry,LearningSummary } from '../types';
   import { api } from '../services/api';
+  import OverlaySettings from './OverlaySettings.svelte';
   let {settings,model,onClose,onSave,onError}:{settings:Settings;model?:ModelEntry;onClose:()=>void;onSave:(value:Settings)=>Promise<void>;onError:(e:unknown)=>void}=$props();
   // A settings dialog edits a snapshot; external changes must not overwrite unsaved edits.
   // svelte-ignore state_referenced_locally
@@ -16,6 +17,7 @@
 <dialog bind:this={dialog} oncancel={onClose}>
   <header class="row spread"><h2><Settings2/> 设置</h2><button class="icon-btn" aria-label="关闭设置" onclick={onClose}><X/></button></header>
   <div class="body">
+    <OverlaySettings/>
     <section><h3>捕获与调度</h3><p>捕获持续更新最新帧，OCR 按独立间隔读取。忙碌时自动丢弃旧帧。</p>
       <div class="fields"><label>截图频率 (FPS)<input type="number" min="1" max="60" bind:value={draft.captureFps}/></label><label>OCR 间隔 (ms)<input type="number" min="10" max="60000" step="10" bind:value={draft.ocrIntervalMs}/></label></div>
       <div class="fields"><label>变化检测阈值<input type="number" min="0" max="1" step="0.01" bind:value={draft.changeThreshold}/></label><label>历史记录上限<input type="number" min="1" max="100" bind:value={draft.historyLimit}/></label></div>

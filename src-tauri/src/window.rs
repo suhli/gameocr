@@ -70,6 +70,92 @@ fn same_identity(a: &WindowInfo, b: &WindowInfo) -> bool {
         && a.class_name == b.class_name
 }
 
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct OverlayGeometry {
+    /// Physical desktop coordinates, including negative monitor origins.
+    pub rect: [i32; 4],
+    pub client_rect: [i32; 4],
+    pub dpi: u32,
+    pub mapping: String,
+    pub foreground: bool,
+    pub visible: bool,
+}
+pub fn match_capture_rect(
+    candidates: &[([i32; 4], &str)],
+    width: u32,
+    height: u32,
+) -> Option<([i32; 4], String)> {
+    candidates
+        .iter()
+        .find(|(r, _)| {
+            r[2] > r[0]
+                && r[3] > r[1]
+                && (i64::from(r[2]) - i64::from(r[0]) - i64::from(width)).abs() <= 1
+                && (i64::from(r[3]) - i64::from(r[1]) - i64::from(height)).abs() <= 1
+        })
+        .map(|(r, name)| (*r, (*name).into()))
+}
+/// WGC captures a window surface, not the desktop's GetWindowRect crop. Match
+/// its actual ContentSize against physical DWM/client/window candidates. During
+/// resize ambiguity, return an error and wait for a fresh OCR-sized surface.
+pub fn overlay_geometry(target: &WindowInfo, width: u32, height: u32) -> Result<OverlayGeometry> {
+    use windows::Win32::UI::HiDpi::*;
+    unsafe {
+        let current =
+            inspect(target.handle()?, false).ok_or_else(|| anyhow::anyhow!("目标窗口已关闭"))?;
+        ensure!(same_identity(target, &current), "目标窗口身份已改变");
+        let hwnd = target.handle()?;
+        let previous = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+        let result = (|| -> Result<OverlayGeometry> {
+            let mut outer = RECT::default();
+            GetWindowRect(hwnd, &mut outer)?;
+            let mut dwm = RECT::default();
+            let has_dwm = DwmGetWindowAttribute(
+                hwnd,
+                DWMWA_EXTENDED_FRAME_BOUNDS,
+                &mut dwm as *mut _ as *mut _,
+                std::mem::size_of::<RECT>() as u32,
+            )
+            .is_ok();
+            let mut client = RECT::default();
+            GetClientRect(hwnd, &mut client)?;
+            let mut origin = POINT::default();
+            ensure!(
+                ClientToScreen(hwnd, &mut origin).as_bool(),
+                "无法获取客户区屏幕位置"
+            );
+            let to_array = |r: RECT| [r.left, r.top, r.right, r.bottom];
+            let client_rect = [
+                origin.x,
+                origin.y,
+                origin.x + client.right,
+                origin.y + client.bottom,
+            ];
+            let mut candidates = Vec::new();
+            if has_dwm {
+                candidates.push((to_array(dwm), "dwm-frame"));
+            }
+            candidates.push((client_rect, "client"));
+            candidates.push((to_array(outer), "window"));
+            let (rect, mapping) = match_capture_rect(&candidates, width, height)
+                .ok_or_else(|| anyhow::anyhow!("等待与窗口尺寸一致的新 OCR 帧"))?;
+            Ok(OverlayGeometry {
+                rect,
+                client_rect,
+                dpi: GetDpiForWindow(hwnd),
+                mapping,
+                foreground: GetForegroundWindow() == hwnd,
+                visible: current.visible && !current.minimized && current.capturable,
+            })
+        })();
+        if !previous.0.is_null() {
+            SetThreadDpiAwarenessContext(previous);
+        }
+        result
+    }
+}
+
 pub fn start_identity_monitor() -> Result<()> {
     if DESTROYED.get().is_some() {
         return Ok(());
@@ -321,6 +407,23 @@ fn file_icon(path: &str) -> Result<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn capture_mapping_uses_matching_surface_and_negative_physical_coordinates() {
+        let candidates = [
+            ([-1920, -120, -1090, 500], "dwm-frame"),
+            ([-1912, -89, -1098, 492], "client"),
+        ];
+        assert_eq!(
+            match_capture_rect(&candidates, 830, 620),
+            Some((candidates[0].0, "dwm-frame".into()))
+        );
+        assert_eq!(
+            match_capture_rect(&candidates, 814, 581),
+            Some((candidates[1].0, "client".into()))
+        );
+        assert!(match_capture_rect(&candidates, 1920, 1080).is_none());
+        assert!(match_capture_rect(&[([4, 4, 2, 2], "invalid")], 0, 0).is_none());
+    }
     #[test]
     fn identity_rejects_reused_handle() {
         let mut a = WindowInfo {

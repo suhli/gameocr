@@ -12,6 +12,33 @@ use tauri::State;
 type AppState<'a> = State<'a, Arc<Service>>;
 type Reply<T> = Result<T, String>;
 #[tauri::command]
+pub fn overlay_settings(state: AppState<'_>) -> crate::overlay::state::OverlaySettings {
+    state.overlay.settings.read().clone()
+}
+#[tauri::command]
+pub async fn update_overlay_settings(
+    state: AppState<'_>,
+    settings: crate::overlay::state::OverlaySettings,
+) -> Reply<()> {
+    state.overlay.update(settings).map_err(err)
+}
+#[tauri::command]
+pub fn overlay_snapshot(state: AppState<'_>) -> crate::overlay::OverlaySnapshot {
+    state.overlay.snapshot()
+}
+#[tauri::command]
+pub fn overlay_rendered(
+    state: AppState<'_>,
+    window: tauri::WebviewWindow,
+    serial: u64,
+) -> Reply<()> {
+    if window.label() != "overlay" {
+        return Err("仅字幕窗口可确认渲染".into());
+    }
+    state.overlay.rendered(serial);
+    Ok(())
+}
+#[tauri::command]
 pub fn get_adaptive_statistics(
     state: AppState<'_>,
 ) -> gameocr_core::adaptive::profiles::LearningSummary {

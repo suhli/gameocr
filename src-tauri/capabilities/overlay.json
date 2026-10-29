@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "overlay",
+  "description": "Read-only subtitle renderer events; no file dialog or window management permissions",
+  "windows": ["overlay"],
+  "permissions": ["core:event:allow-listen", "core:event:allow-unlisten"]
+}

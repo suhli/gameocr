@@ -1,4 +1,5 @@
 <script lang="ts">
+  import './app.css';
   import { onMount } from 'svelte';
   import { ScanLine,Search,RefreshCw,Monitor,Smartphone,Play,Pause,Square,Settings2,Sun,Moon,ChevronDown,Box,ChevronRight,Copy,Download,FileJson,Eye,EyeOff,History,FileText,Code,Activity,Cpu,HardDrive,Check,AlertCircle,X,LoaderCircle,ArrowUpRight,Crosshair,Camera,FolderOpen } from '@lucide/svelte';
   import { Button } from '$lib/components/ui/button';

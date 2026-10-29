@@ -64,6 +64,7 @@ pub struct Service {
     pub models: Arc<ModelManager>,
     pub cuda_runtime: crate::cuda_runtime::RuntimeManager,
     pub translation: Arc<crate::translation::TranslationManager>,
+    pub overlay: Arc<crate::overlay::OverlayManager>,
     pub model_status: Mutex<ModelStatus>,
     executor: tokio::sync::Mutex<Option<ExecutionStrategyManager>>,
     pub adaptive_profiles: Arc<ProfileRepository>,
@@ -100,7 +101,8 @@ impl Service {
         std::fs::create_dir_all(&cache_dir)?;
         let capture = CaptureManager::new(app.clone());
         let shared = capture.shared.clone();
-        let translation = crate::translation::TranslationManager::new(app.clone());
+        let overlay = crate::overlay::OverlayManager::new(app.clone());
+        let translation = crate::translation::TranslationManager::new(app.clone(), overlay.clone());
         Ok(Arc::new(Self {
             app,
             settings: RwLock::new(settings),
@@ -111,6 +113,7 @@ impl Service {
             models: Arc::new(ModelManager::new()?),
             cuda_runtime: Default::default(),
             translation,
+            overlay,
             model_status: Mutex::new(ModelStatus {
                 status: "unloaded".into(),
                 id: None,
@@ -546,6 +549,7 @@ impl Service {
                         }
                     }
                     let _ = self.app.emit("ocr-error", format!("{e:#}"));
+                    self.overlay.clear();
                     self.set_ocr_status("error");
                     return Err(e);
                 }
@@ -560,6 +564,7 @@ impl Service {
         Ok(())
     }
     pub fn launch(self: &Arc<Self>) {
+        self.overlay.launch(Arc::downgrade(self));
         self.translation.launch(Arc::downgrade(self));
         let service = self.clone();
         tauri::async_runtime::spawn(async move {
@@ -641,6 +646,7 @@ impl Service {
     }
     pub async fn close(&self) {
         self.shutdown.store(true, Ordering::Release);
+        self.overlay.close();
         self.stop_ocr();
         self.capture.lock().stop();
         self.translation.close().await;
