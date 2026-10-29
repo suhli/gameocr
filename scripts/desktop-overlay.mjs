@@ -15,8 +15,17 @@ const pass=(name,details={})=>{checks.push({name,...details});console.log('PASS'
 const native=(action,owner,hwnd='0',extra=[])=>JSON.parse(execFileSync('pwsh.exe',['-NoProfile','-File','scripts/overlay-native.ps1','-Action',action,'-OwnerPid',String(owner),'-Hwnd',hwnd,...extra],{encoding:'utf8',windowsHide:true}));
 async function fixtureCommand(action){fs.writeFileSync(control+'.tmp',action);fs.renameSync(control+'.tmp',control);await until(()=>!fs.existsSync(control));await delay(180);}
 async function recognize(){await invoke('recognize_once');return (await invoke('get_history'))[0];}
-async function currentVisible(){return until(async()=>{const s=await invoke('overlay_snapshot');return s.visible&&s.items.length?s:null;});}
-async function hidden(){return until(async()=>{const s=await invoke('overlay_snapshot');return !s.visible&&s.items.length===0?s:null;});}
+async function currentVisible(matches=()=>true){return until(async()=>{
+  const s=await invoke('overlay_snapshot');
+  if(!s.visible||!s.items.length||!s.geometry||!overlay||!matches(s))return null;
+  if(Number(await overlay.locator('main').getAttribute('data-serial'))!==s.serial)return null;
+  const window=native('inspect',app.pid).windows.find(w=>w.title==='GameOCR 翻译字幕');
+  return window?.visible&&window.rect.every((n,i)=>Math.abs(n-s.geometry.rect[i])<=1)?s:null;
+});}
+async function hidden(){return until(async()=>{
+  const s=await invoke('overlay_snapshot');if(s.visible||s.items.length)return null;
+  return native('inspect',app.pid).windows.some(w=>w.title==='GameOCR 翻译字幕'&&w.visible)?null:s;
+});}
 async function front(target){native('focus',fixture.pid,target.hwnd);await delay(150);}
 try{
   if(!process.env.GAMEOCR_APP){vite=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port','1420','--strictPort'],{windowsHide:true,stdio:['ignore',log,log]});await until(async()=>{try{return (await fetch('http://127.0.0.1:1420')).ok;}catch{return false;}});}
@@ -44,7 +53,7 @@ try{
   fs.writeFileSync(path.join(out,'initial-diagnostics.json'),JSON.stringify({ocr:initialFrame.result,translation:(await invoke('translation_history'))[0],overlay:await invoke('overlay_snapshot'),windows:native('inspect',app.pid),target:native('inspect',fixture.pid)},null,2));
   const initial=await currentVisible();await until(async()=>(await overlay.locator('.subtitle').count())===initial.items.length);
   await delay(250);const windows=native('inspect',app.pid),nativeOverlay=windows.windows.find(w=>w.title==='GameOCR 翻译字幕');
-  assert(nativeOverlay?.visible);assert.equal(windows.foreground,target.hwnd);assert.equal(nativeOverlay.affinity,0x11);assert(nativeOverlay.style&0x20);assert(nativeOverlay.style&0x80000);assert(nativeOverlay.style&0x8000000);
+  assert(nativeOverlay?.visible);assert.equal(windows.foreground,target.hwnd);assert.equal(nativeOverlay.affinity,0x11);assert(nativeOverlay.style&0x20);assert(nativeOverlay.style&0x80000);assert(nativeOverlay.style&0x8000000);assert(nativeOverlay.style&0x8);assert(nativeOverlay.style&0x80);assert.equal(nativeOverlay.style&0x40000,0);
   assert(initial.items.some(item=>/[\u3400-\u9fff]/u.test(item.text)));assert.equal(initial.geometry.mapping,'dwm-frame');
   samples.push({case:'initial',snapshot:initial,native:nativeOverlay});pass('Transparent topmost nonactivating native overlay displays real Chinese translation');
   await overlay.screenshot({path:path.join(out,'overlay-subtitles.png'),omitBackground:true});
@@ -62,7 +71,7 @@ try{
   });
   for(let i=0;i<3;i++)await recognize();await currentVisible();assert(await overlay.evaluate(()=>window.__overlayNodes.every((node,i)=>node===document.querySelectorAll('.subtitle')[i])));pass('Repeated OCR keeps subtitle DOM nodes; no clear/recreate flicker');
   await fixtureCommand('offset');await recognize();const shifted=await currentVisible();assert(shifted.items[0].bbox[0]>initial.items[0].bbox[0]+150);pass('Identical text with moved OCR boxes relocates captions');
-  await fixtureCommand('move');const moved=await until(async()=>{const s=await invoke('overlay_snapshot');return s.visible&&s.geometry.rect[0]>initial.geometry.rect[0]+100?s:null;});pass('Overlay follows target window movement',{rect:moved.geometry.rect});
+  await fixtureCommand('move');const moved=await currentVisible(s=>s.geometry.rect[0]>initial.geometry.rect[0]+100);pass('Overlay follows target window movement',{rect:moved.geometry.rect});
   await fixtureCommand('resize');await hidden();await recognize();const resized=await currentVisible();assert(resized.sourceWidth>initial.sourceWidth);samples.push({case:'resized',snapshot:resized});pass('Resize hides mismatched geometry until new WGC/OCR dimensions arrive');
   const main=native('inspect',app.pid).windows.find(w=>w.title==='GameOCR');assert(main);native('background',app.pid,main.hwnd);await hidden();assert(!native('inspect',app.pid).windows.find(w=>w.hwnd===nativeOverlay.hwnd).visible);await front(target);await currentVisible();pass('Foreground changes hide native window and valid current subtitles resume');
   translation={...translation,debounceMs:2000};await invoke('update_translation_settings',{settings:translation});await fixtureCommand('text:Where are you going?');await recognize();await hidden();await fixtureCommand('text:Quest complete!');await recognize();await hidden();const replacement=await currentVisible();assert(!replacement.items.some(i=>initial.items.some(old=>old.text===i.text)));pass('New text immediately clears old subtitles; superseded translation never reappears');
@@ -72,7 +81,9 @@ try{
   const idleStart=native('stats',app.pid);const mutationsBefore=await overlay.evaluate(()=>window.__overlayMutations);await delay(5000);const idleEnd=native('stats',app.pid),mutationsAfter=await overlay.evaluate(()=>window.__overlayMutations);
   const {layoutSubtitles}=await import('../src/lib/overlayGeometry.ts');const geometryStart=performance.now();for(let i=0;i<10000;i++)layoutSubtitles(initial.items,initial.sourceWidth,initial.sourceHeight,initial.sourceWidth,initial.sourceHeight,style);const mappingMs=(performance.now()-geometryStart)/10000;
   samples.push({case:'idle',idleBeforeStart,memoryBefore,idleStart,idleEnd,baselineCpuOneCorePercent:(memoryBefore.cpuSeconds-idleBeforeStart.cpuSeconds)/((memoryBefore.timestamp-idleBeforeStart.timestamp)/1000)*100,idleCpuOneCorePercent:(idleEnd.cpuSeconds-idleStart.cpuSeconds)/((idleEnd.timestamp-idleStart.timestamp)/1000)*100,extraWorkingSetBytes:idleEnd.workingSetBytes-memoryBefore.workingSetBytes,subtitleRootMutations:mutationsAfter-mutationsBefore,mappingMsPerLayout:mappingMs,eventToAnimationFrameMs:await overlay.evaluate(()=>window.__overlayLatencies)});assert.equal(mutationsAfter,mutationsBefore);pass('Idle subtitles do not rebuild DOM; process CPU/memory sampled');
-  style={...style,overlayEnabled:false};await invoke('update_overlay_settings',{settings:style});await hidden();native('click',fixture.pid,target.hwnd,['-X','400','-Y','300']);pass('Disabling overlay hides window and target still receives input');
+  const inputPath=control.replace('.txt','.input.json'),beforeDisable=JSON.parse(fs.readFileSync(inputPath,'utf8'));
+  style={...style,overlayEnabled:false};await invoke('update_overlay_settings',{settings:style});await hidden();native('click',fixture.pid,target.hwnd,['-X','400','-Y','300']);
+  await until(()=>{const after=JSON.parse(fs.readFileSync(inputPath,'utf8'));return after.slice(0,3).every((n,i)=>n>beforeDisable[i]);});pass('Disabling overlay hides window and target still receives input');
   style={...style,overlayEnabled:true};await invoke('update_overlay_settings',{settings:style});await recognize();await currentVisible();assert.equal(native('inspect',app.pid).windows.filter(w=>w.title==='GameOCR 翻译字幕').length,1);pass('Repeated enable/disable reuses a single overlay window');
   await fixtureCommand('minimize');await hidden();pass('Minimized target immediately hides subtitles');
   await fixtureCommand('restore');await front(target);if((await invoke('get_status')).capture!=='running')await invoke('start_capture');await recognize();await currentVisible();await fixtureCommand('close');await hidden();pass('Closed target cannot leave a visible subtitle window');
