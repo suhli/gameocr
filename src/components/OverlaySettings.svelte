@@ -12,7 +12,7 @@
     void listen<string>('overlay-status',event=>status=event.payload).then(fn=>{if(disposed)fn();else unlisten=fn;}).catch(e=>error=String(e));
     return ()=>{disposed=true;unlisten?.();};
   });
-  async function save(){if(!draft)return;saving=true;error='';try{await api.updateOverlaySettings($state.snapshot(draft));message=draft.overlayEnabled?'已启用：切回目标窗口并识别后显示字幕。':'字幕已关闭。';}catch(e){error=String(e);}finally{saving=false;}}
+  async function save(){if(!draft)return;saving=true;error='';try{await api.updateOverlaySettings($state.snapshot(draft));message=draft.overlayEnabled?'游戏字幕已启用：切回目标窗口显示当前有效译文。若已过期，请重新识别。':'游戏字幕已关闭，预览译文不受影响。';}catch(e){error=String(e);}finally{saving=false;}}
 </script>
 <section aria-label="游戏翻译字幕设置"><h3>游戏翻译字幕</h3><p>在前台游戏窗口上显示完整译文。支持普通窗口和无边框窗口；不支持 ADB 或独占全屏。样式单独保存，不需要卸载模型。</p>
 {#if draft}

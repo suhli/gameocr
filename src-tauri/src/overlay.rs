@@ -68,19 +68,23 @@ impl OverlayManager {
             notify: Default::default(),
         })
     }
-    pub fn update(&self, settings: OverlaySettings) -> Result<()> {
+    pub fn update(&self, settings: OverlaySettings) -> Result<bool> {
         settings.validate()?;
         crate::settings::atomic_json(
             &crate::settings::data_dir().join("overlay/settings.json"),
             &settings,
         )?;
         let changed_enable = self.settings.read().overlay_enabled != settings.overlay_enabled;
-        *self.settings.write() = settings;
+        let just_enabled = changed_enable && settings.overlay_enabled;
+        *self.settings.write() = settings.clone();
         if changed_enable {
             self.clear();
         }
+        let _ = self
+            .app
+            .emit_to("main", "overlay-settings-changed", &settings);
         self.notify.notify_one();
-        Ok(())
+        Ok(just_enabled)
     }
     pub fn snapshot(&self) -> OverlaySnapshot {
         self.snapshot.lock().clone()
@@ -118,6 +122,7 @@ impl OverlayManager {
         &self,
         ocr: &gameocr_core::types::OcrResult,
         identity: &gameocr_translation::types::Identity,
+        observed: Instant,
     ) {
         if !self.settings.read().overlay_enabled {
             return;
@@ -126,11 +131,7 @@ impl OverlayManager {
             .app
             .try_state::<Arc<Service>>()
             .and_then(|s| s.selected.lock().as_ref().map(|w| w.id.clone()));
-        if !self
-            .live
-            .lock()
-            .observe(ocr, identity, target, Instant::now())
-        {
+        if !self.live.lock().observe(ocr, identity, target, observed) {
             self.invalidate_view();
         }
         self.notify.notify_one();
@@ -216,6 +217,8 @@ impl OverlayManager {
             "字幕仅支持 Windows 窗口捕获"
         } else if capture != "running" {
             "等待捕获运行"
+        } else if current && !live.fresh(&settings, Instant::now()) {
+            "字幕已过期，请重新识别当前画面"
         } else {
             "等待当前完整译文"
         }
@@ -240,7 +243,7 @@ impl OverlayManager {
                     Ok(g) => {
                         eligible = anchor.allows(&target.id, &g, settings.overlay_follow_window);
                         reason = if eligible {
-                            "半透明磨砂视觉；仅 WebView 内部 blur"
+                            "游戏字幕已就绪"
                         } else {
                             "目标在后台、不可见或已移动"
                         }

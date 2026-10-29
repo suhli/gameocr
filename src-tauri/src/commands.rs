@@ -20,7 +20,10 @@ pub async fn update_overlay_settings(
     state: AppState<'_>,
     settings: crate::overlay::state::OverlaySettings,
 ) -> Reply<()> {
-    state.overlay.update(settings).map_err(err)
+    if state.overlay.update(settings).map_err(err)? {
+        state.translation.refresh_overlay(&state);
+    }
+    Ok(())
 }
 #[tauri::command]
 pub fn overlay_snapshot(state: AppState<'_>) -> crate::overlay::OverlaySnapshot {

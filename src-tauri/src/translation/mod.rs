@@ -67,6 +67,27 @@ struct Queue {
     history: VecDeque<TranslationEvent>,
 }
 impl Queue {
+    // Only the current live job may seed a newly enabled overlay. History
+    // selection in the UI never participates, and observed time is not renewed.
+    fn overlay_seed(
+        &self,
+        generation: u64,
+        epoch: u64,
+    ) -> Option<(&Job, Option<&TranslationEvent>)> {
+        let job = self.latest.as_ref()?;
+        if job.identity.generation != generation
+            || job.identity.epoch != epoch
+            || job.identity.revision != self.revision
+            || job.cancel.load(Ordering::Acquire)
+        {
+            return None;
+        }
+        let event = self
+            .history
+            .iter()
+            .find(|event| event.identity == job.identity);
+        Some((job, event))
+    }
     fn submit(
         &mut self,
         ocr: &OcrResult,
@@ -270,7 +291,7 @@ impl TranslationManager {
             let dropped =
                 queue.submit(ocr, generation, epoch, capture, force, settings.debounce_ms);
             if let Some(job) = &queue.latest {
-                self.overlay.observe(ocr, &job.identity);
+                self.overlay.observe(ocr, &job.identity, job.available);
             }
             dropped
         };
@@ -280,6 +301,25 @@ impl TranslationManager {
         drop(status);
         drop(settings);
         self.notify.notify_one();
+    }
+    pub fn refresh_overlay(&self, service: &crate::service::Service) {
+        let _gate = service.shared.transition.lock();
+        if self.stopping.load(Ordering::Acquire)
+            || service.shutdown.load(Ordering::Acquire)
+            || *service.shared.status.lock() != "running"
+        {
+            return;
+        }
+        let queue = self.queue.lock();
+        if let Some((job, event)) = queue.overlay_seed(
+            service.shared.generation.load(Ordering::Acquire),
+            service.ocr_epoch.load(Ordering::Acquire),
+        ) {
+            self.overlay.observe(&job.ocr, &job.identity, job.available);
+            if let Some(event) = event {
+                self.overlay.accept(event);
+            }
+        }
     }
     pub fn launch(self: &Arc<Self>, service: Weak<crate::service::Service>) {
         let manager = self.clone();
@@ -969,6 +1009,36 @@ mod tests {
     }
     fn ocr(frame: u64, text: &str) -> OcrResult {
         serde_json::from_value(serde_json::json!({"frameId":frame,"timestamp":0,"sourceWidth":800,"sourceHeight":600,"blocks":[{"id":"original","text":text,"bbox":[1,2,30,40],"confidence":0.9,"polygon":[{"x":1,"y":2}]}],"rawOutput":"raw","metrics":gameocr_core::types::Metrics::default(),"device":"cpu","truncated":false})).unwrap()
+    }
+    #[test]
+    fn enabling_overlay_seeds_only_current_result_without_refreshing_its_age() {
+        let mut q = queue();
+        q.submit(&ocr(1, "New Game"), 2, 3, None, false, 0);
+        let observed = Instant::now() - Duration::from_secs(31);
+        q.latest.as_mut().unwrap().available = observed;
+        let event = TranslationEvent {
+            identity: q.latest.as_ref().unwrap().identity.clone(),
+            results: vec![],
+        };
+        q.history.push_front(event);
+        let (job, result) = q.overlay_seed(2, 3).unwrap();
+        assert!(result.is_some());
+        assert_eq!(job.available, observed);
+        let mut live = crate::overlay::state::LiveState::default();
+        live.observe(
+            &job.ocr,
+            &job.identity,
+            Some("target".into()),
+            job.available,
+        );
+        assert!(!live.fresh(&Default::default(), Instant::now()));
+        assert!(q.overlay_seed(9, 3).is_none());
+        assert!(q.overlay_seed(2, 9).is_none());
+        q.submit(&ocr(2, "Changed text"), 2, 3, None, false, 0);
+        assert!(q.overlay_seed(2, 3).unwrap().1.is_none());
+        q.invalidate(true);
+        assert!(q.overlay_seed(2, 3).is_none());
+        assert!(!q.history.is_empty()); // retained history must not drive live subtitles
     }
     #[test]
     fn latest_only_cancels_running_a_and_pending_b_but_identical_frames_keep_deadline() {

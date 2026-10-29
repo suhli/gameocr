@@ -2,6 +2,7 @@ import { invoke,isTauri } from '@tauri-apps/api/core';
 import { listen,type UnlistenFn } from '@tauri-apps/api/event';
 import { open,save,confirm } from '@tauri-apps/plugin-dialog';
 import type {OverlaySettings,OverlaySnapshot} from '../types/overlay';
+export interface Events {'overlay-settings-changed':OverlaySettings;'overlay-status':string;}
 import type {TranslationSettings,TranslationModel,TranslationStatus,TranslationEvent,GameProfile} from '../types/translation';
 export interface Events {'translation-status':TranslationStatus;'translation-result':TranslationEvent;'translation-invalidated':null;'translation-download-progress':DownloadProgress;}
 import type { WindowInfo,Preview,ModelEntry,ModelStatus,Settings,Performance,Snapshot,CaptureStatus,OcrStatus,AdbDevice,DownloadProgress,LearningSummary } from '../types';
