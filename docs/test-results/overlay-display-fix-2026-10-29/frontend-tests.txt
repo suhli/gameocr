@@ -1,0 +1,15 @@
+
+> gameocr@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/shuhangli/repos/gameocr
+
+ ✓ src/lib/geometry.test.ts (2 tests) 4ms
+ ✓ src/lib/overlayGeometry.test.ts (7 tests) 10ms
+ ✓ src/lib/translationOverlay.test.ts (5 tests) 6ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  15:28:57
+   Duration  1.76s (transform 272ms, setup 0ms, collect 428ms, tests 20ms, environment 1ms, prepare 1.24s)

@@ -1,0 +1,15 @@
+   Compiling gameocr v0.1.0 (C:\Users\shuhangli\repos\gameocr\src-tauri)
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\gameocr_app-1mun64v40g0sf\s-hnno6ildxs-0luzd9m-working`
+
+warning: linker stdout: 正在创建库 C:\Users\shuhangli\repos\gameocr\target\debug\deps\gameocr_app.dll.lib 和对象 C:\Users\shuhangli\repos\gameocr\target\debug\deps\gameocr_app.dll.exp
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `gameocr` (lib) generated 2 warnings
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\gameocr-3mh76znhz0cib\s-hnno76bwyo-1sy55f2-working`
+
+warning: hard linking files in the incremental compilation cache failed. copying files instead. consider moving the cache directory to a file system which supports hard linking in session dir `\\?\C:\Users\shuhangli\repos\gameocr\target\debug\incremental\capture_fixture-0gkmornedho63\s-hnno76by5p-0znly4f-working`
+
+warning: `gameocr` (bin "capture-fixture") generated 1 warning
+warning: `gameocr` (bin "gameocr") generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 48.90s

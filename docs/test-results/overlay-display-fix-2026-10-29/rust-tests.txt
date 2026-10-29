@@ -1,0 +1,51 @@
+   Compiling gameocr v0.1.0 (C:\Users\shuhangli\repos\gameocr\src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 45.31s
+     Running unittests src\lib.rs (target\debug\deps\gameocr_app-5bb59f633456973c.exe)
+
+running 44 tests
+test capture::preview_tests::reuse_keeps_current_identity_and_rejects_one_pixel_or_generation_change ... ok
+test cuda_runtime::tests::backend_sources_are_pinned_and_redirects_are_restricted ... ok
+test cuda_runtime::tests::official_catalog_is_pinned_and_runtime_specific ... ok
+test executor::tests::imported_models_keep_their_memory_guard ... ok
+test model::tests::catalog_is_valid_and_has_real_download_metadata ... ok
+test cuda_runtime::tests::cpu_only_distribution_fails_before_any_download ... ok
+test cuda_runtime::tests::installation_lock_is_released_on_drop ... ok
+test model::tests::import_failure_does_not_leave_copies ... ok
+test model::tests::path_safety ... ok
+test cuda_runtime::tests::corrupt_zip_with_matching_digest_never_becomes_ready ... ok
+test model::tests::resume_safety ... ok
+test cuda_runtime::tests::checksum_cancellation_and_shutdown_leave_no_installation ... ok
+test overlay::state::tests::expiry_is_bounded_even_when_early_auto_hide_is_disabled ... ok
+test overlay::state::tests::geometry_rejects_invalid_and_distant_groups_clips_and_uses_polygon ... ok
+test overlay::state::tests::lifecycle_invalidations_never_replay_history ... ok
+test overlay::state::tests::only_complete_current_translations_are_visible ... ok
+test overlay::state::tests::same_text_relocates_without_flicker_and_old_frame_cannot_replace_it ... ok
+test model::tests::unfinished_is_never_ready ... ok
+test overlay::state::tests::window_anchor_handles_focus_visibility_target_changes_and_enable_cycles ... ok
+test settings::tests::execution_mode_migration_is_opt_in ... ok
+test model::tests::interrupted_download_resumes_and_verifies_before_publish ... ok
+test cuda_runtime::tests::lean_layout_requires_opt_in_and_complete_bundled_ort_still_works ... ok
+test settings::tests::old_settings_default_to_sequential_and_parallel_fields_persist ... ok
+test translation::config::tests::migration_disabled_and_context_profile_isolation ... ok
+test translation::config::tests::overrides_migrate_and_effective_languages_change_prompt_and_cache ... ok
+test translation::config::tests::profile_versions_only_track_semantics_and_never_decrease ... ok
+test overlay::state::tests::settings_legacy_defaults_persistence_and_validation ... ok
+test model::tests::ignored_range_restarts_and_corruption_is_rejected ... ok
+test translation::config::tests::selected_profile_languages_survive_edit_save_and_reload ... ok
+test translation::tests::enabling_overlay_seeds_only_current_result_without_refreshing_its_age ... ok
+test translation::tests::same_text_with_new_epoch_or_generation_cancels_old_work ... ok
+test translation::tests::latest_only_cancels_running_a_and_pending_b_but_identical_frames_keep_deadline ... ok
+test translation::worker::tests::cancelled_load_and_double_failure_never_retry_indefinitely ... ok
+test translation::worker::tests::recovery_is_bounded_sticky_and_respects_explicit_device ... ok
+test window::tests::capture_mapping_uses_matching_surface_and_negative_physical_coordinates ... ok
+test window::tests::identity_rejects_reused_handle ... ok
+test settings::tests::persist_and_validate ... ok
+test cuda_runtime::tests::invalid_archive_never_publishes_partial_installation ... ok
+test model::tests::import_verify_and_delete_lifecycle ... ok
+test cuda_runtime::tests::backend_archive_requires_matching_core_and_provider_and_keeps_notices ... ok
+test cuda_runtime::tests::install_is_complete_and_detects_corruption ... ok
+test model::tests::multi_file_integrity_and_shared_file_deletion ... ok
+test ocr::tests::responses_are_bounded_and_cannot_be_partial ... ok
+test adaptive::persistence::tests::persistence_clear_barrier_and_corrupt_recovery ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.37s

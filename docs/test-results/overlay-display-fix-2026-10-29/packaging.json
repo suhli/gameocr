@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-29T07:46:22.3129172+00:00",
+  "implementationHead": "9465308a847718b9d4fb1fbfd4adef2b0c7aaff3",
+  "files": [
+    {
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable.zip",
+      "size": 20944405,
+      "sha256": "11117b6f75f2c85e977085b3afce3ff70e88726c7ed269f1aba7ed721bd83631"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "size": 20232768,
+      "sha256": "4acd437b0d1f5a61ddb1ee01a2f9c0c46a384e566947ebeb2f0e321f15b06a23"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-setup.exe",
+      "size": 13134316,
+      "sha256": "800664d5a59d256f25a292637d5fc401a8a95301791ae75a72afb89af0bcb18b"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64.msi",
+      "size": 18161664,
+      "sha256": "1321e81c45ef396d35da47352602c710c32e74f1538f275cee605f979fe9c833"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe",
+      "size": 16410624,
+      "sha256": "9f929b381f3777d301ca79f9c2bd485a2ff7fe4d2d213a88929eb8c09b9c2ea6"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+      "size": 16410624,
+      "sha256": "9f929b381f3777d301ca79f9c2bd485a2ff7fe4d2d213a88929eb8c09b9c2ea6"
+    },
+    {
+      "path": "target/debug/gameocr.exe",
+      "size": 28754432,
+      "sha256": "4081578c1b85eff2767b17475c5e3174cf4a14a6d18adfe370a1ffb4ffabd423"
+    }
+  ],
+  "checks": [
+    "PASS NSIS/MSI build",
+    "PASS debug app and fixture build",
+    "PASS CPU ZIP 57 files and 46 native binaries",
+    "PASS on-demand ZIP 59 files and 47 native binaries",
+    "PASS embedded GPU catalog matches archives",
+    "SKIPPED interactive desktop, WGC capture exclusion and real installation"
+  ],
+  "localGameSubtitleSettingEnabled": true,
+  "scope": "Headless component rendering and static packaging only. Desktop validation remains deferred by user."
+}

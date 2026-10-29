@@ -1,6 +1,13 @@
 # Windows 实时翻译字幕
 
-在设置面板的「游戏翻译字幕」中开启，点击「应用字幕设置」，再切回当前捕获的游戏窗口。默认关闭。需要已有 OCR 模型、翻译模型、运行中的 Windows 窗口捕获及当前有效译文。支持普通窗口、无边框窗口；不支持 ADB Overlay，也不承诺独占全屏。
+画面预览下方现在有两个独立开关：
+
+- **预览译文**：默认开启，完整译文会直接叠加在对应识别帧的原文位置，不必只在右侧阅读。缩放或适应窗口时一起定位。实时帧尚无对应译文时不套用旧文字，可点击「查看对应识别帧译文」。
+- **游戏字幕**：控制独立透明窗口，默认关闭；点击「游戏字幕：关」开启后切回当前捕获窗口。主界面会提示后台、过期、捕获未运行等原因。也可在设置面板的「游戏翻译字幕」中配置样式。
+
+游戏字幕需要已有 OCR 模型、翻译模型、运行中的 Windows 窗口捕获及当前有效译文。支持普通窗口、无边框窗口；不支持 ADB Overlay，也不承诺独占全屏。预览不依赖游戏是否位于前台，也不依赖独立字幕开关。
+
+先翻译、后开启游戏字幕时，会复用当前捕获会话的最新有效译文，不会额外调用模型。只读取匹配当前 generation/epoch/revision/frameId 的结果，沿用原 OCR 观察时间，不通过重新开启刷新有效期。过期时提示重新识别。
 
 ## 窗口与显示
 
@@ -23,6 +30,8 @@ OCR 坐标保持原捕获图像的 xyxy / polygon。后端在每显示时核对 
 ## 实时状态与失效
 
 `OverlayManager` 不调用推理、不维护翻译调度。`TranslationManager::submit` 在原有有界队列内同步提供当前 OCR 和 Identity，`process` 通过原有发布校验后提供译文，`invalidate` 同步清空字幕。OCR 错误同样清空。主界面的历史浏览和导出不影响字幕。
+
+预览字幕与其显示的截图绑定，校验 frameId/generation、模型、结果内部 epoch/revision、来源文本与几何；历史图像可显示自己的译文，历史选择不会传给独立游戏字幕窗口。预览同样过滤未完成、取消、截断、错误、未翻译和无法定位的条目。截图保存仍输出原始图像，预览字幕不会写回 OCR 输入。
 
 - 新文本 / generation / epoch / revision / OCR 模型 / 目标变化：立即失效；过期事件不可恢复。
 - 相同文本新帧：保留译文及 keyed DOM，按当前 Block 索引更新来源 ID 和几何。
@@ -50,3 +59,5 @@ Microsoft 对 [SetWindowDisplayAffinity](https://learn.microsoft.com/en-us/windo
 桌面测试使用真实 Win32 测试窗口、WGC、PP-OCR、Hy-MT2，包含系统鼠标点击/滚轮及前台切换。需要可交互桌面；辅助脚本只操作已核对 PID 的本次测试窗口。测试窗口证据不能替代真实游戏、高 DPI 多显示器或干净 Windows 安装验收。
 
 纯坐标与混合文字布局计时：`node scripts/benchmark-overlay-layout.mjs artifacts/overlay-layout.json`，使用支持直接加载 TypeScript 的 Node 运行；不打开桌面窗口，也不代表 WebView 绘制或端到端延迟。本轮完成情况与未验收项目见 [验证记录](translation-overlay-validation.md)。
+
+双位置显示回归：`node scripts/test-overlay-display.mjs` 使用已安装 Edge 的无界面模式（可用 `GAMEOCR_TEST_BROWSER` 指定 Playwright channel），运行实际 Svelte 组件与固定模拟事件，检查预览回填、缩放、开关和独立渲染器。它不是 Windows 桌面/真实推理测试。[回填修复记录](translation-overlay-display-fix.md)
