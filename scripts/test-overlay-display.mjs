@@ -42,7 +42,7 @@ try {
     const callbacks = new Map(), listeners = new Map(); let sequence = 0;
     window.isTauri = true;
     window.__fixture = structuredClone(fixture);
-    window.__mock = {settings, snapshot, calls: [], acks: [], emit(event, payload) {
+    window.__mock = {settings, snapshot, calls: [], acks: [], reports: [], emit(event, payload) {
       for (const [id, entry] of listeners) if (entry.event === event) callbacks.get(entry.handler)?.({id, event, payload: structuredClone(payload)});
     }};
     window.__TAURI_EVENT_PLUGIN_INTERNALS__ = {unregisterListener: (_event, id) => listeners.delete(id)};
@@ -55,6 +55,7 @@ try {
         if (command === 'overlay_settings') return structuredClone(window.__mock.settings);
         if (command === 'overlay_snapshot') return structuredClone(window.__mock.snapshot);
         if (command === 'overlay_rendered') {window.__mock.acks.push(args.serial); return;}
+        if (command === 'overlay_renderer_report') {window.__mock.reports.push(args.report); return;}
         if (command === 'update_overlay_settings') {
           window.__mock.settings = structuredClone(args.settings);
           window.__mock.emit('overlay-settings-changed', args.settings); return;
@@ -103,6 +104,24 @@ try {
   await expect(overlay.locator('main')).toHaveAttribute('data-serial', '2');
   await expect(overlay.locator('.subtitle')).toHaveCount(0);
   checks.push('Real standalone renderer paints, acknowledges layout and rejects a delayed snapshot after clearing');
+  await expect.poll(() => overlay.evaluate(() => window.__mock.reports.some(r => r.phase === 'mounted'))).toBe(true);
+  await overlay.evaluate(() => window.__mock.emit('overlay-state', {...window.__mock.snapshot, serial: 3,
+    geometry: {...window.__mock.snapshot.geometry, rect: [0, 0, 1000, 600]}}));
+  await expect.poll(() => overlay.evaluate(() => window.__mock.reports.some(r => r.phase === 'viewportWait' && r.serial === 3 && r.width === 1280))).toBe(true);
+  assert(!(await overlay.evaluate(() => window.__mock.acks)).includes(3));
+  await overlay.setViewportSize({width: 1000, height: 600});
+  await expect.poll(() => overlay.evaluate(() => window.__mock.acks.includes(3))).toBe(true);
+  // Simulate an IPC failure; the renderer must log it and clear the old text.
+  await overlay.evaluate(() => {
+    const invoke = window.__TAURI_INTERNALS__.invoke;
+    window.__TAURI_INTERNALS__.invoke = (command, args) => command === 'overlay_rendered'
+      ? Promise.reject(Error('simulated acknowledgement failure')) : invoke(command, args);
+    window.__mock.emit('overlay-state', {...window.__mock.snapshot, serial: 4,
+      geometry: {...window.__mock.snapshot.geometry, rect: [0, 0, 1000, 600]}});
+  });
+  await expect(overlay.locator('.subtitle')).toHaveCount(0);
+  await expect.poll(() => overlay.evaluate(() => window.__mock.reports.some(r => r.phase === 'error' && r.serial === 4 && r.message.includes('simulated')))).toBe(true);
+  checks.push('Renderer diagnostics distinguish mount, viewport wait and IPC failure; resizing releases the acknowledgement gate');
   assert.deepEqual(errors, []);
   fs.writeFileSync(path.join(output, 'display-report.json'), JSON.stringify({passed: true, executedAt: new Date().toISOString(), scope: 'Headless Chromium; production Svelte components and deterministic mocked IPC. No real models, WGC, HWND, OS focus or click-through verification.', checks, errors}, null, 2) + '\n');
   console.log('PASS', checks);

@@ -61,3 +61,22 @@ Microsoft 对 [SetWindowDisplayAffinity](https://learn.microsoft.com/en-us/windo
 纯坐标与混合文字布局计时：`node scripts/benchmark-overlay-layout.mjs artifacts/overlay-layout.json`，使用支持直接加载 TypeScript 的 Node 运行；不打开桌面窗口，也不代表 WebView 绘制或端到端延迟。本轮完成情况与未验收项目见 [验证记录](translation-overlay-validation.md)。
 
 双位置显示回归：`node scripts/test-overlay-display.mjs` 使用已安装 Edge 的无界面模式（可用 `GAMEOCR_TEST_BROWSER` 指定 Playwright channel），运行实际 Svelte 组件与固定模拟事件，检查预览回填、缩放、开关和独立渲染器。它不是 Windows 桌面/真实推理测试。[回填修复记录](translation-overlay-display-fix.md)
+
+## 本地调试日志
+
+应用启动后自动写入 `%LOCALAPPDATA%\GameOCR\logs\gameocr.log`。使用 `GAMEOCR_DATA_DIR` 的测试会写入该目录下的 `logs`，不混入用户日志。每行一个 JSON 对象，包含 `timeUnixMs`（UTC 时间戳）、进程 ID、级别、事件名和诊断字段。文件达到 2 MiB 时轮转，保留当前文件与 `gameocr.1.log` 至 `gameocr.3.log`，总计约 8 MiB。后台有界队列写盘；队列满时丢弃日志并在后续记录中累计 `droppedBefore`，日志故障不阻断 OCR/翻译。
+
+日志记录启动程序路径、捕获/识别/翻译状态、目标身份编号、字幕设置、结果数量和当前帧身份，不记录截图或 OCR/译文正文。错误信息长度受限；日志仍可能包含本地程序路径及系统错误，分享前可自行查看。
+
+排查“预览有译文但游戏没有”时按以下事件判断：
+
+- `overlay.settings_loaded` / `overlay.settings_updated`：确认游戏字幕开关。
+- `overlay.window_created` / `overlay.create_failed`：字幕窗口是否创建，捕获排除和点击穿透设置是否成功。
+- `overlay.translation_received`：是否收到当前译文、是否接受、有效字幕数量、观察年龄。
+- `overlay.state`：显示条件变动时记录原因、捕获状态、目标前台/可见性、坐标映射、来源尺寸和字幕数量。目标在后台时明确提示“请切回被捕获的游戏窗口，后台时字幕自动隐藏”。
+- `overlay.renderer`：渲染器启动、等待实际视口与目标尺寸匹配，或渲染/通信错误。
+- `overlay.render_ack`：前端确认已处理的快照 serial。
+- `overlay.native`：原生窗口是否可见、实际位置/尺寸和操作错误，关联同一 serial。只有收到绘制确认且原生窗口确实可见，界面才显示“游戏字幕窗口已显示”。这仍不代表真实游戏像素、全屏兼容或点击穿透已经人工验收。
+- `overlay.invalidated`、`capture.status`、`ocr.status`、`translation.status` 和 `command.error`：关联停止、暂停、模型状态变化及失败。
+
+本次日志及状态提示的验证记录见 [本地诊断验证](translation-overlay-diagnostics.md)。

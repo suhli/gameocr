@@ -34,10 +34,12 @@
     {busy?'应用中…':settings?.overlayEnabled?'游戏字幕：开':'游戏字幕：关'}
   </button>
   <span aria-label="游戏字幕状态" title={reason}>{settings?.overlayEnabled?(reason||'切回游戏窗口显示译文'):'预览译文可见；游戏字幕需单独开启'}</span>
+  {#if settings?.overlayEnabled}<span class="hint">切回目标游戏才会显示字幕</span>{/if}
 </div>
 <style>
-  .overlay-control{display:flex;align-items:center;gap:8px;font-size:11px;min-width:0}
+  .overlay-control{display:flex;align-items:center;gap:8px;font-size:11px;min-width:0;flex-wrap:wrap}
   button{flex-shrink:0;border:1px solid var(--border);background:var(--background);color:var(--foreground);border-radius:6px;padding:6px 10px}
   button.enabled{color:var(--primary);border-color:var(--primary)}button:disabled{opacity:.5}
   span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hint{flex-basis:100%;white-space:normal}
 </style>

@@ -245,9 +245,16 @@ impl TranslationManager {
         crate::settings::data_dir().join("translation/cache.json")
     }
     fn emit(&self) {
-        let _ = self
-            .app
-            .emit("translation-status", self.status.lock().clone());
+        let status = self.status.lock().clone();
+        crate::diagnostics::event(
+            "info",
+            "translation.status",
+            serde_json::json!({
+                "status":status.status,"modelId":status.model_id,"device":status.device,
+                "calls":status.calls,"cacheHits":status.cache_hits,"submitted":status.submitted,"dropped":status.dropped
+            }),
+        );
+        let _ = self.app.emit("translation-status", status);
     }
     pub fn invalidate(&self, clear_context: bool) {
         let dropped = {

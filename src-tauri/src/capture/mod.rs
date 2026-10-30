@@ -102,6 +102,11 @@ pub struct CaptureShared {
 }
 impl CaptureShared {
     pub fn set_status(&self, status: &str) {
+        crate::diagnostics::event(
+            "info",
+            "capture.status",
+            serde_json::json!({"status":status,"generation":self.generation.load(Ordering::Acquire)}),
+        );
         *self.status.lock() = status.into();
         let _ = self.app.emit("capture-status", status);
     }
@@ -112,6 +117,11 @@ impl CaptureShared {
         *self.preview_frame.lock() = None;
     }
     pub fn fail(&self, error: &str) {
+        crate::diagnostics::event(
+            "error",
+            "capture.error",
+            serde_json::json!({"message":crate::diagnostics::short_error(error)}),
+        );
         self.invalidate();
         self.set_status("error");
         let _ = self.app.emit("capture-error", error);

@@ -2,6 +2,7 @@ pub mod adaptive;
 mod capture;
 mod commands;
 pub mod cuda_runtime;
+mod diagnostics;
 pub mod executor;
 mod model;
 mod ocr;
@@ -37,6 +38,7 @@ pub fn run() {
             }
         })
         .setup(|app| {
+            diagnostics::init();
             window::start_identity_monitor()?;
             let state = service::Service::new(app.handle().clone())?;
             state.launch();
@@ -48,6 +50,7 @@ pub fn run() {
             commands::update_overlay_settings,
             commands::overlay_snapshot,
             commands::overlay_rendered,
+            commands::overlay_renderer_report,
             commands::list_windows,
             commands::select_window,
             commands::list_adb_devices,
@@ -101,6 +104,10 @@ pub fn run() {
         .build(tauri::generate_context!())
         .expect("GameOCR 无法启动；需要 Windows 11 和系统 WebView2 Runtime");
     app.run(|handle, event| {
+        if matches!(event, tauri::RunEvent::Exit) {
+            diagnostics::event("info", "app.exit", serde_json::json!({}));
+            diagnostics::flush();
+        }
         if let tauri::RunEvent::ExitRequested { api, .. } = event {
             let state = handle.state::<Arc<service::Service>>().inner().clone();
             if !state.shutdown.load(std::sync::atomic::Ordering::Acquire) {

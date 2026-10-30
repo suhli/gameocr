@@ -141,6 +141,11 @@ impl Service {
     }
     pub fn emit_model(&self) {
         let status = self.model_status.lock().clone();
+        crate::diagnostics::event(
+            "info",
+            "ocr.model_status",
+            serde_json::json!({"status":status.status,"id":status.id,"device":status.device}),
+        );
         let _ = self.app.emit("model-status", status);
     }
     pub fn stop_ocr(&self) {
@@ -151,6 +156,11 @@ impl Service {
         self.set_ocr_status("idle");
     }
     fn set_ocr_status(&self, status: &str) {
+        crate::diagnostics::event(
+            "info",
+            "ocr.status",
+            serde_json::json!({"status":status,"epoch":self.ocr_epoch.load(Ordering::Acquire)}),
+        );
         *self.ocr_status.lock() = status.into();
         let _ = self.app.emit("ocr-status", status);
     }

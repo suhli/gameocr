@@ -42,6 +42,18 @@ pub fn overlay_rendered(
     Ok(())
 }
 #[tauri::command]
+pub fn overlay_renderer_report(
+    state: AppState<'_>,
+    window: tauri::WebviewWindow,
+    report: crate::overlay::RendererReport,
+) -> Reply<()> {
+    if window.label() != "overlay" {
+        return Err("仅字幕窗口可报告渲染状态".into());
+    }
+    state.overlay.renderer_report(report);
+    Ok(())
+}
+#[tauri::command]
 pub fn get_adaptive_statistics(
     state: AppState<'_>,
 ) -> gameocr_core::adaptive::profiles::LearningSummary {
@@ -59,6 +71,11 @@ pub async fn clear_adaptive_profiles(state: AppState<'_>) -> Reply<()> {
     .map_err(err)
 }
 fn err(e: impl std::fmt::Display) -> String {
+    crate::diagnostics::event(
+        "error",
+        "command.error",
+        serde_json::json!({"message": crate::diagnostics::short_error(&e)}),
+    );
     e.to_string()
 }
 #[tauri::command]
@@ -122,6 +139,11 @@ pub async fn unload_translation_model(state: AppState<'_>) -> Reply<()> {
 }
 #[tauri::command]
 pub fn translate_once(state: AppState<'_>, frame_id: u64) -> Reply<()> {
+    crate::diagnostics::event(
+        "info",
+        "translation.manual_requested",
+        serde_json::json!({"frameId":frame_id}),
+    );
     let _gate = state.shared.transition.lock();
     let current = state
         .history
@@ -234,6 +256,11 @@ pub async fn select_window(state: AppState<'_>, id: String) -> Reply<WindowInfo>
         s.reset_target();
         s.capture.lock().stop();
         *s.selected.lock() = Some(window.clone());
+        crate::diagnostics::event(
+            "info",
+            "capture.target_selected",
+            serde_json::json!({"targetId":window.id,"pid":window.pid}),
+        );
         let mut settings = s.settings.read().clone();
         settings.recent_window = Some(format!("{}|{}", window.process_name, window.title));
         s.update_settings(settings).map_err(err)?;

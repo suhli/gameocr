@@ -33,5 +33,6 @@
 {/if}
 {#if message}<p role="status">{message}</p>{/if}{#if error}<p role="alert">{error}</p>{/if}
 {#if status}<p aria-label="字幕状态">{status}</p>{/if}
+<p>调试日志自动保存在 %LOCALAPPDATA%\GameOCR\logs\gameocr.log，最多保留 4 个文件、约 8 MB。记录显示状态和错误，不记录截图及识别、翻译正文。</p>
 </section>
 <style>section{padding:20px 0;border-bottom:1px solid var(--border)}h3{margin:0 0 10px;font-size:13px;font-weight:600}p{color:var(--muted);font-size:11px;line-height:1.7}label{display:block;font-size:11px;color:var(--muted);margin:12px 0}label input{margin-top:7px;font-size:12px}.check{display:flex;align-items:center;gap:8px}.check input{margin:0}.fields{display:grid;grid-template-columns:1fr 1fr;gap:18px}.fields label{margin:9px 0}[role=alert]{color:var(--danger,#f87171)}</style>

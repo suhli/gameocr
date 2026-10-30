@@ -8,10 +8,18 @@
   let snapshot=$state<OverlaySnapshot|null>(null),width=$state(0),height=$state(0);
   const style=$derived(safeStyle(snapshot?.settings??overlayDefaults));
   const layouts=$derived(snapshot?.visible?layoutSubtitles(snapshot.items,snapshot.sourceWidth,snapshot.sourceHeight,width,height,style):[]);
+  let lastReport='';
+  async function report(phase:'mounted'|'viewportWait'|'error',message:string|null=null){
+    const report={phase,serial:snapshot?.serial??null,width:Math.round(innerWidth),height:Math.round(innerHeight),scale:devicePixelRatio,message:message?.slice(0,1000)??null};
+    const key=JSON.stringify(report);if(key===lastReport)return;lastReport=key;
+    // Diagnostics must not interfere with rendering if the log command fails.
+    await invoke('overlay_renderer_report',{report}).catch(()=>{});
+  }
+  function failed(error:unknown){void report('error',String(error));snapshot=null;}
   async function acknowledge(){
     const current=snapshot;if(!current)return;await tick();
     const rect=current.geometry?.rect;
-    if(current.visible&&rect&&(Math.abs(innerWidth*devicePixelRatio-(rect[2]-rect[0]))>2||Math.abs(innerHeight*devicePixelRatio-(rect[3]-rect[1]))>2))return;
+    if(current.visible&&rect&&(Math.abs(innerWidth*devicePixelRatio-(rect[2]-rect[0]))>2||Math.abs(innerHeight*devicePixelRatio-(rect[3]-rect[1]))>2)){await report('viewportWait');return;}
     if(snapshot?.serial===current.serial)await invoke('overlay_rendered',{serial:current.serial});
   }
   async function receive(next:OverlaySnapshot){
@@ -20,12 +28,13 @@
   }
   onMount(()=>{
     let disposed=false;let unlisten:(()=>void)|undefined;
-    const resize=()=>{width=innerWidth;height=innerHeight;void acknowledge().catch(()=>{snapshot=null;});};resize();addEventListener('resize',resize);
+    void report('mounted');
+    const resize=()=>{width=innerWidth;height=innerHeight;void acknowledge().catch(failed);};resize();addEventListener('resize',resize);
     void (async()=>{
-      unlisten=await listen<OverlaySnapshot>('overlay-state',event=>{void receive(event.payload).catch(()=>{snapshot=null;});});
+      unlisten=await listen<OverlaySnapshot>('overlay-state',event=>{void receive(event.payload).catch(failed);});
       if(disposed){unlisten();return;}
       await receive(await invoke<OverlaySnapshot>('overlay_snapshot'));
-    })().catch(()=>{snapshot=null;});
+    })().catch(failed);
     return ()=>{disposed=true;unlisten?.();removeEventListener('resize',resize);};
   });
 </script>
