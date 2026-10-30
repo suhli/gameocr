@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "executedAt": "2026-10-30T02:42:50.930Z",
+  "scope": "Headless Chromium; production Svelte components and deterministic mocked IPC. No real models, WGC, HWND, OS focus or click-through verification.",
+  "checks": [
+    "Preview renders completed Chinese captions with native overlay disabled",
+    "Preview captions follow image zoom and fit",
+    "Preview toggle works; a different live image cannot inherit old captions",
+    "Native subtitle toggle updates settings without model/inference calls; saved setting events synchronize the control",
+    "Real standalone renderer paints, acknowledges layout and rejects a delayed snapshot after clearing",
+    "Renderer diagnostics distinguish mount, viewport wait and IPC failure; resizing releases the acknowledgement gate"
+  ],
+  "errors": []
+}

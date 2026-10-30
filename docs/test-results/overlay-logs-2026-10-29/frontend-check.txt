@@ -1,0 +1,8 @@
+
+> gameocr@0.1.0 check
+> svelte-check --tsconfig ./tsconfig.json
+
+Loading svelte-check in workspace: c:\Users\shuhangli\repos\gameocr
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings

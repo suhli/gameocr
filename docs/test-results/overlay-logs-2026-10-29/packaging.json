@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-30T11:12:16.5443945+08:00",
+  "implementationHead": "da59eeef1bc44756d5ef25f10f7534aa01967a4f",
+  "files": [
+    {
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable.zip",
+      "size": 20985774,
+      "sha256": "20a08c52d12fd7e44d308b4a426e15edd383410b592d3929d6d791127573006d"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable.zip",
+      "size": 20274137,
+      "sha256": "3dc5c94be7a38474985c0802f9e56f30ad434a455e0907cae46c1f7284998a85"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-setup.exe",
+      "size": 13167615,
+      "sha256": "3a8fc680808638fe0380b6ebc2f3592208fae836fa59508c612e7a59271cb7c3"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64.msi",
+      "size": 18202624,
+      "sha256": "564a3837ce5fa49af07923e317eac4748c8bbabdba316c8ee4ca577fe998ada8"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe",
+      "size": 16515072,
+      "sha256": "c6f473f028d17fd5cfa1e734f96c6709192bfa554c741e92d80c9576eea419a9"
+    },
+    {
+      "path": "artifacts/GameOCR-windows-x64-cpu-portable/GameOCR.exe",
+      "size": 16515072,
+      "sha256": "c6f473f028d17fd5cfa1e734f96c6709192bfa554c741e92d80c9576eea419a9"
+    },
+    {
+      "path": "target/debug/gameocr.exe",
+      "size": 28957696,
+      "sha256": "6bddf0213e8fb64962444bb06d90710baac8ed385b23295e6fdd8e1c701f4142"
+    }
+  ],
+  "validation": "Release, NSIS, MSI, debug build and portable ZIP/native import verification passed. No desktop interaction or real-game overlay acceptance in this run."
+}

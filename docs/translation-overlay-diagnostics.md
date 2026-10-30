@@ -13,7 +13,10 @@
 - Rust 桌面库测试：46 项通过，包含日志轮转/容量上限、逐行 JSON 完整性、重启追加、目录不可用后恢复和 UTF-8 错误长度限制。
 - 无界面 Edge：6 组通过。新增验证实际字幕组件上报启动状态、视口尺寸不符时暂不确认、调整尺寸后确认，以及模拟 IPC 失败后上报并清空内容。
 - 格式及差异检查通过。
+- Release 程序、NSIS / MSI 安装器和 debug 程序已重新构建。CPU 便携包 57 个文件、46 个原生二进制，按需便携包 59 个文件、47 个原生二进制，ZIP 字节对照及运行库导入校验均通过。GPU 清单与已有资源一致；未执行安装或 GPU 下载测试。
 
 证据位于 [overlay-logs-2026-10-29](test-results/overlay-logs-2026-10-29/)，该工作在 10 月 30 日继续完成。浏览器测试仍使用模拟输入和通信，不是实际游戏/Win32 窗口验收。遵照用户此前要求，本轮没有控制桌面，也没有改变真实游戏窗口焦点。
 
 使用新版复现后，先查看 `overlay.state` 的原因，再将同一 serial 的 `overlay.renderer`、`overlay.render_ack` 和 `overlay.native` 对照。默认无新 OCR 观察 15 秒后字幕会过期，主界面预览可继续显示对应历史截图的译文；如已过期，需要重新识别后再切回游戏。
+
+实现提交：`da59eee`，保存在本地 main，未推送。当前可直接运行 `artifacts/GameOCR-windows-x64-ondemand-portable/GameOCR.exe`；启动后自动生成本地日志。构建日志和产物大小/SHA-256 见证据目录的 [packaging.json](test-results/overlay-logs-2026-10-29/packaging.json)。同名本地产物已更新，之前记录的哈希只对应之前的版本。
